@@ -1,0 +1,14 @@
+/.vscode
+
+/venv
+
+.env
+
+response.json
+
+goodJobs.json
+
+.DS_Store
+
+*.log
+__pycache__
