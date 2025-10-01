@@ -96,19 +96,8 @@ class JobScraper:
 
     def generate_job_url(self, job_id: str) -> str:
         """Generate job URL for a given job ID."""
-        url_params = {
-            "perPage": 100,
-            "page": 1,
-            "sort": "!postdate",
-            "ocr": "f",
-            "job_type": 5,
-            "industry": "112,147,24,109,83,116,141,142,143,89,105,104,97",
-            "postdate": 7,
-            "currentJobId": job_id
-        }
         
-        param_string = "&".join([f"{k}={v}" for k, v in url_params.items()])
-        return f"{self.job_url_template}?{param_string}"
+        return f"https://northeastern-csm.symplicity.com/students/app/jobs/detail/{job_id}"
     
     def favorite_job(self, job_id: str) -> bool:
         fav_url = f"https://northeastern-csm.symplicity.com/api/v2//jobs/{job_id}/favorite"
