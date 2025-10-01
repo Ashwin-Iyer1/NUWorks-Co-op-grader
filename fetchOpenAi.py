@@ -52,14 +52,7 @@ class JobScorer:
             "Languages: C++, Java, Python, JavaScript, TypeScript, SQL, Kotlin\n"
             "Frameworks & Libraries: React, Redux, TensorFlow, Keras, Pandas, NumPy\n"
             "Developer Tools: Git, IntelliJ, Eclipse, PyCharm, Xcode, PostgreSQL, Microsoft ADO\n\n"
-            
-            "Front-End Developer Intern Zeal IT Consultants May 2025 – August 2025\n"
-            "• Developed the frontend for Trinity Industries' Asset Management System using React and Next.js.\n"
-            "• Increased sprint capacity for UI development by over 10 story points per sprint, accelerating the project timeline "
-            "by 4 weeks, and increased the overall team delivery capacity by 300\% within one release cycle.\n"
-            "• Decreased page loading times by migrating from MobX to Redux in addition to implementing server-side "
-            "rendering, resulting in a 94\% decrease in page load times.\n\n"
-            
+                       
             "Interests\n"
             "Hackathons, Reading, Rubik's Cube, Chess, Poker, Baseball, Blogging, Football, Working Out, Watches, Shoes\n\n"
             
@@ -72,7 +65,7 @@ class JobScorer:
             job_prompt = f"Company Name: {company_name}.\nJob Title: {job_title}\nJob Description: {job_description}"
             
             response = self.client.chat.completions.create(
-                model="gpt-4",  # Fixed model name
+                model="gpt-4.1-mini",  # Fixed model name
                 messages=[
                     {"role": "system", "content": self.system_prompt},
                     {"role": "user", "content": self.user_context},
