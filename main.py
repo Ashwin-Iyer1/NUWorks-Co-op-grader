@@ -109,6 +109,16 @@ class JobScraper:
         
         param_string = "&".join([f"{k}={v}" for k, v in url_params.items()])
         return f"{self.job_url_template}?{param_string}"
+    
+    def favorite_job(self, job_id: str) -> bool:
+        fav_url = f"https://northeastern-csm.symplicity.com/api/v2//jobs/{job_id}/favorite"
+        try:
+            response = requests.post(fav_url, headers=self.headers, timeout=10)
+            response.raise_for_status()
+            return True
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Failed to favorite job {job_id}: {e}")
+            return False
 
     def process_jobs(self, jobs_data: Dict, min_score: int = 50) -> List[Dict]:
         """Process jobs and filter based on AI scoring."""
@@ -146,6 +156,7 @@ class JobScraper:
                         good_jobs.append(job_data)
                         with open("goodJobs.json", "w") as f:
                             json.dump({"jobs": good_jobs}, f, indent=4, ensure_ascii=False)
+                        self.favorite_job(job_id)
                         logger.info(f"✓ Added job with score {score}")
                     else:
                         logger.info(f"✗ Skipped job with score {score}")
