@@ -23,6 +23,8 @@ Results: [Reddit Post](https://www.reddit.com/r/NEU/comments/1oe1ppl/spring_coop
 
 ## Installation
 
+Video for setting up settings and .env file: https://youtu.be/b3cYAhksQQc
+
 1. Clone the repository:
 ```bash
 git clone https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader.git
