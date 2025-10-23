@@ -14,6 +14,7 @@ Results: [Reddit Post](https://www.reddit.com/r/NEU/comments/1oe1ppl/spring_coop
 - **URL Generation**: Creates direct links to promising job postings
 - **Comprehensive Logging**: Tracks all operations with detailed logs
 - **JSON Output**: Saves both raw job data and filtered results for analysis
+- **Automatic Favoriting**: Automatically adds jobs to your favorites list
 
 ## Prerequisites
 
