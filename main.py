@@ -51,14 +51,15 @@ class JobScraper:
         }
         
         self.params = {
-            "perPage": 100,
+            "perPage": 200,
             "page": 0,
             "sort": "!postdate",
             "ocr": "f",
             "job_type": 5,
-            "industry": "112,147,24,109,83,116,141,142,143,89,105,104,97",
-            "postdate": 7,
+            # "industry": "112,58,147,24,110,109,83,116,141,142,143,89,90,115,119,106,105,104,97",
+            "postdate": 3,
             "json_mode": "read_only",
+            "exclude_applied_jobs": 1,
             "enable_translation": False
         }
 
@@ -185,7 +186,7 @@ def main():
         scraper.save_response(jobs_data)
         
         # Process and filter jobs
-        good_jobs = scraper.process_jobs(jobs_data, min_score=50)
+        good_jobs = scraper.process_jobs(jobs_data, min_score=75)
         
         # Save good jobs
         scraper.save_good_jobs(good_jobs)

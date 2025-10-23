@@ -32,6 +32,7 @@ class JobScorer:
             "100 being a job that I am qualified for and fits my description and likely to respond to me\n\n"
             "You can use any number between 0-100, the above are checkpoint numbers. "
             "Make sure that I qualify for the job before giving a score above 0. "
+            "My graduation date is May 2028. Not any earlier. I will earn a bachelor's degree, nothing higher (not masters, not PHD). \n"
             "If I do not qualify, return 0. (if job asks for rising seniors, return 0 as I am a sophomore, etc)"
         )
 
@@ -42,6 +43,7 @@ class JobScorer:
             "I am an undergraduate sophomore at Northeastern University. "
             "I am not a final year student and have not had a co-op yet. "
             "I am seeking co-ops in the United States and I prefer co-ops where the company is in finance / math / statistics with an IT role.\n\n"
+            "My graduation date is May 2028. Not any earlier. I will earn a bachelor's degree, nothing higher (not masters, not PHD). `\n"
             
             "My stats are below\n"
             "Candidate for Bachelor of Science in Computer Science and Business Administration GPA: 3.7\n"

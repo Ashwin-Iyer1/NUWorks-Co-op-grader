@@ -2,6 +2,8 @@
 
 An automated tool for Northeastern University students to scrape co-op opportunities from NUWorks and intelligently score them using OpenAI's GPT-4 model. The tool filters jobs based on your qualifications and interests, helping you focus on the most relevant opportunities.
 
+[sankey image](./sankey.png)
+
 ## Features
 
 - **Automated Job Scraping**: Fetches co-op listings from NUWorks using authenticated API calls
