@@ -2,7 +2,8 @@
 
 An automated tool for Northeastern University students to scrape co-op opportunities from NUWorks and intelligently score them using OpenAI's GPT-4 model. The tool filters jobs based on your qualifications and interests, helping you focus on the most relevant opportunities.
 
-[sankey image](./sankey.png)
+Results: [Reddit Post](https://www.reddit.com/r/NEU/comments/1oe1ppl/spring_coop_search_results_second_year_cs_x/)
+![sankey image](sankey.png)
 
 ## Features
 
