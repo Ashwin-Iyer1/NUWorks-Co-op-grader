@@ -1,11 +1,11 @@
 {
-  "name": "Hello Extensions",
-  "description": "Base Level Extension",
+  "name": "NUWorks Co-op Extension",
+  "description": "Extension to help Northeastern students find co-op opportunities",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
-    "default_popup": "hello.html",
-    "default_icon": "hello_extensions.png"
+    "default_popup": "index.html",
+    "default_icon": "icon.png"
   },
   "permissions": [
     "activeTab",

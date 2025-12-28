@@ -95,48 +95,31 @@
       <h1>Job Matcher</h1>
       <p class="subtitle">Configure & Fetch Jobs</p>
 
-      <div class="input-group">
-        <label for="cookie">Cookie</label>
-        <input type="text" id="cookie" placeholder="Cookie value">
-      </div>
-      <div class="input-group">
-        <label for="authorization">Authorization</label>
-        <input type="text" id="authorization" placeholder="Basic ...">
-      </div>
+
+      <p id="cookie-check"></p>
+      <p id="auth-check"></p>
 
       <div class="input-group">
-        <label for="perPage">Per Page</label>
+        <label for="perPage">Jobs to scrape</label>
         <input type="number" id="perPage" value="200">
       </div>
       <div class="input-group">
-        <label for="page">Page</label>
-        <input type="number" id="page" value="0">
-      </div>
-      <div class="input-group">
-        <label for="sort">Sort</label>
-        <input type="text" id="sort" value="!postdate">
-      </div>
-      <div class="input-group">
-        <label for="ocr">OCR</label>
-        <input type="text" id="ocr" value="f">
-      </div>
-      <div class="input-group">
         <label for="job_type">Job Type</label>
-        <input type="number" id="job_type" value="5">
+        <select id="job_type">
+          <option value="5,3,17">All</option>
+          <option value="5" selected>Co-op</option>
+          <option value="3">Full Time / Part Time</option>
+          <option value="17">Internship</option>
+        </select>
       </div>
       <div class="input-group">
         <label for="postdate">Post Date</label>
-        <input type="number" id="postdate" value="3">
+        <input type="number" id="postdate" value="30">
       </div>
       <div class="input-group checkbox">
         <input type="checkbox" id="exclude_applied_jobs" checked>
         <label for="exclude_applied_jobs">Exclude Applied Jobs</label>
       </div>
-      <div class="input-group">
-        <label for="json_mode">JSON Mode</label>
-        <input type="text" id="json_mode" value="read_only" readonly>
-      </div>
-
       <div class="input-group">
         <label for="min-match-slider">Min Match Score: <span id="min-match-value">0</span>%</label>
         <input type="range" id="min-match-slider" min="0" max="100" step="10" value="0" style="width: 100%;">

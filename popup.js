@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const getJobsBtn = document.getElementById('get-jobs-btn');
     const cookieInput = document.getElementById('cookie');
     const authInput = document.getElementById('authorization');
-    const resultsDiv = document.getElementById('results');
     const settingsBtn = document.getElementById('settings-btn');
 
     // Resume View Inputs
@@ -46,11 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load stored credentials & resume check
     chrome.storage.local.get(['cookie', 'authorization', 'resume'], (result) => {
-        if (result.cookie) {
-            cookieInput.value = result.cookie;
+        if (!result.cookie) {
+            document.getElementById('cookie-check').innerText = 'Cookie not found';
         }
-        if (result.authorization) {
-            authInput.value = result.authorization;
+        if (!result.authorization) {
+            document.getElementById('auth-check').innerText = 'Authorization not found';
         }
         
         // Resume check
@@ -128,12 +127,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const params = new URLSearchParams({
                     perPage: document.getElementById('perPage').value,
-                    page: document.getElementById('page').value,
-                    sort: document.getElementById('sort').value,
-                    ocr: document.getElementById('ocr').value,
+                    page: 0,
+                    sort: '!postdate',
+                    ocr: 'f',
                     job_type: document.getElementById('job_type').value,
                     postdate: document.getElementById('postdate').value,
-                    json_mode: document.getElementById('json_mode').value,
+                    json_mode: 'read_only',
                     exclude_applied_jobs: document.getElementById('exclude_applied_jobs').checked ? '1' : '0',
                     enable_translation: 'False'
                 });
