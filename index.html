@@ -93,7 +93,7 @@
         <button id="debug-pdf-btn" style="margin-top: 5px; font-size: 0.8em;">Debug: View Extracted Text</button>
       </div>
 
-      <div class="input-group" id="resume-text-group" style="display: none;">
+      <div class="input-group" id="resume-text-group" style="display: block;">
         <label for="resume-text">Resume Text</label>
         <textarea id="resume-text" rows="15" placeholder="Paste your full resume text here..."></textarea>
       </div>
@@ -109,9 +109,7 @@
   </div>
 
   <script src="pdf.min.js"></script>
-  <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
-  </script>
+
   <script src="storage.js"></script>
   <script src="api.js"></script>
   <script src="ui.js"></script>

@@ -1,3 +1,8 @@
+// Configure PDF.js worker
+if (window.pdfjsLib) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.min.js";
+}
+
 // Popup logic - Refactored
 document.addEventListener("DOMContentLoaded", () => {
   const {
@@ -65,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           document.getElementById("resume-text-group").style.display = "none";
         }
-        z;
       }
     });
   }

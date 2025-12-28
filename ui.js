@@ -96,62 +96,59 @@ const UiHelper = {
   /**
    * Render individual job card
    */
+  /**
+   * Render individual job card
+   */
   createJobCard: (job) => {
     const card = document.createElement("div");
-    card.style.border = "1px solid #ddd";
-    card.style.marginBottom = "10px";
-    card.style.padding = "10px";
-    card.style.borderRadius = "5px";
-    card.style.backgroundColor = "#fff";
+    card.className = "job-card";
+
+    // Header Section
+    const header = document.createElement("div");
+    // header.className = "job-header"; // Optional wrapper if we want side-by-side
 
     const title = document.createElement("div");
-    title.style.fontWeight = "bold";
-    title.style.fontSize = "1.1em";
+    title.className = "job-title";
     title.innerText = job.job_title;
 
     const company = document.createElement("div");
-    company.style.fontSize = "0.9em";
-    company.style.color = "#555";
-    company.innerText = job.employer ? job.employer.name : "Unknown Employer";
+    company.className = "job-company";
+    company.innerText = job.name || "Unknown Employer";
 
+    // Score
     const scoreLine = document.createElement("div");
-    scoreLine.style.marginTop = "5px";
-    scoreLine.style.fontWeight = "bold";
-
     const score = job.matchScore;
     let color = "#d9534f"; // red
     if (score >= 70) color = "#5cb85c"; // green
     else if (score >= 40) color = "#f0ad4e"; // orange
 
+    scoreLine.className = "job-score";
     scoreLine.innerHTML = `<span style="color: ${color};">${score}% Match</span>`;
 
+    // Snippets / Matches
     const snippets = document.createElement("div");
-    snippets.style.fontSize = "0.8em";
-    snippets.style.color = "#777";
-    snippets.style.marginTop = "5px";
+    snippets.className = "job-snippets";
 
     const matches =
       job.matchDetails && job.matchDetails.matches
         ? job.matchDetails.matches.slice(0, 5).join(", ")
         : "";
+
     if (matches) {
       snippets.innerText = `Matched: ${matches}`;
     }
 
     // Action Line
     const actionLine = document.createElement("div");
-    actionLine.style.marginTop = "10px";
-    actionLine.style.textAlign = "right";
+    actionLine.className = "job-actions";
 
     // Save Button
     const saveBtn = document.createElement("button");
     saveBtn.innerText = "Save";
-    saveBtn.style.marginLeft = "10px";
-    saveBtn.style.padding = "2px 8px";
-    saveBtn.style.cursor = "pointer";
-    saveBtn.className = "btn-primary";
-    saveBtn.style.fontSize = "0.8em";
+    saveBtn.className = "btn-primary"; // Re-using existing button class
+    saveBtn.style.padding = "6px 16px"; // Specific override for card button to be smaller if needed, or rely on CSS
     saveBtn.style.width = "auto";
+    saveBtn.style.fontSize = "0.85rem";
 
     // Wire up save click
     saveBtn.onclick = async () => {
