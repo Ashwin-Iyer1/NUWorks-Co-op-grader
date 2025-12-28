@@ -14,7 +14,8 @@ body {
   width: 350px;
   min-height: 400px;
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
   background-color: var(--background-color);
   color: var(--text-primary);
   display: flex;
@@ -86,4 +87,81 @@ button#get-jobs-btn:active {
   padding-bottom: 1rem;
   font-size: 0.75rem;
   color: var(--text-secondary);
+}
+
+.input-group {
+  margin-bottom: 10px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 0.8em;
+}
+
+.input-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+}
+
+.input-group.checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.input-group.checkbox input {
+  width: auto;
+  margin-right: 5px;
+}
+
+#results {
+  white-space: pre-wrap;
+  background: #f0f0f0;
+  padding: 10px;
+  margin-top: 10px;
+  font-family: monospace;
+  font-size: 0.8em;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+}
+
+/* Utility & New View Styles */
+.hidden {
+  display: none !important;
+}
+
+#settings-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+#resume-view textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding: 10px;
+  resize: vertical;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1em;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
 }
