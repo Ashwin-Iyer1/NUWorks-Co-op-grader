@@ -137,12 +137,24 @@
         <input type="text" id="json_mode" value="read_only" readonly>
       </div>
 
+      <div class="input-group">
+        <label for="min-match-slider">Min Match Score: <span id="min-match-value">0</span>%</label>
+        <input type="range" id="min-match-slider" min="0" max="100" step="10" value="0" style="width: 100%;">
+      </div>
+
       <button id="get-jobs-btn" class="btn-primary">
-        <span>Get Jobs</span>
+        <span>Analyze Jobs</span>
       </button>
 
-      <div id="results">Response will appear here...</div>
+      <div id="results" class="hidden">Response will appear here...</div>
       <p id="logging"></p>
+    </div>
+
+    <!-- Analysis Results View -->
+    <div id="analysis-view" class="hidden">
+      <h1>Analysis Results</h1>
+      <button id="back-to-main-btn" style="margin-bottom: 15px; cursor: pointer;">&larr; Back to Search</button>
+      <div id="analysis-results" style="max-height: 400px; overflow-y: auto;"></div>
     </div>
 
     <!-- Resume Input View -->
