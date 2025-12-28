@@ -88,6 +88,12 @@
       <p class="subtitle">Please enter your resume text below to enable matching.</p>
 
       <div class="input-group">
+        <label for="resume-file">Upload PDF Resume</label>
+        <input type="file" id="resume-file" accept=".pdf" />
+        <button id="debug-pdf-btn" style="margin-top: 5px; font-size: 0.8em;">Debug: View Extracted Text</button>
+      </div>
+
+      <div class="input-group" id="resume-text-group" style="display: none;">
         <label for="resume-text">Resume Text</label>
         <textarea id="resume-text" rows="15" placeholder="Paste your full resume text here..."></textarea>
       </div>
@@ -102,6 +108,10 @@
     Made by <a href="https://ashwiniyer.com" target="_blank">Ashwin Iyer</a>
   </div>
 
+  <script src="pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
+  </script>
   <script src="storage.js"></script>
   <script src="api.js"></script>
   <script src="ui.js"></script>

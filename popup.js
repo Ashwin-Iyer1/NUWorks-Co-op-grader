@@ -9,9 +9,66 @@ document.addEventListener("DOMContentLoaded", () => {
     minMatchSlider,
     minMatchValue,
     resumeText,
+    resumeFile,
+    debugPdfBtn,
   } = UiHelper.elements;
 
   // --- Event Listeners ---
+
+  // PDF Upload Listener
+  if (resumeFile) {
+    resumeFile.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (file.type !== "application/pdf") {
+        alert("Please upload a PDF file.");
+        return;
+      }
+
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        // window.pdfjsLib is loaded via script tag
+        const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer })
+          .promise;
+        let fullText = "";
+
+        // Extract text from each page
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const pageText = textContent.items.map((item) => item.str).join(" ");
+          fullText += pageText + "\n";
+        }
+
+        // Set to textarea
+        UiHelper.elements.resumeText.value = fullText.trim();
+        alert("Resume text extracted from PDF!");
+      } catch (error) {
+        console.error("Error parsing PDF:", error);
+        alert("Error parsing PDF. See console for details.");
+      }
+    });
+  }
+
+  // Debug PDF Text
+  if (debugPdfBtn) {
+    debugPdfBtn.addEventListener("click", () => {
+      const text = UiHelper.elements.resumeText.value;
+      if (!text) {
+        alert("No resume text found. Upload a PDF or paste text first.");
+      } else {
+        if (
+          document.getElementById("resume-text-group").style.display === "none"
+        ) {
+          document.getElementById("resume-text-group").style.display = "block";
+        } else {
+          document.getElementById("resume-text-group").style.display = "none";
+        }
+        z;
+      }
+    });
+  }
 
   // Open Settings (Resume Edit)
   if (settingsBtn) {

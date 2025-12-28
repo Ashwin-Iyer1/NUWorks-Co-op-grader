@@ -23,6 +23,8 @@ const UiHelper = {
       minMatchSlider: document.getElementById("min-match-slider"),
       minMatchValue: document.getElementById("min-match-value"),
       resumeText: document.getElementById("resume-text"),
+      resumeFile: document.getElementById("resume-file"),
+      debugPdfBtn: document.getElementById("debug-pdf-btn"),
 
       // Status
       cookieMsg: document.getElementById("cookie-check"),
