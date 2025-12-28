@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
     debugPdfBtn,
   } = UiHelper.elements;
 
+  // Initialize Custom Dropdowns
+  UiHelper.initIndustryDropdown();
+
   // --- Event Listeners ---
 
   // PDF Upload Listener

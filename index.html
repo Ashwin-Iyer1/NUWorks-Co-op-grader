@@ -39,6 +39,19 @@
           <option value="17">Internship</option>
         </select>
       </div>
+
+      <div class="input-group">
+        <label>Industry</label>
+        <div class="custom-select-container" id="industry-select-container">
+          <div class="selected-items-display" id="industry-selected-display" tabindex="0">Select Industries...</div>
+          <div class="dropdown-list hidden" id="industry-dropdown-list">
+            <input type="text" class="dropdown-search" id="industry-search" placeholder="Search industries...">
+            <div class="dropdown-options" id="industry-options">
+              <!-- Options populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="input-group">
         <label for="postdate">Post Date</label>
         <input type="number" id="postdate" value="30">

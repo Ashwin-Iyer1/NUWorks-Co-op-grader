@@ -4,6 +4,79 @@
  */
 
 const UiHelper = {
+  // Industry Data
+  industryMap: {
+    "Accounting Services": 74,
+    "Advertising / Marketing / Public Relations": 75,
+    Aerospace: 11,
+    Agriculture: 12,
+    "Apparel / Textiles / Fashion": 76,
+    "Architecture / Urban Planning": 77,
+    "Artifical Intelligence": 112,
+    "Arts & Design": 78,
+    Assocations: 79,
+    Automation: 58,
+    Automotive: 118,
+    "Biomedical / Medical Devices": 111,
+    Chemicals: 102,
+    "Computer Software": 147,
+    "Construction & Building Trades": 80,
+    Consulting: 24,
+    "Consumer Products": 22,
+    "Cosmetics & Beauty": 139,
+    Cybersecurity: 110,
+    Defense: 109,
+    "Educational Instruction and Administration": 81,
+    "Electronic / Electrical Manufacturing": 108,
+    "Energy & Environmental Resources": 82,
+    Engineering: 30,
+    "Engineering Design & Consulting": 107,
+    "Entertainment / Performing Arts": 29,
+    "Environmental Services": 117,
+    "Event Services": 140,
+    "Finance / Financial Services": 83,
+    "Finance / Fintech (Financial Technology)": 116,
+    "Finance / Investment Banking": 141,
+    "Finance / Investment Management": 142,
+    "Finance / Venture Capital & Private Equity": 143,
+    "Food, Beverage and Tobacco": 84,
+    Forensics: 122,
+    Gaming: 144,
+    "Government / Public Sector / Muncipal, State or Federal Agency": 85,
+    Healthcare: 86,
+    "Healthcare/Medical Equipment": 127,
+    "Hospitality / Travel & Leisure": 87,
+    "Human Resources & Staffing": 88,
+    "Information Technology & Services": 89,
+    Insurance: 103,
+    "Internet & E-Commerce": 90,
+    "Internet of Things": 115,
+    Journalism: 121,
+    Landscaping: 91,
+    "Legal / Law": 92,
+    "Logistics / Supply Chain / Transportation": 123,
+    "Luxury Goods": 145,
+    "Manufacturing / Machinery & Equipment": 93,
+    Marine: 114,
+    "Market Research": 146,
+    "Media / Publishing": 130,
+    Other: 101,
+    "Pharmaceuticals / Biotechnology": 95,
+    "Product Development": 120,
+    "Public Health": 113,
+    "Real Estate": 57,
+    Research: 119,
+    "Research & Development": 106,
+    "Retail & Wholesale": 96,
+    Robotics: 105,
+    "Semiconductor Industry": 104,
+    "Social Services / Non-Profits": 98,
+    "Sports / Fitness / Wellness": 99,
+    Technology: 97,
+    Telecommunications: 64,
+  },
+  selectedIndustries: new Set(),
+
   get elements() {
     return {
       mainView: document.getElementById("main-view"),
@@ -16,7 +89,7 @@ const UiHelper = {
       // Inputs
       getJobsBtn: document.getElementById("get-jobs-btn"),
       settingsBtn: document.getElementById("settings-btn"),
-      backToMainBtn: document.getElementById("back-to-main-btn"), // Added explicitly if missing before
+      backToMainBtn: document.getElementById("back-to-main-btn"),
       saveResumeBtn: document.getElementById("save-resume-btn"),
       cancelResumeBtn: document.getElementById("cancel-resume-btn"),
 
@@ -26,10 +99,106 @@ const UiHelper = {
       resumeFile: document.getElementById("resume-file"),
       debugPdfBtn: document.getElementById("debug-pdf-btn"),
 
+      // Industry Dropdown Elements
+      industryDisplay: document.getElementById("industry-selected-display"),
+      industryList: document.getElementById("industry-dropdown-list"),
+      industrySearch: document.getElementById("industry-search"),
+      industryOptions: document.getElementById("industry-options"),
+
       // Status
       cookieMsg: document.getElementById("cookie-check"),
       authMsg: document.getElementById("auth-check"),
     };
+  },
+
+  initIndustryDropdown: () => {
+    const { industryDisplay, industryList, industrySearch, industryOptions } =
+      UiHelper.elements;
+
+    // Check if elements exist (safety)
+    if (
+      !industryDisplay ||
+      !industryList ||
+      !industrySearch ||
+      !industryOptions
+    )
+      return;
+
+    // Populate options
+    const industries = Object.entries(UiHelper.industryMap).sort((a, b) =>
+      a[0].localeCompare(b[0])
+    );
+
+    const renderOptions = (filter = "") => {
+      industryOptions.innerHTML = "";
+      const lowerFilter = filter.toLowerCase();
+
+      industries.forEach(([name, id]) => {
+        if (name.toLowerCase().includes(lowerFilter)) {
+          const div = document.createElement("div");
+          div.className = "dropdown-item";
+          if (UiHelper.selectedIndustries.has(id)) {
+            div.classList.add("selected");
+          }
+          div.textContent = name;
+          div.dataset.id = id;
+          div.onclick = (e) => {
+            e.stopPropagation(); // Prevent closing
+            UiHelper.toggleIndustry(id, div);
+          };
+          industryOptions.appendChild(div);
+        }
+      });
+    };
+
+    // Initial render
+    renderOptions();
+
+    // Toggle dropdown visibility
+    industryDisplay.onclick = (e) => {
+      e.stopPropagation();
+      industryList.classList.toggle("hidden");
+      if (!industryList.classList.contains("hidden")) {
+        industrySearch.focus();
+      }
+    };
+
+    // Search filter
+    industrySearch.oninput = (e) => {
+      renderOptions(e.target.value);
+    };
+
+    // Click outside to close
+    document.addEventListener("click", (e) => {
+      if (!industryList.contains(e.target) && e.target !== industryDisplay) {
+        industryList.classList.add("hidden");
+      }
+    });
+  },
+
+  toggleIndustry: (id, element) => {
+    if (UiHelper.selectedIndustries.has(id)) {
+      UiHelper.selectedIndustries.delete(id);
+      element.classList.remove("selected");
+    } else {
+      UiHelper.selectedIndustries.add(id);
+      element.classList.add("selected");
+    }
+
+    UiHelper.updateIndustryDisplay();
+  },
+
+  updateIndustryDisplay: () => {
+    const size = UiHelper.selectedIndustries.size;
+    const display = UiHelper.elements.industryDisplay;
+
+    if (size === 0) {
+      display.textContent = "Select Industries...";
+      display.classList.remove("has-selection");
+    } else {
+      display.textContent = `${size} Industry(s) Selected`;
+      display.classList.add("has-selection");
+    }
   },
 
   /**
@@ -239,6 +408,8 @@ const UiHelper = {
 
   // Parameter getters
   getSearchParams: () => {
+    const industryIds = Array.from(UiHelper.selectedIndustries).join(",");
+
     return {
       perPage: document.getElementById("perPage").value,
       page: 0,
@@ -252,6 +423,7 @@ const UiHelper = {
         ? "1"
         : "0",
       enable_translation: "False",
+      industry: industryIds, // Add selected industries
     };
   },
 

@@ -374,3 +374,98 @@ input[type="range"]::-webkit-slider-runnable-track {
   display: flex;
   justify-content: flex-end;
 }
+/* Custom Industry Dropdown */
+.custom-select-container {
+  position: relative;
+  width: 100%;
+}
+
+.selected-items-display {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-secondary); /* Placeholder color initially */
+  font-size: 0.95rem;
+  cursor: pointer;
+  min-height: 42px; /* Match other inputs */
+  display: flex;
+  align-items: center;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.selected-items-display.has-selection {
+  color: var(--text-primary);
+}
+
+.selected-items-display:hover,
+.selected-items-display:focus {
+  border-color: var(--accent-primary);
+  outline: none;
+}
+
+.dropdown-list {
+  position: absolute;
+  top: 100%; /* Below the inputs */
+  left: 0;
+  right: 0;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-top: 6px;
+  z-index: 1000;
+  box-shadow: var(--shadow-medium);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+}
+
+.dropdown-list.hidden {
+  display: none;
+}
+
+.dropdown-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-family: inherit;
+  outline: none;
+}
+
+.dropdown-options {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.dropdown-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.dropdown-item.selected {
+  background-color: rgba(138, 44, 226, 0.2); /* Accent color transparent */
+  color: var(--accent-secondary);
+  font-weight: 500;
+}
+
+.dropdown-item.selected::after {
+  content: "✓";
+  font-weight: bold;
+}
