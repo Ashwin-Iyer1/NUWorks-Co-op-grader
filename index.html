@@ -98,7 +98,25 @@
     <!-- Resume Input View -->
     <div id="resume-view" class="hidden">
       <h1>Resume Settings</h1>
-      <p class="subtitle">Please enter your resume text below to enable matching.</p>
+      <p class="subtitle">Please enter your details below.</p>
+
+      <div class="input-group">
+        <label for="school-year">Current School Year</label>
+        <select id="school-year">
+          <option value="">Select Year...</option>
+          <option value="Freshman">Freshman</option>
+          <option value="Sophomore">Sophomore</option>
+          <option value="Junior">Junior</option>
+          <option value="Senior">Senior</option>
+          <option value="Graduate">Graduate</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="grad-date">Expected Graduation Date</label>
+        <input type="month" id="grad-date">
+      </div>
+
 
       <div class="input-group">
         <label for="resume-file">Upload PDF Resume</label>

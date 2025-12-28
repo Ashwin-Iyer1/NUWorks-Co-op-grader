@@ -80,9 +80,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // Open Settings (Resume Edit)
   if (settingsBtn) {
     settingsBtn.addEventListener("click", async () => {
-      const resume = await StorageHelper.getResume();
-      if (resume) {
-        UiHelper.elements.resumeText.value = resume;
+      const creds = await StorageHelper.getCredentials();
+      if (creds.resume) {
+        UiHelper.elements.resumeText.value = creds.resume;
+      }
+      if (creds.schoolYear) {
+        UiHelper.elements.schoolYear.value = creds.schoolYear;
+      }
+      if (creds.gradDate) {
+        UiHelper.elements.gradDate.value = creds.gradDate;
       }
       UiHelper.showResumeView();
     });
@@ -92,12 +98,19 @@ document.addEventListener("DOMContentLoaded", () => {
   if (saveResumeBtn) {
     saveResumeBtn.addEventListener("click", () => {
       const text = UiHelper.elements.resumeText.value.trim();
+      const schoolYear = UiHelper.elements.schoolYear.value;
+      const gradDate = UiHelper.elements.gradDate.value;
+
       if (!text) {
         alert("Please enter a resume.");
         return;
       }
-      StorageHelper.saveResume(text).then(() => {
-        console.log("Resume saved");
+
+      Promise.all([
+        StorageHelper.saveResume(text),
+        StorageHelper.saveUserDemographics(schoolYear, gradDate),
+      ]).then(() => {
+        console.log("Settings saved");
         UiHelper.showMainView();
       });
     });
@@ -181,6 +194,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Get resume and credentials
         const storageResult = await StorageHelper.getCredentials();
         const resumeText = storageResult.resume;
+        const schoolYear = storageResult.schoolYear;
+        const gradDate = storageResult.gradDate;
 
         if (!resumeText) {
           alert("Please save a resume first!");
@@ -198,19 +213,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // --- MATCHING LOGIC ---
         const matcher = new JobMatcher();
-        const scoredJobs = jobs.map((job) => {
-          const description = job.job_desc || "";
-          const title = job.job_title || "";
-          const jobFullText = `${title} \n ${description}`;
+        const scoredJobs = jobs
+          .map((job) => {
+            const description = job.job_desc || "";
+            const title = job.job_title || "";
+            const jobFullText = `${title} \n ${description}`;
 
-          const result = matcher.calculateScore(resumeText, jobFullText);
+            // Check Qualifications
+            if (!matcher.isQualified(jobFullText, schoolYear, gradDate)) {
+              return null;
+            }
 
-          return {
-            ...job,
-            matchScore: result.score,
-            matchDetails: result,
-          };
-        });
+            const result = matcher.calculateScore(resumeText, jobFullText);
+
+            return {
+              ...job,
+              matchScore: result.score,
+              matchDetails: result,
+            };
+          })
+          .filter((job) => job !== null); // Filter out disqualified jobs
 
         // Filter by Min Score
         const minScore = UiHelper.getMinMatchScore();

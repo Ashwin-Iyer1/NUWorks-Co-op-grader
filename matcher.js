@@ -266,6 +266,79 @@ class JobMatcher {
   }
 
   /**
+   * Check if user qualifies based on school year and graduation date
+   * @param {string} jobText
+   * @param {string} userSchoolYear (e.g. "Junior")
+   * @param {string} userGradDate (e.g. "2025-05")
+   * @returns {boolean} true if qualified or n/a
+   */
+  isQualified(jobText, userSchoolYear, userGradDate) {
+    if (!jobText) return false;
+    const lowerText = jobText.toLowerCase();
+
+    // 1. School Year Check
+    if (userSchoolYear) {
+      const years = ["freshman", "sophomore", "junior", "senior", "graduate"];
+
+      // Find which years are mentioned in the job description
+      // We look for singular and plural forms
+      const mentionedYears = new Set();
+      years.forEach((y) => {
+        // Handle special case for freshman/freshmen
+        let pattern;
+        if (y === "freshman") {
+          pattern = /\bfreshm(a|e)n\b/i;
+        } else {
+          // Standard assumption: add 's' or 'es' for plural
+          pattern = new RegExp(`\\b${y}(s|es)?\\b`, "i");
+        }
+
+        if (pattern.test(lowerText)) {
+          mentionedYears.add(y);
+        }
+      });
+
+      // If the job mentions specific school years, check if user is one of them
+      if (
+        mentionedYears.size > 0 &&
+        !mentionedYears.has(userSchoolYear.toLowerCase())
+      ) {
+        return false;
+      }
+    }
+
+    // 2. Graduation Date Check
+    if (userGradDate) {
+      // Extract user year
+      const userYear = userGradDate.split("-")[0]; // "2025" from "2025-05"
+
+      // Regex patterns to find graduation year requirements
+      // Examples: "Class of 2025", "Graduating in 2025", "Graduation date: 2025"
+      const gradPatterns = [
+        /class of (\d{4})/gi,
+        /graduating (?:in|by) (?:\w+ )?(\d{4})/gi,
+        /graduation (?:date )?(?:is )?(?:in |expected )?(?:\w+ )?(\d{4})/gi,
+      ];
+
+      const mentionedGradYears = new Set();
+
+      gradPatterns.forEach((pattern) => {
+        let match;
+        while ((match = pattern.exec(lowerText)) !== null) {
+          mentionedGradYears.add(match[1]);
+        }
+      });
+
+      // If specific grad years are mentioned, user must match one
+      if (mentionedGradYears.size > 0 && !mentionedGradYears.has(userYear)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
    * Normalize text: lowercase, remove special chars
    */
   normalize(text) {

@@ -15,11 +15,25 @@ const StorageHelper = {
           "cookie",
           "authorization",
           "resume",
+          "schoolYear",
+          "gradDate",
           "viewState",
           "lastAnalysisResults",
         ],
         (result) => resolve(result)
       );
+    });
+  },
+
+  /**
+   * Save user demographics
+   * @param {string} schoolYear
+   * @param {string} gradDate
+   * @returns {Promise<void>}
+   */
+  saveUserDemographics: (schoolYear, gradDate) => {
+    return new Promise((resolve) => {
+      chrome.storage.local.set({ schoolYear, gradDate }, () => resolve());
     });
   },
 

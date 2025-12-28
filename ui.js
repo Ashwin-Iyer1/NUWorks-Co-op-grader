@@ -98,6 +98,8 @@ const UiHelper = {
       resumeText: document.getElementById("resume-text"),
       resumeFile: document.getElementById("resume-file"),
       debugPdfBtn: document.getElementById("debug-pdf-btn"),
+      schoolYear: document.getElementById("school-year"),
+      gradDate: document.getElementById("grad-date"),
 
       // Industry Dropdown Elements
       industryDisplay: document.getElementById("industry-selected-display"),
