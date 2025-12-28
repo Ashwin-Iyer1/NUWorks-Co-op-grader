@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Resume Matcher</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .input-group {
+      margin-bottom: 10px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.8em;
+    }
+
+    .input-group input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 5px;
+    }
+
+    .input-group.checkbox {
+      display: flex;
+      align-items: center;
+    }
+
+    .input-group.checkbox input {
+      width: auto;
+      margin-right: 5px;
+    }
+
+    #results {
+      white-space: pre-wrap;
+      background: #f0f0f0;
+      padding: 10px;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 0.8em;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+    }
+
+    /* Utility & New View Styles */
+    .hidden {
+      display: none !important;
+    }
+
+    #settings-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+    }
+
+    #resume-view textarea {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      padding: 10px;
+      resize: vertical;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1em;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <button id="settings-btn" title="Settings">&#9881;</button>
+
+    <!-- Main Job Matcher View -->
+    <div id="main-view">
+      <h1>Job Matcher</h1>
+      <p class="subtitle">Configure & Fetch Jobs</p>
+
+      <div class="input-group">
+        <label for="cookie">Cookie</label>
+        <input type="text" id="cookie" placeholder="Cookie value">
+      </div>
+      <div class="input-group">
+        <label for="authorization">Authorization</label>
+        <input type="text" id="authorization" placeholder="Basic ...">
+      </div>
+
+      <div class="input-group">
+        <label for="perPage">Per Page</label>
+        <input type="number" id="perPage" value="200">
+      </div>
+      <div class="input-group">
+        <label for="page">Page</label>
+        <input type="number" id="page" value="0">
+      </div>
+      <div class="input-group">
+        <label for="sort">Sort</label>
+        <input type="text" id="sort" value="!postdate">
+      </div>
+      <div class="input-group">
+        <label for="ocr">OCR</label>
+        <input type="text" id="ocr" value="f">
+      </div>
+      <div class="input-group">
+        <label for="job_type">Job Type</label>
+        <input type="number" id="job_type" value="5">
+      </div>
+      <div class="input-group">
+        <label for="postdate">Post Date</label>
+        <input type="number" id="postdate" value="3">
+      </div>
+      <div class="input-group checkbox">
+        <input type="checkbox" id="exclude_applied_jobs" checked>
+        <label for="exclude_applied_jobs">Exclude Applied Jobs</label>
+      </div>
+      <div class="input-group">
+        <label for="json_mode">JSON Mode</label>
+        <input type="text" id="json_mode" value="read_only" readonly>
+      </div>
+
+      <button id="get-jobs-btn" class="btn-primary">
+        <span>Get Jobs</span>
+      </button>
+
+      <div id="results">Response will appear here...</div>
+      <p id="logging"></p>
+    </div>
+
+    <!-- Resume Input View -->
+    <div id="resume-view" class="hidden">
+      <h1>Resume Settings</h1>
+      <p class="subtitle">Please enter your resume text below to enable matching.</p>
+
+      <div class="input-group">
+        <label for="resume-text">Resume Text</label>
+        <textarea id="resume-text" rows="15" placeholder="Paste your full resume text here..."></textarea>
+      </div>
+
+      <button id="save-resume-btn" class="btn-primary">Save Resume</button>
+      <button id="cancel-resume-btn"
+        style="margin-top: 10px; width: 100%; border: none; background: transparent; cursor: pointer; text-decoration: underline;">Cancel</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    Powered by Resume Matcher
+  </div>
+
+  <script src="matcher.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>
