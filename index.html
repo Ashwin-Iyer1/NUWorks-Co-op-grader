@@ -91,7 +91,7 @@
     <button id="settings-btn" title="Settings">&#9881;</button>
 
     <!-- Main Job Matcher View -->
-    <div id="main-view">
+    <div id="main-view" style="align-items: center;">
       <h1>Job Matcher</h1>
       <p class="subtitle">Configure & Fetch Jobs</p>
 
@@ -122,7 +122,8 @@
       </div>
       <div class="input-group">
         <label for="min-match-slider">Min Match Score: <span id="min-match-value">0</span>%</label>
-        <input type="range" id="min-match-slider" min="0" max="100" step="10" value="0" style="width: 100%;">
+        <input type="range" id="min-match-slider" min="0" max="100" step="10" value="0"
+          style="width: 100%; padding: 0px;">
       </div>
 
       <button id="get-jobs-btn" class="btn-primary">
@@ -133,11 +134,25 @@
       <p id="logging"></p>
     </div>
 
+    <!-- Error Views -->
+    <div id="wrong-page-view" class="hidden" style="text-align: center; margin-top: 50px;">
+      <h2>Not on Co-op Page</h2>
+      <p>Please navigate to <a href="https://northeastern-csm.symplicity.com/" target="_blank">Northeastern NUWorks</a>
+        to use this extension.</p>
+    </div>
+
+    <div id="missing-auth-view" class="hidden" style="text-align: center; margin-top: 50px;">
+      <h2>Authorization Missing</h2>
+      <p>Could not detect Cookie or Authorization headers.</p>
+      <p>Please refresh the NUWorks page or log in again.</p>
+    </div>
+
     <!-- Analysis Results View -->
     <div id="analysis-view" class="hidden">
       <h1>Analysis Results</h1>
       <button id="back-to-main-btn" style="margin-bottom: 15px; cursor: pointer;">&larr; Back to Search</button>
       <div id="analysis-results" style="max-height: 400px; overflow-y: auto;"></div>
+      <button id="save-results-btn" class="btn-primary">Save Results</button>
     </div>
 
     <!-- Resume Input View -->
@@ -157,7 +172,7 @@
   </div>
 
   <div class="footer">
-    Powered by Resume Matcher
+    Made by <a href="https://ashwiniyer.com">Ashwin Iyer</a>
   </div>
 
   <script src="matcher.js"></script>

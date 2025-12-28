@@ -3,11 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // UI Elements
     const mainView = document.getElementById('main-view');
     const resumeView = document.getElementById('resume-view');
+    const wrongPageView = document.getElementById('wrong-page-view');
+    const missingAuthView = document.getElementById('missing-auth-view');
     
     // Main View Inputs
     const getJobsBtn = document.getElementById('get-jobs-btn');
-    const cookieInput = document.getElementById('cookie');
-    const authInput = document.getElementById('authorization');
     const settingsBtn = document.getElementById('settings-btn');
 
     // Resume View Inputs
@@ -25,40 +25,79 @@ document.addEventListener('DOMContentLoaded', () => {
     const minMatchValue = document.getElementById('min-match-value');
 
     // Helper: Switch Views
-    const showMainView = () => {
-        mainView.classList.remove('hidden');
+    const hideAllViews = () => {
+        mainView.classList.add('hidden');
         resumeView.classList.add('hidden');
         analysisView.classList.add('hidden');
+        wrongPageView.classList.add('hidden');
+        missingAuthView.classList.add('hidden');
+    };
+
+    const showMainView = () => {
+        hideAllViews();
+        mainView.classList.remove('hidden');
     };
 
     const showResumeView = () => {
-        mainView.classList.add('hidden');
+        hideAllViews();
         resumeView.classList.remove('hidden');
-        analysisView.classList.add('hidden');
     };
 
     const showAnalysisView = () => {
-        mainView.classList.add('hidden');
-        resumeView.classList.add('hidden');
+        hideAllViews();
         analysisView.classList.remove('hidden');
     };
+    
+    const showWrongPageView = () => {
+        hideAllViews();
+        wrongPageView.classList.remove('hidden');
+    };
 
-    // Load stored credentials & resume check
-    chrome.storage.local.get(['cookie', 'authorization', 'resume'], (result) => {
-        if (!result.cookie) {
-            document.getElementById('cookie-check').innerText = 'Cookie not found';
+    const showMissingAuthView = () => {
+        hideAllViews();
+        missingAuthView.classList.remove('hidden');
+    };
+
+    // Main Logic
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const currentTab = tabs[0];
+        const url = currentTab.url || "";
+
+        // 1. Check URL
+        if (!url.includes("northeastern-csm.symplicity.com")) {
+            showWrongPageView();
+            return;
         }
-        if (!result.authorization) {
-            document.getElementById('auth-check').innerText = 'Authorization not found';
-        }
-        
-        // Resume check
-        if (!result.resume || result.resume.trim() === '') {
-            // No resume found, force user to enter one
-            showResumeView();
-        } else {
-            showMainView();
-        }
+
+        // 2. Load stored credentials & resume check
+        chrome.storage.local.get(['cookie', 'authorization', 'resume'], (result) => {
+            const hasCookie = result.cookie && result.cookie.trim() !== '';
+            const hasAuth = result.authorization && result.authorization.trim() !== '';
+
+            // Update debug text if element exists (optional/legacy)
+            if (!hasCookie) {
+                const cookieMsg = document.getElementById('cookie-check');
+                if (cookieMsg) cookieMsg.innerText = 'Cookie not found';
+            }
+            if (!hasAuth) {
+                const authMsg = document.getElementById('auth-check');
+                if (authMsg) authMsg.innerText = 'Authorization not found';
+            }
+
+            // Check if BOTH are present
+            if (!hasCookie || !hasAuth) {
+                showMissingAuthView();
+                return;
+            }
+            
+            // 3. Resume check
+            if (!result.resume || result.resume.trim() === '') {
+                // No resume found, force user to enter one
+                showResumeView();
+            } else {
+                showMainView();
+            }
+        });
     });
 
     // --- Event Listeners ---
@@ -110,8 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
             getJobsBtn.disabled = true;
             getJobsBtn.innerText = 'Analyzing...';
             
-            // Get resume first
-            chrome.storage.local.get(['resume'], async (storageResult) => {
+            // Get resume and credentials
+            chrome.storage.local.get(['resume', 'cookie', 'authorization'], async (storageResult) => {
                 const resumeText = storageResult.resume;
                 
                 if (!resumeText) {
@@ -140,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const headers = {
                     "accept": "application/json, text/plain, */*",
                     "accept-language": "en-US,en;q=0.9,es;q=0.8",
-                    "authorization": authInput.value,
+                    "authorization": storageResult.authorization,
                     "sec-ch-ua": '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"',
                     "sec-ch-ua-mobile": "?0",
                     "sec-ch-ua-platform": '"macOS"',
@@ -148,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     "sec-fetch-mode": "cors",
                     "sec-fetch-site": "same-origin",
                     "x-requested-system-user": "students",
-                    "Cookie": cookieInput.value
+                    "Cookie": storageResult.cookie
                 };
 
                 try {
@@ -240,16 +279,92 @@ document.addEventListener('DOMContentLoaded', () => {
                                 snippets.innerText = `Matched: ${matches}`;
                             }
 
+                            // Individual Save Button
+                            const saveBtn = document.createElement('button');
+                            saveBtn.innerText = 'Save';
+                            saveBtn.style.marginLeft = '10px';
+                            saveBtn.style.padding = '2px 8px';
+                            saveBtn.style.cursor = 'pointer';
+                            saveBtn.className = 'btn-primary'; // Reuse primary style but smaller if needed
+                            saveBtn.style.fontSize = '0.8em';
+                            saveBtn.style.width = 'auto'; // Override default full with
+                            saveBtn.onclick = async () => {
+                                saveBtn.innerText = 'Saving...';
+                                saveBtn.disabled = true;
+                                const success = await favoriteJob(job.job_id, headers);
+                                if (success) {
+                                    saveBtn.innerText = 'Saved!';
+                                    saveBtn.style.backgroundColor = 'green';
+                                } else {
+                                    saveBtn.innerText = 'Error';
+                                    saveBtn.disabled = false;
+                                }
+                            };
+
+                            // Append button to scoreline or title? Let's put it in the card
+                            const actionLine = document.createElement('div');
+                            actionLine.style.marginTop = '10px';
+                            actionLine.style.textAlign = 'right';
+                            actionLine.appendChild(saveBtn);
+
+
                             card.appendChild(title);
                             card.appendChild(company);
                             card.appendChild(scoreLine);
                             if (matches) card.appendChild(snippets);
+                            card.appendChild(actionLine);
 
                             analysisResults.appendChild(card);
                         });
                     }
 
+                    // Save Results Handler
+                    const saveResultsBtn = document.getElementById('save-results-btn');
+                    if (saveResultsBtn) {
+                        // Remove old listeners to prevent duplicates if re-analyzing
+                        const newBtn = saveResultsBtn.cloneNode(true);
+                        saveResultsBtn.parentNode.replaceChild(newBtn, saveResultsBtn);
+                        
+                        newBtn.addEventListener('click', async () => {
+                            newBtn.disabled = true;
+                            newBtn.innerText = 'Saving All...';
+                            
+                            let successCount = 0;
+                            let failCount = 0;
+
+                            for (const job of filteredJobs) {
+                                // Add a small delay to avoid rate limiting
+                                await new Promise(r => setTimeout(r, 500)); 
+                                const success = await favoriteJob(job.job_id, headers);
+                                if (success) successCount++;
+                                else failCount++;
+                                
+                                newBtn.innerText = `Saving... (${successCount}/${filteredJobs.length})`;
+                            }
+
+                            newBtn.innerText = `Saved ${successCount} jobs (${failCount} failed)`;
+                            newBtn.disabled = false;
+                        });
+                    }
+
+                    // Helper to Favorite
+                    async function favoriteJob(jobId, headers) {
+                        const favUrl = `${baseUrl}/api/v2/jobs/${jobId}/favorite`;
+                        try {
+                            const response = await fetch(favUrl, {
+                                method: 'POST',
+                                headers: headers
+                            });
+                            return response.ok;
+                        } catch (err) {
+                            console.error('Error saving job:', jobId, err);
+                            return false;
+                        }
+                    }
+
                     showAnalysisView();
+
+
 
                 } catch (error) {
                     console.error("Fetch/Analysis error:", error);
