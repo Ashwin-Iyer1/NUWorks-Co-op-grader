@@ -50,7 +50,7 @@
       <div class="input-group">
         <label for="min-match-slider">Min Match Score: <span id="min-match-value">0</span>%</label>
         <input type="range" id="min-match-slider" min="0" max="100" step="10" value="0"
-          style="width: 100%; padding: 0px;">
+          style="width: 100%; height: 25px; cursor: pointer;">
       </div>
 
       <button id="get-jobs-btn" class="btn-primary">
@@ -77,9 +77,9 @@
     <!-- Analysis Results View -->
     <div id="analysis-view" class="hidden">
       <h1>Analysis Results</h1>
-      <button id="back-to-main-btn" style="margin-bottom: 15px; cursor: pointer;">&larr; Back to Search</button>
-      <div id="analysis-results" style="max-height: 400px; overflow-y: auto;"></div>
-      <button id="save-results-btn" class="btn-primary">Save Results</button>
+      <button id="back-to-main-btn" style="margin-bottom: 5px; cursor: pointer;">&larr; Back to Search</button>
+      <div id="analysis-results" style="max-height: 400px; overflow-y: auto; margin-bottom: 15px;"></div>
+      <button id="save-results-btn" class="btn-primary">Save All Results</button>
     </div>
 
     <!-- Resume Input View -->
@@ -102,6 +102,9 @@
     Made by <a href="https://ashwiniyer.com" target="_blank">Ashwin Iyer</a>
   </div>
 
+  <script src="storage.js"></script>
+  <script src="api.js"></script>
+  <script src="ui.js"></script>
   <script src="matcher.js"></script>
   <script src="popup.js"></script>
 </body>
