@@ -1,19 +1,17 @@
 /* Theme Toggle Button */
 .theme-btn {
   background: none;
-  border: 1px solid var(--border-color);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  color: var(--text-primary);
+  border: none;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.3s ease;
+  color: white;
 }
 
 .theme-btn:hover {
   background: rgba(255, 255, 255, 0.1);
-  border-color: var(--text-primary);
 }

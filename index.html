@@ -2,259 +2,261 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NUWorks Co-op Search Extension | Optimize Your Job Search</title>
-    <meta name="description"
-        content="A powerful Chrome Extension to help Northeastern University students optimize their co-op search on NUWorks (Symplicity).">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NUWorks Co-op Search Extension | Optimize Your Job Search</title>
+  <meta name="description"
+    content="A powerful Chrome Extension to help Northeastern University students optimize their co-op search on NUWorks (Symplicity).">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-    <div class="glow-bg"></div>
+  <div class="glow-bg"></div>
 
-    <nav class="navbar">
-        <div class="container">
-            <a href="#" class="logo">
-                <i class="fa-solid fa-graduation-cap"></i> NUWorks Grader
-            </a>
-            <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#how-it-works">How it Works</a>
-                <a href="https://github.com/Ashwin-Iyer1/NUWorks-co-op-extension" target="_blank" class="github-link"><i
-                        class="fa-brands fa-github"></i> GitHub</a>
-                <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
-                <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=item-share-cb"
-                    target="_blank" rel="noopener noreferrer" class="btn btn-primary small">
-                    Add to Chrome</a>
-            </div>
-            <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="logo">
+        <i class="fa-solid fa-graduation-cap"></i> NUWorks Grader
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it Works</a>
+        <a href="https://github.com/Ashwin-Iyer1/NUWorks-co-op-extension" target="_blank" class="github-link"><i
+            class="fa-brands fa-github"></i> GitHub</a>
+        <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme" style="background: none; border: none;">
+          <i class="fa-solid fa-moon" style="color: #ffffff;"></i>
+        </button>
+        <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=item-share-cb"
+          target="_blank" rel="noopener noreferrer" class="btn btn-primary small">
+          Add to Chrome</a>
+      </div>
+      <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="badge">v1.0 Now Available</div>
+        <h1>Supercharge Your <span class="gradient-text">Co-op Search</span></h1>
+        <p>The ultimate tool for Northeastern students. Smart matching, advanced filters, and automation for
+          NUWorks.</p>
+        <div class="cta-group">
+          <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=item-share-cb"
+            target="_blank" rel="noopener noreferrer" class="btn btn-primary large">
+            <i class="fa-brands fa-chrome"></i> Add to Chrome
+            <span class="btn-sub">It's free!</span>
+          </a>
+          <a href="#features" class="btn btn-secondary large">Learn More</a>
         </div>
-    </nav>
-
-    <header class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="badge">v1.0 Now Available</div>
-                <h1>Supercharge Your <span class="gradient-text">Co-op Search</span></h1>
-                <p>The ultimate tool for Northeastern students. Smart matching, advanced filters, and automation for
-                    NUWorks.</p>
-                <div class="cta-group">
-                    <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=item-share-cb"
-                        target="_blank" rel="noopener noreferrer" class="btn btn-primary large">
-                        <i class="fa-brands fa-chrome"></i> Add to Chrome
-                        <span class="btn-sub">It's free!</span>
-                    </a>
-                    <a href="#features" class="btn btn-secondary large">Learn More</a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="number">100%</span>
-                        <span class="label">Privacy First</span>
-                    </div>
-                    <div class="stat">
-                        <span class="number">250+</span>
-                        <span class="label">Skills Tracked</span>
-                    </div>
-                    <div class="stat">
-                        <span class="number">0ms</span>
-                        <span class="label">Server Latency</span>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-image">
-                <div class="browser-mockup">
-                    <div class="mockup-header">
-                        <span class="dot red"></span>
-                        <span class="dot yellow"></span>
-                        <span class="dot green"></span>
-                    </div>
-                    <div class="mockup-content">
-                        <!-- Placeholder for screenshot or illustration -->
-                        <div class="mockup-placeholder">
-                            <i class="fa-solid fa-bolt"></i>
-                            <span>Smart Job Analysis</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="floating-card card-1">
-                    <i class="fa-solid fa-check-circle"></i>
-                    <div>
-                        <h4>98% Match</h4>
-                        <p>Software Engineer Co-op</p>
-                    </div>
-                </div>
-                <div class="floating-card card-2">
-                    <i class="fa-solid fa-filter"></i>
-                    <div>
-                        <h4>Auto-Filtered</h4>
-                        <p>Hidden 12 ineligible jobs</p>
-                    </div>
-                </div>
-            </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="number">100%</span>
+            <span class="label">Privacy First</span>
+          </div>
+          <div class="stat">
+            <span class="number">250+</span>
+            <span class="label">Skills Tracked</span>
+          </div>
+          <div class="stat">
+            <span class="number">0ms</span>
+            <span class="label">Server Latency</span>
+          </div>
         </div>
-    </header>
-
-    <section id="features" class="features">
-        <div class="container">
-            <div class="section-header">
-                <h2>Why use this extension?</h2>
-                <p>Stop wasting time on jobs that don't match your profile. Let our smart algorithms do the heavy
-                    lifting.</p>
+      </div>
+      <div class="hero-image">
+        <div class="browser-mockup">
+          <div class="mockup-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="mockup-content">
+            <!-- Placeholder for screenshot or illustration -->
+            <div class="mockup-placeholder">
+              <i class="fa-solid fa-bolt"></i>
+              <span>Smart Job Analysis</span>
             </div>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    </div>
-                    <h3>Smart Scoring</h3>
-                    <p>Instantly see how well you fit a role with our 0-100% match score, based on cosine similarity and
-                        keyword extraction.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-filter"></i>
-                    </div>
-                    <h3>Advanced Filtering</h3>
-                    <p>Filter by graduation date, school year, and multiple industries at once. Never apply to an
-                        ineligible job again.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-                    <h3>Privacy First</h3>
-                    <p>Your resume and data never leave your browser. All processing happens locally using
-                        <code>pdf.js</code>.
-                    </p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-rocket"></i>
-                    </div>
-                    <h3>Bulk Actions</h3>
-                    <p>Save all highly-matched jobs to your favorites with a single click. Streamline your workflow.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-file-pdf"></i>
-                    </div>
-                    <h3>PDF Parsing</h3>
-                    <p>Simply upload your PDF resume. We extract the text and skills automatically to find your best
-                        matches.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box">
-                        <i class="fa-brands fa-chrome"></i>
-                    </div>
-                    <h3>Seamless Integration</h3>
-                    <p>Works directly on top of the NUWorks (Symplicity) website. No new tabs, no context switching.</p>
-                </div>
-            </div>
+          </div>
         </div>
-    </section>
-
-    <section id="how-it-works" class="steps">
-        <div class="container">
-            <div class="section-header">
-                <h2>Get Started in Seconds</h2>
-            </div>
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-number">01</div>
-                    <h3>Install</h3>
-                    <p>Add the extension to Chrome from the Web Store (or load unpacked from GitHub).</p>
-                </div>
-                <div class="step arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                <div class="step">
-                    <div class="step-number">02</div>
-                    <h3>Upload</h3>
-                    <p>Open the extension on NUWorks and upload your resume PDF.</p>
-                </div>
-                <div class="step arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                <div class="step">
-                    <div class="step-number">03</div>
-                    <h3>Analyze</h3>
-                    <p>Click "Analyze Jobs" to see your match scores and filter results instantly.</p>
-                </div>
-            </div>
+        <div class="floating-card card-1">
+          <i class="fa-solid fa-check-circle"></i>
+          <div>
+            <h4>98% Match</h4>
+            <p>Software Engineer Co-op</p>
+          </div>
         </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-left">
-                    <a href="#" class="logo">NUWorks Grader</a>
-                    <p>Unofficial tool. Not affiliated with Northeastern University or Symplicity.</p>
-                </div>
-                <div class="footer-links">
-                    <a href="https://github.com/Ashwin-Iyer1/NUWorks-co-op-extension" target="_blank">GitHub</a>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Report an Issue</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Ashwin Iyer. All rights reserved.</p>
-            </div>
+        <div class="floating-card card-2">
+          <i class="fa-solid fa-filter"></i>
+          <div>
+            <h4>Auto-Filtered</h4>
+            <p>Hidden 12 ineligible jobs</p>
+          </div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </header>
 
-    <script>
-        // Simple script for mobile menu toggling if needed
-        document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
-            document.querySelector('.nav-links').style.display =
-                document.querySelector('.nav-links').style.display === 'flex' ? 'none' : 'flex';
-        });
+  <section id="features" class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why use this extension?</h2>
+        <p>Stop wasting time on jobs that don't match your profile. Let our smart algorithms do the heavy
+          lifting.</p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="icon-box">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <h3>Smart Scoring</h3>
+          <p>Instantly see how well you fit a role with our 0-100% match score, based on cosine similarity and
+            keyword extraction.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon-box">
+            <i class="fa-solid fa-filter"></i>
+          </div>
+          <h3>Advanced Filtering</h3>
+          <p>Filter by graduation date, school year, and multiple industries at once. Never apply to an
+            ineligible job again.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon-box">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <h3>Privacy First</h3>
+          <p>Your resume and data never leave your browser. All processing happens locally using
+            <code>pdf.js</code>.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="icon-box">
+            <i class="fa-solid fa-rocket"></i>
+          </div>
+          <h3>Bulk Actions</h3>
+          <p>Save all highly-matched jobs to your favorites with a single click. Streamline your workflow.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon-box">
+            <i class="fa-solid fa-file-pdf"></i>
+          </div>
+          <h3>PDF Parsing</h3>
+          <p>Simply upload your PDF resume. We extract the text and skills automatically to find your best
+            matches.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon-box">
+            <i class="fa-brands fa-chrome"></i>
+          </div>
+          <h3>Seamless Integration</h3>
+          <p>Works directly on top of the NUWorks (Symplicity) website. No new tabs, no context switching.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        // Theme Toggle Logic
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeIcon = themeToggleBtn.querySelector('i');
-        const body = document.body;
+  <section id="how-it-works" class="steps">
+    <div class="container">
+      <div class="section-header">
+        <h2>Get Started in Seconds</h2>
+      </div>
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-number">01</div>
+          <h3>Install</h3>
+          <p>Add the extension to Chrome from the Web Store (or load unpacked from GitHub).</p>
+        </div>
+        <div class="step arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="step">
+          <div class="step-number">02</div>
+          <h3>Upload</h3>
+          <p>Open the extension on NUWorks and upload your resume PDF.</p>
+        </div>
+        <div class="step arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="step">
+          <div class="step-number">03</div>
+          <h3>Analyze</h3>
+          <p>Click "Analyze Jobs" to see your match scores and filter results instantly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        // Check for saved theme or system preference
-        const savedTheme = localStorage.getItem('theme');
-        const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <a href="#" class="logo">NUWorks Grader</a>
+          <p>Unofficial tool. Not affiliated with Northeastern University or Symplicity.</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/Ashwin-Iyer1/NUWorks-co-op-extension" target="_blank">GitHub</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Report an Issue</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Ashwin Iyer. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
-        if (savedTheme) {
-            body.setAttribute('data-theme', savedTheme);
-            updateIcon(savedTheme);
-        } else if (systemPrefersLight) {
-            // Optional: Set attribute implicitly if you want to track it, or just let CSS handle it.
-            // But tracking it makes toggling easier.
-            // Let's rely on CSS for default, but set icon correctly.
-            updateIcon('light');
-        }
+  <script>
+    // Simple script for mobile menu toggling if needed
+    document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
+      document.querySelector('.nav-links').style.display =
+        document.querySelector('.nav-links').style.display === 'flex' ? 'none' : 'flex';
+    });
 
-        function updateIcon(theme) {
-            if (theme === 'light') {
-                themeIcon.classList.replace('fa-moon', 'fa-sun');
-            } else {
-                themeIcon.classList.replace('fa-sun', 'fa-moon');
-            }
-        }
+    // Theme Toggle Logic
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = themeToggleBtn.querySelector('i');
+    const body = document.body;
 
-        themeToggleBtn.addEventListener('click', () => {
-            let currentTheme = body.getAttribute('data-theme');
+    // Check for saved theme or system preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
 
-            if (!currentTheme) {
-                // If no attribute, we are using system preference
-                currentTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-            }
+    if (savedTheme) {
+      body.setAttribute('data-theme', savedTheme);
+      updateIcon(savedTheme);
+    } else if (systemPrefersLight) {
+      // Optional: Set attribute implicitly if you want to track it, or just let CSS handle it.
+      // But tracking it makes toggling easier.
+      // Let's rely on CSS for default, but set icon correctly.
+      updateIcon('light');
+    }
 
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateIcon(newTheme);
-        });
-    </script>
+    function updateIcon(theme) {
+      if (theme === 'light') {
+        themeIcon.classList.replace('fa-moon', 'fa-sun');
+        themeIcon.style.color = '#000000';
+      } else {
+        themeIcon.classList.replace('fa-sun', 'fa-moon');
+        themeIcon.style.color = '#ffffff';
+      }
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      let currentTheme = body.getAttribute('data-theme');
+
+      if (!currentTheme) {
+        // If no attribute, we are using system preference
+        currentTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      }
+
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateIcon(newTheme);
+    });
+  </script>
 </body>
 
 </html>
