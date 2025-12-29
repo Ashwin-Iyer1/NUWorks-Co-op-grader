@@ -82,6 +82,7 @@ const UiHelper = {
       mainView: document.getElementById("main-view"),
       resumeView: document.getElementById("resume-view"),
       wrongPageView: document.getElementById("wrong-page-view"),
+      wrongPageViewHome: document.getElementById("wrong-page-view-home"),
       missingAuthView: document.getElementById("missing-auth-view"),
       analysisView: document.getElementById("analysis-view"),
       analysisResults: document.getElementById("analysis-results"),
@@ -211,6 +212,7 @@ const UiHelper = {
       mainView,
       resumeView,
       wrongPageView,
+      wrongPageViewHome,
       missingAuthView,
       analysisView,
     } = UiHelper.elements;
@@ -218,6 +220,7 @@ const UiHelper = {
       mainView,
       resumeView,
       wrongPageView,
+      wrongPageViewHome,
       missingAuthView,
       analysisView,
     ].forEach((el) => {
@@ -247,6 +250,12 @@ const UiHelper = {
     UiHelper.hideAllViews();
     if (UiHelper.elements.wrongPageView)
       UiHelper.elements.wrongPageView.classList.remove("hidden");
+  },
+
+  showWrongPageViewHome: () => {
+    UiHelper.hideAllViews();
+    if (UiHelper.elements.wrongPageViewHome)
+      UiHelper.elements.wrongPageViewHome.classList.remove("hidden");
   },
 
   showMissingAuthView: () => {

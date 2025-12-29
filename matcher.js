@@ -7,7 +7,6 @@ const SKILL_DB = new Set([
   "java",
   "c++",
   "c#",
-  "go",
   "rust",
   "swift",
   "kotlin",
@@ -98,6 +97,15 @@ const SKILL_DB = new Set([
   "machine learning",
   "predictive modeling",
   "business intelligence",
+  "pandas",
+  "numpy",
+  "scikit-learn",
+  "pytorch",
+  "tensorflow",
+  "keras",
+  "matplotlib",
+  "seaborn",
+  "simpy",
 
   // --- ENGINEERING (Non-SW) ---
   "autocad",
@@ -258,6 +266,9 @@ const STOP_WORDS = new Set([
   "summer",
   "winter",
   "intern",
+  "date",
+  "position",
+  "organization",
 ]);
 
 class JobMatcher {
@@ -288,6 +299,9 @@ class JobMatcher {
         let pattern;
         if (y === "freshman") {
           pattern = /\bfreshm(a|e)n\b/i;
+        } else if (y === "graduate") {
+          // "Graduate" captures: graduate, master's, masters, phd, mba
+          pattern = /\b(graduate|master(?:'|’)?s|ph\.?d|mba)\b/i;
         } else {
           // Standard assumption: add 's' or 'es' for plural
           pattern = new RegExp(`\\b${y}(s|es)?\\b`, "i");
@@ -342,7 +356,10 @@ class JobMatcher {
    * Normalize text: lowercase, remove special chars
    */
   normalize(text) {
-    return text.toLowerCase().replace(/[^a-z0-9\s+]/g, " ");
+    // 1. Remove HTML tags
+    const noHtml = text.replace(/<[^>]*>?/gm, " ");
+    // 2. Lowercase and remove non-alphanumeric
+    return noHtml.toLowerCase().replace(/[^a-z0-9\s+]/g, " ");
   }
 
   /**
@@ -480,7 +497,9 @@ class JobMatcher {
     let explicitScore = 0;
     if (jobSkills.size > 0) {
       const intersection = [...jobSkills].filter((s) => resumeSkills.has(s));
-      explicitScore = (intersection.length / jobSkills.size) * 100;
+      // Normalization: Matching ~60% of requested skills is considered "perfect" (100%)
+      const coverage = intersection.length / (jobSkills.size * 0.6);
+      explicitScore = Math.min(100, coverage * 100);
     } else {
       explicitScore = 50; // Neutral if no DB skills found
     }
@@ -488,7 +507,9 @@ class JobMatcher {
     // Part B: Dynamic Keyword Coverage (Broad coverage)
     let keywordScore = 0;
     if (jobKeywords.length > 0) {
-      keywordScore = (matchedKeywords.length / jobKeywords.length) * 100;
+      // Normalization: Matching ~60% of dynamic keywords is considered "perfect" (100%)
+      const coverage = matchedKeywords.length / (jobKeywords.length * 0.6);
+      keywordScore = Math.min(100, coverage * 100);
     }
 
     // Part C: Vector Similarity (Holistic context)
@@ -496,15 +517,19 @@ class JobMatcher {
     const jobTokens = this.tokenize(jobDescriptionText);
     const vecA = this.computeTFVector(resumeTokens);
     const vecB = this.computeTFVector(jobTokens);
-    const cosineScore = this.calculateCosineSimilarity(vecA, vecB) * 100;
+    let cosineScore = this.calculateCosineSimilarity(vecA, vecB) * 100;
+
+    // Normalization: Boost cosine score. Raw similarity is usually low (0.3-0.6).
+    // Scaling so that ~0.33 raw similarity becomes 100%
+    cosineScore = Math.min(100, cosineScore * 3.0);
 
     // Weighted Final Score
     // Adjust weights: Explicit skills are most important if present.
-    // If few explicit skills (e.g. "General Helper"), rely more on Cosine and Dynamic Keywords.
+    // Normalized to prioritize hard requirements (Languages/Tech) over vague text matches.
 
-    let wExplicit = 0.4;
-    let wKeyword = 0.3;
-    let wCosine = 0.3;
+    let wExplicit = 0.6;
+    let wKeyword = 0.2;
+    let wCosine = 0.2;
 
     if (jobSkills.size === 0) {
       wExplicit = 0;

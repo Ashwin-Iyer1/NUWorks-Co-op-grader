@@ -154,6 +154,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (!url.includes("northeastern-csm.symplicity.com/students")) {
+      UiHelper.showWrongPageViewHome();
+      return;
+    }
+
     // 2. Load stored credentials & resume check
     StorageHelper.getCredentials().then((result) => {
       const hasCookie = result.cookie && result.cookie.trim() !== "";
