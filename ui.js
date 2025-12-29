@@ -425,7 +425,9 @@ const UiHelper = {
       perPage: document.getElementById("perPage").value,
       page: 0,
       sort: "!postdate",
-      ocr: "f",
+      ...(document.getElementById("qualifications").value
+        ? { ocr: document.getElementById("qualifications").value }
+        : {}),
       job_type: document.getElementById("job_type").value,
       postdate: document.getElementById("postdate").value,
       json_mode: "read_only",
