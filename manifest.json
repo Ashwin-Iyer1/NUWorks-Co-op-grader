@@ -3,9 +3,20 @@
   "description": "Extension to help Northeastern students find co-op opportunities",
   "version": "1.0",
   "manifest_version": 3,
+  "icons": {
+    "16": "extension_icon16.png",
+    "32": "extension_icon32.png",
+    "48": "extension_icon48.png",
+    "128": "extension_icon128.png"
+  },
   "action": {
     "default_popup": "index.html",
-    "default_icon": "icon.png"
+    "default_icon": {
+      "16": "extension_icon16.png",
+      "32": "extension_icon32.png",
+      "48": "extension_icon48.png",
+      "128": "extension_icon128.png"
+    }
   },
   "permissions": ["webRequest", "storage"],
   "host_permissions": ["https://northeastern-csm.symplicity.com/*"],
