@@ -29,8 +29,9 @@ class JobScraper:
     def __init__(self):
         load_dotenv()
         self.cookie = os.getenv("NUWORKS_COOKIE")
-        if not self.cookie:
-            raise ValueError("NUWORKS_COOKIE environment variable is required")
+        self.authorization = os.getenv("NUWORKS_AUTHORIZATION")
+        if not self.cookie or not self.authorization:
+            raise ValueError("NUWORKS_COOKIE and NUWORKS_AUTHORIZATION environment variables are required")
         
         self.base_url = "https://northeastern-csm.symplicity.com"
         self.api_url = f"{self.base_url}/api/v2/jobs"
@@ -39,7 +40,7 @@ class JobScraper:
         self.headers = {
             "accept": "application/json, text/plain, */*",
             "accept-language": "en-US,en;q=0.9,es;q=0.8",
-            "authorization": "Basic 389a31571f68ca0e41f75e03d30b3e30",
+            "authorization": self.authorization,
             "sec-ch-ua": '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"',
             "sec-ch-ua-mobile": "?0",
             "sec-ch-ua-platform": '"macOS"',
