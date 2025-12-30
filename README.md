@@ -1,76 +1,63 @@
-# NUWorks Co-op Search Extension
+# NUWorks Co-op Extension
 
-A powerful Chrome Extension designed to help Northeastern University students optimize their co-op search on NUWorks (Symplicity). This tool adds advanced filtering, resume matching, and bulk automation features to the standard NUWorks interface.
+A powerful Chrome Extension designed to help Northeastern University students optimize their co-op search on NUWorks (Symplicity). This tool adds validtion, qualification matching (NLP), and advanced filtering to the standard NUWorks interface.
 
 ## Features
 
-### Advanced Job Matching
-
-- **Smart Scoring**: Uses a custom matching algorithm that combines **Cosine Similarity**, **Explicit Skill Matching** (from a database of 250+ technical and soft skills), and **Dynamic Keyword Extraction** to score every job against your resume (0-100%).
-- **Qualification Checks**: Automatically filters out jobs that don't match your **School Year** (e.g., Freshman, Junior) or **Graduation Date**, saving you from applying to ineligible positions.
-
-### Enhanced Filtering
-
-- **Multi-Select Industry Filter**: searchable dropdown to select multiple industries (e.g., "Software", "Finance", "Robotics") simultaneously.
-- **Parametric Search**: Filter by Job Type (Co-op, Internship), Post Date (Last 24h, 7 days, etc.), and exclude jobs you've already applied to.
-
-### Automation & Productivity
-
-- **Bulk Save**: One-click "Save All" feature to add all highly-matched jobs to your Favorites list for later review.
-- **Privacy-First Resume Parsing**: Upload your PDF resume or paste text directly. All processing checks happen **locally** in your browser using `pdf.js` and client-side logic—no data leaves your machine.
+- **Qualification Matcher**: Automatically analyzes job descriptions to check if you meet the requirements (Graduation Year, School Year).
+- **NLP Powered**: Uses a Natural Language Processing model trained on real job descriptions to detect subtle requirements.
+- **Smart Filters**: Filter jobs by match score, freshness (days posted), and application status.
+- **Resume Parsing**: Upload your PDF resume to automatically extract keywords and profile data.
+- **Persistent State**: Remembers your search results and last active view.
 
 ## Installation
 
-1. **Clone the Repository**
+### 1. Build the Extension
 
+This project uses Parcel to bundle dependencies (like `nlp.js` and `pdfjs-dist`).
+
+1. Clone the repository.
+2. Install dependencies:
    ```bash
-   git clone https://github.com/Ashwin-Iyer1/NUWorks-co-op-extension.git
+   npm install
    ```
+3. Build the extension:
+   ```bash
+   npm run build
+   ```
+   This generates a `dist/` folder.
 
-2. **Load into Chrome**
-   - Open Chrome and navigate to `chrome://extensions/`.
-   - Enable **Developer mode** in the top right corner.
-   - Click **Load unpacked**.
-   - Select the folder where you cloned this repository.
+### 2. Load in Chrome
 
-## Usage Guide
+1. Go to `chrome://extensions/`.
+2. Enable **Developer mode** (top right).
+3. Click **Load unpacked**.
+4. Select the **`dist`** folder from the project directory.
 
-1. **Navigate to NUWorks**
+## Development
 
-   - Go to [northeastern-csm.symplicity.com](https://northeastern-csm.symplicity.com).
-   - Log in with your student credentials.
-   - _Note: The extension will show a warning if you are not on the correct domain or not logged in._
+- **Source Code**: All source files are in `src/`.
+- **Static Assets**: Manifest, icons, and models are in `public/`.
+- **Training the NLP Model**:
+  - To train manually: Edit `train.js` and run `npm run train`.
+  - To auto-train with OpenAI:
+    1. Create a `.env` with `OPENAI_API_KEY`.
+    2. Run `npm run train:auto`.
+  - Both commands update `public/model.nlp`.
 
-2. **Setup Profile**
+## Project Structure
 
-   - Open the extension popup.
-   - Upload your Resume (PDF) or paste the text.
-   - Select your **Current School Year** and **Expected Graduation Date** to enable qualification filtering.
+```
+├── dist/               # Compiled extension (LOAD THIS IN CHROME)
+├── public/             # Static files (Manifest, Icons, Model)
+├── src/                # Source code
+│   ├── popup.js        # Main logic
+│   ├── matcher.js      # Job matching logic
+│   └── ...
+├── example_jobs.json   # Training data
+└── README.md
+```
 
-3. **Search & Analyze**
+## Credits
 
-   - Select your desired **Industries**.
-   - Adjust filters (Post Date, Job Type).
-   - Set a **Minimum Match Score** (e.g., 50%).
-   - Click **Analyze Jobs**.
-
-4. **Review & Save**
-   - The extension will fetch jobs, score them against your resume, and display the results sorted by match score.
-   - Click **Save** on individual cards or use the **Save All** button to batch-save all displayed jobs to your NUWorks "Favorites".
-
-## Tech Stack
-
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **API**: `fetch` API for communicating with Symplicity backend
-- **PDF Processing**: `pdf.js` for client-side text extraction
-- **Platform**: Chrome Extensions API (Manifest V3)
-
-## Permissions Explained
-
-- `host_permissions`: `*://northeastern-csm.symplicity.com/*` - Required to fetch job data and save favorites on your behalf.
-- `storage`: Used to save your resume text, settings, and last search results locally.
-- `webRequest`: Used to detect authentication headers (Cookies/Auth tokens) securely from your active session.
-
-## Note
-
-This is an unofficial tool and is not affiliated with Northeastern University or Symplicity.
+Made by [Ashwin Iyer](https://ashwiniyer.com)

@@ -1,0 +1,39 @@
+{
+  "name": "nuworks-co-op-extension",
+  "version": "1.0.0",
+  "description": "A powerful Chrome Extension designed to help Northeastern University students optimize their co-op search on NUWorks (Symplicity). This tool adds advanced filtering, resume matching, and bulk automation features to the standard NUWorks interface.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "train": "node train.js",
+    "train:auto": "node train-auto.js",
+    "build": "parcel build src/index.html --dist-dir dist --no-cache"
+  },
+  "staticFiles": {
+    "staticPath": "public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "node-nlp": "^5.0.0-alpha.5",
+    "openai": "^6.15.0",
+    "parcel": "^2.16.3",
+    "pdfjs-dist": "^5.4.530"
+  },
+  "devDependencies": {
+    "assert": "^2.1.0",
+    "buffer": "^6.0.3",
+    "events": "^3.3.0",
+    "https-browserify": "^1.0.0",
+    "parcel-reporter-static-files-copy": "^1.5.3",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
+    "querystring-es3": "^0.2.1",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.4"
+  },
+  "alias": {
+    "fs": "./src/shim-fs.js"
+  }
+}
