@@ -283,7 +283,15 @@ class JobMatcher {
    * @param {string} userGradDate (e.g. "2025-05")
    * @returns {boolean} true if qualified or n/a
    */
-  isQualified(jobText, userSchoolYear, userGradDate) {
+  /**
+   * Check if user qualifies based on school year and graduation date
+   * @param {string} jobText
+   * @param {string} userSchoolYear (e.g. "Junior")
+   * @param {string} userGradDate (e.g. "2025-05")
+   * @param {Date} [currentDate] Optional reference date for relative calculations
+   * @returns {boolean} true if qualified or n/a
+   */
+  isQualified(jobText, userSchoolYear, userGradDate, currentDate = new Date()) {
     if (!jobText) return false;
     const lowerText = jobText.toLowerCase();
 
@@ -323,11 +331,15 @@ class JobMatcher {
 
     // 2. Graduation Date Check
     if (userGradDate) {
-      // Extract user year
-      const userYear = userGradDate.split("-")[0]; // "2025" from "2025-05"
+      // Extract user year and month
+      const [uYear, uMonth] = userGradDate.split("-").map(Number);
+      // Construct user grad date object (defaults to first of month)
+      // Note: Month is 0-indexed in JS Date
+      const userDate = new Date(uYear, uMonth - 1, 1);
+      const userGradYearStr = String(uYear);
 
+      // --- A. Absolute Year Check ---
       // Regex patterns to find graduation year requirements
-      // Examples: "Class of 2025", "Graduating in 2025", "Graduation date: 2025"
       const gradPatterns = [
         /class of (\d{4})/gi,
         /graduating (?:in|by) (?:\w+ )?(\d{4})/gi,
@@ -335,7 +347,6 @@ class JobMatcher {
       ];
 
       const mentionedGradYears = new Set();
-
       gradPatterns.forEach((pattern) => {
         let match;
         while ((match = pattern.exec(lowerText)) !== null) {
@@ -343,9 +354,65 @@ class JobMatcher {
         }
       });
 
-      // If specific grad years are mentioned, user must match one
-      if (mentionedGradYears.size > 0 && !mentionedGradYears.has(userYear)) {
+      if (
+        mentionedGradYears.size > 0 &&
+        !mentionedGradYears.has(userGradYearStr)
+      ) {
         return false;
+      }
+
+      // --- B. Relative Duration Check ---
+      // Phrases like: "graduating within a year", "within the next 18 months"
+      // We calculate the deadlines and check if user's date falls WITHIN that range.
+
+      // Capture number or 'a'/'an' -> convert to months
+      // Group 1: quantity (digit or word), Group 2: unit (year/month)
+      const relativePatterns = [
+        /graduating within (?:the )?(?:next )?(\d+|a|an|one|two|three) (year|month)s?/gi,
+        /must graduate within (?:the )?(\d+|a|an|one|two|three) (year|month)s?/gi,
+      ];
+
+      for (const pattern of relativePatterns) {
+        let match;
+        // Optimization: Use a clean regex instance or reset lastIndex if global (taken care of by exec loop)
+        while ((match = pattern.exec(lowerText)) !== null) {
+          let quantityStr = match[1].toLowerCase();
+          const unit = match[2].toLowerCase(); // "year" or "month"
+
+          let quantity = 1;
+          if (
+            quantityStr === "a" ||
+            quantityStr === "an" ||
+            quantityStr === "one"
+          ) {
+            quantity = 1;
+          } else if (quantityStr === "two") {
+            quantity = 2;
+          } else if (quantityStr === "three") {
+            quantity = 3;
+          } else {
+            quantity = parseInt(quantityStr, 10);
+          }
+
+          if (isNaN(quantity)) continue;
+
+          // Calculate max allowed grad date
+          const cutoffDate = new Date(currentDate);
+          if (unit.startsWith("year")) {
+            cutoffDate.setFullYear(cutoffDate.getFullYear() + quantity);
+          } else {
+            // months
+            cutoffDate.setMonth(cutoffDate.getMonth() + quantity);
+          }
+
+          // Verification:
+          // "Graduating within X" means CurrentDate <= UserGradDate <= CutoffDate
+          // We assume user isn't matching if they already graduated way before (though Co-ops usually for students)
+          // Mainly we check if they graduate TOO LATE.
+          if (userDate > cutoffDate) {
+            return false;
+          }
+        }
       }
     }
 
