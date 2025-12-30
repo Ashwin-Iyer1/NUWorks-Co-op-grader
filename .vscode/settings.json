@@ -1,0 +1,10 @@
+{
+  "liveServer.settings.ignoreFiles": [
+    ".vscode/**",
+    "node_modules/**",
+    ".parcel-cache/**",
+    ".git/**",
+    "**/*.scss",
+    "**/*.sass"
+  ]
+}

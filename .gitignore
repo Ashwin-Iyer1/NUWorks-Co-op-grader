@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+.parcel-cache/
+
+# Environment
+.env
+
+# Build Output
+dist/
+
+# User Data
+resume.txt
+
+# Large Data Files
+example_jobs.json
+
+# Models (generated)
+public/model.nlp
+model.nlp
+
+# Misc
+*.pem
+*.crx
