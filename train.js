@@ -48,6 +48,16 @@ async function train() {
     "%school_year% standing required",
     "requirement.school_year"
   );
+  manager.addDocument(
+    "en",
+    "Enrolled in an %school_year% or graduate program",
+    "requirement.school_year"
+  );
+  manager.addDocument(
+    "en",
+    "Enrolled in an %school_year% program",
+    "requirement.school_year"
+  );
 
   // --- 3. Named Entities ---
   // Custom entity for School Year
@@ -60,6 +70,7 @@ async function train() {
     "master",
     "phd",
     "mba",
+    "undergraduate",
   ];
 
   // We can use regex or list for entities

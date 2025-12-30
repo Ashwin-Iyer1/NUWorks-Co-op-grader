@@ -340,11 +340,27 @@ class JobMatcher {
       });
 
       // If the job mentions specific school years, check if user is one of them
-      if (
-        mentionedYears.size > 0 &&
-        !mentionedYears.has(userSchoolYear.toLowerCase())
-      ) {
-        return false;
+      if (mentionedYears.size > 0) {
+        // Handle "undergraduate" as a catch-all for F/So/J/Sn
+        const isUndergrad =
+          mentionedYears.has("undergraduate") ||
+          mentionedYears.has("undergrad");
+        const userIsUndergrad = [
+          "freshman",
+          "sophomore",
+          "junior",
+          "senior",
+        ].includes(userSchoolYear.toLowerCase());
+
+        // If job allows "undergraduate" and user is one, we are good (for this check).
+        // But if it *also* lists specific years, "undergraduate" usually overrides or expands.
+        // Logic: If "undergraduate" is mentioned, and user is undergrad, PASS.
+        //        Else (no "undergraduate" or user not undergrad), check specific year matches.
+        if (isUndergrad && userIsUndergrad) {
+          // Qualified by broad category
+        } else if (!mentionedYears.has(userSchoolYear.toLowerCase())) {
+          return false;
+        }
       }
     }
 
