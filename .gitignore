@@ -19,3 +19,11 @@ example_jobs.json
 # Misc
 *.pem
 *.crx
+
+/venv
+goodJobs.json
+job_scraper.log
+response.json
+
+.vscode/
+__pycache__/
