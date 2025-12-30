@@ -1,3 +1,5 @@
+import nlpProcessor from "./nlp-processor.js";
+
 // EXPANDED Common skills database for various majors (Finance, Business, Tech, Engineering, etc.)
 const SKILL_DB = new Set([
   // --- TECH ---
@@ -291,7 +293,24 @@ class JobMatcher {
    * @param {Date} [currentDate] Optional reference date for relative calculations
    * @returns {boolean} true if qualified or n/a
    */
-  isQualified(jobText, userSchoolYear, userGradDate, currentDate = new Date()) {
+  async isQualified(
+    jobText,
+    userSchoolYear,
+    userGradDate,
+    currentDate = new Date()
+  ) {
+    // Ensure NLP model is loaded
+    await nlpProcessor.loadModel();
+
+    // Get NLP Analysis
+    const nlpResult = await nlpProcessor.process(jobText);
+    if (nlpResult) {
+      console.log("NLP Analysis for Job:", nlpResult);
+      // For now, we just log. In future, we use nlpResult.entities to filter.
+      // E.g. const detectedYears = nlpResult.entities.filter(e => e.entity === 'school_year').map(e => e.option);
+      // if (detectedYears.length > 0 && !detectedYears.includes(userSchoolYear.toLowerCase())) return false;
+    }
+
     if (!jobText) return false;
     const lowerText = jobText.toLowerCase();
 
@@ -622,8 +641,4 @@ class JobMatcher {
   }
 }
 
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = JobMatcher;
-} else {
-  window.JobMatcher = JobMatcher;
-}
+export default JobMatcher;

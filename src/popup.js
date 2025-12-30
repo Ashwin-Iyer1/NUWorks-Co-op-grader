@@ -1,7 +1,8 @@
-// Configure PDF.js worker
-if (window.pdfjsLib) {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.min.js";
-}
+import JobMatcher from "./matcher.js";
+const pdfjsLib = require("pdfjs-dist");
+// Set worker source to the file in public/ folder
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  chrome.runtime.getURL("pdf.worker.min.mjs");
 
 // Popup logic - Refactored
 document.addEventListener("DOMContentLoaded", () => {
@@ -36,9 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const arrayBuffer = await file.arrayBuffer();
-        // window.pdfjsLib is loaded via script tag
-        const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer })
-          .promise;
+        // pdfjsLib is imported
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         let fullText = "";
 
         // Extract text from each page
@@ -217,15 +217,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // --- MATCHING LOGIC ---
+        // --- MATCHING LOGIC ---
         const matcher = new JobMatcher();
-        const scoredJobs = jobs
-          .map((job) => {
+
+        // Use Promise.all for async filtering
+        const scoredJobsResults = await Promise.all(
+          jobs.map(async (job) => {
             const description = job.job_desc || "";
             const title = job.job_title || "";
             const jobFullText = `${title} \n ${description}`;
 
-            // Check Qualifications
-            if (!matcher.isQualified(jobFullText, schoolYear, gradDate)) {
+            // Check Qualifications (ASYNC now)
+            const isQualified = await matcher.isQualified(
+              jobFullText,
+              schoolYear,
+              gradDate
+            );
+            if (!isQualified) {
               return null;
             }
 
@@ -237,7 +245,9 @@ document.addEventListener("DOMContentLoaded", () => {
               matchDetails: result,
             };
           })
-          .filter((job) => job !== null); // Filter out disqualified jobs
+        );
+
+        const scoredJobs = scoredJobsResults.filter((job) => job !== null); // Filter out disqualified jobs
 
         // Filter by Min Score
         const minScore = UiHelper.getMinMatchScore();
