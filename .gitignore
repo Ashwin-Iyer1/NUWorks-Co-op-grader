@@ -14,9 +14,7 @@ resume.txt
 # Large Data Files
 example_jobs.json
 
-# Models (generated)
-public/model.nlp
-model.nlp
+
 
 # Misc
 *.pem
