@@ -402,18 +402,12 @@ const UiHelper = {
         const creds = await StorageHelper.getCredentials();
 
         newBtn.innerText = "Saving All...";
-        let successCount = 0;
-        let failCount = 0;
+        const results = await Promise.all(
+          jobs.map((job) => ApiHelper.favoriteJob(job.job_id, creds))
+        );
 
-        for (const job of jobs) {
-          // Rate limiting delay
-          await new Promise((r) => setTimeout(r, 500));
-          const success = await ApiHelper.favoriteJob(job.job_id, creds);
-          if (success) successCount++;
-          else failCount++;
-
-          newBtn.innerText = `Saving... (${successCount}/${jobs.length})`;
-        }
+        const successCount = results.filter((s) => s).length;
+        const failCount = results.length - successCount;
 
         newBtn.innerText = `Saved ${successCount} jobs (${failCount} failed)`;
         newBtn.disabled = false;

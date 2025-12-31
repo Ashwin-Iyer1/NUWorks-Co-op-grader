@@ -57,7 +57,7 @@ function isExternalApplication(jobDesc) {
 
 // Function to fetch a single job's description
 async function fetchJobDescription(jobId, creds) {
-  let apiUrl = `${ApiHelper.BASE_URL}/api/v3/jobs/${jobId}`;
+  let apiUrl = `${ApiHelper.BASE_URL}/api/v2/jobs/${jobId}`;
   const referer = `${ApiHelper.BASE_URL}/students/app/jobs/detail/${jobId}`;
   const headers = ApiHelper.getHeaders(creds, referer); // Using imported ApiHelper
 
@@ -382,8 +382,43 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     tab.url &&
     tab.url.includes("northeastern-csm.symplicity.com")
   ) {
-    if (tab.url.includes("students/app/jobs/detail")) {
-      // Detail page logic if needed
+    if (
+      tab.url.includes("students/app/jobs/favorites") ||
+      tab.url.includes("students/index.php")
+    ) {
+      if (tab.url.includes("students/index.php")) {
+        const active_tab =
+          document.getElementsByClassName("active is-selected")[0];
+        if (active_tab.children[0].textContent !== "Saved") {
+          return;
+        }
+      }
+      chrome.scripting.executeScript({
+        target: { tabId: tabId },
+        func: () => {
+          const createBadge = () => {
+            const badge = document.createElement("button");
+            badge.innerText = "unfavorite all";
+            badge.className = "nuworks-badge";
+            badge.style.marginLeft = "10px";
+            badge.style.display = "inline-block";
+            badge.style.color = "white";
+            badge.style.backgroundColor = "red";
+            badge.style.borderRadius = "12px";
+            badge.style.fontSize = "11px";
+            badge.style.padding = "2px 6px";
+            badge.style.verticalAlign = "middle";
+            badge.style.fontWeight = "bold";
+            badge.style.marginRight = "4px";
+            return badge;
+          };
+
+          const unfavoriteAllButton = createBadge();
+          document
+            .querySelector(".lst-head-l")
+            .appendChild(unfavoriteAllButton);
+        },
+      });
     }
   }
 });
