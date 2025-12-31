@@ -93,8 +93,13 @@
 
   <section id="features" class="features">
     <div class="container">
-      <div class="feature-screenshot-container" style="text-align: center;">
-        <img src="feature_screenshot.png" alt="NUWorks Extension Interface with Color-Coded Badges"
+      <div class="feature-screenshot-container"
+        style="text-align: center; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
+        <img src="feature_screenshot.png" class="feature-screenshot"
+          alt="NUWorks Extension Interface Discovery Page with Color-Coded Badges"
+          style="width: 50%; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+        <img src="feature_screenshot_2.png" class="feature-screenshot"
+          alt="NUWorks Extension Interface Search Page with Color-Coded Badges"
           style="width: 50%; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
       </div>
 
@@ -252,6 +257,106 @@
       body.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       updateIcon(newTheme);
+    });
+
+    // Screenshot Maximization Logic
+    const screenshots = document.querySelectorAll('.feature-screenshot');
+
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'screenshot-overlay';
+    document.body.appendChild(overlay);
+
+    let activeClone = null;
+    let activeOriginal = null;
+
+    function closeScreenshot() {
+      if (!activeClone || !activeOriginal) return;
+
+      // Unmaximize
+      activeClone.classList.remove('maximized');
+      overlay.classList.remove('active');
+
+      // Animate back to original position
+      const rect = activeOriginal.getBoundingClientRect();
+      Object.assign(activeClone.style, {
+        top: `${rect.top}px`,
+        left: `${rect.left}px`,
+        width: `${rect.width}px`,
+        height: `${rect.height}px`
+      });
+
+      // After transition, cleanup
+      activeClone.addEventListener('transitionend', () => {
+        if (activeClone && activeClone.parentNode) {
+          activeClone.remove();
+        }
+        if (activeOriginal) {
+          activeOriginal.style.visibility = '';
+        }
+        activeClone = null;
+        activeOriginal = null;
+      }, { once: true });
+    }
+
+    screenshots.forEach(img => {
+      img.addEventListener('click', (e) => {
+        // Prevent multiple opens
+        if (activeClone) return;
+
+        activeOriginal = img;
+        const rect = img.getBoundingClientRect();
+
+        // Create clone
+        const clone = img.cloneNode();
+        activeClone = clone;
+
+        // Set initial position (matching original)
+        Object.assign(clone.style, {
+          position: 'fixed',
+          top: `${rect.top}px`,
+          left: `${rect.left}px`,
+          width: `${rect.width}px`,
+          height: `${rect.height}px`,
+          transition: 'all 0.4s cubic-bezier(0.2, 0, 0.2, 1)', // Smooth ease
+          zIndex: '1001'
+        });
+
+        // Add to body
+        document.body.appendChild(clone);
+
+        // Hide original (preserve layout)
+        img.style.visibility = 'hidden';
+        overlay.classList.add('active');
+
+        // Force reflow
+        clone.getBoundingClientRect();
+
+        // Animate to center
+        // We'll use 90vw/90vh centered
+        clone.classList.add('maximized');
+        Object.assign(clone.style, {
+          top: '5vh',
+          left: '5vw',
+          width: '90vw',
+          height: '90vh'
+        });
+
+        // Close handlers for the clone
+        clone.addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeScreenshot();
+        });
+      });
+    });
+
+    overlay.addEventListener('click', closeScreenshot);
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeScreenshot();
+      }
     });
   </script>
 </body>

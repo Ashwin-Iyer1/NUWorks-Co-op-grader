@@ -633,3 +633,38 @@ h4 {
     display: block;
   }
 }
+
+/* Screenshot Maximization */
+.feature-screenshot {
+  cursor: zoom-in;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.feature-screenshot.maximized {
+  position: fixed;
+  z-index: 1001;
+  cursor: zoom-out;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  object-fit: contain;
+  margin: auto;
+}
+
+.screenshot-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.screenshot-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
