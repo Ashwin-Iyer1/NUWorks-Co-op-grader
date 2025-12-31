@@ -4,19 +4,6 @@
   // Helper to check if URL matches the job discovery pattern
   function isJobDiscoveryUrl(url) {
     if (!url) return false;
-
-    // Check current page context
-    const currentUrl = window.location.href;
-    const isHomeOrDiscover =
-      currentUrl.includes("/app/home") ||
-      currentUrl.includes("/jobs/discovery");
-
-    if (isHomeOrDiscover) {
-      // On Home/Discover pages, accept both discovery and standard job endpoints
-      return url.includes("/api/v2/jobs/discovery");
-    }
-
-    // On other pages, accept standard job endpoints
     return url.includes("/api/v2/jobs") || url.includes("/api/v3/jobs");
   }
 
@@ -25,7 +12,14 @@
   window.fetch = async function (...args) {
     const response = await originalFetch.apply(this, args);
     try {
-      const url = response.url ? response.url : args[0];
+      let url = response.url;
+      if (!url) {
+        if (typeof args[0] === "string") {
+          url = args[0];
+        } else if (args[0] && args[0].url) {
+          url = args[0].url;
+        }
+      }
       if (isJobDiscoveryUrl(url)) {
         console.log("NUWorks Extension: Fetch API detected", url);
         const clone = response.clone();
@@ -34,7 +28,7 @@
           .then((data) => {
             console.log("NUWorks Extension: Sending Job Data", data);
             window.postMessage(
-              { type: "NUWORKS_JOB_DISCOVERY", data: data },
+              { type: "NUWORKS_JOB_DISCOVERY", data: data, url: url },
               "*"
             );
           })
@@ -69,7 +63,7 @@
             const data = JSON.parse(this.responseText);
             console.log("NUWorks Extension: Sending Job Data (XHR)", data);
             window.postMessage(
-              { type: "NUWORKS_JOB_DISCOVERY", data: data },
+              { type: "NUWORKS_JOB_DISCOVERY", data: data, url: this._url },
               "*"
             );
           }

@@ -23,6 +23,12 @@
   "content_scripts": [
     {
       "matches": ["https://northeastern-csm.symplicity.com/*"],
+      "js": ["interceptor.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://northeastern-csm.symplicity.com/*"],
       "js": ["content.js"],
       "run_at": "document_start"
     }
