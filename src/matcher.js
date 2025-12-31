@@ -316,7 +316,14 @@ class JobMatcher {
 
     // 1. School Year Check
     if (userSchoolYear) {
-      const years = ["freshman", "sophomore", "junior", "senior", "graduate"];
+      const years = [
+        "freshman",
+        "sophomore",
+        "junior",
+        "senior",
+        "graduate",
+        "bachelors",
+      ];
 
       // Find which years are mentioned in the job description
       // We look for singular and plural forms
@@ -329,6 +336,10 @@ class JobMatcher {
         } else if (y === "graduate") {
           // "Graduate" captures: graduate, master's, masters, phd, mba
           pattern = /\b(graduate|master(?:'|’)?s|ph\.?d|mba)\b/i;
+        } else if (y === "bachelors") {
+          // "Bachelors" captures: bachelors, bachelor's, bs, ba (careful with short ones), bsc, b.s., b.a.
+          pattern =
+            /\b(bachelor(?:'|’)?s|b\.?s\.?|b\.?a\.?|b\.?sc\.?|b\.?eng\.?)\b/i;
         } else if (y === "junior" || y === "senior") {
           // Exclude job titles (e.g. Junior Developer, Senior Analyst)
           const titles =
@@ -349,12 +360,14 @@ class JobMatcher {
         // Handle "undergraduate" as a catch-all for F/So/J/Sn
         const isUndergrad =
           mentionedYears.has("undergraduate") ||
-          mentionedYears.has("undergrad");
+          mentionedYears.has("undergrad") ||
+          mentionedYears.has("bachelors");
         const userIsUndergrad = [
           "freshman",
           "sophomore",
           "junior",
           "senior",
+          "bachelors",
         ].includes(userSchoolYear.toLowerCase());
 
         // If job allows "undergraduate" and user is one, we are good (for this check).
