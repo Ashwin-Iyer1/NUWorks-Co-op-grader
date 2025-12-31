@@ -82,8 +82,10 @@
         </div>
       </div>
       <div class="hero-image">
-        <video controls autoplay muted loop playsinline style="max-width: 800px; width: 100%;">
+        <video width="100%" height="auto" autoplay loop muted playsinline controls
+          style="border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
           <source src="video.mp4" type="video/mp4">
+          Your browser does not support the video tag.
         </video>
       </div>
     </div>
@@ -91,6 +93,11 @@
 
   <section id="features" class="features">
     <div class="container">
+      <div class="feature-screenshot-container" style="text-align: center;">
+        <img src="feature_screenshot.png" alt="NUWorks Extension Interface with Color-Coded Badges"
+          style="width: 100%; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+      </div>
+
       <div class="section-header">
         <h2>Why use this extension?</h2>
         <p>Stop wasting time on jobs that don't match your profile. Let our smart algorithms do the heavy
@@ -109,17 +116,17 @@
           <div class="icon-box">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
           </div>
-          <h3>Smart Match Scoring</h3>
-          <p>Instantly see how well you fit a role with our 0-100% match score, based on cosine similarity and keyword
-            extraction.</p>
+          <h3>Auto-Grading & Visual Badging</h3>
+          <p>Instantly see match scores, external application warnings, and eligibility status with color-coded badges
+            directly on the job list.</p>
         </div>
         <div class="feature-card">
           <div class="icon-box">
             <i class="fa-solid fa-filter"></i>
           </div>
-          <h3>Smart Filters</h3>
-          <p>Filter jobs by match score, freshness (days posted), and application status. Hide ineligible jobs
-            automatically.</p>
+          <h3>Smart Filters & Batch Actions</h3>
+          <p>Filter by match score or freshness. Save all matched jobs in one click or unfavorite all to clean up your
+            list.</p>
         </div>
         <div class="feature-card">
           <div class="icon-box">
@@ -132,8 +139,9 @@
           <div class="icon-box">
             <i class="fa-solid fa-clock-rotate-left"></i>
           </div>
-          <h3>Persistent State</h3>
-          <p>Remembers your search results, last active view, and filter settings so you find opportunities faster.</p>
+          <h3>Manual Control & Settings</h3>
+          <p>Toggle auto-grading on/off, trigger grading manually on any page, and update your profile settings with
+            ease.</p>
         </div>
         <div class="feature-card">
           <div class="icon-box">
