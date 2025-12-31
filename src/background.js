@@ -204,6 +204,10 @@ async function processJobs(jobList, tabId) {
           return badge;
         };
 
+        console.log(
+          `[BadgeDebug] Injected script running for ${jobs.length} jobs.`
+        );
+
         const runCheck = () => {
           jobs.forEach((job) => {
             // Selector strategy:
@@ -314,11 +318,14 @@ async function processJobs(jobList, tabId) {
               }
             });
 
-            // --- Strategy 2: Title-based matching (for search page list items) ---
+            // --- Strategy 2: Title-based matching (for search page list items & Discovery cards) ---
             if (job.title) {
+              // Target both Search list items and Discovery carousel/grid items
               const listItems = document.querySelectorAll(
-                'div[role="listitem"]'
+                'div[role="listitem"], .carousel-card, .job-tile, .list-item, .card'
               );
+              // console.log(`[BadgeDebug] Strategy 2: Checking ${listItems.length} UI items for job "${job.title}"`);
+
               listItems.forEach((item) => {
                 // Avoid double injection
                 if (item.querySelector(".nuworks-badge")) return;

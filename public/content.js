@@ -62,7 +62,7 @@ function isJobList(data) {
 }
 
 // Trigger auto-grading logic
-function triggerAutoGrade(data) {
+function triggerAutoGrade(data, onComplete) {
   if (!data) return;
   console.log("Auto-sending job data to background...");
   sendMessageSafe(
@@ -71,7 +71,8 @@ function triggerAutoGrade(data) {
       payload: data,
     },
     () => {
-      console.log("Auto-grading started.");
+      console.log("Auto-grading started/completed.");
+      if (onComplete) onComplete();
     }
   );
 }
@@ -132,15 +133,12 @@ function injectGradeButton() {
       gradeButton.innerText = "Processing...";
       gradeButton.disabled = true;
 
-      triggerAutoGrade(discoveryJobData);
-
-      // Temporary feedback
-      setTimeout(() => {
+      triggerAutoGrade(discoveryJobData, () => {
         if (gradeButton) {
           gradeButton.innerText = "Grade Jobs On Page";
           gradeButton.disabled = false;
         }
-      }, 5000);
+      });
     };
 
     target.parentNode.insertBefore(gradeButton, target.nextSibling);
