@@ -1,4 +1,4 @@
-import nlpProcessor from "./nlp-processor.js";
+// import nlpProcessor from "./nlp-processor.js";
 
 // EXPANDED Common skills database for various majors (Finance, Business, Tech, Engineering, etc.)
 const SKILL_DB = new Set([
@@ -300,16 +300,16 @@ class JobMatcher {
     currentDate = new Date()
   ) {
     // Ensure NLP model is loaded
-    await nlpProcessor.loadModel();
+    // await nlpProcessor.loadModel();
 
     // Get NLP Analysis
-    const nlpResult = await nlpProcessor.process(jobText);
-    if (nlpResult) {
-      console.log("NLP Analysis for Job:", nlpResult);
-      // For now, we just log. In future, we use nlpResult.entities to filter.
-      // E.g. const detectedYears = nlpResult.entities.filter(e => e.entity === 'school_year').map(e => e.option);
-      // if (detectedYears.length > 0 && !detectedYears.includes(userSchoolYear.toLowerCase())) return false;
-    }
+    // const nlpResult = await nlpProcessor.process(jobText);
+    // if (nlpResult) {
+    //   console.log("NLP Analysis for Job:", nlpResult);
+    // For now, we just log. In future, we use nlpResult.entities to filter.
+    // E.g. const detectedYears = nlpResult.entities.filter(e => e.entity === 'school_year').map(e => e.option);
+    // if (detectedYears.length > 0 && !detectedYears.includes(userSchoolYear.toLowerCase())) return false;
+    // }
 
     if (!jobText) return false;
     const lowerText = jobText.toLowerCase();
@@ -329,6 +329,11 @@ class JobMatcher {
         } else if (y === "graduate") {
           // "Graduate" captures: graduate, master's, masters, phd, mba
           pattern = /\b(graduate|master(?:'|’)?s|ph\.?d|mba)\b/i;
+        } else if (y === "junior" || y === "senior") {
+          // Exclude job titles (e.g. Junior Developer, Senior Analyst)
+          const titles =
+            "developer|engineer|consultant|associate|manager|designer|analyst|architect|admin|specialist|program|product|software|account|recruiter|writer|editor";
+          pattern = new RegExp(`\\b${y}(s|es)?(?!\\s+(?:${titles}))\\b`, "i");
         } else {
           // Standard assumption: add 's' or 'es' for plural
           pattern = new RegExp(`\\b${y}(s|es)?\\b`, "i");

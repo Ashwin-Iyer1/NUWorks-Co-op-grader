@@ -264,7 +264,7 @@ async function processJobs(jobList, tabId) {
 
               // Match Badge
               if (job.matchResult) {
-                let text = "";
+                let text = "Ineligible";
                 let color = "gray";
                 if (!job.matchResult.disqualified) {
                   const score = job.matchResult.score;
@@ -272,18 +272,16 @@ async function processJobs(jobList, tabId) {
                   if (score >= 70) color = "#5cb85c"; // green
                   else if (score >= 40) color = "#f0ad4e"; // orange
                   else color = "#d9534f"; // red
-                  const hasMatch = existingBadges.some(
-                    (b) =>
-                      b.innerText.includes("Match") ||
-                      b.innerText.includes("Qualified")
-                  );
-                  if (!hasMatch && targetContainer) {
-                    const badge = createBadge(text, color);
-                    targetContainer.insertAdjacentElement(
-                      insertPosition,
-                      badge
-                    );
-                  }
+                }
+                const hasMatch = existingBadges.some(
+                  (b) =>
+                    b.innerText.includes("Match") ||
+                    b.innerText.includes("Qualified") ||
+                    b.innerText.includes("Ineligible")
+                );
+                if (!hasMatch && targetContainer) {
+                  const badge = createBadge(text, color);
+                  targetContainer.insertAdjacentElement(insertPosition, badge);
                 }
               }
             });
@@ -337,15 +335,23 @@ async function processJobs(jobList, tabId) {
                     target.appendChild(badge);
                   }
 
-                  if (job.matchResult && !job.matchResult.disqualified) {
-                    const score = job.matchResult.score;
-                    const text = `${score}% Match`;
-                    let color = "#d9534f"; // red
-                    if (score >= 70) color = "#5cb85c"; // green
-                    else if (score >= 40) color = "#f0ad4e"; // orange
+                  if (job.matchResult) {
+                    let text = "Ineligible";
+                    let color = "gray";
+
+                    if (!job.matchResult.disqualified) {
+                      const score = job.matchResult.score;
+                      text = `${score}% Match`;
+                      color = "#d9534f"; // red
+                      if (score >= 70) color = "#5cb85c"; // green
+                      else if (score >= 40) color = "#f0ad4e"; // orange
+                    }
 
                     const existingText = target.textContent;
-                    if (!existingText.includes("Match")) {
+                    if (
+                      !existingText.includes("Match") &&
+                      !existingText.includes("Ineligible")
+                    ) {
                       const badge = createBadge(text, color);
                       target.appendChild(badge);
                     }
@@ -356,7 +362,11 @@ async function processJobs(jobList, tabId) {
           });
         };
 
-        const observer = new MutationObserver(() => runCheck());
+        const observer = new MutationObserver(() => {
+          observer.disconnect();
+          runCheck();
+          observer.observe(document.body, { childList: true, subtree: true });
+        });
         observer.observe(document.body, { childList: true, subtree: true });
         runCheck();
         // Extended timeout to handle lazy loaded carousels
