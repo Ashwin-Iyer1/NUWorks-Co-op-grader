@@ -28,3 +28,5 @@ job_scraper.log
 response.json
 __pycache__/
 .vscode/
+
+dist.zip
