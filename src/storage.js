@@ -17,6 +17,7 @@ const StorageHelper = {
           "resume",
           "schoolYear",
           "gradDate",
+          "autoGrading",
           "viewState",
           "lastAnalysisResults",
         ],
@@ -26,14 +27,17 @@ const StorageHelper = {
   },
 
   /**
-   * Save user demographics
+   * Save user demographics and settings
    * @param {string} schoolYear
    * @param {string} gradDate
+   * @param {boolean} autoGrading
    * @returns {Promise<void>}
    */
-  saveUserDemographics: (schoolYear, gradDate) => {
+  saveUserDemographics: (schoolYear, gradDate, autoGrading) => {
     return new Promise((resolve) => {
-      chrome.storage.local.set({ schoolYear, gradDate }, () => resolve());
+      chrome.storage.local.set({ schoolYear, gradDate, autoGrading }, () =>
+        resolve()
+      );
     });
   },
 
@@ -78,5 +82,4 @@ const StorageHelper = {
   },
 };
 
-// Expose to global scope for non-module extension environment
-window.StorageHelper = StorageHelper;
+export default StorageHelper;

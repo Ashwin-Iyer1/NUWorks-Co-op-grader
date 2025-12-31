@@ -3,6 +3,9 @@
  * Handles DOM manipulation and View management
  */
 
+import ApiHelper from "./api.js";
+import StorageHelper from "./storage.js";
+
 const UiHelper = {
   // Industry Data
   industryMap: {
@@ -101,6 +104,7 @@ const UiHelper = {
       debugPdfBtn: document.getElementById("debug-pdf-btn"),
       schoolYear: document.getElementById("school-year"),
       gradDate: document.getElementById("grad-date"),
+      autoGrading: document.getElementById("auto-grading"),
 
       // Industry Dropdown Elements
       industryDisplay: document.getElementById("industry-selected-display"),
@@ -446,4 +450,4 @@ const UiHelper = {
   },
 };
 
-window.UiHelper = UiHelper;
+export default UiHelper;

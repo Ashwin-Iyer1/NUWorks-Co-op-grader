@@ -4,28 +4,8 @@
   // Helper to check if URL matches the job discovery pattern
   function isJobDiscoveryUrl(url) {
     if (!url) return false;
-    // Check for base path and json_mode param
-    // Handles matches like:
-    // https://northeastern-csm.symplicity.com/api/v2/jobs?json_mode=read_only
-    // https://northeastern-csm.symplicity.com/api/v2/jobs/?json_mode=read_only
-    // /api/v2/jobs?json_mode=read_only
-    // Or strictly /api/v2/jobs? (Search page)
-    // Or /api/v2/jobs/discovery
-    const isDiscovery =
-      (url.includes("/api/v2/jobs") ||
-        url.includes("/api/v2/jobs/") ||
-        url.includes("/api/v3/jobs") ||
-        url.includes("/api/v3/jobs/")) &&
-      url.includes("json_mode=read_only") &&
-      url.includes("enable_translation=false");
-
-    const isSearch =
-      url.includes("/api/v2/jobs?") || url.includes("/api/v3/jobs?");
-    const isNewDiscovery =
-      url.includes("/api/v2/jobs/discovery") ||
-      url.includes("/api/v3/jobs/discovery");
-
-    return isDiscovery || isSearch || isNewDiscovery;
+    // Broaden check to any jobs endpoint
+    return url.includes("/api/v2/jobs") || url.includes("/api/v3/jobs");
   }
 
   // Intercept Fetch

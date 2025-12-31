@@ -74,4 +74,4 @@ const ApiHelper = {
   },
 };
 
-window.ApiHelper = ApiHelper;
+export default ApiHelper;

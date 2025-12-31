@@ -1,4 +1,7 @@
 import JobMatcher from "./matcher.js";
+import StorageHelper from "./storage.js";
+import ApiHelper from "./api.js";
+import UiHelper from "./ui.js";
 const pdfjsLib = require("pdfjs-dist");
 // Set worker source to the file in public/ folder
 pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -90,6 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (creds.gradDate) {
         UiHelper.elements.gradDate.value = creds.gradDate;
       }
+      if (typeof creds.autoGrading !== "undefined") {
+        UiHelper.elements.autoGrading.checked = creds.autoGrading;
+      }
       UiHelper.showResumeView();
     });
   }
@@ -100,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const text = UiHelper.elements.resumeText.value.trim();
       const schoolYear = UiHelper.elements.schoolYear.value;
       const gradDate = UiHelper.elements.gradDate.value;
+      const autoGrading = UiHelper.elements.autoGrading.checked;
 
       if (!text) {
         alert("Please enter a resume.");
@@ -108,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       Promise.all([
         StorageHelper.saveResume(text),
-        StorageHelper.saveUserDemographics(schoolYear, gradDate),
+        StorageHelper.saveUserDemographics(schoolYear, gradDate, autoGrading),
       ]).then(() => {
         console.log("Settings saved");
         UiHelper.showMainView();
