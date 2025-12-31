@@ -14,6 +14,11 @@ let gradeButton = null;
 function injectGradeButton() {
   if (document.getElementById("nuworks-grade-btn")) return;
 
+  // Auto-run on search page, do not inject button
+  if (window.location.href.includes("/students/app/jobs/search")) {
+    return;
+  }
+
   var targetSelector =
     ".display-mobile-none.display-md-none.display-sm-none.ng-star-inserted";
   var target = document.querySelector(targetSelector);
@@ -96,6 +101,27 @@ window.addEventListener("message", function (event) {
       event.data.data
     );
     pendingJobData = event.data.data;
+
+    // Auto-grade on search page
+    if (window.location.href.includes("/students/app/jobs/search")) {
+      console.log("Auto-sending job data for search page...");
+      chrome.runtime.sendMessage(
+        {
+          type: "JOBS_DATA",
+          payload: pendingJobData,
+        },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            console.error(
+              "Error auto-sending message:",
+              chrome.runtime.lastError
+            );
+          } else {
+            console.log("Auto-grading started for search page");
+          }
+        }
+      );
+    }
 
     // updates the button text if it exists to show data is ready
     if (gradeButton) {
