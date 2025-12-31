@@ -313,9 +313,12 @@ class JobMatcher {
 
     if (!jobText) return false;
     const lowerText = jobText.toLowerCase();
+    const normalizedUserYear = userSchoolYear
+      ? userSchoolYear.trim().toLowerCase()
+      : null;
 
     // 1. School Year Check
-    if (userSchoolYear) {
+    if (normalizedUserYear) {
       const years = [
         "freshman",
         "sophomore",
@@ -368,7 +371,7 @@ class JobMatcher {
           "junior",
           "senior",
           "bachelors",
-        ].includes(userSchoolYear.toLowerCase());
+        ].includes(normalizedUserYear);
 
         // If job allows "undergraduate" and user is one, we are good (for this check).
         // But if it *also* lists specific years, "undergraduate" usually overrides or expands.
@@ -376,7 +379,7 @@ class JobMatcher {
         //        Else (no "undergraduate" or user not undergrad), check specific year matches.
         if (isUndergrad && userIsUndergrad) {
           // Qualified by broad category
-        } else if (!mentionedYears.has(userSchoolYear.toLowerCase())) {
+        } else if (!mentionedYears.has(normalizedUserYear)) {
           return false;
         }
       }
