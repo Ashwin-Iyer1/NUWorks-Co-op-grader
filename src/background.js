@@ -206,16 +206,31 @@ async function processJobs(jobList, tabId) {
 
         const runCheck = () => {
           jobs.forEach((job) => {
-            // Try matching by href (standard) or by ID if present in DOM (some carousels use specific IDs related to job)
-            const selector = `a[href*="${job.id}"]`;
-            const elements = document.querySelectorAll(selector);
+            // Selector strategy:
+            // 1. Links containing the job ID
+            // 2. Elements specifically formatted as job cards with the ID (e.g. id="job_card_12345" or similar patterns if observed)
+            // 3. Data attributes
+            const selectors = [
+              `a[href*="${job.id}"]`,
+              `[id*="${job.id}"]`, // Broad ID check
+              `[data-job-id="${job.id}"]`,
+            ];
+
+            const elements = document.querySelectorAll(selectors.join(","));
 
             elements.forEach((el) => {
-              // Avoid action buttons
+              // Filter out non-relevant elements if using broad ID selector
+              // e.g. if we matched a container that ISN'T the card itself or a link
+              // But generally, we want to find the CARD or the TITLE.
+
+              // Avoid action buttons/favorites
               if (
                 el.closest(".actions-toggle-wrap") ||
                 el.classList.contains("icn-favorite") ||
-                el.classList.contains("icn-favorite-hi")
+                el.classList.contains("icn-favorite-hi") ||
+                el.classList.contains("list_rows") ||
+                el.tagName === "SCRIPT" ||
+                el.tagName === "STYLE"
               ) {
                 return;
               }
@@ -224,27 +239,42 @@ async function processJobs(jobList, tabId) {
               let targetContainer = null;
               let insertPosition = "afterend"; // default
 
-              // Case 1: Carousel
-              const titleEl = el.querySelector(".carousel-card-content-title");
-              if (titleEl) {
-                targetContainer = titleEl;
-                insertPosition = "afterend";
+              // Case 1: Carousel Card
+              // If 'el' is the card itself or inside it
+              const carouselCard = el.closest(".carousel-card");
+              if (carouselCard) {
+                const titleEl = carouselCard.querySelector(
+                  ".carousel-card-content-title"
+                );
+                if (titleEl) {
+                  targetContainer = titleEl;
+                  insertPosition = "afterend";
+                } else {
+                  // If no title found inside (weird), fallback to el
+                  targetContainer = el;
+                }
               }
               // Case 2: Standard List
               else {
+                // If matches a link, use it
                 targetContainer = el;
               }
 
-              // Check if badges already exist to avoid dupes
-              // We check specifically for the TYPE of badge
+              if (!targetContainer) return;
+
+              // Check if badges already exist specifically on THIS target container's typical badge location
+              // We check siblings usually
               let existingBadges = [];
-              if (targetContainer && targetContainer.parentNode) {
-                // Look at siblings
+              if (targetContainer.parentNode) {
                 let sib = targetContainer.nextElementSibling;
                 while (sib && sib.classList.contains("nuworks-badge")) {
                   existingBadges.push(sib);
                   sib = sib.nextElementSibling;
                 }
+                // Also check children if we appendChild later (Strategy 2 legacy)
+                const childBadges =
+                  targetContainer.querySelectorAll(".nuworks-badge");
+                childBadges.forEach((b) => existingBadges.push(b));
               }
 
               // External Badge
@@ -252,13 +282,9 @@ async function processJobs(jobList, tabId) {
                 const hasExternal = existingBadges.some(
                   (b) => b.innerText === "External Application"
                 );
-                if (!hasExternal && targetContainer) {
+                if (!hasExternal) {
                   const badge = createBadge("External Application", "red");
                   targetContainer.insertAdjacentElement(insertPosition, badge);
-                  // Update reference if we are appending sequentially?
-                  // Actually insertAdjacentElement 'afterend' puts it after target.
-                  // If we do multiple, the order depends on insertion order.
-                  // If we insert External first, it's closest to title.
                 }
               }
 
@@ -273,13 +299,15 @@ async function processJobs(jobList, tabId) {
                   else if (score >= 40) color = "#f0ad4e"; // orange
                   else color = "#d9534f"; // red
                 }
+
                 const hasMatch = existingBadges.some(
                   (b) =>
                     b.innerText.includes("Match") ||
                     b.innerText.includes("Qualified") ||
                     b.innerText.includes("Ineligible")
                 );
-                if (!hasMatch && targetContainer) {
+
+                if (!hasMatch) {
                   const badge = createBadge(text, color);
                   targetContainer.insertAdjacentElement(insertPosition, badge);
                 }
@@ -459,30 +487,53 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "JOBS_DATA") {
-    sendResponse({ received: true });
-    const targetTabId = sender.tab ? sender.tab.id : null;
-    if (targetTabId && message.payload) {
-      let jobs = [];
-      const payload = message.payload;
+    (async () => {
+      const targetTabId = sender.tab ? sender.tab.id : null;
+      if (targetTabId && message.payload) {
+        let jobs = [];
+        const payload = message.payload;
 
-      // Robust extraction of job list from various potential API response structures
-      if (Array.isArray(payload)) {
-        jobs = payload;
-      } else if (payload.models && Array.isArray(payload.models)) {
-        jobs = payload.models;
-      } else if (payload.data && Array.isArray(payload.data)) {
-        jobs = payload.data;
-      } else if (payload.results && Array.isArray(payload.results)) {
-        jobs = payload.results;
-      } else if (payload.jobs) {
-        if (Array.isArray(payload.jobs)) jobs = payload.jobs;
-        else if (payload.jobs.major && Array.isArray(payload.jobs.major.jobs))
-          jobs = payload.jobs.major.jobs;
+        // Robust extraction of job list from various potential API response structures
+        if (Array.isArray(payload)) {
+          jobs = payload;
+        } else if (payload.models && Array.isArray(payload.models)) {
+          jobs = payload.models;
+        } else if (
+          payload.models &&
+          payload.models.jobs &&
+          typeof payload.models.jobs === "object"
+        ) {
+          // Handle models -> jobs -> [category] -> jobs
+          Object.values(payload.models.jobs).forEach((category) => {
+            if (category && Array.isArray(category.jobs)) {
+              jobs.push(...category.jobs);
+            }
+          });
+        } else if (payload.data && Array.isArray(payload.data)) {
+          jobs = payload.data;
+        } else if (payload.results && Array.isArray(payload.results)) {
+          jobs = payload.results;
+        } else if (payload.jobs) {
+          if (Array.isArray(payload.jobs)) jobs = payload.jobs;
+        }
+
+        // Deduplicate jobs based on ID
+        if (jobs.length > 0) {
+          const uniqueJobsMap = new Map();
+          jobs.forEach((job) => {
+            const id =
+              job.job_id || job.id || (typeof job === "string" ? job : null);
+            if (id && !uniqueJobsMap.has(id)) {
+              uniqueJobsMap.set(id, job);
+            }
+          });
+          const uniqueJobs = Array.from(uniqueJobsMap.values());
+          await processJobs(uniqueJobs, targetTabId);
+        }
       }
-      if (jobs.length > 0) {
-        processJobs(jobs, targetTabId);
-      }
-    }
+      sendResponse({ received: true });
+    })();
+    return true; // Keep channel open for async response
   } else if (message.type === "UNFAVORITE_JOBS") {
     (async () => {
       try {

@@ -13,9 +13,7 @@
 
     if (isHomeOrDiscover) {
       // On Home/Discover pages, accept both discovery and standard job endpoints
-      return (
-        url.includes("/api/v2/jobs/discovery") || url.includes("/api/v2/jobs")
-      );
+      return url.includes("/api/v2/jobs/discovery");
     }
 
     // On other pages, accept standard job endpoints
