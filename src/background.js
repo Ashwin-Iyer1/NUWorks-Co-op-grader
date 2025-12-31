@@ -386,18 +386,23 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       tab.url.includes("students/app/jobs/favorites") ||
       tab.url.includes("students/index.php")
     ) {
-      if (tab.url.includes("students/index.php")) {
-        const active_tab =
-          document.getElementsByClassName("active is-selected")[0];
-        if (active_tab.children[0].textContent !== "Saved") {
-          return;
-        }
-      }
       chrome.scripting.executeScript({
         target: { tabId: tabId },
         func: () => {
+          if (window.location.href.includes("students/index.php")) {
+            const activeTab = document.querySelector(".active.is-selected");
+            if (
+              !activeTab ||
+              !activeTab.children[0] ||
+              activeTab.children[0].textContent.trim() !== "Saved"
+            ) {
+              return;
+            }
+          }
+
           const createBadge = () => {
             const badge = document.createElement("button");
+            badge.type = "button"; // Prevent form submission
             badge.innerText = "unfavorite all";
             badge.className = "nuworks-badge";
             badge.style.marginLeft = "10px";
@@ -413,10 +418,39 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
             return badge;
           };
 
+          const jobs = [];
+          const jobElements = document.querySelectorAll(".list-item.list_rows");
+          jobElements.forEach((jobElement) => {
+            const jobId = jobElement.id.replace("row_", "");
+            if (jobId) {
+              jobs.push({ job_id: jobId });
+            }
+          });
+
           const unfavoriteAllButton = createBadge();
-          document
-            .querySelector(".lst-head-l")
-            .appendChild(unfavoriteAllButton);
+          const target = document.querySelector(".lst-head-l");
+          if (target) {
+            target.appendChild(unfavoriteAllButton);
+            unfavoriteAllButton.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              unfavoriteAllButton.innerText = "Processing...";
+
+              chrome.runtime.sendMessage(
+                { type: "UNFAVORITE_JOBS", jobs: jobs },
+                (response) => {
+                  if (chrome.runtime.lastError) {
+                    console.error(chrome.runtime.lastError);
+                    unfavoriteAllButton.innerText = "Error";
+                    return;
+                  }
+                  if (response) {
+                    unfavoriteAllButton.innerText = `Unfavorited ${response.success} jobs (${response.fail} failed)`;
+                  }
+                }
+              );
+            });
+          }
         },
       });
     }
@@ -440,6 +474,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         processJobs(jobs, targetTabId);
       }
     }
+  } else if (message.type === "UNFAVORITE_JOBS") {
+    (async () => {
+      try {
+        const creds = await StorageHelper.getCredentials();
+        const results = await Promise.all(
+          message.jobs.map((job) => ApiHelper.unfavoriteJob(job.job_id, creds))
+        );
+        const successCount = results.filter((s) => s).length;
+        const failCount = results.length - successCount;
+        sendResponse({ success: successCount, fail: failCount });
+      } catch (err) {
+        console.error("Error in UNFAVORITE_JOBS handler:", err);
+        sendResponse({ success: 0, fail: message.jobs.length });
+      }
+    })();
+    return true; // Keep channel open for async response
   }
 });
 

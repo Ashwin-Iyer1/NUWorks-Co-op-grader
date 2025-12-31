@@ -72,6 +72,28 @@ const ApiHelper = {
       return false;
     }
   },
+
+  /**
+   * Unfavorite/Unsave a job
+   * @param {string} jobId
+   * @param {Object} creds
+   * @returns {Promise<boolean>}
+   */
+  unfavoriteJob: async (jobId, creds) => {
+    const unfavUrl = `${ApiHelper.BASE_URL}/api/v2/jobs/${jobId}/favorite`;
+    const headers = ApiHelper.getHeaders(creds);
+
+    try {
+      const response = await fetch(unfavUrl, {
+        method: "DELETE",
+        headers: headers,
+      });
+      return response.ok;
+    } catch (err) {
+      console.error("Error unfavoriting job:", jobId, err);
+      return false;
+    }
+  },
 };
 
 export default ApiHelper;
