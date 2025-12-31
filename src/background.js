@@ -463,12 +463,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const targetTabId = sender.tab ? sender.tab.id : null;
     if (targetTabId && message.payload) {
       let jobs = [];
-      const m = message.payload.models;
-      if (Array.isArray(m)) jobs = m;
-      else if (m && m.jobs) {
-        if (Array.isArray(m.jobs)) jobs = m.jobs;
-        else if (m.jobs.major && Array.isArray(m.jobs.major.jobs))
-          jobs = m.jobs.major.jobs;
+      const payload = message.payload;
+
+      // Robust extraction of job list from various potential API response structures
+      if (Array.isArray(payload)) {
+        jobs = payload;
+      } else if (payload.models && Array.isArray(payload.models)) {
+        jobs = payload.models;
+      } else if (payload.data && Array.isArray(payload.data)) {
+        jobs = payload.data;
+      } else if (payload.results && Array.isArray(payload.results)) {
+        jobs = payload.results;
+      } else if (payload.jobs) {
+        if (Array.isArray(payload.jobs)) jobs = payload.jobs;
+        else if (payload.jobs.major && Array.isArray(payload.jobs.major.jobs))
+          jobs = payload.jobs.major.jobs;
       }
       if (jobs.length > 0) {
         processJobs(jobs, targetTabId);

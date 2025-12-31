@@ -4,7 +4,21 @@
   // Helper to check if URL matches the job discovery pattern
   function isJobDiscoveryUrl(url) {
     if (!url) return false;
-    // Broaden check to any jobs endpoint
+
+    // Check current page context
+    const currentUrl = window.location.href;
+    const isHomeOrDiscover =
+      currentUrl.includes("/app/home") ||
+      currentUrl.includes("/jobs/discovery");
+
+    if (isHomeOrDiscover) {
+      // On Home/Discover pages, accept both discovery and standard job endpoints
+      return (
+        url.includes("/api/v2/jobs/discovery") || url.includes("/api/v2/jobs")
+      );
+    }
+
+    // On other pages, accept standard job endpoints
     return url.includes("/api/v2/jobs") || url.includes("/api/v3/jobs");
   }
 
