@@ -4,11 +4,15 @@ A powerful Chrome Extension designed to help Northeastern University students op
 
 ## Features
 
-- **Qualification Matcher**: Automatically analyzes job descriptions to check if you meet the requirements (Graduation Year, School Year).
-- **NLP Powered**: Uses a Natural Language Processing model trained on real job descriptions to detect subtle requirements.
-- **Smart Filters**: Filter jobs by match score, freshness (days posted), and application status.
-- **Resume Parsing**: Upload your PDF resume to automatically extract keywords and profile data.
-- **Persistent State**: Remembers your search results and last active view.
+- **Auto-Grading & Visual Badging**: Automatically grades jobs on the search page and injects color-coded badges (Match %, External Application, Ineligibility) directly into the job list and carousels.
+- **Manual Trigger**: "Grade Jobs On Page" button allows you to trigger grading manually on other pages.
+- **Qualification Matcher**: continued support for analyzing job descriptions against your Graduation Year and School Year.
+- **NLP Powered**: Uses a Natural Language Processing model to detect requirements.
+- **Smart Filters & Batch Actions**:
+  - Use the popup to filter jobs and "Save All" matches at once.
+  - "Unfavorite All" button added to the Saved Jobs page for easy cleanup.
+- **Resume Parsing**: Upload your PDF resume to automatically extract keywords.
+- **Settings**: Toggle "Automatic Grading" and update your profile details via the settings menu.
 
 ## Installation
 
