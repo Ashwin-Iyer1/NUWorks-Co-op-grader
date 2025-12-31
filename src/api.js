@@ -34,7 +34,7 @@ const ApiHelper = {
    * @returns {Promise<Array>}
    */
   fetchJobs: async (params, creds) => {
-    const apiUrl = `${ApiHelper.BASE_URL}/api/v2/jobs`;
+    const apiUrl = `${ApiHelper.BASE_URL}/api/v3/jobs`;
     const searchParams = new URLSearchParams(params);
     const headers = ApiHelper.getHeaders(creds);
 
@@ -58,7 +58,7 @@ const ApiHelper = {
    * @returns {Promise<boolean>}
    */
   favoriteJob: async (jobId, creds) => {
-    const favUrl = `${ApiHelper.BASE_URL}/api/v2/jobs/${jobId}/favorite`;
+    const favUrl = `${ApiHelper.BASE_URL}/api/v3/jobs/${jobId}/favorite`;
     const headers = ApiHelper.getHeaders(creds);
 
     try {

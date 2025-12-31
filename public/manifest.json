@@ -20,6 +20,19 @@
   },
   "permissions": ["webRequest", "storage", "scripting"],
   "host_permissions": ["https://northeastern-csm.symplicity.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://northeastern-csm.symplicity.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["interceptor.js"],
+      "matches": ["https://northeastern-csm.symplicity.com/*"]
+    }
+  ],
   "background": {
     "service_worker": "background.js"
   }
