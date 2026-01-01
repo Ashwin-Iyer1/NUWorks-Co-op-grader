@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - NUWorks Co-op Search Extension</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta name="description" content="Privacy Policy for the NUWorks Co-op Search Extension.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .privacy-container {
+            padding-top: 120px;
+            padding-bottom: 80px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .privacy-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .privacy-container h2 {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.75rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .privacy-container h3 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .privacy-container p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .privacy-container ul {
+            margin-bottom: 20px;
+            padding-left: 24px;
+            color: var(--text-secondary);
+        }
+
+        .privacy-container li {
+            margin-bottom: 10px;
+        }
+
+        .privacy-container strong {
+            color: var(--text-primary);
+        }
+
+        .last-updated {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glow-bg"></div>
+
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-graduation-cap"></i> NUWorks Grader
+            </a>
+            <div class="nav-links">
+                <a href="index.html#features">Features</a>
+                <a href="index.html#how-it-works">How it Works</a>
+                <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank"
+                    class="github-link"><i class="fa-brands fa-github"></i> GitHub</a>
+                <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme"
+                    style="background: none; border: none;">
+                    <i class="fa-solid fa-moon" style="color: #ffffff;"></i>
+                </button>
+                <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website"
+                    target="_blank" rel="noopener noreferrer" class="btn btn-primary small">
+                    Add to Chrome</a>
+            </div>
+            <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <div class="container privacy-container">
+        <h1>Privacy Policy for Northeastern Co-op Screener</h1>
+        <span class="last-updated"><strong>Last Updated: January 1, 2026</strong></span>
+
+        <h2>Introduction</h2>
+        <p>The <strong>Northeastern Co-op Screener</strong> ("Extension") is dedicated to protecting your privacy. This
+            Privacy Policy explains how we collect, use, and safeguard your information when you use our browser
+            extension.</p>
+
+        <h2>Data Collection and Use</h2>
+
+        <h3>1. Local Data Storage</h3>
+        <p>The Extension operates primarily by storing data locally on your device using
+            <code>chrome.storage.local</code>. We collect and store the following information locally to enable the
+            Extension's core functionality:
+        </p>
+        <ul>
+            <li><strong>Authentication Credentials</strong>: When you log in to NUWorks (Symplicity), the Extension
+                saves your session cookies and authorization tokens. This allows the Extension to fetch job details on
+                your behalf without requiring you to log in repeatedly.</li>
+            <li><strong>User Preferences</strong>: We store your settings, such as job search filters, "Automatic
+                Grading" status, and industry preferences.</li>
+            <li><strong>Resume Data</strong>: If you upload a resume or provide resume text for the "Resume Matcher"
+                feature, this data is stored locally on your device.</li>
+        </ul>
+        <p><strong>We do not transmit this personal data to any external servers controlled by the Extension
+                developer.</strong> All matching and processing occur locally within your browser.</p>
+
+        <h3>2. Google Analytics</h3>
+        <p>We use <strong>Google Analytics</strong> to collect anonymous usage data to help us understand how the
+            Extension is being used and to improve user experience.</p>
+        <ul>
+            <li><strong>Data Collected</strong>: Google Analytics may collect technical information such as your browser
+                type, operating system, and interactions with the Extension's features (e.g., button clicks, page
+                views).</li>
+            <li><strong>Anonymity</strong>: This data is aggregated and anonymized. We do not transmit personally
+                identifiable information (PII) to Google Analytics.</li>
+        </ul>
+
+        <h3>3. Third-Party Sharing</h3>
+        <p>We do not sell, trade, or otherwise transfer your personally identifiable information to outside parties.</p>
+        <ul>
+            <li><strong>NUWorks (Symplicity)</strong>: The Extension interacts directly with the NUWorks platform
+                (<code>northeastern-csm.symplicity.com</code>) to retrieve job listings. Your credentials are sent only
+                to NUWorks to authenticate these requests, exactly as they would be if you were browsing the site
+                manually.</li>
+        </ul>
+
+        <h2>Data Security</h2>
+        <p>We implement a variety of security measures to maintain the safety of your personal information. Your
+            sensitive data (like credentials and resume) remains explicitly on your local machine and is not synced to
+            the cloud by our Extension.</p>
+
+        <h2>Your Consent</h2>
+        <p>By using our Extension, you consent to our privacy policy.</p>
+
+        <h2>Changes to our Privacy Policy</h2>
+        <p>If we decide to change our privacy policy, we will update the Privacy Policy modification date below.</p>
+        <p><strong>Last Modified: January 1, 2026</strong></p>
+
+        <h2>Contacting Us</h2>
+        <p>If there are any questions regarding this privacy policy, you may contact the developer via the support link
+            on the Chrome Web Store.</p>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <a href="index.html" class="logo">NUWorks Grader</a>
+                    <p>Unofficial tool. Not affiliated with Northeastern University or Symplicity.</p>
+                    <p>Made by <a href="https://ashwiniyer.com" target="_blank"
+                            style="color: var(--primary-color);">Ashwin
+                            Iyer</a></p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension"
+                        target="_blank">GitHub</a>
+                    <a href="#" class="active">Privacy Policy</a>
+                    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/issues" target="_blank">Report an
+                        Issue</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy;
+                    <script>document.write(new Date().getFullYear())</script> Ashwin Iyer. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple script for mobile menu toggling
+        document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
+            document.querySelector('.nav-links').style.display =
+                document.querySelector('.nav-links').style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        const body = document.body;
+
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+
+        if (savedTheme) {
+            body.setAttribute('data-theme', savedTheme);
+            updateIcon(savedTheme);
+        } else if (systemPrefersLight) {
+            updateIcon('light');
+        }
+
+        function updateIcon(theme) {
+            if (theme === 'light') {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeIcon.style.color = '#000000';
+            } else {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeIcon.style.color = '#ffffff';
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            let currentTheme = body.getAttribute('data-theme');
+
+            if (!currentTheme) {
+                currentTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+            }
+
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+    </script>
+</body>
+
+</html>
