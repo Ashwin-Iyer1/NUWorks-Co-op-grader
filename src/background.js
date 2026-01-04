@@ -29,9 +29,11 @@ chrome.webRequest.onSendHeaders.addListener(
 );
 
 // Helper function to check if a job description implies an external application
-function isExternalApplication(jobDesc) {
+function isExternalApplication(jobDesc, contactBlurb) {
   if (!jobDesc) return false;
+  contactBlurb = contactBlurb || "";
   const lowerDesc = jobDesc.toLowerCase();
+  const lowerContactBlurb = contactBlurb.toLowerCase();
   const keywords = [
     "workday",
     "smart recruiters",
@@ -45,12 +47,30 @@ function isExternalApplication(jobDesc) {
   }
 
   const hrefs = lowerDesc.match(/<a[^>]*href="([^"]+)"[^>]*>/g);
+  const contactHrefs = lowerContactBlurb.match(/<a[^>]*href="([^"]+)"[^>]*>/g);
   if (hrefs) {
     for (const href of hrefs) {
       if (href.includes("workday") || href.includes("smartrecruiters")) {
         return true;
       }
     }
+  }
+
+  if (contactHrefs) {
+    for (const href of contactHrefs) {
+      if (href.includes("workday") || href.includes("smartrecruiters")) {
+        return true;
+      }
+    }
+  }
+
+  // if contact blurb contains https, www, or http, return true
+  if (
+    contactBlurb.includes("https") ||
+    contactBlurb.includes("www") ||
+    contactBlurb.includes("http")
+  ) {
+    return true;
   }
   return false;
 }
@@ -83,6 +103,7 @@ async function fetchJobDescription(jobId, creds) {
   return {
     desc: data.job_desc,
     title: data.job_title || data.title,
+    contactBlurb: data.contact_blurb,
   };
 }
 
@@ -118,6 +139,7 @@ async function processJobs(jobList, tabId) {
     jobList.map(async (job) => {
       try {
         let desc = job.job_desc || job.description;
+        let contactBlurb = job.contact_blurb;
         let title = job.job_title;
 
         let jobId =
@@ -131,11 +153,12 @@ async function processJobs(jobList, tabId) {
           return { jobId: null };
         }
 
-        if (!desc || !title) {
+        if (!desc || !title || !contactBlurb) {
           try {
             console.log(`Fetching description for job ${jobId}...`);
             const fetched = await fetchJobDescription(jobId, creds);
             desc = fetched.desc;
+            contactBlurb = fetched.contactBlurb;
             title = fetched.title;
           } catch (err) {
             console.error(`Failed to fetch for ${jobId}`, err);
@@ -143,7 +166,7 @@ async function processJobs(jobList, tabId) {
         }
 
         if (desc) {
-          const isExternal = isExternalApplication(desc);
+          const isExternal = isExternalApplication(desc, contactBlurb);
           let matchResult = null;
 
           if (matcher) {
