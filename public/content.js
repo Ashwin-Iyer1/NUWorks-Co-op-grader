@@ -580,7 +580,65 @@ function injectApplicationBadges() {
   });
 }
 
+function injectHistoryNavButton() {
+  // Selector strategy: Try multiple potential selectors for the bottom bar
+  const targetSelectors = [
+    ".buttonbar.buttonbar-bottom.fixed-action-bar",
+    ".buttonbar.buttonbar-bottom",
+    ".list-bottom-buttons",
+    "div[class*='buttonbar-bottom']",
+  ];
+
+  let target = null;
+  for (let sel of targetSelectors) {
+    target = document.querySelector(sel);
+    if (target) {
+      console.log(`[NavBtn] Found target bar with selector: ${sel}`);
+      break;
+    }
+  }
+
+  if (!target) {
+    // console.log("[NavBtn] Button bar not found yet");
+    return;
+  }
+
+  if (document.getElementById("nuworks-history-nav-btn")) {
+    return;
+  }
+
+  const btn = document.createElement("button");
+  btn.id = "nuworks-history-nav-btn";
+  btn.innerText = "Fetch Inactive Jobs";
+  // Symplicity styling classes - try to blend in but stand out
+  btn.className = "btn btn-default btn-primary";
+
+  Object.assign(btn.style, {
+    marginLeft: "10px",
+    backgroundColor: "#007bff",
+    color: "white",
+    border: "1px solid #0056b3",
+    borderRadius: "4px",
+    padding: "6px 12px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    marginRight: "10px",
+  });
+
+  btn.onclick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href =
+      "https://bos1225.northeastern.edu/student/applicationhistory";
+  };
+
+  // Append to target. If target has children, append at the end.
+  target.appendChild(btn);
+  console.log("[NUWorks] History navigation button injected successfully.");
+}
+
 function handleAppliedJobsPage() {
+  injectHistoryNavButton();
   injectApplicationBadges();
 }
 
