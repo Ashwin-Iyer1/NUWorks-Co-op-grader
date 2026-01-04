@@ -345,6 +345,10 @@ function injectApplicationHistoryButton() {
   const targetSelector = ".font-bold.text-lg.mb-2";
   const targets = document.querySelectorAll(targetSelector);
 
+  console.log(
+    `[HistoryDebug] Searching for targets with selector '${targetSelector}'. Found: ${targets.length}`
+  );
+
   if (targets.length === 0) {
     // Retry if content is dynamic
     // setTimeout(injectApplicationHistoryButton, 1000);
@@ -383,9 +387,72 @@ function injectApplicationHistoryButton() {
     btn.onclick = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      console.log("History Action Button Clicked for:", target.innerText);
-      alert("History button clicked! Target text: " + target.innerText);
+      //get the page as html
+      const html = document.documentElement.outerHTML;
+      const jobCards = document.querySelectorAll(
+        ".bg-white.rounded-xl.m-1.text-xs.shadow.w-full.mx-auto"
+      );
+      console.log(`Found ${jobCards.length} job cards.`);
+
+      const jobs = [];
+
+      jobCards.forEach((jobCard) => {
+        const getLabelValue = (labelText) => {
+          const elements = jobCard.querySelectorAll(".font-semibold");
+          for (let el of elements) {
+            if (el.innerText.includes(labelText)) {
+              const valueEl =
+                el.nextElementSibling || el.parentElement.nextElementSibling;
+              return valueEl ? valueEl.innerText.trim() : "N/A";
+            }
+          }
+          // Fallback for "App Status" which might be a div not a span, or slightly different class
+          const allDivs = jobCard.querySelectorAll("div");
+          for (let el of allDivs) {
+            if (el.innerText.includes(labelText)) {
+              // check if it is the label container
+              const valueEl = el.nextElementSibling;
+              return valueEl ? valueEl.innerText.trim() : "N/A";
+            }
+          }
+          return "N/A";
+        };
+
+        const anchor = jobCard.querySelector("a");
+        let job_id = "unknown";
+        if (anchor && anchor.href) {
+          try {
+            const urlObj = new URL(anchor.href, window.location.origin);
+            const pathSegments = urlObj.pathname.split("/");
+            job_id = pathSegments[pathSegments.length - 1];
+          } catch (e) {
+            console.error("Error parsing job ID from URL:", anchor.href);
+            job_id = anchor.href.split("/").pop().split("?")[0]; // Fallback cleanup
+          }
+        }
+
+        const jobStatus = getLabelValue("Job Status");
+        const appStatus = getLabelValue("App Status");
+        const activeApp = getLabelValue("Active Application");
+
+        jobs.push({
+          job_id,
+          jobStatus,
+          appStatus,
+          activeApp,
+        });
+      });
+
+      console.log("Extracted Jobs:", jobs);
+      // save to chrome.storage.local
+      chrome.storage.local.set({ job_applications_history: jobs }, () => {
+        console.log("Saved job history to chrome.storage.local");
+        // Notify user via alert or button text change
+        btn.innerText = "Saved!";
+        setTimeout(() => (btn.innerText = "Action"), 2000);
+      });
     };
+    target.parentNode.style.justifyContent = "flex-start";
 
     target.parentNode.insertBefore(btn, target.nextSibling);
   });
@@ -395,3 +462,281 @@ function handleApplicationHistoryPage() {
   // We can run this periodically or just once per checkUrl tick
   injectApplicationHistoryButton();
 }
+
+// === NEW LOGIC FOR APPLIED JOBS BADGING ===
+
+let cachedJobHistory = null;
+let isFetchingHistory = false;
+
+function injectApplicationBadges() {
+  // If we already have data, use it. If not, fetch it.
+  if (!cachedJobHistory) {
+    if (isFetchingHistory) return;
+    isFetchingHistory = true;
+    chrome.storage.local.get(["job_applications_history"], (result) => {
+      isFetchingHistory = false;
+      const historyData = result.job_applications_history;
+      if (!historyData) {
+        // No data found, stop trying for a bit or log once
+        return;
+      }
+      cachedJobHistory = historyData;
+      // Re-trigger injection now that we have data
+      injectApplicationBadges();
+    });
+    return;
+  }
+
+  // Create a map for faster lookup: job_id -> activeApp status
+  const jobMap = {};
+  cachedJobHistory.forEach((job) => {
+    if (job.job_id) {
+      jobMap[job.job_id] = job.activeApp;
+    }
+  });
+
+  // Find all job links on the page
+  const jobLinks = document.querySelectorAll(
+    "a[href*='/students/app/jobs/detail/'], a[href*='/students/app/jobs/view/']"
+  );
+
+  // Optimization: Check if there is work to do before logging or iterating
+  let unbadgedLinks = [];
+  jobLinks.forEach((link) => {
+    // Check if badge already exists in parent or on link
+    if (
+      !link.querySelector(".nuworks-app-badge") &&
+      !link.parentNode.querySelector(".nuworks-app-badge")
+    ) {
+      // Check if this link corresponds to a known job
+      const href = link.getAttribute("href");
+      try {
+        const urlObj = new URL(href, window.location.origin);
+        const pathSegments = urlObj.pathname.split("/");
+        const jobId = pathSegments[pathSegments.length - 1];
+        if (jobMap.hasOwnProperty(jobId)) {
+          unbadgedLinks.push({ link, jobId });
+        }
+      } catch (e) {}
+    }
+  });
+
+  if (unbadgedLinks.length === 0) {
+    // Nothing new to badge, exit silently to prevent loop spam
+    return;
+  }
+
+  // console.log(`[BadgeDebug] Found ${unbadgedLinks.length} new items to badge.`);
+
+  unbadgedLinks.forEach((item) => {
+    const { link, jobId } = item;
+    const activeStatus = jobMap[jobId];
+
+    const badge = document.createElement("span");
+    badge.className = "nuworks-app-badge";
+    badge.innerText = activeStatus === "Yes" ? "Active App" : "Inactive App";
+
+    // Style based on status
+    Object.assign(badge.style, {
+      marginLeft: "8px",
+      padding: "2px 6px",
+      borderRadius: "4px",
+      fontSize: "11px",
+      fontWeight: "bold",
+      color: "white",
+      backgroundColor: activeStatus === "Yes" ? "#28a745" : "#dc3545",
+      verticalAlign: "middle",
+      display: "inline-block",
+    });
+
+    // Insert badge after the link text (or append to link)
+    link.appendChild(badge);
+    // console.log(`[BadgeDebug] Badged ID: ${jobId}`);
+  });
+}
+
+function handleAppliedJobsPage() {
+  injectApplicationBadges();
+}
+
+function checkUrl() {
+  const currentUrl = location.href;
+
+  // Poll for application history page injection
+  if (currentUrl.includes("/student/applicationhistory")) {
+    handleApplicationHistoryPage();
+  }
+
+  // Poll for Applied Jobs page
+  if (currentUrl.includes("/students/app/jobs/applied")) {
+    handleAppliedJobsPage();
+  }
+
+  if (currentUrl !== lastUrl) {
+    console.log("URL changed to:", currentUrl);
+
+    // Check if we are transitioning FROM a non-search page (like Discovery) TO the search page
+    const wasSearch = lastUrl.includes("/students/app/jobs/search");
+    const isSearch = currentUrl.includes("/students/app/jobs/search");
+
+    lastUrl = currentUrl;
+
+    if (isSearch) {
+      removeGradeButton();
+
+      // If we came from Discovery/Home, FORCE RELOAD to clear stale state and trigger auto-run
+      if (!wasSearch) {
+        console.log(
+          "Transition from Discovery to Search detected. Reloading to force clean state..."
+        );
+        // window.location.reload();
+        return;
+      }
+
+      // Auto-trigger if we have search data already and didn't just reload
+      if (searchJobData) {
+        console.log("Search page detected with cached data. Triggering...");
+        triggerAutoGrade(searchJobData);
+      }
+    } else {
+      // Discover or Home page
+      injectGradeButton();
+      // Button state will be updated by injection or listener
+    }
+  }
+}
+
+// Start trying to inject the button
+injectGradeButton();
+handleApplicationHistoryPage();
+// Initial check for applied page (if user reloads on that page)
+if (location.href.includes("/students/app/jobs/applied")) {
+  handleAppliedJobsPage();
+}
+
+// Monitor URL changes
+setInterval(checkUrl, 1000);
+
+// Listen for messages from the interceptor
+window.addEventListener("message", function (event) {
+  // We only accept messages from ourselves
+  if (event.source !== window) return;
+
+  if (event.data.type && event.data.type === "NUWORKS_JOB_DISCOVERY") {
+    const data = event.data.data;
+    const url = event.data.url;
+
+    console.log("Interceptor Message Received. URL:", url);
+    if (!data) {
+      console.error("Data is null/undefined for URL:", url);
+      return;
+    }
+
+    // Detailed structure inspection
+    const keys = Object.keys(data);
+    const isArray = Array.isArray(data);
+    console.log(`Analyzing data from ${url}`);
+    // console.log(`DEBUG: IsArray=${isArray}, Keys=${keys.join(", ")}`);
+
+    // 1. Filter ignored URLs
+    if (isIgnoredUrl(url)) {
+      // console.log("Ignored irrelevant API URL:", url);
+      return;
+    }
+
+    // 2. Validate & Normalize Data
+    // Discovery Endpoint has a unique, deep structure:
+    // { models: { jobs: { category1: { jobs: [...] }, category2: { jobs: [...] } } } }
+    let dataToUse = null;
+
+    if (isDiscoveryApiUrl(url)) {
+      console.log("Parsing Discovery-specific data structure...");
+      try {
+        if (data?.models?.jobs) {
+          const allJobs = [];
+          Object.values(data.models.jobs).forEach((category) => {
+            if (category && Array.isArray(category.jobs)) {
+              allJobs.push(...category.jobs);
+            }
+          });
+          if (allJobs.length > 0) {
+            dataToUse = allJobs;
+            console.log(
+              `Discovery Normalization: Extracted ${allJobs.length} jobs from categories.`
+            );
+          }
+        }
+      } catch (e) {
+        console.error("Error parsing discovery data:", e);
+      }
+
+      if (!dataToUse) {
+        console.log(
+          "Discovery data structure did not match expected format or contained no jobs."
+        );
+        // Fallback to basic check just in case, or return?
+        // If we failed to parse specific structure, we should probably fail safe.
+        // But let's check isJobList as a hail mary if the structure changed.
+        if (isJobList(data)) {
+          dataToUse = data; // Very unlikely based on the user report
+        } else {
+          return;
+        }
+      }
+    } else {
+      // GENERIC / SEARCH ENDPOINTS
+      if (!isJobList(data)) {
+        console.log("Ignored non-list data from URL:", url);
+        return;
+      }
+
+      // Generic normalization (e.g. { models: [...] })
+      if (data.models && Array.isArray(data.models)) {
+        dataToUse = data.models;
+      } else {
+        dataToUse = data;
+      }
+    }
+
+    // 3. Route Data
+    if (isSearchApiUrl(url)) {
+      // It's Search Data OR Generic Job Data (e.g. from widgets)
+      searchJobData = dataToUse;
+      console.log("Updated SEARCH/GENERIC job data from:", url);
+      console.log("Triggering auto-grade for generic data immediately.");
+
+      // AUTO-TRIGGER ALWAYS for generic data, regardless of page
+      triggerAutoGrade(searchJobData);
+    } else {
+      // It's Discovery / Home Data OR generic data that didn't look like search (no perPage)
+      const isDiscoverySpecific = isDiscoveryApiUrl(url);
+
+      if (isDiscoverySpecific) {
+        discoveryJobData = dataToUse;
+        console.log(
+          `Updated DISCOVERY job data from PRIORITY endpoint (${dataToUse.length} jobs).`
+        );
+
+        // If currently NOT on search page, update the button
+        if (!window.location.href.includes("/students/app/jobs/search")) {
+          // If button exists, update it. If not, inject it.
+          if (gradeButton) {
+            gradeButton.innerText = "Grade Jobs On Page";
+            gradeButton.style.backgroundColor = "#5cb85c";
+            gradeButton.disabled = false;
+          } else {
+            injectGradeButton();
+          }
+        }
+      } else {
+        // If it fell through here, it's a generic job list on the discovery page that didn't match isSearchApiUrl.
+        // Treated as generic auto-run data.
+        console.log(
+          `Generic job data detected on Discovery (fallback). URL: ${url}`
+        );
+        console.log("Triggering auto-grade for generic fallback data.");
+        triggerAutoGrade(dataToUse);
+      }
+    }
+  }
+});
