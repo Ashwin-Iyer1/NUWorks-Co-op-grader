@@ -1,365 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NUWorks Co-op Search Extension | Optimize Your Job Search</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <meta
+      name="description"
+      content="A powerful Chrome Extension to help Northeastern University students optimize their co-op search on NUWorks (Symplicity)."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NUWorks Co-op Search Extension | Optimize Your Job Search</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <meta name="description"
-    content="A powerful Chrome Extension to help Northeastern University students optimize their co-op search on NUWorks (Symplicity).">
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-QHBQ8G5FK9"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-
-  gtag('config', 'G-QHBQ8G5FK9');
-</script>
-
-
-<body>
-  <div class="glow-bg"></div>
-
-  <nav class="navbar">
-    <div class="container">
-      <a href="#" class="logo">
-        <i class="fa-solid fa-graduation-cap"></i> NUWorks Grader
-      </a>
-      <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How it Works</a>
-        <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank"
-          class="github-link"><i class="fa-brands fa-github"></i> GitHub</a>
-        <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme" style="background: none; border: none;">
-          <i class="fa-solid fa-moon" style="color: #ffffff;"></i>
-        </button>
-        <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website"
-          target="_blank" rel="noopener noreferrer" class="btn btn-primary small">
-          Add to Chrome</a>
-      </div>
-      <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
-    </div>
-  </nav>
-
-  <header class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <div class="badge">v1.0 Now Available</div>
-        <h1>Supercharge Your <span class="gradient-text">Co-op Search</span></h1>
-        <p>The ultimate tool for Northeastern students. Smart matching, advanced filters, and automation for
-          NUWorks.</p>
-        <div class="cta-group">
-          <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website"
-            target="_blank" rel="noopener noreferrer" class="btn btn-primary large">
-            <i class="fa-brands fa-chrome"></i> Add to Chrome
-            <span class="btn-sub">It's free!</span>
-          </a>
-          <a href="#features" class="btn btn-secondary large">Learn More</a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat">
-            <span class="number">100%</span>
-            <span class="label">Privacy First</span>
-          </div>
-          <div class="stat">
-            <span class="number">250+</span>
-            <span class="label">Skills Tracked</span>
-          </div>
-          <div class="stat">
-            <span class="number">0ms</span>
-            <span class="label">Server Latency</span>
-          </div>
-        </div>
-      </div>
-      <div class="hero-image">
-        <video width="100%" height="auto" autoplay loop muted playsinline controls
-          style="border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
-          <source src="video.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-    </div>
-  </header>
-
-  <section id="features" class="features">
-    <div class="container">
-      <div class="feature-screenshot-container"
-        style="text-align: center; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
-        <img src="feature_screenshot.png" class="feature-screenshot"
-          alt="NUWorks Extension Interface Discovery Page with Color-Coded Badges"
-          style="width: 50%; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
-        <img src="feature_screenshot_2.png" class="feature-screenshot"
-          alt="NUWorks Extension Interface Search Page with Color-Coded Badges"
-          style="width: 50%; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
-      </div>
-
-      <div class="section-header">
-        <h2>Why use this extension?</h2>
-        <p>Stop wasting time on jobs that don't match your profile. Let our smart algorithms do the heavy
-          lifting.</p>
-      </div>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="icon-box">
-            <i class="fa-solid fa-brain"></i>
-          </div>
-          <h3>NLP Powered Qualification</h3>
-          <p>Uses a trained Natural Language Processing model to detect subtle requirements like graduation dates and
-            school years automatically.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon-box">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-          </div>
-          <h3>Auto-Grading & Visual Badging</h3>
-          <p>Instantly see match scores, external application warnings, and eligibility status with color-coded badges
-            directly on the job list.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon-box">
-            <i class="fa-solid fa-filter"></i>
-          </div>
-          <h3>Smart Filters & Batch Actions</h3>
-          <p>Filter by match score or freshness. Save all matched jobs in one click or unfavorite all to clean up your
-            list.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon-box">
-            <i class="fa-solid fa-file-pdf"></i>
-          </div>
-          <h3>Resume Parsing</h3>
-          <p>Simply upload your PDF resume. We extract the text and skills automatically to find your best matches.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon-box">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-          </div>
-          <h3>Manual Control & Settings</h3>
-          <p>Toggle auto-grading on/off, trigger grading manually on any page, and update your profile settings with
-            ease.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon-box">
-            <i class="fa-solid fa-lock"></i>
-          </div>
-          <h3>Privacy First</h3>
-          <p>Your resume and data never leave your browser. All processing happens locally within the extension.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="how-it-works" class="steps">
-    <div class="container">
-      <div class="section-header">
-        <h2>Get Started in Seconds</h2>
-      </div>
-      <div class="steps-container">
-        <div class="step">
-          <div class="step-number">01</div>
-          <h3>Install</h3>
-          <p>Add the extension to Chrome from the Web Store (or load unpacked from GitHub).</p>
-        </div>
-        <div class="step arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="step">
-          <div class="step-number">02</div>
-          <h3>Upload</h3>
-          <p>Open the extension on NUWorks and upload your resume PDF.</p>
-        </div>
-        <div class="step arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="step">
-          <div class="step-number">03</div>
-          <h3>Analyze</h3>
-          <p>Click "Analyze Jobs" to see your match scores and filter results instantly.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-left">
-          <a href="#" class="logo">NUWorks Grader</a>
-          <p>Unofficial tool. Not affiliated with Northeastern University or Symplicity.</p>
-          <p>Made by <a href="https://ashwiniyer.com" target="_blank" style="color: var(--primary-color);">Ashwin
-              Iyer</a></p>
-        </div>
-        <div class="footer-links">
-          <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension"
-            target="_blank">GitHub</a>
-          <a href="privacy_policy.html" target="_blank">Privacy Policy</a>
-          <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/issues" target="_blank">Report an Issue</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy;
-          <script>document.write(new Date().getFullYear())</script> Ashwin Iyer. All rights reserved.
-        </p>
-      </div>
-    </div>
-  </footer>
-
+  <!-- Google tag (gtag.js) -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-QHBQ8G5FK9"
+  ></script>
   <script>
-    // Simple script for mobile menu toggling if needed
-    document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
-      document.querySelector('.nav-links').style.display =
-        document.querySelector('.nav-links').style.display === 'flex' ? 'none' : 'flex';
-    });
-
-    // Theme Toggle Logic
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const themeIcon = themeToggleBtn.querySelector('i');
-    const body = document.body;
-
-    // Check for saved theme or system preference
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-
-    if (savedTheme) {
-      body.setAttribute('data-theme', savedTheme);
-      updateIcon(savedTheme);
-    } else if (systemPrefersLight) {
-      // Optional: Set attribute implicitly if you want to track it, or just let CSS handle it.
-      // But tracking it makes toggling easier.
-      // Let's rely on CSS for default, but set icon correctly.
-      updateIcon('light');
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
     }
+    gtag("js", new Date());
 
-    function updateIcon(theme) {
-      if (theme === 'light') {
-        themeIcon.classList.replace('fa-moon', 'fa-sun');
-        themeIcon.style.color = '#000000';
-      } else {
-        themeIcon.classList.replace('fa-sun', 'fa-moon');
-        themeIcon.style.color = '#ffffff';
+    gtag("config", "G-QHBQ8G5FK9");
+  </script>
+
+  <body>
+    <div class="glow-bg"></div>
+
+    <nav class="navbar">
+      <div class="container">
+        <a href="#" class="logo">
+          <i class="fa-solid fa-graduation-cap"></i> NUWorks Grader
+        </a>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How it Works</a>
+          <a
+            href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension"
+            target="_blank"
+            class="github-link"
+            ><i class="fa-brands fa-github"></i> GitHub</a
+          >
+          <button
+            id="theme-toggle"
+            class="theme-btn"
+            aria-label="Toggle Theme"
+            style="background: none; border: none"
+          >
+            <i class="fa-solid fa-moon" style="color: #ffffff"></i>
+          </button>
+          <a
+            href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary small"
+          >
+            Add to Chrome</a
+          >
+        </div>
+        <button class="mobile-menu-btn">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="badge">v1.0 Now Available</div>
+          <h1>
+            Supercharge Your <span class="gradient-text">Co-op Search</span>
+          </h1>
+          <p>
+            The ultimate tool for Northeastern students. Smart matching,
+            advanced filters, and automation for NUWorks.
+          </p>
+          <div class="cta-group">
+            <a
+              href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary large"
+            >
+              <i class="fa-brands fa-chrome"></i> Add to Chrome
+              <span class="btn-sub">It's free!</span>
+            </a>
+            <a href="#features" class="btn btn-secondary large">Learn More</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="number">100%</span>
+              <span class="label">Privacy First</span>
+            </div>
+            <div class="stat">
+              <span class="number">250+</span>
+              <span class="label">Skills Tracked</span>
+            </div>
+            <div class="stat">
+              <span class="number">0ms</span>
+              <span class="label">Server Latency</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-image">
+          <video
+            width="100%"
+            height="auto"
+            autoplay
+            loop
+            muted
+            playsinline
+            controls
+            style="
+              border-radius: 12px;
+              box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            "
+          >
+            <source src="video.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </header>
+
+    <section id="features" class="features">
+      <div class="container">
+        <div
+          class="feature-screenshot-container"
+          style="
+            text-align: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+          "
+        >
+          <img
+            src="feature_screenshot.png"
+            class="feature-screenshot"
+            alt="NUWorks Extension Interface Discovery Page with Color-Coded Badges"
+            style="
+              width: 50%;
+              border-radius: 12px;
+              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            "
+          />
+          <img
+            src="feature_screenshot_2.png"
+            class="feature-screenshot"
+            alt="NUWorks Extension Interface Search Page with Color-Coded Badges"
+            style="
+              width: 50%;
+              border-radius: 12px;
+              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            "
+          />
+        </div>
+
+        <div class="section-header">
+          <h2>Why use this extension?</h2>
+          <p>
+            Stop wasting time on jobs that don't match your profile. Let our
+            smart algorithms do the heavy lifting.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="icon-box">
+              <i class="fa-solid fa-brain"></i>
+            </div>
+            <h3>NLP Powered Qualification</h3>
+            <p>
+              Uses a trained Natural Language Processing model to detect subtle
+              requirements like graduation dates and school years automatically.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <h3>Auto-Grading & Visual Badging</h3>
+            <p>
+              Instantly see match scores, external application warnings, and
+              eligibility status with color-coded badges directly on the job
+              list.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">
+              <i class="fa-solid fa-filter"></i>
+            </div>
+            <h3>Smart Filters & Batch Actions</h3>
+            <p>
+              Filter by match score or freshness. Save all matched jobs in one
+              click or unfavorite all to clean up your list.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">
+              <i class="fa-solid fa-file-pdf"></i>
+            </div>
+            <h3>Resume Parsing</h3>
+            <p>
+              Simply upload your PDF resume. We extract the text and skills
+              automatically to find your best matches.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <h3>Manual Control & Settings</h3>
+            <p>
+              Toggle auto-grading on/off, trigger grading manually on any page,
+              and update your profile settings with ease.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3>Privacy First</h3>
+            <p>
+              Your resume and data never leave your browser. All processing
+              happens locally within the extension.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="ineligible-video"
+      class="features"
+      style="padding-top: 0; padding-bottom: 80px"
+    >
+      <div class="container">
+        <div class="section-header">
+          <h2>Know Why You Weren't Selected</h2>
+          <p>
+            Quickly identify if a job application is inactive or if you were not
+            selected.
+          </p>
+        </div>
+        <div style="max-width: 800px; margin: 0 auto">
+          <video
+            width="100%"
+            height="auto"
+            controls
+            playsinline
+            style="
+              border-radius: 12px;
+              box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+              border: 1px solid var(--border-color);
+            "
+          >
+            <source src="ineligible-job-video.mov" type="video/quicktime" />
+            <source src="ineligible-job-video.mov" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="steps">
+      <div class="container">
+        <div class="section-header">
+          <h2>Get Started in Seconds</h2>
+        </div>
+        <div class="steps-container">
+          <div class="step">
+            <div class="step-number">01</div>
+            <h3>Install</h3>
+            <p>
+              Add the extension to Chrome from the Web Store (or load unpacked
+              from GitHub).
+            </p>
+          </div>
+          <div class="step arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="step">
+            <div class="step-number">02</div>
+            <h3>Upload</h3>
+            <p>Open the extension on NUWorks and upload your resume PDF.</p>
+          </div>
+          <div class="step arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="step">
+            <div class="step-number">03</div>
+            <h3>Analyze</h3>
+            <p>
+              Click "Analyze Jobs" to see your match scores and filter results
+              instantly.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-left">
+            <a href="#" class="logo">NUWorks Grader</a>
+            <p>
+              Unofficial tool. Not affiliated with Northeastern University or
+              Symplicity.
+            </p>
+            <p>
+              Made by
+              <a
+                href="https://ashwiniyer.com"
+                target="_blank"
+                style="color: var(--primary-color)"
+                >Ashwin Iyer</a
+              >
+            </p>
+          </div>
+          <div class="footer-links">
+            <a
+              href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension"
+              target="_blank"
+              >GitHub</a
+            >
+            <a href="privacy_policy.html" target="_blank">Privacy Policy</a>
+            <a
+              href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/issues"
+              target="_blank"
+              >Report an Issue</a
+            >
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            &copy;
+            <script>
+              document.write(new Date().getFullYear());
+            </script>
+            Ashwin Iyer. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Simple script for mobile menu toggling if needed
+      document
+        .querySelector(".mobile-menu-btn")
+        .addEventListener("click", () => {
+          document.querySelector(".nav-links").style.display =
+            document.querySelector(".nav-links").style.display === "flex"
+              ? "none"
+              : "flex";
+        });
+
+      // Theme Toggle Logic
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const themeIcon = themeToggleBtn.querySelector("i");
+      const body = document.body;
+
+      // Check for saved theme or system preference
+      const savedTheme = localStorage.getItem("theme");
+      const systemPrefersLight = window.matchMedia(
+        "(prefers-color-scheme: light)"
+      ).matches;
+
+      if (savedTheme) {
+        body.setAttribute("data-theme", savedTheme);
+        updateIcon(savedTheme);
+      } else if (systemPrefersLight) {
+        // Optional: Set attribute implicitly if you want to track it, or just let CSS handle it.
+        // But tracking it makes toggling easier.
+        // Let's rely on CSS for default, but set icon correctly.
+        updateIcon("light");
       }
-    }
 
-    themeToggleBtn.addEventListener('click', () => {
-      let currentTheme = body.getAttribute('data-theme');
-
-      if (!currentTheme) {
-        // If no attribute, we are using system preference
-        currentTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      function updateIcon(theme) {
+        if (theme === "light") {
+          themeIcon.classList.replace("fa-moon", "fa-sun");
+          themeIcon.style.color = "#000000";
+        } else {
+          themeIcon.classList.replace("fa-sun", "fa-moon");
+          themeIcon.style.color = "#ffffff";
+        }
       }
 
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      body.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      updateIcon(newTheme);
-    });
+      themeToggleBtn.addEventListener("click", () => {
+        let currentTheme = body.getAttribute("data-theme");
 
-    // Screenshot Maximization Logic
-    const screenshots = document.querySelectorAll('.feature-screenshot');
+        if (!currentTheme) {
+          // If no attribute, we are using system preference
+          currentTheme = window.matchMedia("(prefers-color-scheme: light)")
+            .matches
+            ? "light"
+            : "dark";
+        }
 
-    // Create overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'screenshot-overlay';
-    document.body.appendChild(overlay);
-
-    let activeClone = null;
-    let activeOriginal = null;
-
-    function closeScreenshot() {
-      if (!activeClone || !activeOriginal) return;
-
-      // Unmaximize
-      activeClone.classList.remove('maximized');
-      overlay.classList.remove('active');
-
-      // Animate back to original position
-      const rect = activeOriginal.getBoundingClientRect();
-      Object.assign(activeClone.style, {
-        top: `${rect.top}px`,
-        left: `${rect.left}px`,
-        width: `${rect.width}px`,
-        height: `${rect.height}px`
+        const newTheme = currentTheme === "light" ? "dark" : "light";
+        body.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+        updateIcon(newTheme);
       });
 
-      // After transition, cleanup
-      activeClone.addEventListener('transitionend', () => {
-        if (activeClone && activeClone.parentNode) {
-          activeClone.remove();
-        }
-        if (activeOriginal) {
-          activeOriginal.style.visibility = '';
-        }
-        activeClone = null;
-        activeOriginal = null;
-      }, { once: true });
-    }
+      // Screenshot Maximization Logic
+      const screenshots = document.querySelectorAll(".feature-screenshot");
 
-    screenshots.forEach(img => {
-      img.addEventListener('click', (e) => {
-        // Prevent multiple opens
-        if (activeClone) return;
+      // Create overlay
+      const overlay = document.createElement("div");
+      overlay.className = "screenshot-overlay";
+      document.body.appendChild(overlay);
 
-        activeOriginal = img;
-        const rect = img.getBoundingClientRect();
+      let activeClone = null;
+      let activeOriginal = null;
 
-        // Create clone
-        const clone = img.cloneNode();
-        activeClone = clone;
+      function closeScreenshot() {
+        if (!activeClone || !activeOriginal) return;
 
-        // Set initial position (matching original)
-        Object.assign(clone.style, {
-          position: 'fixed',
+        // Unmaximize
+        activeClone.classList.remove("maximized");
+        overlay.classList.remove("active");
+
+        // Animate back to original position
+        const rect = activeOriginal.getBoundingClientRect();
+        Object.assign(activeClone.style, {
           top: `${rect.top}px`,
           left: `${rect.left}px`,
           width: `${rect.width}px`,
           height: `${rect.height}px`,
-          transition: 'all 0.4s cubic-bezier(0.2, 0, 0.2, 1)', // Smooth ease
-          zIndex: '1001'
         });
 
-        // Add to body
-        document.body.appendChild(clone);
+        // After transition, cleanup
+        activeClone.addEventListener(
+          "transitionend",
+          () => {
+            if (activeClone && activeClone.parentNode) {
+              activeClone.remove();
+            }
+            if (activeOriginal) {
+              activeOriginal.style.visibility = "";
+            }
+            activeClone = null;
+            activeOriginal = null;
+          },
+          { once: true }
+        );
+      }
 
-        // Hide original (preserve layout)
-        img.style.visibility = 'hidden';
-        overlay.classList.add('active');
+      screenshots.forEach((img) => {
+        img.addEventListener("click", (e) => {
+          // Prevent multiple opens
+          if (activeClone) return;
 
-        // Force reflow
-        clone.getBoundingClientRect();
+          activeOriginal = img;
+          const rect = img.getBoundingClientRect();
 
-        // Animate to center
-        // We'll use 90vw/90vh centered
-        clone.classList.add('maximized');
-        Object.assign(clone.style, {
-          top: '5vh',
-          left: '5vw',
-          width: '90vw',
-          height: '90vh'
-        });
+          // Create clone
+          const clone = img.cloneNode();
+          activeClone = clone;
 
-        // Close handlers for the clone
-        clone.addEventListener('click', (e) => {
-          e.stopPropagation();
-          closeScreenshot();
+          // Set initial position (matching original)
+          Object.assign(clone.style, {
+            position: "fixed",
+            top: `${rect.top}px`,
+            left: `${rect.left}px`,
+            width: `${rect.width}px`,
+            height: `${rect.height}px`,
+            transition: "all 0.4s cubic-bezier(0.2, 0, 0.2, 1)", // Smooth ease
+            zIndex: "1001",
+          });
+
+          // Add to body
+          document.body.appendChild(clone);
+
+          // Hide original (preserve layout)
+          img.style.visibility = "hidden";
+          overlay.classList.add("active");
+
+          // Force reflow
+          clone.getBoundingClientRect();
+
+          // Animate to center
+          // We'll use 90vw/90vh centered
+          clone.classList.add("maximized");
+          Object.assign(clone.style, {
+            top: "5vh",
+            left: "5vw",
+            width: "90vw",
+            height: "90vh",
+          });
+
+          // Close handlers for the clone
+          clone.addEventListener("click", (e) => {
+            e.stopPropagation();
+            closeScreenshot();
+          });
         });
       });
-    });
 
-    overlay.addEventListener('click', closeScreenshot);
+      overlay.addEventListener("click", closeScreenshot);
 
-    // Close on escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeScreenshot();
-      }
-    });
-  </script>
-</body>
-
+      // Close on escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeScreenshot();
+        }
+      });
+    </script>
+  </body>
 </html>
