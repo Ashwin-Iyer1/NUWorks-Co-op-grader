@@ -19,7 +19,10 @@
     }
   },
   "permissions": ["webRequest", "storage", "scripting"],
-  "host_permissions": ["https://northeastern-csm.symplicity.com/*"],
+  "host_permissions": [
+    "https://northeastern-csm.symplicity.com/*",
+    "https://bos1225.northeastern.edu/*"
+  ],
   "content_scripts": [
     {
       "matches": ["https://northeastern-csm.symplicity.com/*"],
@@ -28,7 +31,10 @@
       "world": "MAIN"
     },
     {
-      "matches": ["https://northeastern-csm.symplicity.com/*"],
+      "matches": [
+        "https://northeastern-csm.symplicity.com/*",
+        "https://bos1225.northeastern.edu/*"
+      ],
       "js": ["content.js"],
       "run_at": "document_start"
     }

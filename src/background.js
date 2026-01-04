@@ -24,7 +24,12 @@ const onSendHeadersListener = function (details) {
 
 chrome.webRequest.onSendHeaders.addListener(
   onSendHeadersListener,
-  { urls: ["https://northeastern-csm.symplicity.com/*"] },
+  {
+    urls: [
+      "https://northeastern-csm.symplicity.com/*",
+      "https://bos1225.northeastern.edu/*",
+    ],
+  },
   ["requestHeaders", "extraHeaders"]
 );
 
@@ -438,7 +443,8 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (
     changeInfo.status === "complete" &&
     tab.url &&
-    tab.url.includes("northeastern-csm.symplicity.com")
+    (tab.url.includes("northeastern-csm.symplicity.com") ||
+      tab.url.includes("bos1225.northeastern.edu"))
   ) {
     if (
       tab.url.includes("students/app/jobs/favorites") ||
@@ -588,7 +594,8 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (
     changeInfo.status === "complete" &&
     tab.url &&
-    tab.url.includes("northeastern-csm.symplicity.com/students")
+    (tab.url.includes("northeastern-csm.symplicity.com/students") ||
+      tab.url.includes("bos1225.northeastern.edu/student"))
   ) {
     try {
       const results = await chrome.scripting.executeScript({

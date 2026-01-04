@@ -93,6 +93,7 @@ const UiHelper = {
       // Inputs
       getJobsBtn: document.getElementById("get-jobs-btn"),
       settingsBtn: document.getElementById("settings-btn"),
+      removeInactiveBtn: document.getElementById("remove-inactive"),
       backToMainBtn: document.getElementById("back-to-main-btn"),
       saveResumeBtn: document.getElementById("save-resume-btn"),
       cancelResumeBtn: document.getElementById("cancel-resume-btn"),

@@ -166,6 +166,12 @@ function isDiscoveryApiUrl(url) {
 
 function checkUrl() {
   const currentUrl = location.href;
+
+  // Poll for application history page injection
+  if (currentUrl.includes("/student/applicationhistory")) {
+    handleApplicationHistoryPage();
+  }
+
   if (currentUrl !== lastUrl) {
     console.log("URL changed to:", currentUrl);
 
@@ -202,6 +208,7 @@ function checkUrl() {
 
 // Start trying to inject the button
 injectGradeButton();
+handleApplicationHistoryPage();
 
 // Monitor URL changes
 setInterval(checkUrl, 1000);
@@ -329,3 +336,62 @@ window.addEventListener("message", function (event) {
     }
   }
 });
+
+// === NEW LOGIC FOR APPLICATION HISTORY ===
+
+function injectApplicationHistoryButton() {
+  // Target class: font-bold text-lg mb-2
+  // We'll search for all elements with these classes
+  const targetSelector = ".font-bold.text-lg.mb-2";
+  const targets = document.querySelectorAll(targetSelector);
+
+  if (targets.length === 0) {
+    // Retry if content is dynamic
+    // setTimeout(injectApplicationHistoryButton, 1000);
+    // Commented out to avoid infinite loops if generic selector fails,
+    // relying on checkUrl interval to retry since it runs every 1s
+    return;
+  }
+
+  targets.forEach((target) => {
+    // Check if we already injected a button next to this specific target
+    if (
+      target.nextSibling &&
+      target.nextSibling.classList &&
+      target.nextSibling.classList.contains("nuworks-history-btn")
+    ) {
+      return;
+    }
+
+    const btn = document.createElement("button");
+    btn.innerText = "Action"; // Placeholder
+    btn.className = "nuworks-history-btn";
+
+    // Style it to look decent
+    Object.assign(btn.style, {
+      marginLeft: "10px",
+      backgroundColor: "#007bff",
+      color: "white",
+      border: "none",
+      borderRadius: "4px",
+      padding: "5px 10px",
+      cursor: "pointer",
+      fontWeight: "bold",
+      fontSize: "14px",
+    });
+
+    btn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log("History Action Button Clicked for:", target.innerText);
+      alert("History button clicked! Target text: " + target.innerText);
+    };
+
+    target.parentNode.insertBefore(btn, target.nextSibling);
+  });
+}
+
+function handleApplicationHistoryPage() {
+  // We can run this periodically or just once per checkUrl tick
+  injectApplicationHistoryButton();
+}

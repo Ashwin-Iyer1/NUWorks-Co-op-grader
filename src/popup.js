@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const {
     getJobsBtn,
     settingsBtn,
+    removeInactiveBtn,
     saveResumeBtn,
     cancelResumeBtn,
     backToMainBtn,
@@ -97,6 +98,17 @@ document.addEventListener("DOMContentLoaded", () => {
         UiHelper.elements.autoGrading.checked = creds.autoGrading;
       }
       UiHelper.showResumeView();
+    });
+  }
+
+  // Remove Inactive Jobs
+  if (removeInactiveBtn) {
+    removeInactiveBtn.addEventListener("click", async () => {
+      const creds = await StorageHelper.getCredentials();
+      // open a new tab with the url
+      chrome.tabs.create({
+        url: "https://bos1225.northeastern.edu/student/applicationhistory",
+      });
     });
   }
 

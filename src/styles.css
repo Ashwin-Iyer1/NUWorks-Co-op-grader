@@ -219,7 +219,8 @@ a:hover {
 }
 
 /* Settings Icon */
-#settings-btn {
+#settings-btn,
+#remove-inactive {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -236,7 +237,13 @@ a:hover {
   justify-content: center;
 }
 
-#settings-btn:hover {
+#remove-inactive {
+  left: 15px;
+  right: auto;
+}
+
+#settings-btn:hover,
+#remove-inactive:hover {
   color: var(--accent-secondary);
   background: rgba(255, 255, 255, 0.1);
   border-color: var(--accent-secondary);
