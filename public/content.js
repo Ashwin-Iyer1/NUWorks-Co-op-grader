@@ -368,7 +368,7 @@ function injectApplicationHistoryButton() {
     }
 
     const btn = document.createElement("button");
-    btn.innerText = "Action"; // Placeholder
+    btn.innerText = "Find Inactive Jobs"; // Placeholder
     btn.className = "nuworks-history-btn";
 
     // Style it to look decent
@@ -451,6 +451,10 @@ function injectApplicationHistoryButton() {
         btn.innerText = "Saved!";
         setTimeout(() => (btn.innerText = "Action"), 2000);
       });
+
+      // go to the job applications page https://northeastern-csm.symplicity.com/students/app/jobs/applied
+      window.location.href =
+        "https://northeastern-csm.symplicity.com/students/app/jobs/applied";
     };
     target.parentNode.style.justifyContent = "flex-start";
 
@@ -487,11 +491,11 @@ function injectApplicationBadges() {
     return;
   }
 
-  // Create a map for faster lookup: job_id -> activeApp status
+  // Create a map for faster lookup: job_id -> full job object
   const jobMap = {};
   cachedJobHistory.forEach((job) => {
     if (job.job_id) {
-      jobMap[job.job_id] = job.activeApp;
+      jobMap[job.job_id] = job;
     }
   });
 
@@ -522,19 +526,41 @@ function injectApplicationBadges() {
   });
 
   if (unbadgedLinks.length === 0) {
-    // Nothing new to badge, exit silently to prevent loop spam
     return;
   }
 
-  // console.log(`[BadgeDebug] Found ${unbadgedLinks.length} new items to badge.`);
-
   unbadgedLinks.forEach((item) => {
     const { link, jobId } = item;
-    const activeStatus = jobMap[jobId];
+    const job = jobMap[jobId];
+
+    // LOGIC: Determine Badge Status
+    let badgeText = "Applied";
+    let badgeColor = "#17a2b8"; // Default Blue/Info
+
+    // Priority 1: Inactive indicators
+    if (job.appStatus.includes("Not Selected") || job.activeApp === "No") {
+      badgeText = "Inactive";
+      badgeColor = "#c90014ff"; // Red
+    } else if (
+      ["Expired", "Filled", "Pending or Draft Placements"].some((s) =>
+        job.jobStatus.includes(s)
+      )
+    ) {
+      badgeText = "Job Closed";
+      badgeColor = "#6c757d"; // Gray/Red-ish
+    }
+    // Priority 2: Positive indicators
+    else if (job.appStatus.includes("Employer Interested")) {
+      badgeText = "Interested";
+      badgeColor = "#28a745"; // Green
+    } else if (job.activeApp === "Yes") {
+      badgeText = "Active";
+      badgeColor = "#28a745"; // Green
+    }
 
     const badge = document.createElement("span");
     badge.className = "nuworks-app-badge";
-    badge.innerText = activeStatus === "Yes" ? "Active App" : "Inactive App";
+    badge.innerText = badgeText;
 
     // Style based on status
     Object.assign(badge.style, {
@@ -544,14 +570,13 @@ function injectApplicationBadges() {
       fontSize: "11px",
       fontWeight: "bold",
       color: "white",
-      backgroundColor: activeStatus === "Yes" ? "#28a745" : "#dc3545",
+      backgroundColor: badgeColor,
       verticalAlign: "middle",
       display: "inline-block",
     });
 
     // Insert badge after the link text (or append to link)
     link.appendChild(badge);
-    // console.log(`[BadgeDebug] Badged ID: ${jobId}`);
   });
 }
 
