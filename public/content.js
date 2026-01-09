@@ -459,6 +459,30 @@ function injectApplicationHistoryButton() {
     target.parentNode.style.justifyContent = "flex-start";
 
     target.parentNode.insertBefore(btn, target.nextSibling);
+    const tutorial_btn = document.createElement("button");
+    tutorial_btn.id = "nuworks-tutorial-btn";
+    tutorial_btn.innerText = "Tutorial";
+    // Symplicity styling classes - try to blend in but stand out
+    tutorial_btn.className = "btn btn-default btn-primary";
+
+    Object.assign(tutorial_btn.style, {
+      // make smaller
+      fontSize: "12px",
+      padding: "2px 6px",
+      borderRadius: "4px",
+      fontWeight: "bold",
+      cursor: "pointer",
+      marginRight: "10px",
+    });
+
+    tutorial_btn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      window.open("https://nucoop.app/#ineligible-video", "_blank");
+    };
+
+    // append to the right of the button we just added
+    btn.parentNode.insertBefore(tutorial_btn, btn.nextSibling);
   });
 }
 
@@ -634,6 +658,31 @@ function injectHistoryNavButton() {
 
   // Append to target. If target has children, append at the end.
   target.appendChild(btn);
+
+  const tutorial_btn = document.createElement("button");
+  tutorial_btn.id = "nuworks-tutorial-btn";
+  tutorial_btn.innerText = "Tutorial";
+  // Symplicity styling classes - try to blend in but stand out
+  tutorial_btn.className = "btn btn-default btn-primary";
+
+  Object.assign(tutorial_btn.style, {
+    // make smaller
+    fontSize: "12px",
+    padding: "2px 6px",
+    borderRadius: "4px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    marginRight: "10px",
+  });
+
+  tutorial_btn.onclick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.open("https://nucoop.app/#ineligible-video", "_blank");
+  };
+
+  target.appendChild(tutorial_btn);
+
   console.log("[NUWorks] History navigation button injected successfully.");
 }
 
