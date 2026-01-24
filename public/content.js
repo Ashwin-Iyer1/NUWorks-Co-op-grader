@@ -691,6 +691,35 @@ function handleAppliedJobsPage() {
   injectApplicationBadges();
 }
 
+let lastProcessedJobId = null;
+
+function handleJobDetailPage() {
+  const currentUrl = location.href;
+  // Match .../jobs/detail/:jobId
+  if (currentUrl.includes("/students/app/jobs/detail/")) {
+    const parts = currentUrl.split("/");
+    const jobId = parts[parts.length - 1].split("?")[0]; // handle query params
+
+    if (jobId && jobId !== lastProcessedJobId) {
+      console.log(`Job Detail Page Detected: ${jobId}. Triggering auto-grade...`);
+      lastProcessedJobId = jobId;
+
+      // Construct a single-item job list to send to background
+      // The background script expects a list of objects (with job_id)
+      const jobData = [{ job_id: jobId }];
+
+      triggerAutoGrade(jobData, () => {
+        console.log(`Auto-grade triggered for single job: ${jobId}`);
+      });
+    }
+  } else {
+    // Reset if we leave the page so we can re-trigger if we come back to a different one (or same)
+    if (!currentUrl.includes("/students/app/jobs/detail/")) {
+       lastProcessedJobId = null;
+    }
+  }
+}
+
 function checkUrl() {
   const currentUrl = location.href;
 
@@ -736,6 +765,9 @@ function checkUrl() {
       // Button state will be updated by injection or listener
     }
   }
+  
+  // Always check for job detail page logic
+  handleJobDetailPage();
 }
 
 // Start trying to inject the button
