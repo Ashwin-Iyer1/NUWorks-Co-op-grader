@@ -734,3 +734,35 @@ h4 {
     transform: translateX(-50%);
   }
 }
+
+/* Logo Theme Support */
+/* Invert logos for dark mode so they are visible on dark background */
+.logo-slide img.logo-invert {
+  filter: invert(1);
+}
+
+.logo-slide img.logo-invert-hue {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Light Mode Overrides: Reset to standard grayscale */
+[data-theme="light"] .logo-slide img.logo-invert,
+[data-theme="light"] .logo-slide img.logo-invert-hue {
+  filter: grayscale(100%);
+}
+
+/* Hover States */
+/* Ensure inverted logos stay inverted on hover in dark mode, but lose grayscale */
+.logo-slide img.logo-invert:hover {
+  filter: invert(1) grayscale(0%);
+}
+
+.logo-slide img.logo-invert-hue:hover {
+  filter: invert(1) hue-rotate(180deg) grayscale(0%);
+}
+
+/* Ensure logos show original colors on hover in light mode */
+[data-theme="light"] .logo-slide img.logo-invert:hover,
+[data-theme="light"] .logo-slide img.logo-invert-hue:hover {
+  filter: grayscale(0%);
+}
