@@ -222,7 +222,7 @@ h4 {
 
 /* Hero Section */
 .hero {
-  padding: 160px 0 40px;
+  padding: 160px 0 0px;
   position: relative;
   overflow: hidden;
 }
@@ -667,4 +667,70 @@ h4 {
 .screenshot-overlay.active {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Logo Carousel */
+.logo-carousel {
+  margin-top: 20px;
+  overflow: hidden;
+  padding-bottom: 80px;
+  background: transparent;
+  white-space: nowrap;
+  position: relative;
+  text-align: center;
+}
+
+.logo-carousel::before,
+.logo-carousel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  z-index: 2;
+}
+
+.logo-carousel::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-color), transparent);
+}
+
+.logo-carousel::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-color), transparent);
+}
+
+.logo-track {
+  display: inline-block;
+  animation: scroll 60s linear infinite;
+}
+
+.logo-slide {
+  display: inline-block;
+  margin: 0 40px;
+}
+
+.logo-slide img {
+  height: 80px;
+  width: auto;
+  max-width: 250px;
+  filter: grayscale(100%) brightness(1.2);
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.logo-slide img:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
