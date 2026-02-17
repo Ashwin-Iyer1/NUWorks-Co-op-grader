@@ -673,7 +673,7 @@ h4 {
 .logo-carousel {
   margin-top: 20px;
   overflow: hidden;
-  padding-bottom: 80px;
+  padding-bottom: 10px;
   background: transparent;
   white-space: nowrap;
   position: relative;
