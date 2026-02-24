@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -136,7 +136,14 @@
       </div>
     </header>
     <div class="logo-carousel">
-      <h1 style="text-align: center; margin-bottom: 20px; margin-top: 40px; margin-bottom: 20px;">
+      <h1
+        style="
+          text-align: center;
+          margin-bottom: 20px;
+          margin-top: 40px;
+          margin-bottom: 20px;
+        "
+      >
         Where we land offers
       </h1>
       <div class="logo-track">
@@ -175,12 +182,15 @@
           />
         </div>
         <div class="logo-slide">
-          <img
-            src="images\Chewy_pet_food_logo.svg"
-            alt="Chewy"
-          />
+          <img src="images\Chewy_pet_food_logo.svg" alt="Chewy" />
         </div>
 
+        <div class="logo-slide">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg"
+            alt="Wolters Kluwer"
+          />
+        </div>
         <!-- Set 2 -->
         <div class="logo-slide">
           <img
@@ -216,9 +226,12 @@
           />
         </div>
         <div class="logo-slide">
+          <img src="images\Chewy_pet_food_logo.svg" alt="Chewy" />
+        </div>
+        <div class="logo-slide">
           <img
-            src="images\Chewy_pet_food_logo.svg"
-            alt="Chewy"
+            src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg"
+            alt="Wolters Kluwer"
           />
         </div>
 
@@ -257,9 +270,12 @@
           />
         </div>
         <div class="logo-slide">
+          <img src="images\Chewy_pet_food_logo.svg" alt="Chewy" />
+        </div>
+        <div class="logo-slide">
           <img
-            src="images\Chewy_pet_food_logo.svg"
-            alt="Chewy"
+            src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg"
+            alt="Wolters Kluwer"
           />
         </div>
 
@@ -297,22 +313,29 @@
             class="logo-invert-hue"
           />
         </div>
-                <div class="logo-slide">
+        <div class="logo-slide">
+          <img src="images\Chewy_pet_food_logo.svg" alt="Chewy" />
+        </div>
+        <div class="logo-slide">
           <img
-            src="images\Chewy_pet_food_logo.svg"
-            alt="Chewy"
+            src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg"
+            alt="Wolters Kluwer"
           />
         </div>
-
       </div>
     </div>
-    
-    <div style="text-align: center; margin: 40px 0;">
-      <a href="https://northeastern-co-op-prestige-hunt.vercel.app" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+
+    <div style="text-align: center; margin: 40px 0">
+      <a
+        href="https://northeastern-co-op-prestige-hunt.vercel.app"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-primary"
+      >
         <i class="fa-solid fa-list-check"></i> NUWorks Company List
       </a>
     </div>
-    
+
     <section id="features" class="features">
       <div class="container">
         <div
@@ -551,7 +574,7 @@
       // Check for saved theme or system preference
       const savedTheme = localStorage.getItem("theme");
       const systemPrefersLight = window.matchMedia(
-        "(prefers-color-scheme: light)"
+        "(prefers-color-scheme: light)",
       ).matches;
 
       if (savedTheme) {
@@ -631,7 +654,7 @@
             activeClone = null;
             activeOriginal = null;
           },
-          { once: true }
+          { once: true },
         );
       }
 
