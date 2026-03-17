@@ -1,8 +1,6 @@
-// import nlpProcessor from "./nlp-processor.js";
-
-// EXPANDED Common skills database for various majors (Finance, Business, Tech, Engineering, etc.)
+// EXPANDED Common skills database for various majors
 const SKILL_DB = new Set([
-  // --- TECH ---
+  // --- TECH: Languages ---
   "python",
   "javascript",
   "typescript",
@@ -12,33 +10,142 @@ const SKILL_DB = new Set([
   "rust",
   "swift",
   "kotlin",
+  "go",
+  "golang",
+  "ruby",
+  "php",
+  "scala",
+  "r",
+  "perl",
+  "lua",
+  "dart",
+  "elixir",
+  "haskell",
+  "objective-c",
+  "assembly",
+  "fortran",
+  "cobol",
+  "groovy",
+  "clojure",
+
+  // --- TECH: Web ---
   "html",
   "css",
+  "sass",
+  "less",
+  "tailwind",
+  "bootstrap",
+
+  // --- TECH: Databases ---
   "sql",
   "nosql",
   "postgresql",
   "mysql",
   "mongodb",
   "redis",
+  "cassandra",
+  "dynamodb",
+  "elasticsearch",
+  "neo4j",
+  "sqlite",
+  "mariadb",
+  "couchdb",
+  "firebase",
+  "supabase",
+
+  // --- TECH: Frameworks ---
   "react",
   "angular",
   "vue",
+  "svelte",
+  "next.js",
+  "nuxt",
+  "gatsby",
+  "remix",
   "node.js",
   "express",
   "fastapi",
   "flask",
   "django",
   "spring boot",
+  "spring",
+  "rails",
+  "laravel",
+  "asp.net",
+  ".net",
+  "graphql",
+  "rest api",
+  "grpc",
+  "webpack",
+  "vite",
+
+  // --- TECH: Cloud & DevOps ---
   "aws",
   "azure",
   "gcp",
   "docker",
   "kubernetes",
-  "git",
+  "terraform",
+  "ansible",
+  "jenkins",
+  "github actions",
+  "gitlab ci",
+  "ci/cd",
+  "nginx",
+  "apache",
   "linux",
+  "unix",
+  "bash",
+  "powershell",
+  "cloudformation",
+  "serverless",
+  "lambda",
+  "microservices",
+  "kafka",
+  "rabbitmq",
+  "prometheus",
+  "grafana",
+  "datadog",
+  "splunk",
+  "new relic",
+  "vercel",
+  "heroku",
+  "netlify",
+
+  // --- TECH: Tools ---
+  "git",
+  "jira",
+  "confluence",
   "agile",
   "scrum",
-  "rest api",
+  "kanban",
+  "figma",
+  "sketch",
+  "postman",
+  "swagger",
+  "storybook",
+
+  // --- TECH: Mobile ---
+  "react native",
+  "flutter",
+  "ios",
+  "android",
+  "swiftui",
+  "jetpack compose",
+  "xcode",
+
+  // --- TECH: Testing ---
+  "jest",
+  "cypress",
+  "selenium",
+  "playwright",
+  "junit",
+  "pytest",
+  "mocha",
+  "chai",
+  "testing",
+  "unit testing",
+  "integration testing",
 
   // --- FINANCE & BANKING ---
   "financial analysis",
@@ -65,6 +172,15 @@ const SKILL_DB = new Set([
   "sap",
   "oracle",
   "quickbooks",
+  "hedge fund",
+  "derivatives",
+  "fixed income",
+  "quantitative analysis",
+  "compliance",
+  "underwriting",
+  "credit analysis",
+  "financial planning",
+  "budgeting",
 
   // --- BUSINESS & MARKETING ---
   "market research",
@@ -86,6 +202,16 @@ const SKILL_DB = new Set([
   "email marketing",
   "copywriting",
   "lead generation",
+  "product management",
+  "a/b testing",
+  "google ads",
+  "facebook ads",
+  "mailchimp",
+  "marketo",
+  "ppc",
+  "content marketing",
+  "ux research",
+  "user research",
 
   // --- DATA & ANALYTICS ---
   "data analysis",
@@ -97,6 +223,7 @@ const SKILL_DB = new Set([
   "big data",
   "data visualization",
   "machine learning",
+  "deep learning",
   "predictive modeling",
   "business intelligence",
   "pandas",
@@ -108,6 +235,32 @@ const SKILL_DB = new Set([
   "matplotlib",
   "seaborn",
   "simpy",
+  "spark",
+  "hadoop",
+  "airflow",
+  "dbt",
+  "etl",
+  "data engineering",
+  "data warehousing",
+  "natural language processing",
+  "nlp",
+  "computer vision",
+  "reinforcement learning",
+  "neural networks",
+  "regression",
+  "classification",
+  "clustering",
+  "feature engineering",
+  "model deployment",
+  "mlops",
+  "snowflake",
+  "redshift",
+  "bigquery",
+  "looker",
+  "jupyter",
+  "openai",
+  "langchain",
+  "hugging face",
 
   // --- ENGINEERING (Non-SW) ---
   "autocad",
@@ -123,8 +276,47 @@ const SKILL_DB = new Set([
   "six sigma",
   "dfma",
   "quality control",
+  "catia",
+  "revit",
+  "3d printing",
+  "gd&t",
+  "fea",
+  "cfd",
+  "plc",
+  "scada",
+  "labview",
+  "embedded systems",
+  "fpga",
+  "vhdl",
+  "verilog",
+  "signal processing",
+  "control systems",
+  "robotics",
+  "mechatronics",
 
-  // --- SOFT SKILLS / GENERAL ---
+  // --- HEALTHCARE / SCIENCE ---
+  "clinical research",
+  "fda",
+  "gmp",
+  "bioinformatics",
+  "genomics",
+  "proteomics",
+  "hplc",
+  "mass spectrometry",
+  "cell culture",
+  "pcr",
+  "elisa",
+  "clinical trials",
+  "regulatory affairs",
+  "pharmacology",
+  "epidemiology",
+  "biostatistics",
+  "ehr",
+  "hipaa",
+]);
+
+// Skills that are too generic and inflate scores
+const SOFT_SKILLS = new Set([
   "communication",
   "teamwork",
   "leadership",
@@ -225,17 +417,32 @@ const STOP_WORDS = new Set([
   "very",
   "s",
   "t",
-  "can",
-  "will",
   "just",
   "don",
-  "should",
   "now",
   "we",
   "us",
   "our",
   "you",
   "your",
+  "also",
+  "well",
+  "make",
+  "like",
+  "new",
+  "one",
+  "two",
+  "get",
+  "got",
+  "use",
+  "used",
+  "using",
+  "need",
+  "able",
+  "etc",
+  "per",
+  "via",
+  // Job-listing filler words
   "job",
   "role",
   "description",
@@ -271,27 +478,58 @@ const STOP_WORDS = new Set([
   "date",
   "position",
   "organization",
+  "working",
+  "including",
+  "required",
+  "minimum",
+  "years",
+  "year",
+  "will",
+  "must",
+  "ideal",
+  "includes",
+  "skills",
+  "based",
+  "provide",
+  "support",
+  "ensure",
+  "assist",
+  "help",
+  "develop",
+  "maintain",
+  "manage",
+  "create",
+  "perform",
+  "review",
+  "participate",
+  "collaborate",
+  "contribute",
+  "learn",
+  "understand",
+  "environment",
+  "office",
+  "location",
+  "full",
+  "time",
+  "part",
+  "equal",
+  "employer",
+  "benefits",
+  "salary",
+  "compensation",
+  "program",
+  "department",
+  "group",
 ]);
 
 class JobMatcher {
   constructor() {
     this.skillDb = SKILL_DB;
+    this.softSkills = SOFT_SKILLS;
   }
 
   /**
    * Check if user qualifies based on school year and graduation date
-   * @param {string} jobText
-   * @param {string} userSchoolYear (e.g. "Junior")
-   * @param {string} userGradDate (e.g. "2025-05")
-   * @returns {boolean} true if qualified or n/a
-   */
-  /**
-   * Check if user qualifies based on school year and graduation date
-   * @param {string} jobText
-   * @param {string} userSchoolYear (e.g. "Junior")
-   * @param {string} userGradDate (e.g. "2025-05")
-   * @param {Date} [currentDate] Optional reference date for relative calculations
-   * @returns {boolean} true if qualified or n/a
    */
   async isQualified(
     jobText,
@@ -299,18 +537,6 @@ class JobMatcher {
     userGradDate,
     currentDate = new Date()
   ) {
-    // Ensure NLP model is loaded
-    // await nlpProcessor.loadModel();
-
-    // Get NLP Analysis
-    // const nlpResult = await nlpProcessor.process(jobText);
-    // if (nlpResult) {
-    //   console.log("NLP Analysis for Job:", nlpResult);
-    // For now, we just log. In future, we use nlpResult.entities to filter.
-    // E.g. const detectedYears = nlpResult.entities.filter(e => e.entity === 'school_year').map(e => e.option);
-    // if (detectedYears.length > 0 && !detectedYears.includes(userSchoolYear.toLowerCase())) return false;
-    // }
-
     if (!jobText) return false;
     const lowerText = jobText.toLowerCase();
     const normalizedUserYear = userSchoolYear
@@ -328,28 +554,21 @@ class JobMatcher {
         "bachelors",
       ];
 
-      // Find which years are mentioned in the job description
-      // We look for singular and plural forms
       const mentionedYears = new Set();
       years.forEach((y) => {
-        // Handle special case for freshman/freshmen
         let pattern;
         if (y === "freshman") {
           pattern = /\bfreshm(a|e)n\b/i;
         } else if (y === "graduate") {
-          // "Graduate" captures: graduate, master's, masters, phd, mba
-          pattern = /\b(graduate|master(?:'|’)?s|ph\.?d|mba)\b/i;
+          pattern = /\b(graduate|master(?:'|')?s|ph\.?d|mba)\b/i;
         } else if (y === "bachelors") {
-          // "Bachelors" captures: bachelors, bachelor's, bs, ba (careful with short ones), bsc, b.s., b.a.
           pattern =
-            /\b(bachelor(?:'|’)?s|b\.?s\.?|b\.?a\.?|b\.?sc\.?|b\.?eng\.?)\b/i;
+            /\b(bachelor(?:'|')?s|b\.?s\.?|b\.?a\.?|b\.?sc\.?|b\.?eng\.?)\b/i;
         } else if (y === "junior" || y === "senior") {
-          // Exclude job titles (e.g. Junior Developer, Senior Analyst)
           const titles =
-            "developer|engineer|consultant|associate|manager|designer|analyst|architect|admin|specialist|program|product|software|account|recruiter|writer|editor";
+            "developer|engineer|consultant|associate|manager|designer|analyst|architect|admin|specialist|program|product|software|account|recruiter|writer|editor|vice|director|staff|principal|lead";
           pattern = new RegExp(`\\b${y}(s|es)?(?!\\s+(?:${titles}))\\b`, "i");
         } else {
-          // Standard assumption: add 's' or 'es' for plural
           pattern = new RegExp(`\\b${y}(s|es)?\\b`, "i");
         }
 
@@ -358,9 +577,7 @@ class JobMatcher {
         }
       });
 
-      // If the job mentions specific school years, check if user is one of them
       if (mentionedYears.size > 0) {
-        // Handle "undergraduate" as a catch-all for F/So/J/Sn
         const isUndergrad =
           mentionedYears.has("undergraduate") ||
           mentionedYears.has("undergrad") ||
@@ -373,10 +590,6 @@ class JobMatcher {
           "bachelors",
         ].includes(normalizedUserYear);
 
-        // If job allows "undergraduate" and user is one, we are good (for this check).
-        // But if it *also* lists specific years, "undergraduate" usually overrides or expands.
-        // Logic: If "undergraduate" is mentioned, and user is undergrad, PASS.
-        //        Else (no "undergraduate" or user not undergrad), check specific year matches.
         if (isUndergrad && userIsUndergrad) {
           // Qualified by broad category
         } else if (!mentionedYears.has(normalizedUserYear)) {
@@ -387,15 +600,11 @@ class JobMatcher {
 
     // 2. Graduation Date Check
     if (userGradDate) {
-      // Extract user year and month
       const [uYear, uMonth] = userGradDate.split("-").map(Number);
-      // Construct user grad date object (defaults to first of month)
-      // Note: Month is 0-indexed in JS Date
       const userDate = new Date(uYear, uMonth - 1, 1);
       const userGradYearStr = String(uYear);
 
-      // --- A. Absolute Year Check ---
-      // Regex patterns to find graduation year requirements
+      // A. Absolute Year Check
       const gradPatterns = [
         /class of (\d{4})/gi,
         /graduating (?:in|by) (?:\w+ )?(\d{4})/gi,
@@ -417,12 +626,7 @@ class JobMatcher {
         return false;
       }
 
-      // --- B. Relative Duration Check ---
-      // Phrases like: "graduating within a year", "within the next 18 months"
-      // We calculate the deadlines and check if user's date falls WITHIN that range.
-
-      // Capture number or 'a'/'an' -> convert to months
-      // Group 1: quantity (digit or word), Group 2: unit (year/month)
+      // B. Relative Duration Check
       const relativePatterns = [
         /graduating within (?:the )?(?:next )?(\d+|a|an|one|two|three) (year|month)s?/gi,
         /must graduate within (?:the )?(\d+|a|an|one|two|three) (year|month)s?/gi,
@@ -430,10 +634,9 @@ class JobMatcher {
 
       for (const pattern of relativePatterns) {
         let match;
-        // Optimization: Use a clean regex instance or reset lastIndex if global (taken care of by exec loop)
         while ((match = pattern.exec(lowerText)) !== null) {
           let quantityStr = match[1].toLowerCase();
-          const unit = match[2].toLowerCase(); // "year" or "month"
+          const unit = match[2].toLowerCase();
 
           let quantity = 1;
           if (
@@ -452,19 +655,13 @@ class JobMatcher {
 
           if (isNaN(quantity)) continue;
 
-          // Calculate max allowed grad date
           const cutoffDate = new Date(currentDate);
           if (unit.startsWith("year")) {
             cutoffDate.setFullYear(cutoffDate.getFullYear() + quantity);
           } else {
-            // months
             cutoffDate.setMonth(cutoffDate.getMonth() + quantity);
           }
 
-          // Verification:
-          // "Graduating within X" means CurrentDate <= UserGradDate <= CutoffDate
-          // We assume user isn't matching if they already graduated way before (though Co-ops usually for students)
-          // Mainly we check if they graduate TOO LATE.
           if (userDate > cutoffDate) {
             return false;
           }
@@ -476,13 +673,11 @@ class JobMatcher {
   }
 
   /**
-   * Normalize text: lowercase, remove special chars
+   * Normalize text: lowercase, remove HTML, special chars
    */
   normalize(text) {
-    // 1. Remove HTML tags
     const noHtml = text.replace(/<[^>]*>?/gm, " ");
-    // 2. Lowercase and remove non-alphanumeric
-    return noHtml.toLowerCase().replace(/[^a-z0-9\s+]/g, " ");
+    return noHtml.toLowerCase().replace(/[^a-z0-9\s.+#/&-]/g, " ");
   }
 
   /**
@@ -491,54 +686,113 @@ class JobMatcher {
   tokenize(text) {
     return this.normalize(text)
       .split(/\s+/)
-      .filter((w) => w.length > 2 && !STOP_WORDS.has(w)); // Min length 3 to filter junk
+      .filter((w) => w.length > 2 && !STOP_WORDS.has(w));
   }
 
   /**
-   * Extract known skills from text + standard db
+   * Extract known skills from text using the skill database.
+   * Returns { hard: Set, soft: Set }
    */
   extractExplicitSkills(text) {
     const normalized = this.normalize(text);
-    const foundSkills = new Set();
+    const hard = new Set();
+    const soft = new Set();
 
     this.skillDb.forEach((skill) => {
       const escapedSkill = skill.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      // Look for whole word matches generally
       const regex = new RegExp(`\\b${escapedSkill}\\b`, "i");
       if (regex.test(normalized) || normalized.includes(skill)) {
-        foundSkills.add(skill);
+        if (this.softSkills.has(skill)) {
+          soft.add(skill);
+        } else {
+          hard.add(skill);
+        }
       }
     });
 
-    return Array.from(foundSkills);
+    return { hard, soft };
   }
 
   /**
-   * Dynamically find important keywords in the Job Description that might not be in our DB.
-   * Uses simple frequency analysis on the JD.
+   * Detect if a skill appears in a "required" context vs "preferred/nice to have"
    */
-  extractDynamicKeywords(jobText) {
-    const tokens = this.tokenize(jobText);
+  classifyRequirements(text) {
+    const normalized = this.normalize(text);
+    const lines = normalized.split(/\n|\.(?:\s)/);
+
+    const requiredContext =
+      /required|must have|must be|essential|mandatory|minimum|necessary/i;
+    const preferredContext =
+      /preferred|nice to have|bonus|plus|desired|ideally|optional|a plus/i;
+
+    const required = new Set();
+    const preferred = new Set();
+
+    // Check each line for context
+    lines.forEach((line) => {
+      const isRequired = requiredContext.test(line);
+      const isPreferred = preferredContext.test(line);
+
+      this.skillDb.forEach((skill) => {
+        if (line.includes(skill)) {
+          if (isPreferred) {
+            preferred.add(skill);
+          } else if (isRequired) {
+            required.add(skill);
+          }
+        }
+      });
+    });
+
+    return { required, preferred };
+  }
+
+  /**
+   * Extract bigrams (two-word phrases) that might represent skills not in DB
+   */
+  extractBigrams(text) {
+    const tokens = this.tokenize(text);
+    const bigrams = new Map();
+
+    for (let i = 0; i < tokens.length - 1; i++) {
+      const bigram = `${tokens[i]} ${tokens[i + 1]}`;
+      bigrams.set(bigram, (bigrams.get(bigram) || 0) + 1);
+    }
+
+    // Return bigrams that appear more than once (likely meaningful phrases)
+    return [...bigrams.entries()]
+      .filter(([, count]) => count > 1)
+      .map(([bigram]) => bigram);
+  }
+
+  /**
+   * Extract top dynamic keywords using TF with some IDF-like weighting.
+   * Words that appear in the job but are rare/specific score higher.
+   */
+  extractDynamicKeywords(jobText, resumeText) {
+    const jobTokens = this.tokenize(jobText);
+    const resumeTokens = new Set(this.tokenize(resumeText || ""));
     const freqMap = {};
 
-    tokens.forEach((t) => {
+    jobTokens.forEach((t) => {
       freqMap[t] = (freqMap[t] || 0) + 1;
     });
 
-    // Sort by frequency
-    const sortedTokens = Object.entries(freqMap).sort((a, b) => b[1] - a[1]);
+    // Penalize very common tokens (appear in > 30% of the text)
+    const threshold = jobTokens.length * 0.3;
 
-    // Take top ~15 frequent words that are NOT already found as explicit skills
-    // and aren't super common low-value words (filtered by stop words already)
-    // In a real NLP lib we'd use TF-IDF with a corpus background, but here raw freq is best proxy
+    const sortedTokens = Object.entries(freqMap)
+      .filter(([, count]) => count <= threshold)
+      .sort((a, b) => b[1] - a[1]);
+
     const dynamicKeywords = [];
-    const limit = 15;
+    const limit = 20;
 
     for (const [token, count] of sortedTokens) {
       if (dynamicKeywords.length >= limit) break;
-      // If it's not already in our explicit skill extraction (approx check)
-      // and has appeared at least twice (unless text is very short)
-      if (count > 1 || tokens.length < 50) {
+      // Skip single-char tokens and very generic ones
+      if (token.length < 3) continue;
+      if (count > 1 || jobTokens.length < 50) {
         dynamicKeywords.push(token);
       }
     }
@@ -547,23 +801,58 @@ class JobMatcher {
   }
 
   /**
-   * Compute TF Vector
+   * Compute TF-IDF vectors for both documents
    */
-  computeTFVector(tokens) {
-    const vec = {};
-    tokens.forEach((t) => {
-      vec[t] = (vec[t] || 0) + 1;
+  computeTFIDFVectors(tokensA, tokensB) {
+    // Build TF for each doc
+    const tfA = {};
+    const tfB = {};
+
+    tokensA.forEach((t) => {
+      tfA[t] = (tfA[t] || 0) + 1;
     });
-    return vec;
+    tokensB.forEach((t) => {
+      tfB[t] = (tfB[t] || 0) + 1;
+    });
+
+    // Normalize TF by doc length
+    const lenA = tokensA.length || 1;
+    const lenB = tokensB.length || 1;
+
+    Object.keys(tfA).forEach((k) => {
+      tfA[k] /= lenA;
+    });
+    Object.keys(tfB).forEach((k) => {
+      tfB[k] /= lenB;
+    });
+
+    // IDF: treat the two docs as our "corpus"
+    const allKeys = new Set([...Object.keys(tfA), ...Object.keys(tfB)]);
+    const idf = {};
+
+    allKeys.forEach((key) => {
+      const docCount = (tfA[key] ? 1 : 0) + (tfB[key] ? 1 : 0);
+      // IDF = log(N/df) where N=2
+      idf[key] = Math.log(2 / docCount) + 1; // +1 smoothing
+    });
+
+    // Build TF-IDF vectors
+    const vecA = {};
+    const vecB = {};
+
+    allKeys.forEach((key) => {
+      vecA[key] = (tfA[key] || 0) * idf[key];
+      vecB[key] = (tfB[key] || 0) * idf[key];
+    });
+
+    return { vecA, vecB };
   }
 
   /**
    * Cosine Similarity
    */
   calculateCosineSimilarity(vecA, vecB) {
-    const keysA = Object.keys(vecA);
-    const keysB = Object.keys(vecB);
-    const allKeys = new Set([...keysA, ...keysB]);
+    const allKeys = new Set([...Object.keys(vecA), ...Object.keys(vecB)]);
 
     let dotProduct = 0;
     let magA = 0;
@@ -582,86 +871,131 @@ class JobMatcher {
   }
 
   /**
-   * Calculate Major-Agnostic Match Score
+   * Calculate Match Score with improved precision
    */
   calculateScore(resumeText, jobDescriptionText) {
     if (!resumeText || !jobDescriptionText) {
       return { score: 0, matches: [], missing: [], details: {} };
     }
 
-    // 1. Explicit Skill Extraction (Database Based)
-    const resumeSkills = new Set(this.extractExplicitSkills(resumeText));
-    const jobSkills = new Set(this.extractExplicitSkills(jobDescriptionText));
+    // 1. Explicit Skill Extraction (split hard vs soft)
+    const resumeSkillsResult = this.extractExplicitSkills(resumeText);
+    const jobSkillsResult = this.extractExplicitSkills(jobDescriptionText);
 
-    // 2. Dynamic Keyword Extraction (Context Based)
-    // Identify top words in JD that represent the "core" of the job
-    const jobKeywords = this.extractDynamicKeywords(jobDescriptionText);
+    const resumeHard = resumeSkillsResult.hard;
+    const resumeSoft = resumeSkillsResult.soft;
+    const jobHard = jobSkillsResult.hard;
+    const jobSoft = jobSkillsResult.soft;
+
+    // All resume skills combined for lookup
+    const allResumeSkills = new Set([...resumeHard, ...resumeSoft]);
+
+    // 2. Required vs Preferred classification
+    const { required, preferred } = this.classifyRequirements(jobDescriptionText);
+
+    // 3. Dynamic Keyword Extraction
+    const jobKeywords = this.extractDynamicKeywords(jobDescriptionText, resumeText);
     const resumeTokensSet = new Set(this.tokenize(resumeText));
 
-    // Find which dynamic keywords are present in resume
     const matchedKeywords = jobKeywords.filter((k) => resumeTokensSet.has(k));
-    const missingKeywords = jobKeywords.filter((k) => !resumeTokensSet.has(k));
 
-    // Combine for display (Explicit Skills + Top 5 Dynamic Keywords that act like skills)
-    // We treat DB skills as "Gold Standard" and Dynamic Keywords as "Silver"
-    const allJobTerms = Array.from(jobSkills).concat(jobKeywords.slice(0, 5));
-    const allResumeTerms = new Set([...resumeSkills, ...resumeTokensSet]);
+    // 4. Bigram matching
+    const jobBigrams = this.extractBigrams(jobDescriptionText);
+    const resumeBigramSet = new Set(this.extractBigrams(resumeText));
+    const matchedBigrams = jobBigrams.filter((b) => resumeBigramSet.has(b));
 
-    const finalMatches = allJobTerms.filter((t) => allResumeTerms.has(t));
-    const finalMissing = allJobTerms.filter((t) => !allResumeTerms.has(t));
+    // Build display lists
+    // Hard skills matched/missing take priority, then soft, then keywords
+    const hardMatched = [...jobHard].filter((s) => allResumeSkills.has(s));
+    const hardMissing = [...jobHard].filter((s) => !allResumeSkills.has(s));
+    const softMatched = [...jobSoft].filter((s) => allResumeSkills.has(s));
 
-    // Remove duplicates for display
-    const uniqueMatches = [...new Set(finalMatches)];
-    const uniqueMissing = [...new Set(finalMissing)];
+    // Combine for display (hard skills first, then top keywords)
+    const displayMatches = [
+      ...hardMatched,
+      ...softMatched.slice(0, 2),
+      ...matchedKeywords.slice(0, 3),
+    ];
+    const displayMissing = [...hardMissing.slice(0, 5)];
+
+    const uniqueMatches = [...new Set(displayMatches)];
+    const uniqueMissing = [...new Set(displayMissing)];
 
     // --- SCORING ALGORITHM ---
 
-    // Part A: Explicit Skill Match (High precision)
-    let explicitScore = 0;
-    if (jobSkills.size > 0) {
-      const intersection = [...jobSkills].filter((s) => resumeSkills.has(s));
-      // Normalization: Matching ~60% of requested skills is considered "perfect" (100%)
-      const coverage = intersection.length / (jobSkills.size * 0.6);
-      explicitScore = Math.min(100, coverage * 100);
+    // Part A: Hard Skill Match (highest weight — these are the real differentiators)
+    let hardSkillScore = 0;
+    if (jobHard.size > 0) {
+      // Give extra weight to "required" skills
+      let weightedMatch = 0;
+      let weightedTotal = 0;
+
+      jobHard.forEach((skill) => {
+        const weight = required.has(skill) ? 1.5 : preferred.has(skill) ? 0.7 : 1.0;
+        weightedTotal += weight;
+        if (allResumeSkills.has(skill)) {
+          weightedMatch += weight;
+        }
+      });
+
+      // Matching ~65% of weighted skills is considered "perfect"
+      const coverage = weightedMatch / (weightedTotal * 0.65);
+      hardSkillScore = Math.min(100, coverage * 100);
     } else {
-      explicitScore = 50; // Neutral if no DB skills found
+      hardSkillScore = 50; // Neutral if no hard skills detected
     }
 
-    // Part B: Dynamic Keyword Coverage (Broad coverage)
+    // Part B: Soft Skill Match (low weight — these inflate scores)
+    let softSkillScore = 0;
+    if (jobSoft.size > 0) {
+      const intersection = [...jobSoft].filter((s) => allResumeSkills.has(s));
+      softSkillScore = Math.min(100, (intersection.length / jobSoft.size) * 100);
+    }
+
+    // Part C: Dynamic Keyword Coverage
     let keywordScore = 0;
     if (jobKeywords.length > 0) {
-      // Normalization: Matching ~60% of dynamic keywords is considered "perfect" (100%)
-      const coverage = matchedKeywords.length / (jobKeywords.length * 0.6);
+      const totalMatched = matchedKeywords.length + matchedBigrams.length * 1.5;
+      const coverage = totalMatched / (jobKeywords.length * 0.6);
       keywordScore = Math.min(100, coverage * 100);
     }
 
-    // Part C: Vector Similarity (Holistic context)
+    // Part D: TF-IDF Cosine Similarity
     const resumeTokens = this.tokenize(resumeText);
     const jobTokens = this.tokenize(jobDescriptionText);
-    const vecA = this.computeTFVector(resumeTokens);
-    const vecB = this.computeTFVector(jobTokens);
+    const { vecA, vecB } = this.computeTFIDFVectors(resumeTokens, jobTokens);
     let cosineScore = this.calculateCosineSimilarity(vecA, vecB) * 100;
 
-    // Normalization: Boost cosine score. Raw similarity is usually low (0.3-0.6).
-    // Scaling so that ~0.33 raw similarity becomes 100%
-    cosineScore = Math.min(100, cosineScore * 3.0);
+    // Scale: raw TF-IDF cosine tends to be higher than raw TF, so scale ~0.4 -> 100%
+    cosineScore = Math.min(100, cosineScore * 2.5);
 
-    // Weighted Final Score
-    // Adjust weights: Explicit skills are most important if present.
-    // Normalized to prioritize hard requirements (Languages/Tech) over vague text matches.
+    // --- Weighted Final Score ---
+    // Hard skills dominate; soft skills are nearly irrelevant to differentiation
+    let wHard, wSoft, wKeyword, wCosine;
 
-    let wExplicit = 0.6;
-    let wKeyword = 0.2;
-    let wCosine = 0.2;
-
-    if (jobSkills.size === 0) {
-      wExplicit = 0;
+    if (jobHard.size === 0) {
+      // No hard skills found — rely more on keywords and cosine
+      wHard = 0;
+      wSoft = 0.05;
       wKeyword = 0.5;
-      wCosine = 0.5;
+      wCosine = 0.45;
+    } else if (jobHard.size <= 3) {
+      // Few hard skills — balance with keywords
+      wHard = 0.45;
+      wSoft = 0.05;
+      wKeyword = 0.25;
+      wCosine = 0.25;
+    } else {
+      // Plenty of hard skills — they're the best signal
+      wHard = 0.55;
+      wSoft = 0.05;
+      wKeyword = 0.2;
+      wCosine = 0.2;
     }
 
     const totalScore =
-      explicitScore * wExplicit +
+      hardSkillScore * wHard +
+      softSkillScore * wSoft +
       keywordScore * wKeyword +
       cosineScore * wCosine;
 
@@ -670,9 +1004,12 @@ class JobMatcher {
       matches: uniqueMatches,
       missing: uniqueMissing,
       details: {
-        explicitScore,
-        keywordScore,
-        cosineScore,
+        hardSkillScore: Math.round(hardSkillScore),
+        softSkillScore: Math.round(softSkillScore),
+        keywordScore: Math.round(keywordScore),
+        cosineScore: Math.round(cosineScore),
+        hardSkillsFound: jobHard.size,
+        hardSkillsMatched: hardMatched.length,
       },
     };
   }
