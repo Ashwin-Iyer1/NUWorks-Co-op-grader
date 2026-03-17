@@ -58,9 +58,9 @@
             id="theme-toggle"
             class="theme-btn"
             aria-label="Toggle Theme"
-            style="background: none; border: none"
+            style="background: none; border: none; cursor: pointer; padding: 4px 8px;"
           >
-            <i class="fa-solid fa-moon" style="color: #ffffff"></i>
+            <i class="fa-solid fa-moon" style="color: var(--text-secondary); font-size: 1rem;"></i>
           </button>
           <a
             href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website"
@@ -126,7 +126,8 @@
             controls
             style="
               border-radius: 12px;
-              box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+              box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.4);
+              border: 1px solid var(--border-color);
             "
           >
             <source src="video.mp4" type="video/mp4" />
@@ -136,16 +137,7 @@
       </div>
     </header>
     <div class="logo-carousel">
-      <h1
-        style="
-          text-align: center;
-          margin-bottom: 20px;
-          margin-top: 40px;
-          margin-bottom: 20px;
-        "
-      >
-        Where we land offers
-      </h1>
+      <p class="logo-carousel-heading">Where our users land offers</p>
       <div class="logo-track">
         <!-- Set 1 -->
         <div class="logo-slide">
@@ -325,12 +317,12 @@
       </div>
     </div>
 
-    <div style="text-align: center; margin: 40px 0">
+    <div class="company-list-cta">
       <a
         href="https://northeastern-co-op-prestige-hunt.vercel.app"
         target="_blank"
         rel="noopener noreferrer"
-        class="btn btn-primary"
+        class="btn btn-secondary"
       >
         <i class="fa-solid fa-list-check"></i> NUWorks Company List
       </a>
@@ -338,17 +330,7 @@
 
     <section id="features" class="features">
       <div class="container">
-        <div
-          class="feature-screenshot-container"
-          style="
-            text-align: center;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-          "
-        >
+        <div class="feature-screenshot-section">
           <img
             src="feature_screenshot.png"
             class="feature-screenshot"
@@ -356,7 +338,7 @@
             style="
               width: 50%;
               border-radius: 12px;
-              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
             "
           />
           <img
@@ -366,7 +348,7 @@
             style="
               width: 50%;
               border-radius: 12px;
-              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
             "
           />
         </div>
@@ -457,18 +439,8 @@
             selected.
           </p>
         </div>
-        <div style="max-width: 800px; margin: 0 auto">
-          <video
-            width="100%"
-            height="auto"
-            controls
-            playsinline
-            style="
-              border-radius: 12px;
-              box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-              border: 1px solid var(--border-color);
-            "
-          >
+        <div class="video-container">
+          <video controls playsinline>
             <source src="ineligible-job-video.mov" type="video/quicktime" />
             <source src="ineligible-job-video.mov" type="video/mp4" />
             Your browser does not support the video tag.
@@ -524,7 +496,7 @@
               <a
                 href="https://ashwiniyer.com"
                 target="_blank"
-                style="color: var(--primary-color)"
+                style="color: var(--accent-primary)"
                 >Ashwin Iyer</a
               >
             </p>
@@ -590,10 +562,8 @@
       function updateIcon(theme) {
         if (theme === "light") {
           themeIcon.classList.replace("fa-moon", "fa-sun");
-          themeIcon.style.color = "#000000";
         } else {
           themeIcon.classList.replace("fa-sun", "fa-moon");
-          themeIcon.style.color = "#ffffff";
         }
       }
 
