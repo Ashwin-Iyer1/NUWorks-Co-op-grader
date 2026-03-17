@@ -43,6 +43,10 @@
     {
       "resources": ["interceptor.js"],
       "matches": ["https://northeastern-csm.symplicity.com/*"]
+    },
+    {
+      "resources": ["custom.html"],
+      "matches": ["https://northeastern-csm.symplicity.com/*"]
     }
   ],
   "background": {

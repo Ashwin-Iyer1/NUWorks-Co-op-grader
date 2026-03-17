@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "train": "node train.js",
     "train:auto": "node train-auto.js",
-    "build": "parcel build src/index.html src/background.js --dist-dir dist --no-cache"
+    "build": "parcel build src/index.html src/custom.html src/background.js --dist-dir dist --no-cache --public-url ./"
   },
   "staticFiles": {
     "staticPath": "public"

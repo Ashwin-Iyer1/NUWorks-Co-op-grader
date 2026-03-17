@@ -1,6 +1,16 @@
 // Injector logic moved to manifest.json (world: MAIN)
 console.log("Content script loaded (Manifest Injection Mode).");
 
+// Context validity check — stops all activity if extension reloads
+let checkUrlIntervalId = null;
+function isContextValid() {
+  try {
+    return !!(chrome.runtime && chrome.runtime.id);
+  } catch (e) {
+    return false;
+  }
+}
+
 // Store job data locally separated by context
 let searchJobData = null; // Data for the Search Page
 let discoveryJobData = null; // Data for Discover/Home
@@ -142,6 +152,38 @@ function injectGradeButton() {
     };
 
     target.parentNode.insertBefore(gradeButton, target.nextSibling);
+
+    // Inject "View Custom Page (Beta)" button next to grade button
+    if (!document.getElementById("nuworks-custom-btn")) {
+      var customBtn = document.createElement("button");
+      customBtn.id = "nuworks-custom-btn";
+      customBtn.innerText = "View Custom Page (Beta)";
+      Object.assign(customBtn.style, {
+        marginLeft: "8px",
+        background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
+        color: "white",
+        border: "none",
+        borderRadius: "4px",
+        padding: "5px 10px",
+        cursor: "pointer",
+        fontWeight: "bold",
+        fontSize: "13px",
+      });
+      customBtn.onmouseenter = function () {
+        customBtn.style.background = "linear-gradient(135deg, #8b5cf6, #7c3aed)";
+      };
+      customBtn.onmouseleave = function () {
+        customBtn.style.background = "linear-gradient(135deg, #7c3aed, #6d28d9)";
+      };
+      customBtn.onclick = function () {
+        if (chrome.runtime && chrome.runtime.getURL) {
+          var url = chrome.runtime.getURL("custom.html");
+          window.open(url, "_blank");
+        }
+      };
+      gradeButton.parentNode.insertBefore(customBtn, gradeButton.nextSibling);
+    }
+
     console.log("NUWorks: Grade button injected");
   } else {
     // Retry if target not found yet (dynamic loading)
