@@ -176,9 +176,13 @@ function injectGradeButton() {
         customBtn.style.background = "linear-gradient(135deg, #7c3aed, #6d28d9)";
       };
       customBtn.onclick = function () {
-        if (chrome.runtime && chrome.runtime.getURL) {
-          var url = chrome.runtime.getURL("custom.html");
-          window.open(url, "_blank");
+        try {
+          if (isContextValid() && chrome.runtime.getURL) {
+            var url = chrome.runtime.getURL("custom.html");
+            window.open(url, "_blank");
+          }
+        } catch (e) {
+          console.log("NUWorks: Extension context invalidated.");
         }
       };
       gradeButton.parentNode.insertBefore(customBtn, gradeButton.nextSibling);
@@ -187,7 +191,7 @@ function injectGradeButton() {
     console.log("NUWorks: Grade button injected");
   } else {
     // Retry if target not found yet (dynamic loading)
-    setTimeout(injectGradeButton, 1000);
+    if (isContextValid()) setTimeout(injectGradeButton, 1000);
   }
 }
 
@@ -763,6 +767,16 @@ function handleJobDetailPage() {
 }
 
 function checkUrl() {
+  // Stop polling if extension context is gone
+  if (!isContextValid()) {
+    if (checkUrlIntervalId) {
+      clearInterval(checkUrlIntervalId);
+      checkUrlIntervalId = null;
+    }
+    console.log("NUWorks: Extension context invalidated, stopping polling.");
+    return;
+  }
+
   const currentUrl = location.href;
 
   // Poll for application history page injection
@@ -807,7 +821,7 @@ function checkUrl() {
       // Button state will be updated by injection or listener
     }
   }
-  
+
   // Always check for job detail page logic
   handleJobDetailPage();
 }
@@ -821,7 +835,7 @@ if (location.href.includes("/students/app/jobs/applied")) {
 }
 
 // Monitor URL changes
-setInterval(checkUrl, 1000);
+checkUrlIntervalId = setInterval(checkUrl, 1000);
 
 // Listen for messages from the interceptor
 window.addEventListener("message", function (event) {
