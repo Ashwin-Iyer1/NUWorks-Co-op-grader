@@ -67,14 +67,12 @@
                 id="industry-search"
                 placeholder="Search industries..."
               />
-              <div class="dropdown-options" id="industry-options">
-                <!-- Options populated by JS -->
-              </div>
+              <div class="dropdown-options" id="industry-options"></div>
             </div>
           </div>
         </div>
         <div class="input-group">
-          <label for="postdate">Number of days since posted</label>
+          <label for="postdate">Days since posted</label>
           <input type="number" id="postdate" value="30" />
         </div>
         <div class="input-group checkbox">
@@ -92,11 +90,8 @@
             max="100"
             step="10"
             value="0"
-            style="width: 100%; height: 25px; cursor: pointer"
           />
-          <p style="font-size: 0.8em; color: #666">
-            A good score is around 40-50%
-          </p>
+          <p class="score-hint">A good score is around 40-50%</p>
         </div>
 
         <button id="get-jobs-btn" class="btn-primary">
@@ -108,11 +103,7 @@
       </div>
 
       <!-- Error Views -->
-      <div
-        id="wrong-page-view"
-        class="hidden"
-        style="text-align: center; margin-top: 50px"
-      >
+      <div id="wrong-page-view" class="hidden error-view">
         <h2>Not on Co-op Page</h2>
         <p>
           Please navigate to
@@ -123,20 +114,12 @@
         </p>
       </div>
 
-      <div
-        id="wrong-page-view-home"
-        class="hidden"
-        style="text-align: center; margin-top: 50px"
-      >
+      <div id="wrong-page-view-home" class="hidden error-view">
         <h2>Not signed in</h2>
         <p>Please Login to NUWorks to use this extension.</p>
       </div>
 
-      <div
-        id="missing-auth-view"
-        class="hidden"
-        style="text-align: center; margin-top: 50px"
-      >
+      <div id="missing-auth-view" class="hidden error-view">
         <h2>Authorization Missing</h2>
         <p>Could not detect Cookie or Authorization headers.</p>
         <p>Please refresh the NUWorks page or log in again.</p>
@@ -144,16 +127,19 @@
 
       <!-- Analysis Results View -->
       <div id="analysis-view" class="hidden">
-        <h1>Analysis Results</h1>
+        <div class="analysis-header">
+          <h1>Results</h1>
+          <span id="analysis-count" class="analysis-count"></span>
+        </div>
         <button
           id="back-to-main-btn"
-          style="margin-bottom: 5px; cursor: pointer"
+          style="margin-bottom: 8px; cursor: pointer"
         >
           &larr; Back to Search
         </button>
         <div
           id="analysis-results"
-          style="max-height: 400px; overflow-y: auto; margin-bottom: 15px"
+          style="max-height: 400px; overflow-y: auto; margin-bottom: 12px"
         ></div>
         <button id="save-results-btn" class="btn-primary">
           Save All Results
@@ -163,7 +149,7 @@
       <!-- Resume Input View -->
       <div id="resume-view" class="hidden">
         <h1>Resume Settings</h1>
-        <p class="subtitle">Please enter your details below.</p>
+        <p class="subtitle">Enter your details below.</p>
 
         <div class="input-group">
           <label for="school-year">Current School Year</label>
@@ -190,8 +176,8 @@
         <div class="input-group">
           <label for="resume-file">Upload PDF Resume</label>
           <input type="file" id="resume-file" accept=".pdf" />
-          <button id="debug-pdf-btn" style="margin-top: 5px; font-size: 0.8em">
-            Debug: View Extracted Text
+          <button id="debug-pdf-btn" style="margin-top: 6px; font-size: 0.78rem; background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 4px 10px; border-radius: 6px; cursor: pointer;">
+            View Extracted Text
           </button>
         </div>
 
@@ -208,12 +194,13 @@
         <button
           id="cancel-resume-btn"
           style="
-            margin-top: 10px;
+            margin-top: 8px;
             width: 100%;
             border: none;
             background: transparent;
             cursor: pointer;
-            text-decoration: underline;
+            color: var(--text-muted);
+            font-size: 0.85rem;
           "
         >
           Cancel
@@ -225,7 +212,6 @@
       Made by <a href="https://ashwiniyer.com" target="_blank">Ashwin Iyer</a>
     </div>
 
-    <!-- matcher.js is bundled via popup.js -->
     <script type="module" src="popup.js"></script>
   </body>
 </html>

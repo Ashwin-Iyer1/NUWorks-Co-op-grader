@@ -281,16 +281,9 @@ const UiHelper = {
   /**
    * Render individual job card
    */
-  /**
-   * Render individual job card
-   */
   createJobCard: (job) => {
     const card = document.createElement("div");
     card.className = "job-card";
-
-    // Header Section
-    const header = document.createElement("div");
-    // header.className = "job-header"; // Optional wrapper if we want side-by-side
 
     const title = document.createElement("div");
     title.className = "job-title";
@@ -300,53 +293,71 @@ const UiHelper = {
     company.className = "job-company";
     company.innerText = job.name || "Unknown Employer";
 
-    // Score
-    const scoreLine = document.createElement("div");
+    // Score badge with tier class
     const score = job.matchScore;
-    let color = "#d9534f"; // red
-    if (score >= 70) color = "#5cb85c"; // green
-    else if (score >= 40) color = "#f0ad4e"; // orange
+    const scoreLine = document.createElement("div");
+    let tierClass = "score-low";
+    if (score >= 70) tierClass = "score-high";
+    else if (score >= 40) tierClass = "score-medium";
 
-    scoreLine.className = "job-score";
-    scoreLine.innerHTML = `<span style="color: ${color};">${score}% Match</span>`;
+    scoreLine.className = `job-score ${tierClass}`;
+    scoreLine.textContent = `${score}%`;
 
-    // Snippets / Matches
+    // Score bar
+    const barContainer = document.createElement("div");
+    barContainer.className = "score-bar-container";
+    const bar = document.createElement("div");
+    bar.className = `score-bar bar-${tierClass.replace("score-", "")}`;
+    bar.style.width = `${score}%`;
+    barContainer.appendChild(bar);
+
+    // Skill tags
     const snippets = document.createElement("div");
     snippets.className = "job-snippets";
 
-    const matches =
+    const matchedSkills =
       job.matchDetails && job.matchDetails.matches
-        ? job.matchDetails.matches.slice(0, 5).join(", ")
-        : "";
+        ? job.matchDetails.matches.slice(0, 6)
+        : [];
+    const missingSkills =
+      job.matchDetails && job.matchDetails.missing
+        ? job.matchDetails.missing.slice(0, 3)
+        : [];
 
-    if (matches) {
-      snippets.innerText = `Matched: ${matches}`;
-    }
+    matchedSkills.forEach((skill) => {
+      const tag = document.createElement("span");
+      tag.className = "skill-tag matched";
+      tag.textContent = skill;
+      snippets.appendChild(tag);
+    });
+
+    missingSkills.forEach((skill) => {
+      const tag = document.createElement("span");
+      tag.className = "skill-tag missing";
+      tag.textContent = skill;
+      snippets.appendChild(tag);
+    });
 
     // Action Line
     const actionLine = document.createElement("div");
     actionLine.className = "job-actions";
 
-    // Save Button
     const saveBtn = document.createElement("button");
     saveBtn.innerText = "Save";
-    saveBtn.className = "btn-primary"; // Re-using existing button class
-    saveBtn.style.padding = "6px 16px"; // Specific override for card button to be smaller if needed, or rely on CSS
-    saveBtn.style.width = "auto";
-    saveBtn.style.fontSize = "0.85rem";
+    saveBtn.className = "btn-primary";
 
-    // Wire up save click
     saveBtn.onclick = async () => {
       saveBtn.innerText = "Saving...";
       saveBtn.disabled = true;
 
-      // Use helper to get fresh creds
       const creds = await StorageHelper.getCredentials();
       const success = await ApiHelper.favoriteJob(job.job_id, creds);
 
       if (success) {
         saveBtn.innerText = "Saved!";
-        saveBtn.style.backgroundColor = "green";
+        saveBtn.style.background = "rgba(34, 197, 94, 0.2)";
+        saveBtn.style.color = "#4ade80";
+        saveBtn.style.boxShadow = "none";
       } else {
         saveBtn.innerText = "Error";
         saveBtn.disabled = false;
@@ -358,7 +369,9 @@ const UiHelper = {
     card.appendChild(title);
     card.appendChild(company);
     card.appendChild(scoreLine);
-    if (matches) card.appendChild(snippets);
+    card.appendChild(barContainer);
+    if (matchedSkills.length > 0 || missingSkills.length > 0)
+      card.appendChild(snippets);
     card.appendChild(actionLine);
 
     return card;
@@ -372,6 +385,12 @@ const UiHelper = {
     if (!container) return;
 
     container.innerHTML = ""; // Clear
+
+    // Update count display
+    const countEl = document.getElementById("analysis-count");
+    if (countEl) {
+      countEl.textContent = jobs && jobs.length > 0 ? `${jobs.length} jobs found` : "";
+    }
 
     if (!jobs || jobs.length === 0) {
       container.innerHTML = `<p>No jobs found.</p>`;
