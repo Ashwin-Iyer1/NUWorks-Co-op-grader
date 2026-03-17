@@ -263,6 +263,7 @@ setInterval(checkUrl, 1000);
 window.addEventListener("message", function (event) {
   // We only accept messages from ourselves
   if (event.source !== window) return;
+  if (!isContextValid()) return;
 
   if (event.data.type && event.data.type === "NUWORKS_JOB_DISCOVERY") {
     const data = event.data.data;
@@ -841,6 +842,7 @@ checkUrlIntervalId = setInterval(checkUrl, 1000);
 window.addEventListener("message", function (event) {
   // We only accept messages from ourselves
   if (event.source !== window) return;
+  if (!isContextValid()) return;
 
   if (event.data.type && event.data.type === "NUWORKS_JOB_DISCOVERY") {
     const data = event.data.data;
