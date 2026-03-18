@@ -355,9 +355,10 @@ const UiHelper = {
 
       if (success) {
         saveBtn.innerText = "Saved!";
-        saveBtn.style.background = "rgba(34, 197, 94, 0.2)";
-        saveBtn.style.color = "#4ade80";
+        saveBtn.style.background = "rgba(34, 197, 94, 0.1)";
+        saveBtn.style.color = "#22c55e";
         saveBtn.style.boxShadow = "none";
+        saveBtn.style.border = "1px solid rgba(34, 197, 94, 0.25)";
       } else {
         saveBtn.innerText = "Error";
         saveBtn.disabled = false;

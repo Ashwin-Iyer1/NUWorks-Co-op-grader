@@ -106,8 +106,6 @@ function renderModalContent(job) {
   const emp = job.job_emp || {};
   const profile = job.employer_profile || emp.employer_profile || {};
   const logo = job.employer_logo || "";
-  const enhancedBanner = job.enhanced_profile_data?.banner_img || "";
-  const banner = enhancedBanner || "";
   const companyName = job.employer_name || emp.name || emp._label || "Unknown";
   const website = profile.website || "";
   const overview = profile.overview || "";
@@ -159,7 +157,7 @@ function renderModalContent(job) {
   let statusTags = "";
   if (job.favorite) statusTags += `<span class="modal-tag green">Saved</span>`;
   if (job.applied) statusTags += `<span class="modal-tag green">Applied</span>`;
-  if (job.expired) statusTags += `<span class="modal-tag" style="color:var(--red)">Expired</span>`;
+  if (job.expired) statusTags += `<span class="modal-tag" style="color:var(--red);border-color:rgba(239,68,68,0.25)">Expired</span>`;
   if (remote) statusTags += `<span class="modal-tag">${remote}</span>`;
   if (jobTypes) statusTags += `<span class="modal-tag">${jobTypes}</span>`;
   if (compensation) statusTags += `<span class="modal-tag accent">${compensation}</span>`;
@@ -186,7 +184,7 @@ function renderModalContent(job) {
   const nuworksUrl = `${BASE_URL}/students/app/jobs/detail/${job.job_id}`;
 
   return `
-    ${banner ? `<img class="modal-banner" src="${banner}" onerror="this.style.display='none'" />` : ""}
+    <div class="modal-banner"></div>
     <div class="modal-body">
       <div class="modal-header-row">
         ${logo ? `<img class="modal-logo" src="${logo}" onerror="this.style.display='none'" />` : ""}
@@ -194,7 +192,7 @@ function renderModalContent(job) {
           <div class="modal-title">${job.job_title || "Untitled"}</div>
           <div class="modal-company">
             ${website ? `<a href="${website}" target="_blank">${companyName}</a>` : companyName}
-            ${job.visual_id ? `<span style="color:var(--text-muted);font-size:0.78rem;margin-left:8px">#${job.visual_id}</span>` : ""}
+            ${job.visual_id ? `<span style="color:var(--text-muted);font-size:0.65rem;margin-left:8px;font-family:var(--font-mono);letter-spacing:1px">#${job.visual_id}</span>` : ""}
           </div>
         </div>
       </div>
