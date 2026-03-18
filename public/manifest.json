@@ -1,7 +1,7 @@
 {
   "name": "Northeastern Co-op Screener",
   "description": "Extension to help Northeastern students find co-op opportunities on NUWorks.",
-  "version": "1.5",
+  "version": "1.6",
   "manifest_version": 3,
   "icons": {
     "16": "extension_icon16.png",
