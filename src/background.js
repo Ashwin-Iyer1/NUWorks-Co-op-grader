@@ -107,9 +107,24 @@ async function fetchJobDescription(jobId, creds) {
   };
 }
 
+// Track which jobs have already been processed per tab to prevent duplicate badge injection
+const processedJobsByTab = new Map();
+
 // Shared function to process a list of jobs
 async function processJobs(jobList, tabId) {
   if (!jobList || jobList.length === 0) return;
+
+  // Deduplicate against previously processed jobs for this tab
+  if (!processedJobsByTab.has(tabId)) processedJobsByTab.set(tabId, new Set());
+  const processedIds = processedJobsByTab.get(tabId);
+  jobList = jobList.filter((job) => {
+    const id = job.job_id || job.id || (typeof job === "string" ? job : null);
+    if (id && processedIds.has(String(id))) return false;
+    if (id) processedIds.add(String(id));
+    return true;
+  });
+
+  if (jobList.length === 0) return;
 
   const creds = await StorageHelper.getCredentials();
   if (!creds.cookie || !creds.authorization) {
@@ -244,6 +259,7 @@ async function processJobs(jobList, tabId) {
             ];
 
             const elements = document.querySelectorAll(selectors.join(","));
+            let strategy1Handled = false;
 
             elements.forEach((el) => {
               // Filter out non-relevant elements if using broad ID selector
@@ -339,10 +355,16 @@ async function processJobs(jobList, tabId) {
                   targetContainer.insertAdjacentElement(insertPosition, badge);
                 }
               }
+
+              // Mark the closest list item so Strategy 2 skips this job
+              const listItem = targetContainer.closest('div[role="listitem"], .carousel-card, .job-tile, .list-item, .card');
+              if (listItem) listItem.setAttribute("data-nuworks-badged", job.id);
+              strategy1Handled = true;
             });
 
             // --- Strategy 2: Title-based matching (for search page list items & Discovery cards) ---
-            if (job.title) {
+            // Skip Strategy 2 entirely if Strategy 1 already found and badged elements for this job
+            if (job.title && !strategy1Handled) {
               // Target both Search list items and Discovery carousel/grid items
               const listItems = document.querySelectorAll(
                 'div[role="listitem"], .carousel-card, .job-tile, .list-item, .card'
@@ -350,6 +372,8 @@ async function processJobs(jobList, tabId) {
               // console.log(`[BadgeDebug] Strategy 2: Checking ${listItems.length} UI items for job "${job.title}"`);
 
               listItems.forEach((item) => {
+                // Skip if Strategy 1 already badged this item (for any job)
+                if (item.hasAttribute("data-nuworks-badged")) return;
                 // Avoid double injection
                 if (item.querySelector(".nuworks-badge")) return;
 
@@ -585,6 +609,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 // Fallback scraping
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  // Clear processed jobs tracking on new page load
+  if (changeInfo.status === "loading") {
+    processedJobsByTab.delete(tabId);
+  }
   if (
     changeInfo.status === "complete" &&
     tab.url &&
