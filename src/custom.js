@@ -449,7 +449,7 @@ async function startFetch() {
   $("empty-state").style.display = "none";
 
   const maxJobs = parseInt($("ctl-max-jobs").value) || 10000;
-  const perPage = 500;
+  const perPage = Math.min(maxJobs, 500);
   const maxPages = Math.ceil(maxJobs / perPage);
 
   const params = {
