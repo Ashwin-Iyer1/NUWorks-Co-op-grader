@@ -495,7 +495,7 @@ h4 {
 .section-header {
   text-align: center;
   max-width: 600px;
-  margin: 0 auto 64px;
+  margin: 64px auto 64px;
 }
 
 .section-header h2 {
