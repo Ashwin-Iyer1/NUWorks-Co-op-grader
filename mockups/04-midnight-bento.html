@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style 04 — Midnight Bento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  /* ============================================
+     STYLE 04: MIDNIGHT BENTO
+     ============================================
+     Deep blue-black palette. Features in a bento
+     grid with varied card sizes. Accent is a cool
+     teal-blue. Asymmetric hero with video dominant.
+     ============================================ */
+
+  :root {
+    --bg: #080c14;
+    --surface: #0f1520;
+    --surface-hover: #141c2a;
+    --border: rgba(148,163,194,0.08);
+    --border-strong: rgba(148,163,194,0.14);
+    --text-primary: #c8d1de;
+    --text-secondary: #6b7a90;
+    --text-tertiary: #3d4a5c;
+    --accent: #3b9eff;
+    --accent-hover: #2b8bee;
+    --accent-subtle: rgba(59,158,255,0.08);
+    --accent-glow: rgba(59,158,255,0.04);
+    --green: #34d399;
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 48px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(8,12,20,0.8);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-weight: 700; font-size: 0.85rem; letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .nav-logo .icon {
+    width: 24px; height: 24px; background: var(--accent);
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; color: #fff;
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+
+  .nav-right a {
+    font-size: 0.78rem; font-weight: 500; color: var(--text-secondary);
+    text-decoration: none; transition: color 0.2s var(--ease);
+  }
+
+  .nav-right a:hover { color: var(--text-primary); }
+
+  .nav-cta {
+    font-family: inherit; font-size: 0.78rem; font-weight: 600;
+    padding: 8px 20px; background: var(--accent); color: #fff;
+    border: none; border-radius: 8px; cursor: pointer;
+    transition: background 0.2s var(--ease);
+  }
+
+  .nav-cta:hover { background: var(--accent-hover); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 120px 48px 80px; max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .hero-eyebrow .pill {
+    font-size: 0.6rem; padding: 2px 8px;
+    background: var(--accent-subtle); border: 1px solid rgba(59,158,255,0.15);
+    border-radius: 4px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 900;
+    line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 16px;
+  }
+
+  .hero-desc {
+    font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary);
+    margin-bottom: 28px; max-width: 420px;
+  }
+
+  .hero-actions { display: flex; gap: 12px; }
+
+  .btn-primary {
+    font-family: inherit; font-size: 0.82rem; font-weight: 600;
+    padding: 11px 24px; background: var(--accent); color: #fff;
+    border: none; border-radius: 8px; cursor: pointer;
+    transition: background 0.2s var(--ease), transform 0.12s var(--ease);
+  }
+
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:active { transform: scale(0.97); }
+
+  .btn-secondary {
+    font-family: inherit; font-size: 0.82rem; font-weight: 500;
+    padding: 11px 24px; background: transparent; color: var(--text-secondary);
+    border: 1px solid var(--border-strong); border-radius: 8px; cursor: pointer;
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+
+  .btn-secondary:hover { color: var(--text-primary); border-color: var(--text-tertiary); }
+
+  .hero-video {
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 24px 64px -16px rgba(59,158,255,0.08), 0 8px 24px -8px rgba(0,0,0,0.4);
+  }
+
+  .hero-video video { display: block; width: 100%; height: auto; }
+
+  /* ── LOGO CAROUSEL ── */
+  .logo-carousel {
+    padding: 40px 48px; max-width: 1200px; margin: 0 auto;
+    text-align: center; overflow: hidden;
+  }
+
+  .logo-carousel-heading {
+    font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 20px;
+  }
+
+  .logo-track {
+    display: flex; gap: 48px; animation: scroll 40s linear infinite;
+    width: max-content;
+  }
+
+  .logo-slide { flex-shrink: 0; display: flex; align-items: center; }
+  .logo-slide img { height: 22px; opacity: 0.35; filter: grayscale(1) brightness(2); transition: opacity 0.3s; }
+  .logo-slide img:hover { opacity: 0.6; }
+  .logo-invert { filter: grayscale(1) brightness(2) invert(0) !important; }
+
+  @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-25%); } }
+
+  /* ── SCREENSHOTS ── */
+  .screenshots {
+    max-width: 1200px; margin: 0 auto; padding: 60px 48px;
+  }
+
+  .screenshot-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;
+  }
+
+  .screenshot-card {
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 8px 24px -8px rgba(0,0,0,0.3);
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .screenshot-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px -12px rgba(0,0,0,0.4); }
+  .screenshot-card img { display: block; width: 100%; height: auto; }
+
+  .screenshot-hero {
+    position: relative;
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 40px -8px rgba(59,158,255,0.12), 0 12px 32px -8px rgba(0,0,0,0.4);
+  }
+
+  .screenshot-hero img { display: block; width: 100%; height: auto; }
+
+  .new-badge {
+    position: absolute; top: 12px; left: 12px;
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 4px 10px;
+    background: var(--accent); color: #fff; border-radius: 4px;
+  }
+
+  /* ── SECTION ── */
+  .section { max-width: 1200px; margin: 0 auto; padding: 80px 48px; }
+
+  .section-header { margin-bottom: 48px; }
+
+  .section-overline {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+  }
+
+  .section-header h2 {
+    font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .section-header p {
+    font-size: 0.88rem; color: var(--text-secondary); max-width: 480px;
+  }
+
+  /* ── BENTO GRID ── */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    gap: 12px;
+  }
+
+  .bento-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px 24px;
+    transition: background 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+
+  .bento-card:hover { background: var(--surface-hover); border-color: var(--border-strong); }
+  .bento-card.wide { grid-column: span 2; }
+
+  .bento-icon {
+    width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+    background: var(--accent-subtle); border: 1px solid rgba(59,158,255,0.12);
+    border-radius: 8px; margin-bottom: 16px; font-size: 0.95rem;
+  }
+
+  .bento-card h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
+  .bento-card p { font-size: 0.8rem; line-height: 1.6; color: var(--text-secondary); }
+
+  /* ── VIDEOS ── */
+  .video-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+
+  .video-item h3 {
+    font-size: 0.92rem; font-weight: 700; margin-bottom: 6px;
+  }
+
+  .video-item p {
+    font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6;
+  }
+
+  .video-wrap {
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 8px 24px -8px rgba(0,0,0,0.3);
+  }
+
+  .video-wrap video { display: block; width: 100%; height: auto; }
+
+  /* ── STEPS ── */
+  .steps-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  }
+
+  .step-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px 24px;
+  }
+
+  .step-num {
+    font-size: 2.4rem; font-weight: 900; color: var(--accent);
+    opacity: 0.3; line-height: 1; margin-bottom: 12px;
+  }
+
+  .step-card h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
+  .step-card p { font-size: 0.8rem; line-height: 1.6; color: var(--text-secondary); }
+
+  /* ── STATS ── */
+  .stats-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    margin-top: 48px;
+  }
+
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px;
+    text-align: center;
+  }
+
+  .stat-card .value {
+    font-size: 1.8rem; font-weight: 900; letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+
+  .stat-card .label {
+    font-size: 0.68rem; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--text-tertiary); margin-top: 4px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    max-width: 1200px; margin: 0 auto; padding: 40px 48px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-left { display: flex; flex-direction: column; gap: 4px; }
+  .footer-left .name { font-size: 0.82rem; font-weight: 600; }
+  .footer-left .sub { font-size: 0.72rem; color: var(--text-tertiary); }
+  .footer-left .sub a { color: var(--accent); text-decoration: none; }
+
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { font-size: 0.72rem; color: var(--text-tertiary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--text-secondary); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .hero { grid-template-columns: 1fr; padding: 120px 24px 60px; }
+    .screenshot-grid { grid-template-columns: 1fr; }
+    .bento { grid-template-columns: 1fr; }
+    .bento-card.wide { grid-column: span 1; }
+    .video-pair { grid-template-columns: 1fr; }
+    .steps-row { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .style-note {
+    position: fixed; bottom: 16px; right: 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px;
+    font-size: 0.68rem; color: var(--text-tertiary);
+    z-index: 200; max-width: 260px; line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="icon">N</div>
+    NUWorks Grader
+  </div>
+  <div class="nav-right">
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website" target="_blank" rel="noopener">
+      <button class="nav-cta">Add to Chrome</button>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">Chrome Extension <span class="pill">v1.7</span></div>
+    <h1>Grade every co-op posting before you apply.</h1>
+    <p class="hero-desc">
+      NUWorks Grader scans job descriptions, matches them against your resume,
+      and scores each posting. Everything runs in your browser.
+    </p>
+    <div class="hero-actions">
+      <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website" target="_blank" rel="noopener">
+        <button class="btn-primary">Add to Chrome — Free</button>
+      </a>
+      <button class="btn-secondary">Learn more</button>
+    </div>
+  </div>
+  <div class="hero-video">
+    <video width="100%" height="auto" autoplay loop muted playsinline controls>
+      <source src="../video.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<!-- LOGO CAROUSEL -->
+<div class="logo-carousel">
+  <p class="logo-carousel-heading">Where our users land offers</p>
+  <div class="logo-track">
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg" alt="Klaviyo" class="logo-invert"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington Management" class="logo-invert"></div>
+    <div class="logo-slide"><img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS Investment Management"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg" alt="Brown Brothers Harriman"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg" alt="Flow Traders"></div>
+    <div class="logo-slide"><img src="../images/Chewy_pet_food_logo.svg" alt="Chewy"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg" alt="Wolters Kluwer"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg" alt="Klaviyo" class="logo-invert"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington Management" class="logo-invert"></div>
+    <div class="logo-slide"><img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg" alt="BBH"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg" alt="Flow Traders"></div>
+    <div class="logo-slide"><img src="../images/Chewy_pet_food_logo.svg" alt="Chewy"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg" alt="Wolters Kluwer"></div>
+  </div>
+</div>
+
+<!-- SCREENSHOTS -->
+<section class="screenshots">
+  <div class="screenshot-grid">
+    <div class="screenshot-card"><img src="../feature_screenshot.png" alt="Extension interface with color-coded badges"></div>
+    <div class="screenshot-card"><img src="../feature_screenshot_2.png" alt="Extension search page with badges"></div>
+  </div>
+  <div class="screenshot-hero">
+    <span class="new-badge">NEW</span>
+    <img src="../job_explorer_screenshot.png" alt="Job Explorer with filtering and match percentages">
+  </div>
+</section>
+
+<!-- FEATURES BENTO -->
+<section class="section" id="features">
+  <div class="section-header">
+    <div class="section-overline">Features</div>
+    <h2>Built for how students actually search for co-ops.</h2>
+    <p>NUWorks is powerful but noisy. This extension cuts through it.</p>
+  </div>
+  <div class="bento">
+    <div class="bento-card wide">
+      <div class="bento-icon">🧠</div>
+      <h3>NLP-Powered Qualification Detection</h3>
+      <p>Uses a trained model to detect subtle requirements like graduation dates, school year restrictions, and eligibility criteria that manual scanning would miss.</p>
+    </div>
+    <div class="bento-card">
+      <div class="bento-icon">📄</div>
+      <h3>Resume Parsing</h3>
+      <p>Upload a PDF. Skills, tools, and frameworks are extracted locally and used to score every posting.</p>
+    </div>
+    <div class="bento-card">
+      <div class="bento-icon">🏷️</div>
+      <h3>Visual Badges</h3>
+      <p>See match scores, external warnings, and eligibility with color-coded badges directly on the job list.</p>
+    </div>
+    <div class="bento-card wide">
+      <div class="bento-icon">🔍</div>
+      <h3>Smart Filters & Batch Actions</h3>
+      <p>Filter by match score, freshness, company, title, or eligibility. Save all matched jobs in one click. Hide applied or ineligible postings to clean up your list.</p>
+    </div>
+    <div class="bento-card">
+      <div class="bento-icon">🔒</div>
+      <h3>Privacy First</h3>
+      <p>All processing runs in your browser. Your resume and data never leave your machine. Zero server calls.</p>
+    </div>
+    <div class="bento-card">
+      <div class="bento-icon">⚙️</div>
+      <h3>Manual Control</h3>
+      <p>Toggle auto-grading, trigger analysis manually, update settings. You decide when and how it runs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-overline">In Action</div>
+    <h2>See what the extension does.</h2>
+  </div>
+  <div class="video-pair">
+    <div class="video-item">
+      <h3>Know Why You Weren't Selected</h3>
+      <p>Quickly identify if a job application is inactive or if you were not selected.</p>
+      <div class="video-wrap">
+        <video controls playsinline>
+          <source src="../ineligible-job-video.mov" type="video/quicktime">
+          <source src="../ineligible-job-video.mov" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <div class="video-item">
+      <h3>A Better Way to Browse NUWorks</h3>
+      <p>Open an improved NUWorks with advanced filtering, match percentages, and all the original features.</p>
+      <div class="video-wrap">
+        <video controls playsinline>
+          <source src="../custom.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <div class="section-header">
+    <div class="section-overline">Setup</div>
+    <h2>Running in under a minute.</h2>
+  </div>
+  <div class="steps-row">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h3>Install the extension</h3>
+      <p>Add it from the Chrome Web Store. It only requests permissions to read NUWorks pages.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h3>Upload your resume</h3>
+      <p>Open the extension on NUWorks and upload your resume PDF. Skills are extracted locally.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h3>Analyze jobs</h3>
+      <p>Click "Analyze Jobs" to see your match scores and filter results instantly.</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="value">100%</div><div class="label">Local Processing</div></div>
+    <div class="stat-card"><div class="value">250+</div><div class="label">Skills Recognized</div></div>
+    <div class="stat-card"><div class="value">0</div><div class="label">Server Calls</div></div>
+    <div class="stat-card"><div class="value">Free</div><div class="label">Forever</div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <div class="name">NUWorks Grader</div>
+    <div class="sub">Unofficial tool. Not affiliated with Northeastern. Made by <a href="https://ashwiniyer.com" target="_blank">Ashwin Iyer</a>.</div>
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank">GitHub</a>
+    <a href="../privacy_policy.html" target="_blank">Privacy Policy</a>
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/issues" target="_blank">Report an Issue</a>
+  </div>
+</footer>
+
+<div class="style-note">
+  <strong>Style 04: Midnight Bento</strong><br>
+  Deep blue-black. Teal-blue accent. Bento grid
+  with varied card sizes. Rounded 12px corners.
+  Video-dominant hero layout.
+</div>
+
+</body>
+</html>

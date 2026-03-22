@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style 06 — Glass Gradient</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  /* ============================================
+     STYLE 06: GLASS GRADIENT
+     ============================================
+     Deep dark bg with subtle gradient mesh.
+     Frosted glass cards. Gradient accent (purple
+     to pink-orange). Softer, more modern feel with
+     generous 16px radii. Intentional, not gratuitous.
+     ============================================ */
+
+  :root {
+    --bg: #09090b;
+    --surface: rgba(255,255,255,0.04);
+    --surface-border: rgba(255,255,255,0.07);
+    --surface-hover: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.03);
+    --glass-border: rgba(255,255,255,0.08);
+    --text-primary: #e4e4e7;
+    --text-secondary: #71717a;
+    --text-tertiary: #3f3f46;
+    --accent-1: #a855f7;
+    --accent-2: #f97316;
+    --accent-gradient: linear-gradient(135deg, #a855f7, #ec4899, #f97316);
+    --accent-subtle: rgba(168,85,247,0.08);
+    --green: #34d399;
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  /* Subtle gradient mesh background */
+  body::before {
+    content: '';
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse 600px 400px at 20% 20%, rgba(168,85,247,0.06), transparent),
+      radial-gradient(ellipse 500px 500px at 80% 60%, rgba(249,115,22,0.04), transparent),
+      radial-gradient(ellipse 400px 300px at 50% 90%, rgba(236,72,153,0.03), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body > * { position: relative; z-index: 1; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+    z-index: 100; width: calc(100% - 96px); max-width: 1100px;
+    padding: 0 24px; height: 52px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(9,9,11,0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+  }
+
+  .nav-logo {
+    font-weight: 700; font-size: 0.85rem; letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .nav-logo .gradient-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent-gradient);
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+
+  .nav-right a {
+    font-size: 0.78rem; font-weight: 500; color: var(--text-secondary);
+    text-decoration: none; transition: color 0.2s var(--ease);
+  }
+
+  .nav-right a:hover { color: var(--text-primary); }
+
+  .nav-cta {
+    font-family: inherit; font-size: 0.78rem; font-weight: 600;
+    padding: 7px 18px; background: var(--accent-gradient);
+    color: #fff; border: none; border-radius: 8px; cursor: pointer;
+    transition: opacity 0.2s var(--ease);
+  }
+
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 140px 48px 80px; max-width: 1100px; margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.72rem; font-weight: 600;
+    background: var(--accent-subtle);
+    border: 1px solid rgba(168,85,247,0.15);
+    padding: 5px 14px; border-radius: 20px;
+    color: var(--accent-1); margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 900;
+    line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 16px;
+    max-width: 650px; margin-left: auto; margin-right: auto;
+  }
+
+  .hero h1 .gradient {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-desc {
+    font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary);
+    max-width: 500px; margin: 0 auto 32px;
+  }
+
+  .hero-actions {
+    display: flex; gap: 12px; justify-content: center; margin-bottom: 56px;
+  }
+
+  .btn-gradient {
+    font-family: inherit; font-size: 0.85rem; font-weight: 600;
+    padding: 12px 28px; background: var(--accent-gradient);
+    color: #fff; border: none; border-radius: 10px; cursor: pointer;
+    transition: opacity 0.2s var(--ease), transform 0.12s var(--ease);
+    text-decoration: none;
+  }
+
+  .btn-gradient:hover { opacity: 0.88; }
+  .btn-gradient:active { transform: scale(0.97); }
+
+  .btn-glass {
+    font-family: inherit; font-size: 0.85rem; font-weight: 500;
+    padding: 12px 28px; background: var(--glass);
+    color: var(--text-secondary); border: 1px solid var(--glass-border);
+    border-radius: 10px; cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+
+  .btn-glass:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.14); }
+
+  /* ── HERO VIDEO ── */
+  .hero-video-wrap {
+    max-width: 900px; margin: 0 auto;
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      0 0 80px -20px rgba(168,85,247,0.1),
+      0 24px 48px -12px rgba(0,0,0,0.5);
+  }
+
+  .hero-video-wrap video { display: block; width: 100%; height: auto; }
+
+  /* ── LOGO CAROUSEL ── */
+  .logo-carousel {
+    padding: 48px; max-width: 1100px; margin: 0 auto;
+    text-align: center; overflow: hidden;
+  }
+
+  .logo-carousel-heading {
+    font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 20px;
+  }
+
+  .logo-track {
+    display: flex; gap: 48px; animation: scroll 40s linear infinite;
+    width: max-content;
+  }
+
+  .logo-slide { flex-shrink: 0; display: flex; align-items: center; }
+  .logo-slide img { height: 20px; opacity: 0.3; filter: grayscale(1) brightness(2); transition: opacity 0.3s; }
+  .logo-slide img:hover { opacity: 0.55; }
+  .logo-invert { filter: grayscale(1) brightness(2) !important; }
+
+  @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-25%); } }
+
+  /* ── SCREENSHOTS ── */
+  .screenshots {
+    max-width: 1100px; margin: 0 auto; padding: 0 48px 64px;
+  }
+
+  .screenshot-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;
+  }
+
+  .ss-card {
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--glass-border);
+    transition: transform 0.3s var(--ease);
+  }
+
+  .ss-card:hover { transform: translateY(-4px); }
+  .ss-card img { display: block; width: 100%; height: auto; }
+
+  .ss-hero {
+    position: relative; border-radius: 14px; overflow: hidden;
+    border: 1px solid rgba(168,85,247,0.3);
+    box-shadow: 0 0 48px -12px rgba(168,85,247,0.12);
+  }
+
+  .ss-hero img { display: block; width: 100%; height: auto; }
+
+  .ss-hero .badge {
+    position: absolute; top: 12px; left: 12px;
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 4px 10px;
+    background: var(--accent-gradient); color: #fff; border-radius: 6px;
+  }
+
+  /* ── SECTION ── */
+  .section { max-width: 1100px; margin: 0 auto; padding: 80px 48px; }
+
+  .section-center { text-align: center; margin-bottom: 56px; }
+
+  .section-center .overline {
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 8px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .section-center h2 {
+    font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .section-center p {
+    font-size: 0.9rem; color: var(--text-secondary); max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ── GLASS FEATURE GRID ── */
+  .glass-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  }
+
+  .glass-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px; padding: 28px 24px;
+    backdrop-filter: blur(8px);
+    transition: background 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+
+  .glass-card:hover {
+    background: var(--surface-hover);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .glass-icon {
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    background: var(--accent-subtle);
+    border: 1px solid rgba(168,85,247,0.12);
+    border-radius: 10px; margin-bottom: 16px; font-size: 1rem;
+  }
+
+  .glass-card h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
+  .glass-card p { font-size: 0.8rem; line-height: 1.6; color: var(--text-secondary); }
+
+  /* ── VIDEOS ── */
+  .video-duo {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+
+  .video-item h3 { font-size: 0.92rem; font-weight: 700; margin-bottom: 4px; }
+  .video-item p { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.6; }
+
+  .video-frame {
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--glass-border);
+  }
+
+  .video-frame video { display: block; width: 100%; height: auto; }
+
+  /* ── STEPS ── */
+  .steps-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  }
+
+  .step-glass {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px; padding: 28px 24px; text-align: center;
+    backdrop-filter: blur(8px);
+  }
+
+  .step-num {
+    font-size: 1.6rem; font-weight: 900;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+
+  .step-glass h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
+  .step-glass p { font-size: 0.8rem; line-height: 1.6; color: var(--text-secondary); }
+
+  /* ── FOOTER ── */
+  footer {
+    max-width: 1100px; margin: 0 auto; padding: 40px 48px;
+    border-top: 1px solid var(--glass-border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-left { display: flex; flex-direction: column; gap: 2px; }
+  .footer-left .name { font-size: 0.82rem; font-weight: 600; }
+  .footer-left .sub { font-size: 0.72rem; color: var(--text-tertiary); }
+  .footer-left .sub a { color: var(--accent-1); text-decoration: none; }
+
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a {
+    font-size: 0.72rem; color: var(--text-tertiary); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--text-secondary); }
+
+  @media (max-width: 900px) {
+    nav { width: calc(100% - 32px); top: 8px; padding: 0 16px; }
+    .hero { padding: 120px 24px 60px; }
+    .screenshot-row { grid-template-columns: 1fr; }
+    .glass-grid { grid-template-columns: 1fr; }
+    .video-duo { grid-template-columns: 1fr; }
+    .steps-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+
+  .style-note {
+    position: fixed; bottom: 16px; right: 16px;
+    background: rgba(9,9,11,0.7); backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px; padding: 12px 16px;
+    font-size: 0.68rem; color: var(--text-tertiary);
+    z-index: 200; max-width: 260px; line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span class="gradient-dot"></span> NUWorks Grader</div>
+  <div class="nav-right">
+    <a href="#features">Features</a>
+    <a href="#setup">Setup</a>
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website" target="_blank" rel="noopener">
+      <button class="nav-cta">Add to Chrome</button>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Version 1.7 — Chrome Extension</div>
+  <h1>Grade every <span class="gradient">co-op posting</span> before you apply.</h1>
+  <p class="hero-desc">
+    NUWorks Grader scores job postings against your resume using local NLP.
+    Your data never leaves your browser.
+  </p>
+  <div class="hero-actions">
+    <a class="btn-gradient" href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website" target="_blank" rel="noopener">Add to Chrome — Free</a>
+    <button class="btn-glass">Learn more</button>
+  </div>
+  <div class="hero-video-wrap">
+    <video width="100%" height="auto" autoplay loop muted playsinline controls>
+      <source src="../video.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logo-carousel">
+  <p class="logo-carousel-heading">Where our users land offers</p>
+  <div class="logo-track">
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg" alt="Klaviyo" class="logo-invert"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington Management" class="logo-invert"></div>
+    <div class="logo-slide"><img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg" alt="BBH"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg" alt="Flow Traders"></div>
+    <div class="logo-slide"><img src="../images/Chewy_pet_food_logo.svg" alt="Chewy"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg" alt="Wolters Kluwer"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg" alt="Klaviyo" class="logo-invert"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington" class="logo-invert"></div>
+    <div class="logo-slide"><img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg" alt="BBH"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg" alt="Flow Traders"></div>
+    <div class="logo-slide"><img src="../images/Chewy_pet_food_logo.svg" alt="Chewy"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg" alt="Wolters Kluwer"></div>
+  </div>
+</div>
+
+<!-- SCREENSHOTS -->
+<section class="screenshots">
+  <div class="screenshot-row">
+    <div class="ss-card"><img src="../feature_screenshot.png" alt="Extension interface"></div>
+    <div class="ss-card"><img src="../feature_screenshot_2.png" alt="Extension search"></div>
+  </div>
+  <div class="ss-hero">
+    <span class="badge">New</span>
+    <img src="../job_explorer_screenshot.png" alt="Job Explorer">
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-center">
+    <div class="overline">Features</div>
+    <h2>Everything you need to search smarter.</h2>
+    <p>Six tools to cut through NUWorks noise and surface the postings worth your time.</p>
+  </div>
+  <div class="glass-grid">
+    <div class="glass-card">
+      <div class="glass-icon">🧠</div>
+      <h3>NLP Qualification Detection</h3>
+      <p>Trained model detects graduation dates, school year restrictions, and eligibility criteria.</p>
+    </div>
+    <div class="glass-card">
+      <div class="glass-icon">🏷️</div>
+      <h3>Auto-Grading & Badges</h3>
+      <p>Match scores and eligibility shown as color-coded badges directly on the job list.</p>
+    </div>
+    <div class="glass-card">
+      <div class="glass-icon">🔍</div>
+      <h3>Smart Filters</h3>
+      <p>Filter by score, freshness, company, title. Save matched jobs in one click.</p>
+    </div>
+    <div class="glass-card">
+      <div class="glass-icon">📄</div>
+      <h3>Resume Parsing</h3>
+      <p>Upload a PDF. Skills extracted locally and matched against every posting.</p>
+    </div>
+    <div class="glass-card">
+      <div class="glass-icon">⚙️</div>
+      <h3>Manual Control</h3>
+      <p>Toggle auto-grading, trigger analysis manually, update settings anytime.</p>
+    </div>
+    <div class="glass-card">
+      <div class="glass-icon">🔒</div>
+      <h3>Privacy First</h3>
+      <p>All processing in-browser. Your resume and data never leave your machine.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section class="section">
+  <div class="section-center">
+    <div class="overline">In Action</div>
+    <h2>See it work.</h2>
+  </div>
+  <div class="video-duo">
+    <div class="video-item">
+      <h3>Know Why You Weren't Selected</h3>
+      <p>Identify inactive applications and rejection status at a glance.</p>
+      <div class="video-frame">
+        <video controls playsinline>
+          <source src="../ineligible-job-video.mov" type="video/quicktime">
+          <source src="../ineligible-job-video.mov" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <div class="video-item">
+      <h3>A Better Way to Browse NUWorks</h3>
+      <p>Advanced filtering, match percentages, and all original features in one view.</p>
+      <div class="video-frame">
+        <video controls playsinline>
+          <source src="../custom.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="section" id="setup">
+  <div class="section-center">
+    <div class="overline">Getting Started</div>
+    <h2>Up and running in under a minute.</h2>
+  </div>
+  <div class="steps-row">
+    <div class="step-glass">
+      <div class="step-num">01</div>
+      <h3>Install</h3>
+      <p>Add from Chrome Web Store. Only NUWorks page permissions required.</p>
+    </div>
+    <div class="step-glass">
+      <div class="step-num">02</div>
+      <h3>Upload resume</h3>
+      <p>Paste text or upload a PDF. Skills extracted locally in milliseconds.</p>
+    </div>
+    <div class="step-glass">
+      <div class="step-num">03</div>
+      <h3>Analyze</h3>
+      <p>Open NUWorks, click the extension, hit Analyze. Results appear in real time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <div class="name">NUWorks Grader</div>
+    <div class="sub">Not affiliated with Northeastern. Made by <a href="https://ashwiniyer.com" target="_blank">Ashwin Iyer</a>.</div>
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank">GitHub</a>
+    <a href="../privacy_policy.html" target="_blank">Privacy</a>
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/issues" target="_blank">Issues</a>
+  </div>
+</footer>
+
+<div class="style-note">
+  <strong>Style 06: Glass Gradient</strong><br>
+  Dark bg with gradient mesh. Frosted glass cards.
+  Purple-to-orange gradient accent. Floating nav.
+  Rounded 14-16px corners. Modern but restrained.
+</div>
+
+</body>
+</html>

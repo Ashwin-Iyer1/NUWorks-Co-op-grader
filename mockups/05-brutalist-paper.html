@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style 05 — Brutalist Paper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  /* ============================================
+     STYLE 05: BRUTALIST PAPER
+     ============================================
+     High contrast. Black text on off-white paper.
+     No rounded corners, no shadows. Thick borders.
+     Monospace for all UI chrome. Large type. Feels
+     like a printed broadsheet, not a SaaS page.
+     ============================================ */
+
+  :root {
+    --bg: #f0ece4;
+    --surface: #fff;
+    --border: #1a1a1a;
+    --border-light: #ccc5b9;
+    --text: #1a1a1a;
+    --text-mid: #5c564e;
+    --text-light: #8a847c;
+    --accent: #c9390e;
+    --green: #1a7a3a;
+    --yellow: #9a7b00;
+    --red: #b91c1c;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    padding: 0 48px; height: 52px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 3px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+
+  .nav-right a {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 400;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-mid); text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .nav-right a:hover { color: var(--text); }
+
+  .nav-cta {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 8px 16px; background: var(--text); color: var(--bg);
+    border: none; cursor: pointer; transition: background 0.15s;
+  }
+
+  .nav-cta:hover { background: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 80px 48px 60px; max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+    border-bottom: 3px solid var(--border);
+  }
+
+  .hero-left { display: flex; flex-direction: column; justify-content: center; }
+
+  .hero-tag {
+    font-family: var(--mono); font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 900;
+    line-height: 0.95; letter-spacing: -0.04em; margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  .hero-desc {
+    font-family: var(--mono); font-size: 0.78rem; line-height: 1.75;
+    color: var(--text-mid); max-width: 440px; margin-bottom: 28px;
+  }
+
+  .hero-actions { display: flex; gap: 12px; }
+
+  .btn-black {
+    font-family: var(--mono); font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 12px 24px; background: var(--text); color: var(--bg);
+    border: 3px solid var(--text); cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .btn-black:hover { background: var(--accent); border-color: var(--accent); }
+
+  .btn-outline {
+    font-family: var(--mono); font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 12px 24px; background: transparent; color: var(--text);
+    border: 3px solid var(--text); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .btn-outline:hover { background: var(--text); color: var(--bg); }
+
+  .hero-video {
+    border: 3px solid var(--border); overflow: hidden;
+  }
+
+  .hero-video video { display: block; width: 100%; height: auto; }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-bottom: 3px solid var(--border);
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .stats-strip .stat {
+    padding: 24px 48px;
+    border-right: 1px solid var(--border-light);
+  }
+
+  .stats-strip .stat:last-child { border-right: none; }
+
+  .stats-strip .value {
+    font-size: 2rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1;
+  }
+
+  .stats-strip .value.red { color: var(--accent); }
+
+  .stats-strip .label {
+    font-family: var(--mono); font-size: 0.55rem; font-weight: 400;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-light); margin-top: 4px;
+  }
+
+  /* ── SCREENSHOTS ── */
+  .screenshots {
+    max-width: 1200px; margin: 0 auto; padding: 48px 48px;
+    border-bottom: 3px solid var(--border);
+  }
+
+  .screenshots-label {
+    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 16px;
+  }
+
+  .screenshot-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;
+  }
+
+  .screenshot-row img {
+    display: block; width: 100%; height: auto;
+    border: 3px solid var(--border);
+  }
+
+  .screenshot-full { position: relative; }
+  .screenshot-full img {
+    display: block; width: 100%; height: auto;
+    border: 3px solid var(--accent);
+  }
+
+  .screenshot-full .tag {
+    position: absolute; top: 0; left: 0;
+    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 6px 12px; background: var(--accent); color: #fff;
+  }
+
+  /* ── FEATURES ── */
+  .features {
+    max-width: 1200px; margin: 0 auto; padding: 60px 48px;
+    border-bottom: 3px solid var(--border);
+  }
+
+  .features-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 40px; gap: 48px;
+  }
+
+  .features-header h2 {
+    font-size: 1.8rem; font-weight: 900; letter-spacing: -0.03em;
+    text-transform: uppercase; max-width: 500px; line-height: 1.05;
+  }
+
+  .features-header p {
+    font-family: var(--mono); font-size: 0.75rem; line-height: 1.7;
+    color: var(--text-mid); max-width: 400px;
+  }
+
+  .feature-table {
+    width: 100%; border-collapse: collapse;
+  }
+
+  .feature-table tr { border-bottom: 1px solid var(--border-light); }
+  .feature-table tr:last-child { border-bottom: none; }
+
+  .feature-table td {
+    padding: 20px 0; vertical-align: top;
+  }
+
+  .feature-table .num {
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    color: var(--text-light); letter-spacing: 0.08em;
+    width: 48px;
+  }
+
+  .feature-table .title {
+    font-weight: 700; font-size: 0.9rem;
+    width: 220px;
+  }
+
+  .feature-table .desc {
+    font-family: var(--mono); font-size: 0.73rem; line-height: 1.7;
+    color: var(--text-mid);
+  }
+
+  /* ── VIDEOS ── */
+  .videos {
+    max-width: 1200px; margin: 0 auto; padding: 60px 48px;
+    border-bottom: 3px solid var(--border);
+  }
+
+  .videos-label {
+    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 24px;
+  }
+
+  .video-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+
+  .video-block h3 { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; }
+  .video-block p {
+    font-family: var(--mono); font-size: 0.7rem; color: var(--text-mid);
+    line-height: 1.6; margin-bottom: 12px;
+  }
+
+  .video-block video {
+    display: block; width: 100%; height: auto;
+    border: 3px solid var(--border);
+  }
+
+  /* ── STEPS ── */
+  .steps {
+    max-width: 1200px; margin: 0 auto; padding: 60px 48px;
+    border-bottom: 3px solid var(--border);
+  }
+
+  .steps-label {
+    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 24px;
+  }
+
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  }
+
+  .step-box {
+    padding: 32px 28px;
+    border: 3px solid var(--border);
+    border-right: none;
+  }
+
+  .step-box:last-child { border-right: 3px solid var(--border); }
+
+  .step-box .num {
+    font-size: 3rem; font-weight: 900; line-height: 1;
+    color: var(--border-light); margin-bottom: 8px;
+  }
+
+  .step-box h3 {
+    font-size: 0.88rem; font-weight: 700; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .step-box p {
+    font-family: var(--mono); font-size: 0.7rem; line-height: 1.7;
+    color: var(--text-mid);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    max-width: 1200px; margin: 0 auto; padding: 32px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-left {
+    font-family: var(--mono); font-size: 0.6rem; color: var(--text-light);
+    letter-spacing: 0.04em;
+  }
+
+  .footer-left a { color: var(--accent); text-decoration: none; }
+
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a {
+    font-family: var(--mono); font-size: 0.6rem; color: var(--text-light);
+    text-decoration: none; letter-spacing: 0.04em; transition: color 0.15s;
+  }
+  .footer-links a:hover { color: var(--text); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding: 60px 24px 40px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .screenshot-row { grid-template-columns: 1fr; }
+    .feature-table .num { display: none; }
+    .feature-table .title { width: auto; display: block; margin-bottom: 4px; }
+    .feature-table .desc { display: block; }
+    .feature-table td { display: block; padding: 8px 0; }
+    .feature-table tr { display: block; padding: 16px 0; }
+    .video-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .step-box { border-right: 3px solid var(--border); border-bottom: none; }
+    .step-box:last-child { border-bottom: 3px solid var(--border); }
+    footer { flex-direction: column; gap: 12px; }
+  }
+
+  .style-note {
+    position: fixed; bottom: 16px; right: 16px;
+    background: var(--surface); border: 3px solid var(--border);
+    padding: 12px 16px;
+    font-family: var(--mono); font-size: 0.6rem; color: var(--text-mid);
+    z-index: 200; max-width: 260px; line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">NUWorks Grader</div>
+  <div class="nav-right">
+    <a href="#features">Features</a>
+    <a href="#steps">Setup</a>
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website" target="_blank" rel="noopener">
+      <button class="nav-cta">Install</button>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Chrome Extension — V1.7</div>
+    <h1>Grade your co-op postings.</h1>
+    <p class="hero-desc">
+      Scans NUWorks job descriptions, matches them against your resume, and returns a score. All processing happens in your browser. No data leaves your machine.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-black" href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website" target="_blank" rel="noopener">Add to Chrome</a>
+      <button class="btn-outline">Learn More</button>
+    </div>
+  </div>
+  <div class="hero-video">
+    <video width="100%" height="auto" autoplay loop muted playsinline controls>
+      <source src="../video.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat"><div class="value red">100%</div><div class="label">Local Processing</div></div>
+  <div class="stat"><div class="value">250+</div><div class="label">Skills Recognized</div></div>
+  <div class="stat"><div class="value">0</div><div class="label">Server Calls</div></div>
+  <div class="stat"><div class="value">Free</div><div class="label">Always</div></div>
+</div>
+
+<!-- SCREENSHOTS -->
+<section class="screenshots">
+  <div class="screenshots-label">Extension Interface</div>
+  <div class="screenshot-row">
+    <img src="../feature_screenshot.png" alt="Extension interface with badges">
+    <img src="../feature_screenshot_2.png" alt="Extension search page">
+  </div>
+  <div class="screenshot-full">
+    <span class="tag">New — Job Explorer</span>
+    <img src="../job_explorer_screenshot.png" alt="Job Explorer with filtering and match percentages">
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-header">
+    <h2>Why use this extension?</h2>
+    <p>Stop scrolling through hundreds of postings. Let the extension surface the jobs that actually match your background.</p>
+  </div>
+  <table class="feature-table">
+    <tr>
+      <td class="num">01</td>
+      <td class="title">NLP Qualification Detection</td>
+      <td class="desc">Trained model detects graduation dates, school year restrictions, and eligibility criteria automatically.</td>
+    </tr>
+    <tr>
+      <td class="num">02</td>
+      <td class="title">Auto-Grading & Badges</td>
+      <td class="desc">Match scores, external application warnings, and eligibility status shown as color-coded badges on the job list.</td>
+    </tr>
+    <tr>
+      <td class="num">03</td>
+      <td class="title">Smart Filters</td>
+      <td class="desc">Filter by match score, freshness, company, title, or eligibility. Save matched jobs in one click.</td>
+    </tr>
+    <tr>
+      <td class="num">04</td>
+      <td class="title">Resume Parsing</td>
+      <td class="desc">Upload a PDF resume. Skills and tools extracted locally and matched against every posting.</td>
+    </tr>
+    <tr>
+      <td class="num">05</td>
+      <td class="title">Manual Control</td>
+      <td class="desc">Toggle auto-grading, trigger analysis manually, update profile settings at any time.</td>
+    </tr>
+    <tr>
+      <td class="num">06</td>
+      <td class="title">Privacy First</td>
+      <td class="desc">All processing runs in your browser. Your resume, scores, and data never touch a server.</td>
+    </tr>
+  </table>
+</section>
+
+<!-- VIDEOS -->
+<section class="videos">
+  <div class="videos-label">In Action</div>
+  <div class="video-grid">
+    <div class="video-block">
+      <h3>Know Why You Weren't Selected</h3>
+      <p>Quickly identify inactive applications and rejection status.</p>
+      <video controls playsinline>
+        <source src="../ineligible-job-video.mov" type="video/quicktime">
+        <source src="../ineligible-job-video.mov" type="video/mp4">
+      </video>
+    </div>
+    <div class="video-block">
+      <h3>A Better Way to Browse NUWorks</h3>
+      <p>Advanced filtering, match percentages, and all original features.</p>
+      <video controls playsinline>
+        <source src="../custom.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="steps" id="steps">
+  <div class="steps-label">Getting Started</div>
+  <div class="steps-grid">
+    <div class="step-box">
+      <div class="num">01</div>
+      <h3>Install</h3>
+      <p>Add from the Chrome Web Store or load unpacked from GitHub.</p>
+    </div>
+    <div class="step-box">
+      <div class="num">02</div>
+      <h3>Upload</h3>
+      <p>Open the extension on NUWorks and upload your resume PDF.</p>
+    </div>
+    <div class="step-box">
+      <div class="num">03</div>
+      <h3>Analyze</h3>
+      <p>Click "Analyze Jobs" to see match scores and filter results.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    NUWorks Grader — Not affiliated with Northeastern. Made by <a href="https://ashwiniyer.com" target="_blank">Ashwin Iyer</a>.
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank">GitHub</a>
+    <a href="../privacy_policy.html" target="_blank">Privacy</a>
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/issues" target="_blank">Issues</a>
+  </div>
+</footer>
+
+<div class="style-note">
+  <strong>Style 05: Brutalist Paper</strong><br>
+  Off-white paper bg. Thick 3px borders.
+  Zero rounded corners. Features as a data table.
+  Monospace labels. Large uppercase headings.
+</div>
+
+</body>
+</html>

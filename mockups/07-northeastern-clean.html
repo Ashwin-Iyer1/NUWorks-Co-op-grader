@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style 07 — Northeastern Clean</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  /* ============================================
+     STYLE 07: NORTHEASTERN CLEAN
+     ============================================
+     Uses Northeastern's actual red (#c8102e) as
+     the accent on a clean white/light gray base.
+     Institutional but modern. Card shadows for
+     depth. Full-width hero with centered video.
+     Professional enough for a student org page.
+     ============================================ */
+
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --surface-alt: #f3f3f3;
+    --border: #e5e5e5;
+    --border-strong: #d4d4d4;
+    --text-primary: #171717;
+    --text-secondary: #525252;
+    --text-tertiary: #a3a3a3;
+    --accent: #c8102e;
+    --accent-hover: #a80d26;
+    --accent-subtle: rgba(200,16,46,0.05);
+    --accent-border: rgba(200,16,46,0.15);
+    --green: #15803d;
+    --green-bg: rgba(21,128,61,0.06);
+    --yellow: #a16207;
+    --yellow-bg: rgba(161,98,7,0.06);
+    --red-bg: rgba(200,16,46,0.06);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 12px 24px rgba(0,0,0,0.08);
+    --radius: 8px;
+    --radius-lg: 12px;
+    --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 48px; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(250,250,250,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-weight: 800; font-size: 0.92rem; letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .nav-logo .mark {
+    width: 28px; height: 28px; background: var(--accent); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 900; font-size: 0.8rem;
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 28px; }
+
+  .nav-right a {
+    font-size: 0.85rem; font-weight: 500; color: var(--text-secondary);
+    text-decoration: none; transition: color 0.2s var(--ease);
+  }
+
+  .nav-right a:hover { color: var(--text-primary); }
+
+  .nav-cta {
+    font-family: inherit; font-size: 0.85rem; font-weight: 600;
+    padding: 9px 22px; background: var(--accent); color: #fff;
+    border: none; border-radius: var(--radius); cursor: pointer;
+    transition: background 0.2s var(--ease);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .nav-cta:hover { background: var(--accent-hover); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 120px 48px 0; text-align: center;
+  }
+
+  .hero-inner { max-width: 680px; margin: 0 auto; }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.75rem; font-weight: 600; color: var(--accent);
+    background: var(--accent-subtle); border: 1px solid var(--accent-border);
+    padding: 5px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 4.5vw, 2.8rem); font-weight: 900;
+    line-height: 1.15; letter-spacing: -0.025em; margin-bottom: 14px;
+  }
+
+  .hero-desc {
+    font-size: 1rem; line-height: 1.7; color: var(--text-secondary);
+    max-width: 520px; margin: 0 auto 28px;
+  }
+
+  .hero-actions {
+    display: flex; gap: 12px; justify-content: center; margin-bottom: 48px;
+  }
+
+  .btn-primary {
+    font-family: inherit; font-size: 0.88rem; font-weight: 600;
+    padding: 12px 28px; background: var(--accent); color: #fff;
+    border: none; border-radius: var(--radius); cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: background 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    text-decoration: none;
+  }
+
+  .btn-primary:hover { background: var(--accent-hover); box-shadow: var(--shadow-md); }
+
+  .btn-outline {
+    font-family: inherit; font-size: 0.88rem; font-weight: 500;
+    padding: 12px 28px; background: var(--surface); color: var(--text-primary);
+    border: 1px solid var(--border-strong); border-radius: var(--radius); cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s var(--ease);
+  }
+
+  .btn-outline:hover { border-color: var(--text-tertiary); }
+
+  /* ── HERO VIDEO ── */
+  .hero-video {
+    max-width: 960px; margin: 0 auto;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    overflow: hidden; border: 1px solid var(--border);
+    border-bottom: none;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .hero-video video { display: block; width: 100%; height: auto; }
+
+  /* ── TRUST BAR ── */
+  .trust-bar {
+    background: var(--surface); border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 48px;
+    display: flex; justify-content: center; gap: 48px;
+  }
+
+  .trust-item {
+    font-size: 0.82rem; font-weight: 500; color: var(--text-secondary);
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .trust-item strong { color: var(--accent); font-weight: 700; }
+
+  /* ── LOGO CAROUSEL ── */
+  .logo-carousel {
+    padding: 36px 48px; text-align: center; overflow: hidden;
+    background: var(--surface);
+  }
+
+  .logo-carousel-heading {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 16px;
+  }
+
+  .logo-track {
+    display: flex; gap: 48px; animation: scroll 40s linear infinite;
+    width: max-content;
+  }
+
+  .logo-slide { flex-shrink: 0; display: flex; align-items: center; }
+  .logo-slide img { height: 22px; opacity: 0.4; filter: grayscale(1); transition: opacity 0.3s; }
+  .logo-slide img:hover { opacity: 0.65; }
+
+  @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-25%); } }
+
+  /* ── SCREENSHOTS ── */
+  .screenshots {
+    max-width: 1080px; margin: 0 auto; padding: 64px 48px;
+  }
+
+  .screenshots-header {
+    text-align: center; margin-bottom: 32px;
+  }
+
+  .screenshots-header .overline {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+  }
+
+  .screenshots-header h2 {
+    font-size: 1.4rem; font-weight: 800; letter-spacing: -0.015em;
+  }
+
+  .ss-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;
+  }
+
+  .ss-card {
+    border-radius: var(--radius-lg); overflow: hidden;
+    border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+  }
+
+  .ss-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .ss-card img { display: block; width: 100%; height: auto; }
+
+  .ss-hero {
+    position: relative; border-radius: var(--radius-lg); overflow: hidden;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-subtle), var(--shadow-lg);
+  }
+
+  .ss-hero img { display: block; width: 100%; height: auto; }
+
+  .ss-hero .tag {
+    position: absolute; top: 12px; left: 12px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 4px 10px;
+    background: var(--accent); color: #fff; border-radius: 4px;
+  }
+
+  /* ── SECTION ── */
+  .section { max-width: 1080px; margin: 0 auto; padding: 80px 48px; }
+
+  .section-center { text-align: center; margin-bottom: 48px; }
+
+  .section-center .overline {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+  }
+
+  .section-center h2 {
+    font-size: 1.5rem; font-weight: 800; letter-spacing: -0.015em;
+    margin-bottom: 6px;
+  }
+
+  .section-center p {
+    font-size: 0.92rem; color: var(--text-secondary); max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ── FEATURE CARDS ── */
+  .card-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 28px 24px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.25s var(--ease), transform 0.2s var(--ease);
+  }
+
+  .card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+  .card-icon {
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    background: var(--accent-subtle); border: 1px solid var(--accent-border);
+    border-radius: var(--radius); margin-bottom: 14px; font-size: 1rem;
+  }
+
+  .card h3 { font-size: 0.88rem; font-weight: 700; margin-bottom: 6px; }
+  .card p { font-size: 0.82rem; line-height: 1.6; color: var(--text-secondary); }
+
+  /* ── VIDEOS ── */
+  .video-section {
+    background: var(--surface-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+
+  .video-section .inner { max-width: 1080px; margin: 0 auto; padding: 80px 48px; }
+
+  .video-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  }
+
+  .video-block h3 { font-size: 0.92rem; font-weight: 700; margin-bottom: 4px; }
+  .video-block p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px; }
+
+  .video-wrap {
+    border-radius: var(--radius-lg); overflow: hidden;
+    border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+  }
+
+  .video-wrap video { display: block; width: 100%; height: auto; }
+
+  /* ── STEPS ── */
+  .steps-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    position: relative;
+  }
+
+  .step {
+    text-align: center; padding: 8px;
+  }
+
+  .step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; background: var(--accent); color: #fff;
+    font-size: 0.88rem; font-weight: 700; border-radius: 50%;
+    margin-bottom: 14px;
+  }
+
+  .step h3 { font-size: 0.92rem; font-weight: 700; margin-bottom: 4px; }
+  .step p { font-size: 0.82rem; line-height: 1.6; color: var(--text-secondary); max-width: 280px; margin: 0 auto; }
+
+  /* ── FOOTER ── */
+  footer {
+    max-width: 1080px; margin: 0 auto; padding: 32px 48px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-left { display: flex; flex-direction: column; gap: 2px; }
+  .footer-left .name { font-size: 0.85rem; font-weight: 700; }
+  .footer-left .sub { font-size: 0.75rem; color: var(--text-tertiary); }
+  .footer-left .sub a { color: var(--accent); text-decoration: none; }
+
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a {
+    font-size: 0.78rem; color: var(--text-tertiary); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--text-secondary); }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .hero { padding: 100px 24px 0; }
+    .trust-bar { flex-wrap: wrap; gap: 16px; justify-content: center; }
+    .ss-grid { grid-template-columns: 1fr; }
+    .card-grid { grid-template-columns: 1fr; }
+    .video-grid { grid-template-columns: 1fr; }
+    .steps-row { grid-template-columns: 1fr; gap: 32px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+
+  .style-note {
+    position: fixed; bottom: 16px; right: 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 12px 16px;
+    font-size: 0.72rem; color: var(--text-tertiary);
+    z-index: 200; max-width: 260px; line-height: 1.5;
+    box-shadow: var(--shadow-md);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="mark">N</div>
+    NUWorks Grader
+  </div>
+  <div class="nav-right">
+    <a href="#features">Features</a>
+    <a href="#setup">Setup</a>
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website" target="_blank" rel="noopener">
+      <button class="nav-cta">Add to Chrome</button>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Version 1.7 Available</div>
+    <h1>Know which co-ops match your skills before you apply.</h1>
+    <p class="hero-desc">
+      A Chrome extension that scores NUWorks job postings against your resume.
+      Runs entirely in your browser — nothing leaves your machine.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website" target="_blank" rel="noopener">Add to Chrome — Free</a>
+      <button class="btn-outline">Learn more</button>
+    </div>
+  </div>
+  <div class="hero-video">
+    <video width="100%" height="auto" autoplay loop muted playsinline controls>
+      <source src="../video.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><strong>100%</strong> local processing</div>
+  <div class="trust-item"><strong>250+</strong> skills recognized</div>
+  <div class="trust-item"><strong>0</strong> server calls</div>
+  <div class="trust-item"><strong>Free</strong> forever</div>
+</div>
+
+<!-- LOGO CAROUSEL -->
+<div class="logo-carousel">
+  <p class="logo-carousel-heading">Where our users land offers</p>
+  <div class="logo-track">
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg" alt="Klaviyo"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington Management"></div>
+    <div class="logo-slide"><img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg" alt="BBH"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg" alt="Flow Traders"></div>
+    <div class="logo-slide"><img src="../images/Chewy_pet_food_logo.svg" alt="Chewy"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg" alt="Wolters Kluwer"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg" alt="Klaviyo"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington"></div>
+    <div class="logo-slide"><img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg" alt="BBH"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg" alt="Flow Traders"></div>
+    <div class="logo-slide"><img src="../images/Chewy_pet_food_logo.svg" alt="Chewy"></div>
+    <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg" alt="Wolters Kluwer"></div>
+  </div>
+</div>
+
+<!-- SCREENSHOTS -->
+<section class="screenshots">
+  <div class="screenshots-header">
+    <div class="overline">Interface</div>
+    <h2>See the extension in action.</h2>
+  </div>
+  <div class="ss-grid">
+    <div class="ss-card"><img src="../feature_screenshot.png" alt="Extension interface with badges"></div>
+    <div class="ss-card"><img src="../feature_screenshot_2.png" alt="Extension search page"></div>
+  </div>
+  <div class="ss-hero">
+    <span class="tag">New</span>
+    <img src="../job_explorer_screenshot.png" alt="Job Explorer">
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-center">
+    <div class="overline">Features</div>
+    <h2>Built for Northeastern co-op search.</h2>
+    <p>Tools that help you spend time on postings that match — not scrolling through hundreds.</p>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h3>NLP Qualification Detection</h3>
+      <p>Trained model detects graduation dates, school year restrictions, and eligibility criteria.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏷️</div>
+      <h3>Auto-Grading & Badges</h3>
+      <p>Match scores and eligibility shown as color-coded badges on the job list.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔍</div>
+      <h3>Smart Filters</h3>
+      <p>Filter by score, freshness, company, title. Save matched jobs in one click.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📄</div>
+      <h3>Resume Parsing</h3>
+      <p>Upload a PDF. Skills extracted locally and matched against every posting.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <h3>Manual Control</h3>
+      <p>Toggle auto-grading, trigger analysis manually, update settings anytime.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔒</div>
+      <h3>Privacy First</h3>
+      <p>All processing in-browser. Resume and data never leave your machine.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section class="video-section">
+  <div class="inner">
+    <div class="section-center">
+      <div class="overline">Demos</div>
+      <h2>See what it does.</h2>
+    </div>
+    <div class="video-grid">
+      <div class="video-block">
+        <h3>Know Why You Weren't Selected</h3>
+        <p>Quickly identify inactive applications and rejection status.</p>
+        <div class="video-wrap">
+          <video controls playsinline>
+            <source src="../ineligible-job-video.mov" type="video/quicktime">
+            <source src="../ineligible-job-video.mov" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="video-block">
+        <h3>A Better Way to Browse NUWorks</h3>
+        <p>Advanced filtering, match percentages, and all original features.</p>
+        <div class="video-wrap">
+          <video controls playsinline>
+            <source src="../custom.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="section" id="setup">
+  <div class="section-center">
+    <div class="overline">Getting Started</div>
+    <h2>Set up in under a minute.</h2>
+    <p>No account needed. No configuration. Install, upload, analyze.</p>
+  </div>
+  <div class="steps-row">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Install the extension</h3>
+      <p>Add from Chrome Web Store. Only NUWorks page permissions required.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Upload your resume</h3>
+      <p>Paste text or upload a PDF. Skills extracted locally in milliseconds.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Analyze postings</h3>
+      <p>Open NUWorks, click the extension, hit Analyze. Results appear in real time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <div class="name">NUWorks Grader</div>
+    <div class="sub">Not affiliated with Northeastern University. Made by <a href="https://ashwiniyer.com" target="_blank">Ashwin Iyer</a>.</div>
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank">GitHub</a>
+    <a href="../privacy_policy.html" target="_blank">Privacy Policy</a>
+    <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/issues" target="_blank">Report an Issue</a>
+  </div>
+</footer>
+
+<div class="style-note">
+  <strong>Style 07: Northeastern Clean</strong><br>
+  School red (#c8102e) accent on white/light gray.
+  Institutional but modern. Shadow-based depth.
+  Centered hero with video flush to trust bar.
+</div>
+
+</body>
+</html>
