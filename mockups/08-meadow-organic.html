@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style 08 — Meadow Organic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  /* ============================================
+     STYLE 08: MEADOW ORGANIC
+     ============================================
+     A homage to nature-SaaS landing pages: a
+     photographic-feel sky→wildflower-meadow scene
+     built entirely in CSS/SVG, a floating cream
+     pill nav, and playful "sticker" hero type that
+     mixes a warm serif italic with clean sans and
+     tiny inline icons. The extension UI rises out
+     of the meadow at the bottom. Green as growth.
+     ============================================ */
+
+  :root {
+    /* sky + meadow scene */
+    --sky-top: #63aef0;
+    --sky-mid: #a7d5f7;
+    --sky-haze: #dceff6;
+    --horizon: #e9f4e6;
+    --meadow-far: #bfe0a6;
+    --meadow-mid: #86c46a;
+    --meadow-near: #4f9b45;
+
+    /* surfaces */
+    --cream: #fbf9f2;
+    --cream-2: #f4f0e5;
+    --card: #ffffff;
+    --border: #e7e1d2;
+    --border-soft: rgba(35,48,31,0.08);
+
+    /* ink */
+    --ink: #223018;
+    --ink-2: #4b5a3f;
+    --ink-3: #8a9680;
+
+    /* accents */
+    --green: #12a150;
+    --green-deep: #0c8341;
+    --green-soft: #e4f5e8;
+    --lav-bg: #e8e4fb;
+    --lav-ink: #6a56d1;
+    --peach-bg: #ffe6cd;
+    --peach-ink: #d95f26;
+    --amber: #c98a12;
+    --amber-bg: #fbedcf;
+    --rose: #c8102e;
+
+    --shadow-soft: 0 18px 48px -20px rgba(31,60,26,0.35);
+    --shadow-card: 0 8px 24px -12px rgba(31,60,26,0.18);
+    --r: 16px;
+    --r-lg: 24px;
+    --r-pill: 999px;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ─────────────────────────────────────────────
+     SCENE — sky gradient + sun glow + hills + flowers
+     ───────────────────────────────────────────── */
+  .scene {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1180px; z-index: 0; overflow: hidden;
+    background:
+      radial-gradient(120% 80% at 78% -10%, rgba(255,249,222,0.9) 0%, rgba(255,249,222,0) 42%),
+      linear-gradient(180deg,
+        var(--sky-top) 0%,
+        var(--sky-mid) 26%,
+        var(--sky-haze) 46%,
+        var(--horizon) 55%,
+        var(--meadow-far) 60%,
+        var(--meadow-mid) 74%,
+        var(--meadow-near) 100%);
+  }
+
+  /* faint dotted survey grid, like the reference */
+  .scene::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1.4px);
+    background-size: 34px 34px;
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.18) 40%, transparent 58%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.18) 40%, transparent 58%);
+    pointer-events: none;
+  }
+
+  /* wildflower speckle over the meadow band */
+  .scene::after {
+    content: ""; position: absolute; left: 0; right: 0;
+    top: 590px; height: 590px;
+    background-image:
+      radial-gradient(circle, #ff7a3d 0 2.4px, transparent 3px),
+      radial-gradient(circle, #b57bd6 0 2.2px, transparent 3px),
+      radial-gradient(circle, #ffe14d 0 1.8px, transparent 2.6px),
+      radial-gradient(circle, #ffffff 0 1.8px, transparent 2.6px),
+      radial-gradient(circle, #ff9a5a 0 1.6px, transparent 2.4px);
+    background-size: 78px 62px, 104px 84px, 61px 72px, 88px 66px, 120px 90px;
+    background-position: 0 0, 40px 26px, 22px 48px, 66px 12px, 90px 60px;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.5) 22%, #000 55%);
+    mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.5) 22%, #000 55%);
+    opacity: 0.9; pointer-events: none;
+  }
+
+  .hill {
+    position: absolute; left: -2%; width: 104%; z-index: 0;
+    pointer-events: none;
+  }
+  .hill svg { display: block; width: 100%; height: auto; }
+  .hill-1 { top: 560px; opacity: 0.85; }
+  .hill-2 { top: 640px; }
+
+  /* ─────────────────────────────────────────────
+     LAYOUT
+     ───────────────────────────────────────────── */
+  .wrap { position: relative; z-index: 2; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+
+  /* ── FLOATING PILL NAV ── */
+  .nav-shell { position: sticky; top: 18px; z-index: 50; padding: 0 20px; }
+  nav {
+    max-width: 780px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 18px; padding: 9px 10px 9px 20px;
+    background: rgba(251,249,242,0.82);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: var(--r-pill);
+    box-shadow: 0 10px 30px -12px rgba(31,60,26,0.35), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 0.95rem; letter-spacing: -0.01em; }
+  .nav-logo .mark {
+    width: 24px; height: 24px; border-radius: 7px;
+    background: conic-gradient(from 210deg, var(--green), #58c98a, var(--green-deep), var(--green));
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5);
+    transform: rotate(45deg);
+  }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-links a {
+    font-size: 0.86rem; font-weight: 500; color: var(--ink-2);
+    text-decoration: none; padding: 7px 13px; border-radius: var(--r-pill);
+    transition: background 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .nav-links a:hover { background: rgba(35,48,31,0.06); color: var(--ink); }
+  .nav-cta {
+    font-family: inherit; font-size: 0.85rem; font-weight: 600;
+    color: #fff; background: var(--green); border: none; cursor: pointer;
+    padding: 9px 18px; border-radius: var(--r-pill);
+    box-shadow: 0 6px 16px -6px rgba(18,161,80,0.7);
+    transition: transform 0.2s var(--ease), background 0.2s var(--ease);
+    text-decoration: none; white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--green-deep); transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero { text-align: center; padding: 78px 0 0; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.78rem; font-weight: 600; color: var(--ink-2);
+    background: rgba(251,249,242,0.7); border: 1px solid rgba(255,255,255,0.8);
+    padding: 6px 8px 6px 14px; border-radius: var(--r-pill);
+    box-shadow: 0 6px 18px -10px rgba(31,60,26,0.4);
+    margin-bottom: 30px;
+  }
+  .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px var(--green-soft); }
+  .hero-badge .ver { background: var(--card); color: var(--green-deep); font-weight: 700; padding: 2px 9px; border-radius: var(--r-pill); font-size: 0.72rem; }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400; font-size: clamp(2.5rem, 6.4vw, 4.5rem);
+    line-height: 1.04; letter-spacing: -0.02em; color: var(--ink);
+    max-width: 12ch; margin: 0 auto;
+  }
+  .hero h1 .row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.28em; }
+
+  /* sticker highlights */
+  .stick {
+    display: inline-flex; align-items: center; gap: 0.32em;
+    padding: 0.02em 0.34em; border-radius: 14px;
+    transform: rotate(-2deg);
+    box-shadow: 0 8px 20px -10px rgba(31,60,26,0.4);
+    line-height: 1;
+  }
+  .stick.lav { background: var(--lav-bg); color: var(--lav-ink); transform: rotate(-2.5deg); }
+  .stick.peach { background: var(--peach-bg); color: var(--peach-ink); transform: rotate(1.8deg); }
+  .stick i.ico {
+    width: 1.05em; height: 1.05em; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-style: normal;
+    font-family: 'DM Sans', sans-serif; font-size: 0.6em; font-weight: 700;
+    color: #fff; flex-shrink: 0;
+  }
+  .stick.lav i.ico { background: var(--lav-ink); }
+  .stick.peach i.ico { background: var(--peach-ink); }
+  .flourish { font-style: italic; font-family: 'Instrument Serif', serif; font-weight: 400; letter-spacing: 0; }
+
+  .hero-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1rem, 1.6vw, 1.18rem); color: var(--ink-2);
+    max-width: 40ch; margin: 26px auto 0; line-height: 1.6;
+  }
+
+  .hero-actions { display: flex; gap: 12px; justify-content: center; align-items: center; margin-top: 32px; flex-wrap: wrap; }
+  .btn-green {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: inherit; font-size: 0.98rem; font-weight: 600; color: #fff;
+    background: var(--green); border: none; cursor: pointer;
+    padding: 15px 26px; border-radius: var(--r-pill);
+    box-shadow: 0 14px 30px -12px rgba(18,161,80,0.9), inset 0 1px 0 rgba(255,255,255,0.25);
+    transition: transform 0.2s var(--ease), background 0.2s var(--ease);
+    text-decoration: none;
+  }
+  .btn-green:hover { background: var(--green-deep); transform: translateY(-2px); }
+  .btn-green .arrow { transition: transform 0.2s var(--ease); }
+  .btn-green:hover .arrow { transform: translate(2px,-2px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: inherit; font-size: 0.95rem; font-weight: 600; color: var(--ink);
+    background: rgba(251,249,242,0.75); border: 1px solid rgba(255,255,255,0.8); cursor: pointer;
+    padding: 14px 22px; border-radius: var(--r-pill);
+    box-shadow: 0 8px 20px -12px rgba(31,60,26,0.4);
+    transition: transform 0.2s var(--ease); text-decoration: none;
+  }
+  .btn-ghost:hover { transform: translateY(-2px); }
+
+  .hero-note {
+    display: inline-block; margin-top: 18px; font-size: 0.78rem; font-weight: 500; color: var(--ink-2);
+    background: rgba(251,249,242,0.72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.7); padding: 7px 16px; border-radius: var(--r-pill);
+    box-shadow: 0 6px 16px -10px rgba(31,60,26,0.4);
+  }
+
+  /* ── EXTENSION PANEL RISING FROM MEADOW ── */
+  .stage { margin-top: 66px; padding-bottom: 20px; }
+  .panel {
+    max-width: 1000px; margin: 0 auto;
+    background: var(--cream); border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 20px 20px 0 0; overflow: hidden;
+    box-shadow: 0 -2px 0 rgba(255,255,255,0.6), 0 40px 80px -30px rgba(31,60,26,0.6);
+  }
+  .panel-bar {
+    display: flex; align-items: center; gap: 14px; padding: 12px 18px;
+    background: var(--cream-2); border-bottom: 1px solid var(--border);
+  }
+  .traffic { display: flex; gap: 7px; }
+  .traffic span { width: 11px; height: 11px; border-radius: 50%; }
+  .traffic span:nth-child(1){ background:#ef6f5c; } .traffic span:nth-child(2){ background:#f2c14e; } .traffic span:nth-child(3){ background:#63c187; }
+  .omni {
+    flex: 1; max-width: 420px; margin: 0 auto; font-size: 0.76rem; color: var(--ink-3);
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--r-pill);
+    padding: 6px 14px; text-align: center;
+  }
+  .panel-body { display: grid; grid-template-columns: 210px 1fr; min-height: 430px; }
+
+  .sidebar { background: var(--card); border-right: 1px solid var(--border); padding: 18px 14px; }
+  .side-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.9rem; padding: 6px 8px 16px; }
+  .side-logo .mark { width: 20px; height: 20px; border-radius: 6px; background: conic-gradient(from 210deg, var(--green), #58c98a, var(--green-deep)); transform: rotate(45deg); }
+  .side-item { display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; font-size: 0.85rem; color: var(--ink-2); font-weight: 500; margin-bottom: 2px; }
+  .side-item .gi { width: 16px; text-align: center; opacity: 0.85; }
+  .side-item.active { background: var(--green-soft); color: var(--green-deep); font-weight: 600; }
+  .side-sep { height: 1px; background: var(--border); margin: 12px 4px; }
+  .side-foot { margin-top: 14px; padding: 12px; background: var(--cream-2); border-radius: 12px; font-size: 0.74rem; color: var(--ink-3); }
+  .side-foot strong { color: var(--ink); display: block; font-size: 0.8rem; }
+
+  .main { padding: 22px 24px; background: var(--cream); }
+  .main-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
+  .main-head h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 1.55rem; letter-spacing: -0.01em; }
+  .main-head .btn-mini { font-size: 0.76rem; font-weight: 600; color: #fff; background: var(--ink); border: none; padding: 8px 14px; border-radius: 9px; cursor: pointer; }
+  .main-sub { font-size: 0.82rem; color: var(--ink-2); margin-bottom: 18px; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+  .stat .k { font-size: 0.72rem; color: var(--ink-3); font-weight: 500; }
+  .stat .v { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.5rem; margin-top: 4px; letter-spacing: -0.01em; }
+  .stat .d { font-size: 0.7rem; font-weight: 600; margin-top: 3px; }
+  .stat .d.up { color: var(--green-deep); } .stat .d.warn { color: var(--amber); }
+
+  .joblist { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .job { display: flex; align-items: center; gap: 14px; padding: 13px 16px; border-bottom: 1px solid var(--border); }
+  .job:last-child { border-bottom: none; }
+  .job .co { width: 30px; height: 30px; border-radius: 8px; background: var(--cream-2); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.82rem; color: var(--ink-2); flex-shrink: 0; }
+  .job .info { flex: 1; min-width: 0; }
+  .job .info .t { font-size: 0.85rem; font-weight: 600; }
+  .job .info .m { font-size: 0.74rem; color: var(--ink-3); }
+  .badge { font-size: 0.72rem; font-weight: 700; padding: 4px 11px; border-radius: var(--r-pill); white-space: nowrap; }
+  .badge.hi { background: var(--green-soft); color: var(--green-deep); }
+  .badge.mid { background: var(--amber-bg); color: var(--amber); }
+  .badge.lo { background: #fbe4e4; color: var(--rose); }
+
+  /* ─────────────────────────────────────────────
+     BELOW THE FOLD (cream)
+     ───────────────────────────────────────────── */
+  .band { background: var(--cream); }
+
+  .trust {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 14px;
+    padding: 46px 0 6px;
+  }
+  .trust .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.85rem; font-weight: 500; color: var(--ink-2);
+    background: var(--card); border: 1px solid var(--border);
+    padding: 9px 16px; border-radius: var(--r-pill); box-shadow: var(--shadow-card);
+  }
+  .trust .chip b { color: var(--green-deep); font-weight: 700; }
+
+  .logos { text-align: center; padding: 40px 0 8px; overflow: hidden; }
+  .logos .cap { font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; }
+  .logo-track { display: flex; gap: 54px; width: max-content; animation: scroll 38s linear infinite; }
+  .logos:hover .logo-track { animation-play-state: paused; }
+  .logo-track img { height: 24px; opacity: 0.42; filter: grayscale(1); }
+  @keyframes scroll { to { transform: translateX(-25%); } }
+
+  .section { padding: 84px 0; }
+  .sec-head { text-align: center; max-width: 620px; margin: 0 auto 44px; }
+  .sec-head .eyebrow {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 0.76rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--green-deep); background: var(--green-soft);
+    padding: 5px 13px; border-radius: var(--r-pill); margin-bottom: 16px;
+  }
+  .sec-head h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(1.8rem, 3.4vw, 2.6rem); letter-spacing: -0.02em; line-height: 1.12; }
+  .sec-head h2 em { font-family: 'Instrument Serif', serif; font-style: italic; color: var(--green-deep); }
+  .sec-head p { margin-top: 12px; font-size: 1rem; color: var(--ink-2); }
+
+  /* screenshots */
+  .ss-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .ss { border-radius: var(--r-lg); overflow: hidden; background: var(--card); border: 1px solid var(--border); box-shadow: var(--shadow-card); transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); }
+  .ss:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+  .ss img { display: block; width: 100%; height: auto; }
+  .ss-hero { position: relative; border-radius: var(--r-lg); overflow: hidden; background: var(--card); border: 2px solid var(--green); box-shadow: 0 0 0 5px var(--green-soft), var(--shadow-soft); }
+  .ss-hero img { display: block; width: 100%; height: auto; }
+  .ss-hero .tag { position: absolute; top: 14px; left: 14px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; background: var(--green); padding: 5px 12px; border-radius: var(--r-pill); }
+
+  /* feature cards */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .fcard {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
+    padding: 26px 24px; box-shadow: var(--shadow-card);
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  }
+  .fcard:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+  .fcard .fi {
+    width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; margin-bottom: 16px; background: var(--green-soft);
+  }
+  .fcard:nth-child(2) .fi { background: var(--lav-bg); }
+  .fcard:nth-child(3) .fi { background: var(--peach-bg); }
+  .fcard:nth-child(4) .fi { background: var(--amber-bg); }
+  .fcard:nth-child(5) .fi { background: #e4eefb; }
+  .fcard:nth-child(6) .fi { background: #fbe4e6; }
+  .fcard h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.1rem; margin-bottom: 7px; letter-spacing: -0.01em; }
+  .fcard p { font-size: 0.88rem; color: var(--ink-2); line-height: 1.6; }
+
+  /* videos */
+  .video-band { background: var(--cream-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  .vblock h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.2rem; margin-bottom: 6px; }
+  .vblock p { font-size: 0.9rem; color: var(--ink-2); margin-bottom: 16px; }
+  .vwrap { border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-card); background: #000; }
+  .vwrap video { display: block; width: 100%; height: auto; }
+
+  /* steps */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .step { background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 28px 24px; position: relative; box-shadow: var(--shadow-card); }
+  .step .n { font-family: 'Fraunces', serif; font-weight: 600; font-size: 2rem; color: var(--green); line-height: 1; margin-bottom: 12px; }
+  .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+  .step p { font-size: 0.88rem; color: var(--ink-2); }
+
+  /* final CTA */
+  .final { text-align: center; padding: 30px 0 90px; }
+  .final-card {
+    position: relative; max-width: 860px; margin: 0 auto; overflow: hidden;
+    background:
+      radial-gradient(120% 120% at 50% -20%, rgba(255,255,255,0.28), transparent 55%),
+      linear-gradient(160deg, var(--green) 0%, var(--green-deep) 100%);
+    border-radius: 30px; padding: 62px 32px;
+    box-shadow: var(--shadow-soft);
+  }
+  .final-card::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.25) 1px, transparent 1.4px);
+    background-size: 26px 26px; opacity: 0.4; pointer-events: none;
+  }
+  .final-card h2 { position: relative; font-family: 'Fraunces', serif; font-weight: 500; color: #fff; font-size: clamp(1.8rem, 4vw, 2.7rem); letter-spacing: -0.02em; line-height: 1.1; }
+  .final-card h2 em { font-family: 'Instrument Serif', serif; font-style: italic; }
+  .final-card p { position: relative; color: rgba(255,255,255,0.9); margin: 14px auto 26px; max-width: 42ch; }
+  .btn-cream {
+    position: relative; display: inline-flex; align-items: center; gap: 10px;
+    font-family: inherit; font-weight: 700; font-size: 1rem; color: var(--green-deep);
+    background: var(--cream); border: none; cursor: pointer;
+    padding: 15px 28px; border-radius: var(--r-pill); text-decoration: none;
+    box-shadow: 0 14px 30px -12px rgba(0,0,0,0.4);
+    transition: transform 0.2s var(--ease);
+  }
+  .btn-cream:hover { transform: translateY(-2px); }
+
+  /* footer */
+  footer { background: var(--cream); border-top: 1px solid var(--border); }
+  .foot { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding: 40px 0; flex-wrap: wrap; }
+  .foot .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+  .foot .brand .mark { width: 22px; height: 22px; border-radius: 6px; background: conic-gradient(from 210deg, var(--green), #58c98a, var(--green-deep)); transform: rotate(45deg); }
+  .foot .sub { font-size: 0.82rem; color: var(--ink-3); max-width: 34ch; }
+  .foot .sub a { color: var(--green-deep); text-decoration: none; }
+  .foot-links { display: flex; gap: 24px; }
+  .foot-links a { font-size: 0.85rem; color: var(--ink-2); text-decoration: none; transition: color 0.2s; }
+  .foot-links a:hover { color: var(--ink); }
+  .foot-bottom { border-top: 1px solid var(--border); padding: 16px 0; font-size: 0.78rem; color: var(--ink-3); }
+
+  .style-note {
+    position: fixed; bottom: 16px; right: 16px; z-index: 200;
+    background: rgba(251,249,242,0.92); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    border: 1px solid var(--border); border-radius: 14px; padding: 12px 16px;
+    font-size: 0.72rem; color: var(--ink-2); max-width: 268px; line-height: 1.5;
+    box-shadow: var(--shadow-card);
+  }
+  .style-note strong { color: var(--green-deep); }
+
+  @media (max-width: 900px) {
+    .panel-body { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .ss-grid, .cards, .video-grid, .steps { grid-template-columns: 1fr; }
+    .cards { gap: 14px; }
+    nav { max-width: 100%; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SCENE -->
+<div class="scene">
+  <div class="hill hill-1">
+    <svg viewBox="0 0 1440 220" preserveAspectRatio="none"><path d="M0,120 C220,40 420,70 640,110 C880,155 1080,70 1280,90 C1360,98 1420,110 1440,116 L1440,220 L0,220 Z" fill="#a9d78c"/></svg>
+  </div>
+  <div class="hill hill-2">
+    <svg viewBox="0 0 1440 260" preserveAspectRatio="none"><path d="M0,150 C260,90 480,150 720,150 C960,150 1160,80 1440,140 L1440,260 L0,260 Z" fill="#7cbe5f"/></svg>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- NAV -->
+  <div class="nav-shell">
+    <nav>
+      <div class="nav-logo"><span class="mark"></span> NUWorks&nbsp;Grader</div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#demos">Demos</a>
+        <a href="#setup">Setup</a>
+      </div>
+      <a class="nav-cta" href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website" target="_blank" rel="noopener">Add to Chrome</a>
+    </nav>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container">
+      <span class="hero-badge"><span class="dot"></span> Runs 100% in your browser <span class="ver">v1.7</span></span>
+      <h1>
+        <span class="row">Turn your&nbsp;<span class="stick lav"><i class="ico">▤</i>résumé</span></span>
+        <span class="row">into <span class="stick peach"><i class="ico">↗</i><span class="flourish">ranked co-op matches</span></span></span>
+      </h1>
+      <p class="hero-sub">Score every NUWorks posting against your real skills — instantly, privately, and without scrolling through hundreds of listings.</p>
+      <div class="hero-actions">
+        <a class="btn-green" href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website" target="_blank" rel="noopener">Add to Chrome — Free <span class="arrow">↗</span></a>
+        <a class="btn-ghost" href="#demos">Watch it work</a>
+      </div>
+      <p class="hero-note">No account · No servers · Not affiliated with Northeastern</p>
+    </div>
+
+    <!-- EXTENSION PANEL -->
+    <div class="stage">
+      <div class="container">
+        <div class="panel">
+          <div class="panel-bar">
+            <div class="traffic"><span></span><span></span><span></span></div>
+            <div class="omni">nuworks.northeastern.edu/students/jobs</div>
+            <div style="width:52px"></div>
+          </div>
+          <div class="panel-body">
+            <aside class="sidebar">
+              <div class="side-logo"><span class="mark"></span> Grader</div>
+              <div class="side-item active"><span class="gi">◧</span> Dashboard</div>
+              <div class="side-item"><span class="gi">≡</span> Graded Jobs</div>
+              <div class="side-item"><span class="gi">◈</span> My Skills</div>
+              <div class="side-item"><span class="gi">▤</span> Résumé</div>
+              <div class="side-sep"></div>
+              <div class="side-item"><span class="gi">⚙</span> Settings</div>
+              <div class="side-item"><span class="gi">?</span> Help</div>
+              <div class="side-foot"><strong>Auto-grade: On</strong>Grading new postings as you browse.</div>
+            </aside>
+            <main class="main">
+              <div class="main-head">
+                <h2>Your co-op fit</h2>
+                <button class="btn-mini">Analyze jobs</button>
+              </div>
+              <p class="main-sub">Tracking match scores, eligibility, and freshness across today's NUWorks listings.</p>
+              <div class="stat-row">
+                <div class="stat"><div class="k">Jobs graded</div><div class="v">312</div><div class="d up">+48 today ↗</div></div>
+                <div class="stat"><div class="k">Strong matches</div><div class="v">27</div><div class="d up">≥ 80% fit ↗</div></div>
+                <div class="stat"><div class="k">Avg match</div><div class="v">64%</div><div class="d up">+6% ↗</div></div>
+                <div class="stat"><div class="k">Skills detected</div><div class="v">41</div><div class="d warn">from résumé</div></div>
+              </div>
+              <div class="joblist">
+                <div class="job"><div class="co">K</div><div class="info"><div class="t">Software Engineer Co-op</div><div class="m">Klaviyo · Boston, MA · posted 2h ago</div></div><span class="badge hi">92% match</span></div>
+                <div class="job"><div class="co">W</div><div class="info"><div class="t">Data Analyst Co-op</div><div class="m">Wellington Mgmt · Boston, MA · posted 1d ago</div></div><span class="badge hi">85% match</span></div>
+                <div class="job"><div class="co">B</div><div class="info"><div class="t">Quant Developer Co-op</div><div class="m">Brown Brothers Harriman · posted 3d ago</div></div><span class="badge mid">61% match</span></div>
+                <div class="job"><div class="co">F</div><div class="info"><div class="t">Trading Systems Co-op</div><div class="m">Flow Traders · external application ⚠</div></div><span class="badge lo">Class year</span></div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BELOW FOLD -->
+  <div class="band">
+    <!-- TRUST -->
+    <div class="container">
+      <div class="trust">
+        <span class="chip"><b>100%</b> local processing</span>
+        <span class="chip"><b>250+</b> skills recognized</span>
+        <span class="chip"><b>0</b> server calls</span>
+        <span class="chip"><b>Free</b> forever</span>
+      </div>
+    </div>
+
+    <!-- LOGOS -->
+    <div class="logos">
+      <div class="cap">Where our users land offers</div>
+      <div class="logo-track">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg" alt="Klaviyo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington Management">
+        <img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg" alt="BBH">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg" alt="Flow Traders">
+        <img src="../images/Chewy_pet_food_logo.svg" alt="Chewy">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg" alt="Wolters Kluwer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg" alt="Klaviyo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington">
+        <img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg" alt="BBH">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg" alt="Flow Traders">
+        <img src="../images/Chewy_pet_food_logo.svg" alt="Chewy">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg" alt="Wolters Kluwer">
+      </div>
+    </div>
+
+    <!-- SCREENSHOTS -->
+    <section class="section container" id="interface" style="padding-bottom:40px;">
+      <div class="sec-head">
+        <span class="eyebrow">Interface</span>
+        <h2>Everything shows up right <em>on the page</em></h2>
+        <p>No dashboards to check. Match scores, warnings, and eligibility land directly on NUWorks.</p>
+      </div>
+      <div class="ss-grid">
+        <div class="ss"><img src="../feature_screenshot.png" alt="Extension interface with badges"></div>
+        <div class="ss"><img src="../feature_screenshot_2.png" alt="Extension search page"></div>
+      </div>
+      <div class="ss-hero">
+        <span class="tag">New</span>
+        <img src="../job_explorer_screenshot.png" alt="Job Explorer">
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section container" id="features" style="padding-top:40px;">
+      <div class="sec-head">
+        <span class="eyebrow">Features</span>
+        <h2>Grown for the Northeastern <em>co-op grind</em></h2>
+        <p>Spend your time on the postings that actually fit — not scrolling past the ones that don't.</p>
+      </div>
+      <div class="cards">
+        <div class="fcard"><div class="fi">🧠</div><h3>NLP qualification</h3><p>A trained model reads each posting for graduation dates, class-year limits, and hidden eligibility rules.</p></div>
+        <div class="fcard"><div class="fi">🏷️</div><h3>Auto-grade &amp; badges</h3><p>Color-coded match scores and warnings appear inline on the job list the moment a page loads.</p></div>
+        <div class="fcard"><div class="fi">🔍</div><h3>Smart filters</h3><p>Filter by score, freshness, company, or title. Save every strong match with a single click.</p></div>
+        <div class="fcard"><div class="fi">📄</div><h3>Résumé parsing</h3><p>Drop in a PDF. Skills are extracted locally and matched against every posting on the board.</p></div>
+        <div class="fcard"><div class="fi">⚙️</div><h3>Manual control</h3><p>Toggle auto-grading, re-run analysis on demand, and tune your profile whenever you like.</p></div>
+        <div class="fcard"><div class="fi">🔒</div><h3>Privacy first</h3><p>Your résumé and data never leave the browser. There are no servers and no accounts.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- VIDEOS -->
+  <section class="video-band" id="demos">
+    <div class="section container">
+      <div class="sec-head">
+        <span class="eyebrow">Demos</span>
+        <h2>See it <em>in the wild</em></h2>
+      </div>
+      <div class="video-grid">
+        <div class="vblock">
+          <h3>Know why you weren't selected</h3>
+          <p>Instantly spot inactive applications and rejection status without digging.</p>
+          <div class="vwrap"><video controls playsinline><source src="../ineligible-job-video.mov" type="video/quicktime"><source src="../ineligible-job-video.mov" type="video/mp4"></video></div>
+        </div>
+        <div class="vblock">
+          <h3>A better way to browse NUWorks</h3>
+          <p>Advanced filtering, live match percentages, and every original feature intact.</p>
+          <div class="vwrap"><video controls playsinline><source src="../custom.mp4" type="video/mp4"></video></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="section container" id="setup">
+    <div class="sec-head">
+      <span class="eyebrow">Getting started</span>
+      <h2>Up and running in <em>under a minute</em></h2>
+      <p>No account. No configuration. Install, upload, analyze.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">01</div><h3>Install</h3><p>Add the extension from the Chrome Web Store. Only NUWorks page permissions are needed.</p></div>
+      <div class="step"><div class="n">02</div><h3>Upload</h3><p>Drop in your résumé PDF. Skills are extracted locally in milliseconds.</p></div>
+      <div class="step"><div class="n">03</div><h3>Analyze</h3><p>Open NUWorks and hit Analyze. Match scores and badges appear in real time.</p></div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final container">
+    <div class="final-card">
+      <h2>Stop scrolling. Start <em>matching.</em></h2>
+      <p>Join Northeastern students who let the extension do the filtering — so they can focus on the offers.</p>
+      <a class="btn-cream" href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website" target="_blank" rel="noopener">Add to Chrome — Free ↗</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="foot">
+        <div>
+          <div class="brand"><span class="mark"></span> NUWorks Grader</div>
+          <p class="sub">Unofficial tool. Not affiliated with Northeastern University or Symplicity. Made by <a href="https://ashwiniyer.com" target="_blank" rel="noopener">Ashwin Iyer</a>.</p>
+        </div>
+        <div class="foot-links">
+          <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank" rel="noopener">GitHub</a>
+          <a href="../privacy_policy.html" target="_blank">Privacy Policy</a>
+          <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/issues" target="_blank" rel="noopener">Report an Issue</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom"><div class="container">© 2026 Ashwin Iyer. All rights reserved.</div></div>
+  </footer>
+</div>
+
+<div class="style-note">
+  <strong>Style 08: Meadow Organic</strong><br>
+  CSS/SVG sky→wildflower-meadow scene, floating cream pill nav, sticker hero type (Fraunces + Instrument Serif italic), green "growth" accent, extension UI rising from the meadow.
+</div>
+
+</body>
+</html>
