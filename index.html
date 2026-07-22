@@ -13,12 +13,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,500&family=Source+Sans+3:wght@400;500;600;700&display=swap"
       rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
   </head>
 
@@ -33,34 +29,32 @@
       dataLayer.push(arguments);
     }
     gtag("js", new Date());
-
     gtag("config", "G-QHBQ8G5FK9");
   </script>
 
   <body>
-    <div class="glow-bg"></div>
-
     <nav class="navbar">
       <div class="container">
         <a href="#" class="logo">
-          <i class="fa-solid fa-graduation-cap"></i> NUWorks Grader
+          <span class="logo-mark" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+          </span>
+          NUWorks Grader
         </a>
         <div class="nav-links">
           <a href="#features">Features</a>
-          <a href="#how-it-works">How it Works</a>
+          <a href="#how-it-works">How it works</a>
           <a
             href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension"
             target="_blank"
             class="github-link"
-            ><i class="fa-brands fa-github"></i> GitHub</a
           >
-          <button
-            id="theme-toggle"
-            class="theme-btn"
-            aria-label="Toggle Theme"
-            style="background: none; border: none; cursor: pointer; padding: 4px 8px;"
-          >
-            <i class="fa-solid fa-moon" style="color: var(--text-secondary); font-size: 1rem;"></i>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.57.1.78-.25.78-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.2-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.75.81 1.2 1.84 1.2 3.1 0 4.43-2.69 5.41-5.26 5.7.41.36.78 1.06.78 2.14v3.17c0 .3.2.66.79.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"></path></svg>
+            GitHub
+          </a>
+          <button class="theme-btn" id="theme-toggle" type="button" aria-label="Toggle theme">
+            <svg id="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
           </button>
           <a
             href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website"
@@ -68,11 +62,11 @@
             rel="noopener noreferrer"
             class="btn btn-primary small"
           >
-            Add to Chrome</a
-          >
+            Add to Chrome
+          </a>
         </div>
-        <button class="mobile-menu-btn">
-          <i class="fa-solid fa-bars"></i>
+        <button class="mobile-menu-btn" type="button" aria-label="Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
       </div>
     </nav>
@@ -80,13 +74,15 @@
     <header class="hero">
       <div class="container">
         <div class="hero-content">
-          <div class="badge">v1.7 Now Available</div>
+          <div class="badge">v1.8 now available</div>
+          <div class="eyebrow">For Northeastern co-op students</div>
           <h1>
-            Supercharge Your <span class="gradient-text">Co-op Search</span>
+            Find the co-ops that <em>actually fit</em> your resume.
           </h1>
-          <p>
-            The ultimate tool for Northeastern students. Smart matching,
-            advanced filters, and automation for NUWorks.
+          <p class="hero-desc">
+            NUWorks Grader reads every posting the way you would — then scores
+            it against your skills, flags the ones you're not eligible for, and
+            saves the strong matches. All in your browser, all private.
           </p>
           <div class="cta-group">
             <a
@@ -95,327 +91,157 @@
               rel="noopener noreferrer"
               class="btn btn-primary large"
             >
-              <i class="fa-brands fa-chrome"></i> Add to Chrome
-              <span class="btn-sub">It's free!</span>
+              Add to Chrome<span class="btn-sub">It's free</span>
             </a>
-            <a href="#features" class="btn btn-secondary large">Learn More</a>
+            <a href="#features" class="btn btn-quiet large">See how it works</a>
           </div>
           <div class="hero-stats">
             <div class="stat">
               <span class="number">100%</span>
-              <span class="label">Privacy First</span>
+              <span class="label">Local &amp; private</span>
             </div>
             <div class="stat">
               <span class="number">250+</span>
-              <span class="label">Skills Tracked</span>
+              <span class="label">Skills recognized</span>
             </div>
             <div class="stat">
-              <span class="number">0ms</span>
-              <span class="label">Server Latency</span>
+              <span class="number">Free</span>
+              <span class="label">And open source</span>
             </div>
           </div>
         </div>
         <div class="hero-image">
-          <video
-            width="100%"
-            height="auto"
-            autoplay
-            loop
-            muted
-            playsinline
-            controls
-            style="
-              border-radius: 2px;
-              box-shadow: 0 20px 48px -12px var(--shadow-color);
-              border: 1px solid var(--border-color);
-            "
-          >
+          <video width="100%" height="auto" autoplay loop muted playsinline controls>
             <source src="video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
       </div>
     </header>
+
     <div class="logo-carousel">
       <p class="logo-carousel-heading">Where our users land offers</p>
       <div class="logo-track">
         <!-- Set 1 -->
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg"
-            alt="Klaviyo"
-            class="logo-invert"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg"
-            alt="Wellington Management"
-            class="logo-invert"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg"
-            alt="MFS Investment Management"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg"
-            alt="Brown Brothers Harriman"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg"
-            alt="Flow Traders"
-            class="logo-invert-hue"
-          />
-        </div>
-        <div class="logo-slide">
-          <img src="images\Chewy_pet_food_logo.svg" alt="Chewy" />
-        </div>
-
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg"
-            alt="Wolters Kluwer"
-          />
-        </div>
-        <!-- Set 2 -->
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg"
-            alt="Klaviyo"
-            class="logo-invert"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg"
-            alt="Wellington Management"
-            class="logo-invert"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg"
-            alt="Sun Life MFS Investment Management"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg"
-            alt="Brown Brothers Harriman"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg"
-            alt="Flow Traders"
-            class="logo-invert-hue"
-          />
-        </div>
-        <div class="logo-slide">
-          <img src="images\Chewy_pet_food_logo.svg" alt="Chewy" />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg"
-            alt="Wolters Kluwer"
-          />
-        </div>
-
-        <!-- Set 3 -->
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg"
-            alt="Klaviyo"
-            class="logo-invert"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg"
-            alt="Wellington Management"
-            class="logo-invert"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg"
-            alt="Sun Life MFS Investment Management"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg"
-            alt="Brown Brothers Harriman"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg"
-            alt="Flow Traders"
-            class="logo-invert-hue"
-          />
-        </div>
-        <div class="logo-slide">
-          <img src="images\Chewy_pet_food_logo.svg" alt="Chewy" />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg"
-            alt="Wolters Kluwer"
-          />
-        </div>
-
-        <!-- Set 4 -->
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg"
-            alt="Klaviyo"
-            class="logo-invert"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg"
-            alt="Wellington Management"
-            class="logo-invert"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg"
-            alt="Sun Life MFS Investment Management"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg"
-            alt="Brown Brothers Harriman"
-          />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg"
-            alt="Flow Traders"
-            class="logo-invert-hue"
-          />
-        </div>
-        <div class="logo-slide">
-          <img src="images\Chewy_pet_food_logo.svg" alt="Chewy" />
-        </div>
-        <div class="logo-slide">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg"
-            alt="Wolters Kluwer"
-          />
-        </div>
+        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg" alt="Klaviyo" class="logo-invert" /></div>
+        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington Management" class="logo-invert" /></div>
+        <div class="logo-slide"><img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS Investment Management" /></div>
+        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg" alt="Brown Brothers Harriman" /></div>
+        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg" alt="Flow Traders" class="logo-invert-hue" /></div>
+        <div class="logo-slide"><img src="images/Chewy_pet_food_logo.svg" alt="Chewy" /></div>
+        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg" alt="Wolters Kluwer" /></div>
+        <!-- Set 2 (duplicate for seamless marquee) -->
+        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Klaviyo-primary-logo-charcoal.svg" alt="Klaviyo" class="logo-invert" /></div>
+        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington Management" class="logo-invert" /></div>
+        <div class="logo-slide"><img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS Investment Management" /></div>
+        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg" alt="Brown Brothers Harriman" /></div>
+        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg" alt="Flow Traders" class="logo-invert-hue" /></div>
+        <div class="logo-slide"><img src="images/Chewy_pet_food_logo.svg" alt="Chewy" /></div>
+        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg" alt="Wolters Kluwer" /></div>
       </div>
     </div>
 
-    <section id="features" class="features" style="padding-top: 80px; padding-bottom: 0;">
+    <section id="features" class="features tinted">
       <div class="container">
+        <!-- The two feature screenshots (left untouched). -->
         <div class="feature-screenshot-section">
           <div class="feature-screenshot-pair">
             <img
               src="feature_screenshot.png"
               class="feature-screenshot"
               alt="NUWorks Extension Interface Discovery Page with Color-Coded Badges"
-              style="
-                border-radius: 2px;
-                box-shadow: 0 20px 40px var(--shadow-color);
-                border: 1px solid var(--border-color);
-              "
             />
             <img
               src="feature_screenshot_2.png"
               class="feature-screenshot"
               alt="NUWorks Extension Interface Search Page with Color-Coded Badges"
-              style="
-                border-radius: 2px;
-                box-shadow: 0 20px 40px var(--shadow-color);
-                border: 1px solid var(--border-color);
-              "
-            />
-          </div>
-          <div class="feature-screenshot-hero">
-            <span class="new-badge">NEW</span>
-            <img
-              src="job_explorer_screenshot.png"
-              class="feature-screenshot"
-              alt="NUWorks Job Explorer with filtering, match percentages, and batch actions"
             />
           </div>
         </div>
 
-        <div class="section-header" style="padding-top: 25px;">
+        <!-- The redesigned Job Explorer & popup — store screenshots. -->
+        <div class="section-header centered" style="margin-top: 68px">
+          <h2>A redesigned Job Explorer and popup</h2>
+          <p>
+            Match scores, an explainable breakdown for every job, smart filters,
+            and a calm interface that follows your system light or dark theme.
+          </p>
+        </div>
+        <div class="feature-screenshot-hero">
+          <span class="new-badge">New</span>
+          <div class="store-gallery">
+            <div class="store-shot">
+              <img src="store-screenshots/store-1-popup-hero.jpg" class="feature-screenshot" alt="The Job Matcher popup scoring co-op listings against your resume" />
+            </div>
+            <div class="store-shot">
+              <img src="store-screenshots/store-3-match-breakdown.jpg" class="feature-screenshot" alt="A job's match breakdown with sub-scores and matched skills" />
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header centered" style="margin-top: 76px">
           <h2>Why use this extension?</h2>
           <p>
-            Stop wasting time on jobs that don't match your profile. Let our
-            smart algorithms do the heavy lifting.
+            Stop wasting time on jobs that don't match your profile. Let smart,
+            on-device analysis do the heavy lifting.
           </p>
         </div>
         <div class="feature-grid">
           <div class="feature-card">
-            <div class="icon-box">
-              <i class="fa-solid fa-brain"></i>
+            <div class="feature-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path></svg>
             </div>
-            <h3>NLP Powered Qualification</h3>
+            <h3>NLP-powered qualification</h3>
             <p>
-              Uses a trained Natural Language Processing model to detect subtle
-              requirements like graduation dates and school years automatically.
+              A trained language model detects subtle requirements like
+              graduation dates and school years automatically.
             </p>
           </div>
           <div class="feature-card">
-            <div class="icon-box">
-              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <div class="feature-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 5v6c0 5 3.8 8.5 9 11 5.2-2.5 9-6 9-11V5z"></path><path d="m9 12 2 2 4-4"></path></svg>
             </div>
-            <h3>Auto-Grading & Visual Badging</h3>
+            <h3>Auto-grading &amp; visual badges</h3>
             <p>
-              Instantly see match scores, external application warnings, and
-              eligibility status with color-coded badges directly on the job
-              list.
+              Instantly see match scores, external-application warnings, and
+              eligibility status with color-coded badges on the job list.
             </p>
           </div>
           <div class="feature-card">
-            <div class="icon-box">
-              <i class="fa-solid fa-filter"></i>
+            <div class="feature-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
             </div>
-            <h3>Smart Filters & Batch Actions</h3>
+            <h3>Smart filters &amp; batch actions</h3>
             <p>
               Filter by match score or freshness. Save all matched jobs in one
-              click or unfavorite all to clean up your list.
+              click, or clean up your saved list just as fast.
             </p>
           </div>
           <div class="feature-card">
-            <div class="icon-box">
-              <i class="fa-solid fa-file-pdf"></i>
+            <div class="feature-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" y1="13" x2="16" y2="13"></line><line x1="8" y1="17" x2="14" y2="17"></line></svg>
             </div>
-            <h3>Resume Parsing</h3>
+            <h3>Resume parsing</h3>
             <p>
-              Simply upload your PDF resume. We extract the text and skills
-              automatically to find your best matches.
+              Upload your PDF resume. We extract the text and skills locally to
+              find your best matches.
             </p>
           </div>
           <div class="feature-card">
-            <div class="icon-box">
-              <i class="fa-solid fa-clock-rotate-left"></i>
+            <div class="feature-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
             </div>
-            <h3>Manual Control & Settings</h3>
+            <h3>Manual control &amp; settings</h3>
             <p>
-              Toggle auto-grading on/off, trigger grading manually on any page,
-              and update your profile settings with ease.
+              Toggle auto-grading, trigger grading manually on any page, and
+              update your profile settings with ease.
             </p>
           </div>
           <div class="feature-card">
-            <div class="icon-box">
-              <i class="fa-solid fa-lock"></i>
+            <div class="feature-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
             </div>
-            <h3>Privacy First</h3>
+            <h3>Privacy first</h3>
             <p>
               Your resume and data never leave your browser. All processing
               happens locally within the extension.
@@ -425,16 +251,12 @@
       </div>
     </section>
 
-    <section
-      id="more-features"
-      class="features"
-      style="padding-top: 0; padding-bottom: 80px"
-    >
+    <section id="more-features" class="section">
       <div class="container">
         <div class="video-duo">
           <div class="video-duo-item">
             <div class="section-header">
-              <h2>Know Why You Weren't Selected</h2>
+              <h2>Know why you weren't selected</h2>
               <p>
                 Quickly identify if a job application is inactive or if you were
                 not selected.
@@ -450,7 +272,7 @@
           </div>
           <div class="video-duo-item">
             <div class="section-header">
-              <h2>A Better Way to Browse NUWorks</h2>
+              <h2>A better way to browse NUWorks</h2>
               <p>
                 Open an improved NUWorks with advanced filtering, match
                 percentages, and all the original features.
@@ -467,35 +289,57 @@
       </div>
     </section>
 
-    <section id="how-it-works" class="steps">
+    <section id="how-it-works" class="steps tinted" style="padding-top: 44px">
       <div class="container">
-        <div class="section-header">
-          <h2>Get Started in Seconds</h2>
+        <div class="section-header centered">
+          <h2>Up and running in under a minute</h2>
+          <p>No account. No configuration. Install, upload, analyze.</p>
         </div>
         <div class="steps-container">
           <div class="step">
-            <div class="step-number">01</div>
+            <div class="step-number">1.</div>
             <h3>Install</h3>
             <p>
-              Add the extension to Chrome from the Web Store (or load unpacked
-              from GitHub).
+              Add the extension from the Chrome Web Store, or load it unpacked
+              from GitHub.
             </p>
           </div>
-          <div class="step arrow"><i class="fa-solid fa-arrow-right"></i></div>
           <div class="step">
-            <div class="step-number">02</div>
+            <div class="step-number">2.</div>
             <h3>Upload</h3>
-            <p>Open the extension on NUWorks and upload your resume PDF.</p>
+            <p>
+              Open the extension on NUWorks and upload your resume PDF, or paste
+              the text.
+            </p>
           </div>
-          <div class="step arrow"><i class="fa-solid fa-arrow-right"></i></div>
           <div class="step">
-            <div class="step-number">03</div>
+            <div class="step-number">3.</div>
             <h3>Analyze</h3>
             <p>
-              Click "Analyze Jobs" to see your match scores and filter results
+              Hit "Analyze jobs" to see your match scores and filter the results
               instantly.
             </p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-inner">
+          <h2>Spend your search on the right postings.</h2>
+          <p>
+            Built by a Northeastern student, for Northeastern students. Free,
+            open source, and private.
+          </p>
+          <a
+            href="https://chromewebstore.google.com/detail/ifcojjmgniboflalcgnclpleamjcpnge?utm_source=chrome-extensions-website"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary large"
+          >
+            Add to Chrome — it's free
+          </a>
         </div>
       </div>
     </section>
@@ -504,19 +348,19 @@
       <div class="container">
         <div class="footer-content">
           <div class="footer-left">
-            <a href="#" class="logo">NUWorks Grader</a>
+            <a href="#" class="logo">
+              <span class="logo-mark" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+              </span>
+              NUWorks Grader
+            </a>
             <p>
-              Unofficial tool. Not affiliated with Northeastern University or
+              An unofficial tool. Not affiliated with Northeastern University or
               Symplicity.
             </p>
             <p>
               Made by
-              <a
-                href="https://ashwiniyer.com"
-                target="_blank"
-                style="color: var(--accent-primary)"
-                >Ashwin Iyer</a
-              >
+              <a href="https://ashwiniyer.com" target="_blank">Ashwin Iyer</a>
             </p>
           </div>
           <div class="footer-links">
@@ -525,11 +369,11 @@
               target="_blank"
               >GitHub</a
             >
-            <a href="privacy_policy.html" target="_blank">Privacy Policy</a>
+            <a href="privacy_policy.html" target="_blank">Privacy policy</a>
             <a
               href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/issues"
               target="_blank"
-              >Report an Issue</a
+              >Report an issue</a
             >
           </div>
         </div>
@@ -546,66 +390,42 @@
     </footer>
 
     <script>
-      // Simple script for mobile menu toggling if needed
+      // ── Theme toggle: OS default, remembered in localStorage ──
+      (function () {
+        const root = document.documentElement;
+        const btn = document.getElementById("theme-toggle");
+        const moon = document.getElementById("icon-moon");
+        const sun = document.getElementById("icon-sun");
+        function apply(t) {
+          root.setAttribute("data-theme", t);
+          moon.style.display = t === "dark" ? "none" : "";
+          sun.style.display = t === "dark" ? "" : "none";
+        }
+        const saved = localStorage.getItem("theme");
+        apply(
+          saved ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light")
+        );
+        btn.addEventListener("click", function () {
+          const t = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          apply(t);
+          localStorage.setItem("theme", t);
+        });
+      })();
+
+      // ── Mobile menu ──
       document
         .querySelector(".mobile-menu-btn")
         .addEventListener("click", () => {
-          document.querySelector(".nav-links").style.display =
-            document.querySelector(".nav-links").style.display === "flex"
-              ? "none"
-              : "flex";
+          const links = document.querySelector(".nav-links");
+          links.style.display =
+            links.style.display === "flex" ? "none" : "flex";
         });
 
-      // Theme Toggle Logic
-      const themeToggleBtn = document.getElementById("theme-toggle");
-      const themeIcon = themeToggleBtn.querySelector("i");
-      const body = document.body;
-
-      // Check for saved theme or system preference
-      const savedTheme = localStorage.getItem("theme");
-      const systemPrefersLight = window.matchMedia(
-        "(prefers-color-scheme: light)",
-      ).matches;
-
-      if (savedTheme) {
-        body.setAttribute("data-theme", savedTheme);
-        updateIcon(savedTheme);
-      } else if (systemPrefersLight) {
-        // Optional: Set attribute implicitly if you want to track it, or just let CSS handle it.
-        // But tracking it makes toggling easier.
-        // Let's rely on CSS for default, but set icon correctly.
-        updateIcon("light");
-      }
-
-      function updateIcon(theme) {
-        if (theme === "light") {
-          themeIcon.classList.replace("fa-moon", "fa-sun");
-        } else {
-          themeIcon.classList.replace("fa-sun", "fa-moon");
-        }
-      }
-
-      themeToggleBtn.addEventListener("click", () => {
-        let currentTheme = body.getAttribute("data-theme");
-
-        if (!currentTheme) {
-          // If no attribute, we are using system preference
-          currentTheme = window.matchMedia("(prefers-color-scheme: light)")
-            .matches
-            ? "light"
-            : "dark";
-        }
-
-        const newTheme = currentTheme === "light" ? "dark" : "light";
-        body.setAttribute("data-theme", newTheme);
-        localStorage.setItem("theme", newTheme);
-        updateIcon(newTheme);
-      });
-
-      // Screenshot Maximization Logic
+      // ── Click a screenshot to maximize it ──
       const screenshots = document.querySelectorAll(".feature-screenshot");
-
-      // Create overlay
       const overlay = document.createElement("div");
       overlay.className = "screenshot-overlay";
       document.body.appendChild(overlay);
@@ -615,12 +435,8 @@
 
       function closeScreenshot() {
         if (!activeClone || !activeOriginal) return;
-
-        // Unmaximize
         activeClone.classList.remove("maximized");
         overlay.classList.remove("active");
-
-        // Animate back to original position
         const rect = activeOriginal.getBoundingClientRect();
         Object.assign(activeClone.style, {
           top: `${rect.top}px`,
@@ -628,59 +444,39 @@
           width: `${rect.width}px`,
           height: `${rect.height}px`,
         });
-
-        // After transition, cleanup
         activeClone.addEventListener(
           "transitionend",
           () => {
-            if (activeClone && activeClone.parentNode) {
-              activeClone.remove();
-            }
-            if (activeOriginal) {
-              activeOriginal.style.visibility = "";
-            }
+            if (activeClone && activeClone.parentNode) activeClone.remove();
+            if (activeOriginal) activeOriginal.style.visibility = "";
             activeClone = null;
             activeOriginal = null;
           },
-          { once: true },
+          { once: true }
         );
       }
 
       screenshots.forEach((img) => {
-        img.addEventListener("click", (e) => {
-          // Prevent multiple opens
+        img.addEventListener("click", () => {
           if (activeClone) return;
-
           activeOriginal = img;
           const rect = img.getBoundingClientRect();
-
-          // Create clone
           const clone = img.cloneNode();
           activeClone = clone;
-
-          // Set initial position (matching original)
           Object.assign(clone.style, {
             position: "fixed",
             top: `${rect.top}px`,
             left: `${rect.left}px`,
             width: `${rect.width}px`,
             height: `${rect.height}px`,
-            transition: "all 0.4s cubic-bezier(0.2, 0, 0.2, 1)", // Smooth ease
+            margin: "0",
+            transition: "all 0.4s cubic-bezier(0.2, 0, 0.2, 1)",
             zIndex: "1001",
           });
-
-          // Add to body
           document.body.appendChild(clone);
-
-          // Hide original (preserve layout)
           img.style.visibility = "hidden";
           overlay.classList.add("active");
-
-          // Force reflow
           clone.getBoundingClientRect();
-
-          // Animate to center
-          // We'll use 90vw/90vh centered
           clone.classList.add("maximized");
           Object.assign(clone.style, {
             top: "5vh",
@@ -688,8 +484,6 @@
             width: "90vw",
             height: "90vh",
           });
-
-          // Close handlers for the clone
           clone.addEventListener("click", (e) => {
             e.stopPropagation();
             closeScreenshot();
@@ -698,12 +492,8 @@
       });
 
       overlay.addEventListener("click", closeScreenshot);
-
-      // Close on escape key
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          closeScreenshot();
-        }
+        if (e.key === "Escape") closeScreenshot();
       });
     </script>
   </body>
