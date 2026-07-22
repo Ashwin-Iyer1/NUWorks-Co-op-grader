@@ -1,4 +1,4 @@
-import JobMatcher from "./matcher.js";
+import JobMatcher, { ELIGIBILITY_COPY } from "./matcher.js";
 
 // ─── State ───
 let allJobs = []; // All fetched + scored jobs
@@ -8,8 +8,90 @@ const BATCH_SIZE = 60; // Jobs rendered per "page"
 let isFetching = false;
 let shouldStop = false;
 
+// One shared toast element means one shared timer — track it so an earlier
+// message's timeout can never clear a later message.
+let toastTimer = null;
+
+// The progress bar is hidden again a beat after a run ends, so a finished
+// fetch never sits pinned at 100% looking like a hung job.
+let progressResetTimer = null;
+
+// Mid-fetch re-render throttle. applyFilters() rebuilds the whole grid, so
+// firing it once per fetched page thrashes the DOM on a large run.
+const MID_FETCH_RENDER_MS = 1500;
+let lastMidFetchRender = 0;
+let midFetchRenderTimer = null;
+
+// null | "credentials" | "resume" — set by preflight(), consumed by the
+// empty state so a blocked run explains itself persistently.
+let preflightIssue = null;
+
+// The Error a run died on, or null. A five-second toast is not an answer to a
+// failed run, so this outlives the toast and drives the progress line and the
+// empty state until the next run starts.
+let lastFetchError = null;
+
 // ─── Helpers ───
 const BASE_URL = "https://northeastern-csm.symplicity.com";
+
+// Score bands are fixed product-wide: >=70 high, 40-69 medium, <40 low.
+// Single source of truth so the card and the modal can never drift.
+function scoreTier(score) {
+  const n = Number(score) || 0;
+  if (n >= 70) return "high";
+  if (n >= 40) return "medium";
+  return "low";
+}
+const TIER_CLASS = { high: "score-high", medium: "score-medium", low: "score-low" };
+const TIER_BAR = { high: "var(--green)", medium: "var(--yellow)", low: "var(--red)" };
+
+// Shared low-confidence copy — must stay byte-identical to the popup's.
+const THIN_LABEL = "Thin description";
+const THIN_TOOLTIP =
+  "This posting had almost no description text, so the score is a rough guess.";
+
+function esc(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// ─── Icons ───
+// Feather-style outline glyphs. These replace the emoji that used to prefix the
+// job card meta strings — the design system allows no emoji anywhere in the UI.
+const ICON_ATTRS =
+  'width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+
+const ICONS = {
+  compensation: `<svg ${ICON_ATTRS}><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`,
+  location: `<svg ${ICON_ATTRS}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`,
+  posted: `<svg ${ICON_ATTRS}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`,
+  deadline: `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
+  info: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`,
+  blocked: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>`,
+  alert: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`,
+};
+
+// Turn a thrown fetch error into something a student can act on. The raw
+// "HTTP 401" means nothing to them; an expired session is the common cause.
+function describeFetchError(err) {
+  const msg = String((err && err.message) || err || "");
+  if (/\b(401|403)\b/.test(msg)) {
+    return "Your NUWorks session has expired. Open NUWorks, sign in again, then retry.";
+  }
+  if (/\b(429)\b/.test(msg)) {
+    return "NUWorks is rate-limiting the request. Wait a minute, then retry.";
+  }
+  if (/\b5\d\d\b/.test(msg)) {
+    return "NUWorks returned a server error. Wait a moment, then retry.";
+  }
+  if (/failed to fetch|network|load failed/i.test(msg)) {
+    return "Couldn't reach NUWorks. Check your connection, then retry.";
+  }
+  return `The request failed (${msg || "unknown error"}). Retry in a moment.`;
+}
 
 function getHeaders(creds) {
   return {
@@ -128,7 +210,10 @@ function showToast(msg, duration = 3000) {
   const el = document.getElementById("toast");
   el.textContent = msg;
   el.classList.add("show");
-  setTimeout(() => el.classList.remove("show"), duration);
+  // A single shared element needs a single tracked timer, otherwise the
+  // previous message's timeout hides the one that just replaced it.
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), duration);
 }
 
 // ─── Modal ───
@@ -139,11 +224,16 @@ function openModal(jobId) {
   overlay.classList.add("open");
   document.body.style.overflow = "hidden";
 
+  // The scored record for this job is already in memory — the detail fetch
+  // returns the posting, not our analysis of it. May be undefined when the
+  // modal is opened for an id that was never scored.
+  const scored = allJobs.find((j) => String(j.job_id) === String(jobId));
+
   (async () => {
     try {
       const creds = await getCredentials();
       const job = await fetchJobDetail(jobId, creds);
-      content.innerHTML = renderModalContent(job);
+      content.innerHTML = renderModalContent(job, scored);
       wireModalActions(job, creds);
     } catch (err) {
       content.innerHTML = `<div class="modal-loading">Failed to load: ${err.message}</div>`;
@@ -156,7 +246,114 @@ function closeModal() {
   document.body.style.overflow = "";
 }
 
-function renderModalContent(job) {
+// One thin labelled bar inside the Match section.
+function renderMatchBar(label, value) {
+  const pct = Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
+  return `
+    <div class="modal-match-bar">
+      <div class="modal-match-bar-label"><b>${esc(label)}</b><span>${pct}%</span></div>
+      <div class="card-score-bar"><div class="card-score-fill" style="width:${pct}%"></div></div>
+    </div>
+  `;
+}
+
+// Why this posting scored what it scored — the one thing the modal never showed.
+// `scored` is the in-memory analysed record and may be undefined; every field it
+// carries is optional, so each block guards independently.
+function renderMatchSection(scored) {
+  if (!scored) return "";
+
+  const details = scored.matchDetails?.details;
+  const disqualified = scored.disqualified === true;
+  if (!details && !disqualified) return "";
+
+  let head = "";
+  let bars = "";
+
+  if (disqualified) {
+    head += `<span class="disqualified-badge">Ineligible</span>`;
+  } else if (details) {
+    const score = Math.round(Number(scored.matchScore) || 0);
+    const tier = scoreTier(score);
+    head += `<span class="score-pill ${TIER_CLASS[tier]}">${score}% match</span>`;
+  }
+
+  if (details) {
+    const found = Number(details.hardSkillsFound) || 0;
+    const matched = Number(details.hardSkillsMatched) || 0;
+    head +=
+      found > 0
+        ? `<span class="modal-match-summary">Matched ${matched} of ${found} hard skills</span>`
+        : `<span class="modal-match-summary">This posting didn't name specific skills, so the score comes from overall text overlap.</span>`;
+
+    if (details.confidence === "low") {
+      head += `<span class="thin-marker" title="${esc(THIN_TOOLTIP)}">${ICONS.info}${THIN_LABEL}</span>`;
+    }
+
+    bars = `
+      <div class="modal-match-bars">
+        ${renderMatchBar("Skills", details.hardSkillScore)}
+        ${renderMatchBar("Soft skills", details.softSkillScore)}
+        ${renderMatchBar("Keywords", details.keywordScore)}
+        ${renderMatchBar("Text similarity", details.cosineScore)}
+      </div>
+    `;
+  }
+
+  let ineligible = "";
+  if (disqualified) {
+    const reason = scored.eligibility?.reason;
+    const copy =
+      (reason && ELIGIBILITY_COPY[reason]) || ELIGIBILITY_COPY.server;
+    const evidence = scored.eligibility?.evidence;
+    ineligible = `
+      <div class="modal-ineligible">
+        <div class="modal-ineligible-title">${ICONS.blocked}Why you're not eligible</div>
+        <div class="modal-ineligible-reason">${esc(copy)}</div>
+        ${evidence ? `<div class="modal-ineligible-evidence">“${esc(evidence)}”</div>` : ""}
+      </div>
+    `;
+  }
+
+  return `
+    <div class="modal-section">
+      <div class="modal-section-title">Match</div>
+      <div class="modal-match">
+        ${head ? `<div class="modal-match-head">${head}</div>` : ""}
+        ${bars}
+        ${ineligible}
+      </div>
+    </div>
+  `;
+}
+
+// Cross-reference the employer's own declared skill list against our analysis of
+// the resume, so the chips stop being flat and undifferentiated. Matched first.
+function renderModalSkills(skills, scored) {
+  const matched = new Set(
+    (scored?.matchDetails?.matches || []).map((s) => String(s).toLowerCase())
+  );
+  const missing = new Set(
+    (scored?.matchDetails?.missing || []).map((s) => String(s).toLowerCase())
+  );
+
+  const decorated = skills.map((name, index) => {
+    const key = String(name).toLowerCase();
+    if (matched.has(key)) return { name, cls: " matched", rank: 0, index, title: "On your resume" };
+    if (missing.has(key)) return { name, cls: " missing", rank: 1, index, title: "Not found on your resume" };
+    return { name, cls: "", rank: 2, index, title: "" };
+  });
+  decorated.sort((a, b) => a.rank - b.rank || a.index - b.index);
+
+  return decorated
+    .map(
+      (s) =>
+        `<span class="modal-skill${s.cls}"${s.title ? ` title="${esc(s.title)}"` : ""}>${esc(s.name)}</span>`
+    )
+    .join("");
+}
+
+function renderModalContent(job, scored) {
   const emp = job.job_emp || {};
   const profile = job.employer_profile || emp.employer_profile || {};
   const logo = job.employer_logo || "";
@@ -211,7 +408,7 @@ function renderModalContent(job) {
   let statusTags = "";
   if (job.favorite) statusTags += `<span class="modal-tag green">Saved</span>`;
   if (job.applied) statusTags += `<span class="modal-tag green">Applied</span>`;
-  if (job.expired) statusTags += `<span class="modal-tag" style="color:var(--red);border-color:rgba(239,68,68,0.25)">Expired</span>`;
+  if (job.expired) statusTags += `<span class="modal-tag danger">Expired</span>`;
   if (remote) statusTags += `<span class="modal-tag">${remote}</span>`;
   if (jobTypes) statusTags += `<span class="modal-tag">${jobTypes}</span>`;
   if (compensation) statusTags += `<span class="modal-tag accent">${compensation}</span>`;
@@ -223,17 +420,17 @@ function renderModalContent(job) {
     if (value) infoItems += `<div class="modal-info-item"><div class="modal-info-label">${label}</div><div class="modal-info-value">${value}</div></div>`;
   };
   addInfo("Posted", posted);
-  addInfo("Posting Ends", endDate);
+  addInfo("Posting ends", endDate);
   if (deadline) addInfo("Deadline", deadline);
-  if (startDate) addInfo("Start Date", startDate);
+  if (startDate) addInfo("Start date", startDate);
   if (industry) addInfo("Industry", industry);
-  if (orgType) addInfo("Company Type", orgType);
+  if (orgType) addInfo("Company type", orgType);
   if (employeeCount) addInfo("Employees", employeeCount);
   if (gpa) addInfo("Min GPA", gpa);
-  if (classLevels) addInfo("Class Level", classLevels);
-  if (degreeLevels) addInfo("Degree Level", degreeLevels);
+  if (classLevels) addInfo("Class level", classLevels);
+  if (degreeLevels) addInfo("Degree level", degreeLevels);
   if (majors) addInfo("Majors", majors);
-  if (workAuth) addInfo("Work Authorization", workAuth);
+  if (workAuth) addInfo("Work authorization", workAuth);
 
   const nuworksUrl = `${BASE_URL}/students/app/jobs/detail/${job.job_id}`;
 
@@ -246,19 +443,21 @@ function renderModalContent(job) {
           <div class="modal-title">${job.job_title || "Untitled"}</div>
           <div class="modal-company">
             ${website ? `<a href="${website}" target="_blank">${companyName}</a>` : companyName}
-            ${job.visual_id ? `<span style="color:var(--text-muted);font-size:0.65rem;margin-left:8px;font-family:var(--font-mono);letter-spacing:1px">#${job.visual_id}</span>` : ""}
+            ${job.visual_id ? `<span style="color:var(--text-muted);font-size:0.75rem;margin-left:8px;font-family:var(--font-mono)">#${job.visual_id}</span>` : ""}
           </div>
         </div>
       </div>
 
       <div class="modal-meta">${statusTags}</div>
 
+      ${renderMatchSection(scored)}
+
       ${infoItems ? `<div class="modal-section"><div class="modal-section-title">Details</div><div class="modal-info-grid">${infoItems}</div></div>` : ""}
 
       ${skills.length ? `
         <div class="modal-section">
           <div class="modal-section-title">Skills</div>
-          <div class="modal-skills">${skills.map((s) => `<span class="modal-skill">${s}</span>`).join("")}</div>
+          <div class="modal-skills">${renderModalSkills(skills, scored)}</div>
         </div>
       ` : ""}
 
@@ -275,9 +474,9 @@ function renderModalContent(job) {
       ` : ""}
 
       <div class="modal-actions">
-        <button class="btn btn-primary" id="modal-save-btn" data-id="${job.job_id}">${job.favorite ? "Saved" : "Save Job"}</button>
+        <button class="btn btn-primary" id="modal-save-btn" data-id="${job.job_id}">${job.favorite ? "Saved" : "Save job"}</button>
         <a href="${nuworksUrl}" target="_blank" class="btn btn-secondary">Open in NUWorks</a>
-        ${applyUrl ? `<a href="${applyUrl}" target="_blank" class="btn btn-secondary">Apply Externally</a>` : ""}
+        ${applyUrl ? `<a href="${applyUrl}" target="_blank" class="btn btn-secondary">Apply externally</a>` : ""}
       </div>
     </div>
   `;
@@ -291,7 +490,7 @@ function wireModalActions(job, creds) {
       saveBtn.textContent = "Saving...";
       const ok = await favoriteJob(job.job_id, creds);
       if (ok) {
-        saveBtn.textContent = "Saved!";
+        saveBtn.textContent = "Saved";
         saveBtn.className = "btn btn-success";
       } else {
         saveBtn.textContent = "Error";
@@ -357,10 +556,9 @@ function renderJobCard(job) {
   card.className = "job-card";
 
   const score = job.matchScore ?? 0;
-  let tierClass = "score-low";
-  let barColor = "var(--red)";
-  if (score >= 70) { tierClass = "score-high"; barColor = "var(--green)"; }
-  else if (score >= 40) { tierClass = "score-medium"; barColor = "var(--yellow)"; }
+  const tier = scoreTier(score);
+  const tierClass = TIER_CLASS[tier];
+  const barColor = TIER_BAR[tier];
 
   const jobUrl = `${BASE_URL}/students/app/jobs/detail/${job.job_id}`;
 
@@ -371,11 +569,24 @@ function renderJobCard(job) {
   const matchedSkills = (job.matchDetails?.matches || []).slice(0, 5);
   const missingSkills = (job.matchDetails?.missing || []).slice(0, 3);
 
+  // Skills the posting states as mandatory get extra weight — these are the
+  // dealbreakers, not just gaps. `missing` already arrives required-first.
+  const requiredMissing = new Set(
+    (job.matchDetails?.details?.missingRequired || []).map((s) =>
+      String(s).toLowerCase()
+    )
+  );
+
   let skillsHtml = "";
   if (matchedSkills.length || missingSkills.length) {
     skillsHtml = `<div class="skill-tags">`;
     matchedSkills.forEach((s) => { skillsHtml += `<span class="skill-tag matched">${s}</span>`; });
-    missingSkills.forEach((s) => { skillsHtml += `<span class="skill-tag missing">${s}</span>`; });
+    missingSkills.forEach((s) => {
+      const isRequired = requiredMissing.has(String(s).toLowerCase());
+      skillsHtml += `<span class="skill-tag missing${isRequired ? " required" : ""}"${
+        isRequired ? ` title="This posting lists this skill as required."` : ""
+      }>${s}</span>`;
+    });
     skillsHtml += `</div>`;
   }
 
@@ -394,21 +605,23 @@ function renderJobCard(job) {
         <div class="job-card-title">${job.job_title || "Untitled"}</div>
         <div class="job-card-company">${job.name || "Unknown Employer"}</div>
       </div>
-      ${!job.disqualified ? `<span class="score-pill ${tierClass}">${score}%</span>` : `<span class="disqualified-badge">Ineligible</span>`}
+      ${!job.disqualified ? `<span class="score-pill ${tierClass}">${score}% match</span>` : `<span class="disqualified-badge">Ineligible</span>`}
     </div>
     <div class="card-score-bar"><div class="card-score-fill" style="width:${score}%;background:${barColor}"></div></div>
     <div class="job-card-meta">
       ${badges}
-      ${compensation ? `<span title="Compensation">💰 ${compensation}</span>` : ""}
-      ${remote ? `<span title="Work mode">📍 ${remote}</span>` : ""}
-      ${postDate ? `<span title="Posted">🗓 ${postDate}</span>` : ""}
-      ${deadline ? `<span title="Deadline">⏳ ${deadline}</span>` : ""}
+      ${compensation ? `<span title="Compensation">${ICONS.compensation}${compensation}</span>` : ""}
+      ${remote ? `<span title="Work mode">${ICONS.location}${remote}</span>` : ""}
+      ${postDate ? `<span title="Posted">${ICONS.posted}${postDate}</span>` : ""}
+      ${deadline ? `<span title="Deadline">${ICONS.deadline}${deadline}</span>` : ""}
       ${jobType ? `<span>${jobType}</span>` : ""}
       ${location ? `<span>${location}</span>` : ""}
     </div>
     ${skillsHtml}
     <div class="job-card-actions">
-      <button class="btn btn-secondary btn-sm btn-save" data-id="${job.job_id}">Save</button>
+      <a class="btn btn-secondary btn-sm" href="${jobUrl}" target="_blank" rel="noopener">Open in NUWorks</a>
+      <button class="btn btn-secondary btn-sm btn-details" data-id="${job.job_id}">Details</button>
+      <button class="btn btn-primary btn-sm btn-save" data-id="${job.job_id}">Save</button>
     </div>
   `;
 
@@ -417,6 +630,12 @@ function renderJobCard(job) {
   card.addEventListener("click", (e) => {
     // Don't open modal if clicking a button or link
     if (e.target.closest("button") || e.target.closest("a")) return;
+    openModal(job.job_id);
+  });
+
+  // Wire details button — same target as the whole-card click
+  card.querySelector(".btn-details").addEventListener("click", (e) => {
+    e.stopPropagation();
     openModal(job.job_id);
   });
 
@@ -429,7 +648,7 @@ function renderJobCard(job) {
     const creds = await getCredentials();
     const ok = await favoriteJob(job.job_id, creds);
     if (ok) {
-      saveBtn.textContent = "Saved!";
+      saveBtn.textContent = "Saved";
       saveBtn.className = "btn btn-success btn-sm";
     } else {
       saveBtn.textContent = "Error";
@@ -440,26 +659,103 @@ function renderJobCard(job) {
   return card;
 }
 
-function renderJobs(reset = true) {
-  const grid = $("job-grid");
-  const emptyState = $("empty-state");
-  const loadMoreRow = $("load-more-row");
-
-  if (reset) {
-    grid.innerHTML = "";
-    displayedCount = 0;
+// ─── Empty state ───
+// #empty-state's <h2>/<p> are written by both renderJobs and preflight through
+// these exact querySelector calls — that shared contract is why the element is
+// never restructured. The action host is a sibling, never a wrapper.
+function setEmptyActions(actions) {
+  const host = $("empty-actions");
+  if (!host) return;
+  host.innerHTML = "";
+  if (!actions || actions.length === 0) {
+    host.style.display = "none";
+    return;
   }
+  actions.forEach((action) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `btn ${action.variant || "btn-secondary"} btn-sm`;
+    btn.textContent = action.label;
+    btn.addEventListener("click", action.onClick);
+    host.appendChild(btn);
+  });
+  host.style.display = "flex";
+}
 
-  if (filteredJobs.length === 0) {
-    emptyState.style.display = "block";
-    emptyState.querySelector("h2").textContent = allJobs.length > 0 ? "No jobs match your filters" : "No jobs loaded yet";
-    emptyState.querySelector("p").textContent = allJobs.length > 0 ? "Try adjusting your filter criteria." : 'Configure your search above and click "Fetch & Analyze" to get started.';
-    loadMoreRow.style.display = "none";
+function refreshEmptyState() {
+  const emptyState = $("empty-state");
+  const h2 = emptyState.querySelector("h2");
+  const p = emptyState.querySelector("p");
+  emptyState.style.display = "block";
+
+  // 1. Nothing fetched, and something is stopping a fetch from working.
+  if (allJobs.length === 0 && preflightIssue === "credentials") {
+    h2.textContent = "Connect to NUWorks first";
+    p.textContent =
+      "Open NUWorks in a tab and browse any page so the extension can pick up your session, then check again.";
+    setEmptyActions([
+      { label: "Open NUWorks", variant: "btn-primary", onClick: openNUWorks },
+      { label: "Check again", onClick: preflight },
+    ]);
+    return;
+  }
+  if (allJobs.length === 0 && preflightIssue === "resume") {
+    h2.textContent = "Add your resume first";
+    p.textContent =
+      "Open the extension popup from the toolbar and save your resume, then check again.";
+    setEmptyActions([{ label: "Check again", onClick: preflight }]);
     return;
   }
 
-  emptyState.style.display = "none";
+  // 1b. The last run threw. Nothing loaded, so say why here rather than letting
+  //     "No jobs loaded yet" imply a clean run that simply found nothing.
+  if (allJobs.length === 0 && lastFetchError) {
+    h2.textContent = "The run didn't finish";
+    p.textContent = `${describeFetchError(lastFetchError)} No jobs were loaded.`;
+    setEmptyActions([
+      { label: "Try again", variant: "btn-primary", onClick: startFetch },
+      { label: "Open NUWorks", onClick: openNUWorks },
+    ]);
+    return;
+  }
 
+  // 2. Jobs came back, but every one of them was ineligible and the default
+  //    "Hide ineligible" filter swallowed the lot. Say that, don't blame filters.
+  const hideDisq = $("filter-hide-disqualified").checked;
+  if (
+    allJobs.length > 0 &&
+    hideDisq &&
+    allJobs.every((j) => j.disqualified === true)
+  ) {
+    h2.textContent = "Nothing you're eligible for";
+    p.textContent = `All ${allJobs.length} jobs were filtered out by eligibility. Uncheck 'Hide ineligible' to see them anyway.`;
+    setEmptyActions([
+      {
+        label: "Show ineligible jobs",
+        variant: "btn-primary",
+        onClick: () => {
+          $("filter-hide-disqualified").checked = false;
+          saveExplorerPrefs();
+          applyFilters();
+        },
+      },
+    ]);
+    return;
+  }
+
+  // 3. Ordinary outcomes.
+  if (allJobs.length > 0) {
+    h2.textContent = "No jobs match your filters";
+    p.textContent = "Try adjusting your filter criteria.";
+  } else {
+    h2.textContent = "No jobs loaded yet";
+    p.textContent =
+      'Configure your search above and select "Fetch & analyze" to get started.';
+  }
+  setEmptyActions(null);
+}
+
+function appendJobBatch(grid) {
   const end = Math.min(displayedCount + BATCH_SIZE, filteredJobs.length);
   const fragment = document.createDocumentFragment();
   for (let i = displayedCount; i < end; i++) {
@@ -467,11 +763,48 @@ function renderJobs(reset = true) {
   }
   grid.appendChild(fragment);
   displayedCount = end;
+}
+
+function renderJobs(reset = true) {
+  const grid = $("job-grid");
+  const emptyState = $("empty-state");
+  const loadMoreRow = $("load-more-row");
+
+  // Captured before the wipe: a mid-fetch re-render must not collapse the
+  // pages the reader already expanded, nor throw them back to the top.
+  const prevDisplayed = displayedCount;
+  const prevScroll = window.scrollY;
+
+  if (reset) {
+    grid.innerHTML = "";
+    displayedCount = 0;
+  }
+
+  // Written before the empty-set early return: the stat must never survive as a
+  // stale non-zero count sitting above a "No jobs match your filters" grid.
+  $("stat-shown").textContent = String(filteredJobs.length);
+
+  if (filteredJobs.length === 0) {
+    refreshEmptyState();
+    loadMoreRow.style.display = "none";
+    return;
+  }
+
+  emptyState.style.display = "none";
+
+  appendJobBatch(grid);
+
+  // Re-rendering the full previously-visible set (rather than appending) is
+  // deliberate: the sort can interleave a new page's high scorers anywhere.
+  if (reset && prevDisplayed > BATCH_SIZE) {
+    const target = Math.min(prevDisplayed, filteredJobs.length);
+    while (displayedCount < target && displayedCount < filteredJobs.length) {
+      appendJobBatch(grid);
+    }
+    window.scrollTo(0, prevScroll);
+  }
 
   loadMoreRow.style.display = displayedCount < filteredJobs.length ? "block" : "none";
-
-  // Update stats
-  $("stat-shown").textContent = String(filteredJobs.length);
 }
 
 function updateStats() {
@@ -517,6 +850,9 @@ function applyFilters() {
       case "score-desc": return (b.matchScore ?? 0) - (a.matchScore ?? 0);
       case "score-asc": return (a.matchScore ?? 0) - (b.matchScore ?? 0);
       case "date-desc": return new Date(b.postdate || 0) - new Date(a.postdate || 0);
+      // Postings with no stated deadline sort to the very end rather than
+      // to the front as an Invalid Date would.
+      case "deadline-asc": return new Date(a.deadline || "2999-01-01") - new Date(b.deadline || "2999-01-01");
       case "title-asc": return (a.job_title || "").localeCompare(b.job_title || "");
       case "company-asc": return (a.name || "").localeCompare(b.name || "");
       default: return 0;
@@ -525,6 +861,173 @@ function applyFilters() {
 
   renderJobs(true);
   updateStats();
+}
+
+// Re-render at most once per MID_FETCH_RENDER_MS while a fetch is streaming in,
+// so back-to-back short pages cannot thrash the grid.
+function scheduleMidFetchRender() {
+  const elapsed = Date.now() - lastMidFetchRender;
+  if (elapsed >= MID_FETCH_RENDER_MS) {
+    lastMidFetchRender = Date.now();
+    applyFilters();
+    return;
+  }
+  if (midFetchRenderTimer) return;
+  midFetchRenderTimer = setTimeout(() => {
+    midFetchRenderTimer = null;
+    lastMidFetchRender = Date.now();
+    applyFilters();
+  }, MID_FETCH_RENDER_MS - elapsed);
+}
+
+// ─── Presets ───
+// These only write values into the existing inputs — no new filtering logic and
+// no new state, so every preset is expressible by hand.
+function applyPreset(name) {
+  switch (name) {
+    case "best-bets":
+      $("filter-min-score").value = "70";
+      $("filter-hide-disqualified").checked = true;
+      $("filter-hide-external").checked = true;
+      $("filter-sort").value = "score-desc";
+      break;
+    case "closing-soon":
+      $("filter-sort").value = "deadline-asc";
+      $("filter-min-score").value = "40";
+      $("filter-hide-disqualified").checked = true;
+      break;
+    case "newest":
+      $("filter-sort").value = "date-desc";
+      $("filter-min-score").value = "";
+      break;
+    case "reset":
+      $("filter-title").value = "";
+      $("filter-company").value = "";
+      $("filter-skill").value = "";
+      $("filter-min-score").value = "0";
+      $("filter-max-score").value = "100";
+      $("filter-sort").value = "score-desc";
+      $("filter-hide-disqualified").checked = true;
+      $("filter-hide-external").checked = false;
+      break;
+    default:
+      return;
+  }
+  saveExplorerPrefs();
+  applyFilters();
+}
+
+// ─── Persisted control state ───
+const PREFS_KEY = "explorerPrefs";
+const PREF_VALUE_IDS = [
+  "ctl-max-jobs",
+  "ctl-job-type",
+  "ctl-postdate",
+  "ctl-qualification",
+  "filter-title",
+  "filter-company",
+  "filter-skill",
+  "filter-min-score",
+  "filter-max-score",
+  "filter-sort",
+];
+const PREF_CHECK_IDS = ["filter-hide-disqualified", "filter-hide-external"];
+
+function saveExplorerPrefs() {
+  const prefs = {};
+  PREF_VALUE_IDS.forEach((id) => {
+    const el = $(id);
+    if (el) prefs[id] = el.value;
+  });
+  PREF_CHECK_IDS.forEach((id) => {
+    const el = $(id);
+    if (el) prefs[id] = el.checked;
+  });
+  try {
+    chrome.storage.local.set({ [PREFS_KEY]: prefs });
+  } catch {
+    /* storage unavailable — prefs are a convenience, never a dependency */
+  }
+}
+
+function restoreExplorerPrefs() {
+  return new Promise((resolve) => {
+    let settled = false;
+    const done = () => {
+      if (!settled) {
+        settled = true;
+        resolve();
+      }
+    };
+    try {
+      chrome.storage.local.get([PREFS_KEY], (result) => {
+        const prefs = result && result[PREFS_KEY];
+        if (prefs && typeof prefs === "object") {
+          PREF_VALUE_IDS.forEach((id) => {
+            const el = $(id);
+            const stored = prefs[id];
+            if (!el || stored === undefined || stored === null) return;
+            const value = String(stored);
+            // A stale stored value must never leave a <select> blank.
+            if (
+              el.tagName === "SELECT" &&
+              !Array.from(el.options).some((o) => o.value === value)
+            ) {
+              return;
+            }
+            el.value = value;
+          });
+          PREF_CHECK_IDS.forEach((id) => {
+            const el = $(id);
+            if (el && typeof prefs[id] === "boolean") el.checked = prefs[id];
+          });
+        }
+        done();
+      });
+    } catch {
+      done();
+    }
+  });
+}
+
+// ─── Preflight ───
+function openNUWorks() {
+  chrome.tabs.create({ url: `${BASE_URL}/students/app/jobs/search` });
+}
+
+// Check the two things a run actually needs BEFORE the user commits to it, and
+// say so persistently. The guards inside startFetch stay as a backstop, but a
+// toast that vanishes in five seconds is not an answer to a blocked tool.
+async function preflight() {
+  const creds = await getCredentials();
+  const btnFetch = $("btn-fetch");
+
+  if (!creds.cookie || !creds.authorization) {
+    preflightIssue = "credentials";
+  } else if (!creds.resume) {
+    preflightIssue = "resume";
+  } else {
+    preflightIssue = null;
+  }
+
+  // A run in flight owns the button's disabled/label state — never fight it.
+  if (!isFetching) {
+    if (preflightIssue === "credentials") {
+      btnFetch.disabled = true;
+      btnFetch.title =
+        "Connect to NUWorks first — open NUWorks in a tab so the extension can pick up your session.";
+    } else if (preflightIssue === "resume") {
+      btnFetch.disabled = true;
+      btnFetch.title =
+        "Add your resume first — open the extension popup from the toolbar and save it.";
+    } else {
+      btnFetch.disabled = false;
+      btnFetch.removeAttribute("title");
+    }
+  }
+
+  if (filteredJobs.length === 0) refreshEmptyState();
+  return preflightIssue === null;
 }
 
 // ─── Main Fetch Logic ───
@@ -541,11 +1044,17 @@ async function startFetch() {
     return;
   }
 
+  saveExplorerPrefs();
+
   isFetching = true;
   shouldStop = false;
   allJobs = [];
   filteredJobs = [];
   displayedCount = 0;
+  lastMidFetchRender = 0;
+  clearTimeout(midFetchRenderTimer);
+  midFetchRenderTimer = null;
+  clearTimeout(progressResetTimer);
   $("job-grid").innerHTML = "";
   $("empty-state").style.display = "none";
 
@@ -577,6 +1086,7 @@ async function startFetch() {
 
   const matcher = new JobMatcher();
   let totalFetched = 0;
+  let fetchError = null;
 
   try {
     for (let page = 0; page < maxPages && !shouldStop; page++) {
@@ -593,25 +1103,55 @@ async function startFetch() {
       const scoredBatch = await scoreBatch(jobs, matcher, creds);
       allJobs.push(...scoredBatch);
 
-      applyFilters();
+      scheduleMidFetchRender();
 
       if (jobs.length < perPage) break; // No more results
     }
   } catch (err) {
     console.error("Fetch error:", err);
+    fetchError = err;
     showToast(`Error: ${err.message}`, 5000);
   }
 
   // Done
   isFetching = false;
   $("btn-fetch").disabled = false;
-  $("btn-fetch").innerHTML = "Fetch &amp; Analyze";
+  $("btn-fetch").innerHTML = "Fetch &amp; analyze";
   $("btn-stop").style.display = "none";
-  $("progress-status").innerHTML = shouldStop ? "Stopped" : "Done!";
-  $("progress-bar").style.width = "100%";
+  if (fetchError) {
+    // A run that threw must not read as a clean finish. Report it on the
+    // progress line (which outlives the 5s toast) and leave the bar where it
+    // stopped rather than falsely filling it to 100%.
+    $("progress-status").textContent = `Couldn't finish — ${fetchError.message}`;
+  } else {
+    $("progress-status").innerHTML = shouldStop ? "Stopped" : "Done!";
+    $("progress-bar").style.width = "100%";
+  }
 
+  // A throttled render may still be pending; the final one below supersedes it.
+  clearTimeout(midFetchRenderTimer);
+  midFetchRenderTimer = null;
+
+  // Render whatever completed before the throw, but don't claim success.
   applyFilters();
-  showToast(`Fetched & analyzed ${allJobs.length} jobs`);
+  if (!fetchError) {
+    showToast(`Fetched & analyzed ${allJobs.length} jobs`);
+  }
+
+  // Re-check: a session can expire mid-run, and the button was just re-enabled
+  // unconditionally above.
+  preflight();
+
+  // On a clean finish, retire the bar rather than leaving it pinned at 100%
+  // "Done!" forever — a permanently visible progress bar reads as a hung job.
+  // On error, leave the failure message on screen so it isn't swept away. The
+  // filters panel deliberately stays open either way.
+  clearTimeout(progressResetTimer);
+  if (!fetchError) {
+    progressResetTimer = setTimeout(() => {
+      if (!isFetching) $("progress-container").classList.remove("active");
+    }, 2000);
+  }
 }
 
 async function scoreBatch(jobs, matcher, creds) {
@@ -650,6 +1190,7 @@ async function scoreBatch(jobs, matcher, creds) {
             ...job,
             isExternal: false,
             disqualified: true,
+            eligibility: { qualified: false, reason: "server", evidence: null },
             matchScore: 0,
             matchDetails: { matches: [], missing: [] },
           };
@@ -678,14 +1219,29 @@ async function scoreBatch(jobs, matcher, creds) {
 
         let matchResult = null;
         let disqualified = false;
+        let eligibility = null;
 
         if (resumeText) {
-          // Trust the server verdict; fall back to regex only when unknown.
-          const qualified =
-            serverQual === true
-              ? true
-              : await matcher.isQualified(fullText, schoolYear, gradDate);
-          if (qualified) {
+          // Trust the server verdict; fall back to the local gate only when
+          // unknown. checkEligibility carries the reason + the phrase that
+          // triggered it, which the modal renders.
+          if (serverQual === true) {
+            eligibility = { qualified: true, reason: null, evidence: null };
+          } else if (typeof matcher.checkEligibility === "function") {
+            eligibility = await matcher.checkEligibility(
+              fullText,
+              schoolYear,
+              gradDate
+            );
+          } else {
+            eligibility = {
+              qualified: await matcher.isQualified(fullText, schoolYear, gradDate),
+              reason: null,
+              evidence: null,
+            };
+          }
+
+          if (eligibility.qualified) {
             matchResult = matcher.calculateScore(resumeText, fullText);
           } else {
             disqualified = true;
@@ -698,6 +1254,7 @@ async function scoreBatch(jobs, matcher, creds) {
           contact_blurb: contactBlurb,
           isExternal: external,
           disqualified,
+          eligibility,
           matchScore: matchResult ? matchResult.score : 0,
           matchDetails: matchResult || { matches: [], missing: [] },
         };
@@ -748,7 +1305,7 @@ async function seedProfileFromNUWorks() {
 }
 
 // ─── Event Listeners ───
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   seedProfileFromNUWorks();
   $("btn-fetch").addEventListener("click", startFetch);
   $("btn-stop").addEventListener("click", () => { shouldStop = true; });
@@ -762,19 +1319,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeModal();
   });
 
-  $("btn-open-nuworks").addEventListener("click", () => {
-    chrome.tabs.create({ url: `${BASE_URL}/students/app/jobs/search` });
-  });
+  $("btn-open-nuworks").addEventListener("click", openNUWorks);
 
   $("btn-load-more").addEventListener("click", () => {
     renderJobs(false);
+  });
+
+  // Preset chips — one delegated listener over the whole row.
+  $("filter-presets").addEventListener("click", (e) => {
+    const chip = e.target.closest(".preset-chip");
+    if (chip) applyPreset(chip.dataset.preset);
   });
 
   // Filters — debounced
   let filterTimeout;
   const debouncedFilter = () => {
     clearTimeout(filterTimeout);
-    filterTimeout = setTimeout(applyFilters, 200);
+    filterTimeout = setTimeout(() => {
+      saveExplorerPrefs();
+      applyFilters();
+    }, 200);
+  };
+  const onFilterChange = () => {
+    saveExplorerPrefs();
+    applyFilters();
   };
 
   $("filter-title").addEventListener("input", debouncedFilter);
@@ -782,9 +1350,9 @@ document.addEventListener("DOMContentLoaded", () => {
   $("filter-skill").addEventListener("input", debouncedFilter);
   $("filter-min-score").addEventListener("input", debouncedFilter);
   $("filter-max-score").addEventListener("input", debouncedFilter);
-  $("filter-sort").addEventListener("change", applyFilters);
-  $("filter-hide-disqualified").addEventListener("change", applyFilters);
-  $("filter-hide-external").addEventListener("change", applyFilters);
+  $("filter-sort").addEventListener("change", onFilterChange);
+  $("filter-hide-disqualified").addEventListener("change", onFilterChange);
+  $("filter-hide-external").addEventListener("change", onFilterChange);
 
   // Save all filtered
   $("btn-save-all-filtered").addEventListener("click", async () => {
@@ -812,6 +1380,11 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.textContent = `Saved ${success} jobs`;
     btn.disabled = false;
     showToast(`Saved ${success}/${toSave.length} jobs`);
-    setTimeout(() => { btn.textContent = "Save All Filtered"; }, 3000);
+    setTimeout(() => { btn.textContent = "Save all filtered"; }, 3000);
   });
+
+  // Controls and filters come back exactly as they were left, before anything
+  // reads them — so before the first applyFilters and before preflight.
+  await restoreExplorerPrefs();
+  await preflight();
 });

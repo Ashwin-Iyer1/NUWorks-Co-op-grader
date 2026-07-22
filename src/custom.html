@@ -4,513 +4,642 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NUWorks Job Explorer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <!-- Fonts are self-hosted (see src/fonts.css) so the type system
+       survives offline use and CDN-blocking networks. -->
+  <link rel="stylesheet" href="fonts.css" />
   <style>
+    /* ============================================================
+       NUWorks Grader — "Natural Professional" design tokens.
+       LIGHT (warm linen) is the DEFAULT theme.
+       Dark ("ember by lamplight") activates via [data-theme="dark"].
+       Fonts come from the self-hosted fonts.css linked above.
+       ============================================================ */
+
     :root {
-      --bg-base: #111111;
-      --bg-surface: #1a1a1a;
-      --bg-card: #1e1e1e;
-      --bg-elevated: #252525;
-      --accent: #E8461E;
-      --accent-hover: #FF5A33;
-      --accent-muted: rgba(232, 70, 30, 0.12);
-      --green: #22c55e;
-      --green-muted: rgba(34, 197, 94, 0.10);
-      --yellow: #eab308;
-      --yellow-muted: rgba(234, 179, 8, 0.10);
-      --red: #ef4444;
-      --red-muted: rgba(239, 68, 68, 0.10);
-      --text: #E8E4DF;
-      --text-secondary: #A09A93;
-      --text-muted: #6B6660;
-      --border: rgba(255,255,255,0.08);
-      --border-hover: rgba(255,255,255,0.16);
-      --border-strong: rgba(255,255,255,0.25);
-      --radius: 2px;
-      --font-mono: 'Space Mono', 'Courier New', monospace;
-      --font-sans: 'Inter', -apple-system, sans-serif;
-      --dot-color: rgba(255,255,255,0.025);
-      --focus-bg: rgba(232, 70, 30, 0.05);
-      --overlay-bg: rgba(0,0,0,0.8);
-      --scrollbar-thumb: rgba(255,255,255,0.08);
-      --score-high-text: #4ade80;
-      --score-high-border: rgba(34,197,94,0.25);
-      --score-med-text: #fbbf24;
-      --score-med-border: rgba(234,179,8,0.25);
-      --score-low-text: #f87171;
-      --score-low-border: rgba(239,68,68,0.25);
-      --skill-matched-text: #FF8A6A;
-      --skill-matched-border: rgba(232,70,30,0.25);
-      --skill-missing-text: #f87171;
-      --skill-missing-border: rgba(239,68,68,0.15);
-      --modal-tag-accent-bg: rgba(232, 70, 30, 0.12);
-      --modal-tag-accent-text: #FF8A6A;
-      --modal-tag-accent-border: rgba(232,70,30,0.25);
-      --modal-tag-green-bg: rgba(34, 197, 94, 0.10);
-      --modal-tag-green-text: #4ade80;
-      --modal-tag-green-border: rgba(34,197,94,0.25);
+      /* Surfaces */
+      --bg-base: #faf7f2;
+      --bg-surface: #f1ece3;
+      --bg-card: #ffffff;
+      --bg-elevated: #ffffff;
+      --navbar-bg: rgba(250, 247, 242, 0.9);
+      --overlay-bg: rgba(38, 34, 27, 0.4);
+      /* Clay accent */
+      --accent: #b4400f;
+      --accent-hover: #983508;
+      --accent-secondary: #983508;
+      --accent-muted: #f6e8e0;
+      --accent-glow: rgba(180, 64, 15, 0.12);
+      --focus-bg: rgba(180, 64, 15, 0.05);
+      /* Moss (secondary natural tint) */
+      --moss: #4d6a4a;
+      --moss-tint: #e9efe7;
+      /* Text */
+      --text: #26221c;
+      --text-secondary: #5f584d;
+      --text-muted: #948c7d;
+      /* Borders */
+      --border: #e8e1d5;
+      --border-hover: #d8cfbf;
+      --border-strong: #c4b9a4;
+      /* Inputs */
+      --input-bg: #ffffff;
+      --input-hover: #fdfbf7;
+      --dropdown-hover-bg: rgba(60, 50, 35, 0.05);
+      --dropdown-selected-bg: var(--accent-muted);
+      /* Semantic (match scoring) — natural tones */
+      --green: #4d6a4a;
+      --green-muted: rgba(77, 106, 74, 0.12);
+      --yellow: #a16207;
+      --yellow-muted: rgba(161, 98, 7, 0.11);
+      --red: #b3261e;
+      --red-muted: rgba(179, 38, 30, 0.08);
+      --score-high-text: #3f5d3c;
+      --score-high-border: rgba(77, 106, 74, 0.25);
+      --score-med-text: #8a6116;
+      --score-med-border: rgba(161, 98, 7, 0.25);
+      --score-low-text: #b3261e;
+      --score-low-border: rgba(179, 38, 30, 0.22);
+      --skill-matched-text: #983508;
+      --skill-matched-border: rgba(180, 64, 15, 0.22);
+      --skill-missing-text: #b3261e;
+      --skill-missing-border: rgba(179, 38, 30, 0.16);
+      /* Effects */
+      --shadow-color: rgba(60, 50, 35, 0.12);
+      --shadow-sm: 0 1px 2px rgba(60, 50, 35, 0.05);
+      --shadow-md: 0 2px 8px rgba(60, 50, 35, 0.06), 0 1px 2px rgba(60, 50, 35, 0.04);
+      --shadow-lg: 0 16px 40px -12px rgba(60, 50, 35, 0.12), 0 2px 6px rgba(60, 50, 35, 0.04);
+      --scrollbar-thumb: rgba(60, 50, 35, 0.15);
+
+      /* Typography */
+      --font-serif: 'Source Serif 4', Georgia, serif;
+      --font-sans: 'Source Sans 3', -apple-system, sans-serif;
+      --font-mono: ui-monospace, 'SF Mono', monospace; /* code snippets only, NOT a brand voice */
+      --display-weight: 500;
+      --display-tracking: -0.015em;
+      --text-h1: 3.1rem;
+      --text-h2: 1.85rem;
+      --text-title: 1.3rem;
+      --text-card-title: 0.98rem;
+      --text-body: 0.9rem;
+      --text-meta: 0.82rem;
+      --text-label: 0.8rem;
+      --text-micro: 0.72rem;
+      --label-tracking: 0;
+      --eyebrow-tracking: 0.14em;
+
+      /* Layout & shape */
+      --radius-sm: 8px;    /* buttons, inputs, icon chips */
+      --radius: 10px;
+      --radius-lg: 14px;   /* cards, modals, screenshots */
+      --radius-pill: 999px; /* badges, score pills, nav chips */
+      --transition: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --section-gap: 84px;
+      --container-max: 1060px;  /* marketing site */
+      --app-max: 1280px;        /* job explorer app */
     }
 
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg-base: #E8E4DF;
-        --bg-surface: #F2EFEA;
-        --bg-card: #FFFFFF;
-        --bg-elevated: #DDD9D3;
-        --accent: #D13A12;
-        --accent-hover: #E8461E;
-        --accent-muted: rgba(209, 58, 18, 0.1);
-        --green: #16a34a;
-        --green-muted: rgba(22, 163, 74, 0.08);
-        --yellow: #ca8a04;
-        --yellow-muted: rgba(202, 138, 4, 0.08);
-        --red: #dc2626;
-        --red-muted: rgba(220, 38, 38, 0.06);
-        --text: #1a1a1a;
-        --text-secondary: #4A4540;
-        --text-muted: #8A847D;
-        --border: rgba(0,0,0,0.1);
-        --border-hover: rgba(0,0,0,0.18);
-        --border-strong: rgba(0,0,0,0.25);
-        --dot-color: rgba(0,0,0,0.04);
-        --focus-bg: rgba(209, 58, 18, 0.06);
-        --overlay-bg: rgba(0,0,0,0.4);
-        --scrollbar-thumb: rgba(0,0,0,0.1);
-        --score-high-text: #15803d;
-        --score-high-border: rgba(22,163,74,0.3);
-        --score-med-text: #a16207;
-        --score-med-border: rgba(202,138,4,0.3);
-        --score-low-text: #dc2626;
-        --score-low-border: rgba(220,38,38,0.25);
-        --skill-matched-text: #B8391A;
-        --skill-matched-border: rgba(209,58,18,0.2);
-        --skill-missing-text: #dc2626;
-        --skill-missing-border: rgba(220,38,38,0.15);
-        --modal-tag-accent-bg: rgba(209, 58, 18, 0.08);
-        --modal-tag-accent-text: #B8391A;
-        --modal-tag-accent-border: rgba(209,58,18,0.2);
-        --modal-tag-green-bg: rgba(22, 163, 74, 0.08);
-        --modal-tag-green-text: #15803d;
-        --modal-tag-green-border: rgba(22,163,74,0.25);
-      }
+    [data-theme="dark"] {
+      --bg-base: #1d1a15;
+      --bg-surface: #17140f;
+      --bg-card: #26221b;
+      --bg-elevated: #2e2921;
+      --navbar-bg: rgba(29, 26, 21, 0.9);
+      --overlay-bg: rgba(0, 0, 0, 0.55);
+      --accent: #d96a35;
+      --accent-hover: #e57e4c;
+      --accent-secondary: #e57e4c;
+      --accent-muted: rgba(217, 106, 53, 0.14);
+      --accent-glow: rgba(217, 106, 53, 0.2);
+      --focus-bg: rgba(217, 106, 53, 0.08);
+      --moss: #8fae8b;
+      --moss-tint: rgba(120, 155, 115, 0.16);
+      --text: #ece6da;
+      --text-secondary: #b3aa99;
+      --text-muted: #7d7666;
+      --border: #38332a;
+      --border-hover: #4a4438;
+      --border-strong: #5c5546;
+      --input-bg: #26221b;
+      --input-hover: #2e2921;
+      --dropdown-hover-bg: rgba(255, 255, 255, 0.05);
+      --dropdown-selected-bg: rgba(217, 106, 53, 0.14);
+      --green: #8fae8b;
+      --green-muted: rgba(120, 155, 115, 0.16);
+      --yellow: #d4a54a;
+      --yellow-muted: rgba(212, 165, 74, 0.14);
+      --red: #e08a80;
+      --red-muted: rgba(224, 138, 128, 0.12);
+      --score-high-text: #8fae8b;
+      --score-high-border: rgba(143, 174, 139, 0.3);
+      --score-med-text: #d4a54a;
+      --score-med-border: rgba(212, 165, 74, 0.3);
+      --score-low-text: #e08a80;
+      --score-low-border: rgba(224, 138, 128, 0.3);
+      --skill-matched-text: #e57e4c;
+      --skill-matched-border: rgba(217, 106, 53, 0.3);
+      --skill-missing-text: #e08a80;
+      --skill-missing-border: rgba(224, 138, 128, 0.22);
+      --shadow-color: rgba(0, 0, 0, 0.4);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 16px 40px -12px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.25);
+      --scrollbar-thumb: rgba(255, 255, 255, 0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: var(--font-mono);
+      font-family: var(--font-sans);
+      font-size: var(--text-body);
+      line-height: 1.5;
       background: var(--bg-base);
       color: var(--text);
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
-      background-image:
-        radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
-      background-size: 20px 20px;
+      -moz-osx-font-smoothing: grayscale;
     }
+
+    svg { flex-shrink: 0; }
 
     /* ─── Layout ─── */
     .app {
-      max-width: 1400px; margin: 0 auto; padding: 24px 32px;
-      position: relative;
-    }
-    .app::before {
-      content: '';
-      position: absolute; top: 0; left: 32px; right: 32px; height: 3px;
-      background: repeating-linear-gradient(90deg, var(--accent) 0px, var(--accent) 8px, transparent 8px, transparent 12px);
+      max-width: var(--app-max);
+      margin: 0 auto;
+      padding: 28px 36px;
     }
 
     .header {
       display: flex; align-items: flex-end; justify-content: space-between;
-      margin-bottom: 24px; flex-wrap: wrap; gap: 16px;
-      padding-bottom: 16px; border-bottom: 1px solid var(--border);
+      margin-bottom: 22px; flex-wrap: wrap; gap: 16px;
+      padding-bottom: 18px; border-bottom: 1px solid var(--border);
     }
     .header h1 {
-      font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px;
-      color: var(--text); font-family: var(--font-sans);
-      text-transform: uppercase; line-height: 1.05;
+      font-family: var(--font-serif);
+      font-size: 1.7rem; font-weight: var(--display-weight);
+      letter-spacing: -0.01em; line-height: 1.15; color: var(--text);
     }
     .header-meta {
-      font-size: 0.68rem; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: 1.5px; font-family: var(--font-mono);
+      font-size: 0.88rem; color: var(--text-muted); margin-top: 3px;
     }
     .header-actions { display: flex; gap: 8px; align-items: center; }
 
-    /* ─── Controls Bar ─── */
+    /* ─── Eyebrow (the one uppercase style) ─── */
+    .eyebrow {
+      font-size: var(--text-micro); font-weight: 600;
+      text-transform: uppercase; letter-spacing: var(--eyebrow-tracking);
+      color: var(--moss);
+    }
+
+    /* ─── Controls card ─── */
     .controls {
-      background: var(--bg-surface);
+      background: var(--bg-card);
       border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 16px 20px;
-      margin-bottom: 20px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 18px 20px;
+      margin-bottom: 18px;
     }
     .controls-row {
-      display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end;
+      display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end;
     }
-    .control-group { display: flex; flex-direction: column; gap: 4px; }
+    .controls-actions {
+      margin-left: auto; display: flex; gap: 10px; align-self: flex-end;
+    }
+
+    /* ─── Fields ─── */
+    .control-group { display: flex; flex-direction: column; gap: 6px; }
     .control-group label {
-      font-size: 0.62rem; font-weight: 700; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: 1.5px; font-family: var(--font-mono);
+      font-size: var(--text-label); font-weight: 600; color: var(--text-secondary);
+      letter-spacing: var(--label-tracking);
     }
-    .control-group input, .control-group select {
-      background: var(--bg-base); border: 1px solid var(--border);
-      border-radius: var(--radius); color: var(--text); padding: 7px 10px;
-      font-size: 0.78rem; font-family: var(--font-mono); outline: none;
-      transition: border-color 0.15s;
+    .control-group input,
+    .control-group select,
+    .filter-input,
+    .filter-select {
+      background: var(--input-bg);
+      border: 1px solid var(--border-hover);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      color: var(--text);
+      padding: 9px 12px;
+      font-size: 0.9rem;
+      font-family: var(--font-sans);
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
     }
-    .control-group input:focus, .control-group select:focus {
+    .control-group select,
+    .filter-select { padding: 9px 10px; }
+    .control-group input:hover,
+    .filter-input:hover { border-color: var(--border-strong); }
+    .control-group input:focus,
+    .control-group select:focus,
+    .filter-input:focus,
+    .filter-select:focus {
       border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
     }
-    .control-group select option { background: var(--bg-card); }
+    .control-group select option,
+    .filter-select option { background: var(--bg-card); color: var(--text); }
+    /* Inline widths on each field govern; never let a min-width override them. */
+    .filter-input { min-width: 0; }
+    .filter-input::placeholder { color: var(--text-muted); }
+
+    /* ─── Checkbox ─── */
+    .checkbox-row { display: flex; align-items: center; gap: 9px; }
+    .controls-row > .checkbox-row { align-self: flex-end; padding-bottom: 9px; }
+    .checkbox-row input[type="checkbox"] {
+      width: 16px; height: 16px; margin: 0;
+      accent-color: var(--accent); cursor: pointer;
+    }
+    .checkbox-row label {
+      font-size: 0.88rem; color: var(--text-secondary); cursor: pointer;
+    }
 
     /* ─── Buttons ─── */
     .btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 8px 16px; border-radius: var(--radius); border: none;
-      font-size: 0.72rem; font-weight: 700; font-family: var(--font-mono);
-      cursor: pointer; transition: all 0.15s; white-space: nowrap;
-      text-transform: uppercase; letter-spacing: 1.5px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 22px; border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      font-size: 0.9rem; font-weight: 600; font-family: var(--font-sans);
+      line-height: 1.25; cursor: pointer; white-space: nowrap;
+      transition: all var(--transition);
     }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
+    .btn-sm { padding: 7px 16px; font-size: 0.85rem; }
+
     .btn-primary {
-      background: var(--accent);
-      color: #fff;
+      background: var(--accent); color: #fff; box-shadow: var(--shadow-sm);
     }
-    .btn-primary:hover { background: var(--accent-hover); box-shadow: 0 4px 20px rgba(232,70,30,0.35); }
-    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover); box-shadow: var(--shadow-md);
+    }
     .btn-secondary {
-      background: var(--bg-card); color: var(--text-secondary);
-      border: 1px solid var(--border);
+      background: transparent; color: var(--text); border-color: var(--border-hover);
+      text-decoration: none;
     }
-    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--bg-card); border-color: var(--border-strong);
+      box-shadow: var(--shadow-sm);
+    }
     .btn-danger {
-      background: var(--red-muted); color: var(--score-low-text); border: 1px solid var(--score-low-border);
+      background: var(--red-muted); color: var(--score-low-text);
+      border-color: var(--score-low-border);
     }
+    .btn-danger:hover:not(:disabled) { box-shadow: var(--shadow-sm); }
     .btn-success {
-      background: var(--green-muted); color: var(--score-high-text); border: 1px solid var(--score-high-border);
+      background: var(--green-muted); color: var(--score-high-text);
+      border-color: var(--score-high-border);
     }
-    .btn-sm { padding: 4px 10px; font-size: 0.65rem; }
 
     /* ─── Spinner ─── */
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes nuwSpin { to { transform: rotate(360deg); } }
     .spinner {
-      width: 18px; height: 18px; border: 2px solid var(--border);
+      width: 16px; height: 16px; border: 2px solid var(--border);
       border-top-color: var(--accent); border-radius: 50%;
-      animation: spin 0.6s linear infinite; display: inline-block; flex-shrink: 0;
+      animation: nuwSpin 0.6s linear infinite; display: inline-block; flex-shrink: 0;
     }
-    .spinner-lg { width: 28px; height: 28px; border-width: 3px; }
+    .btn-primary .spinner { border-color: rgba(255,255,255,0.35); border-top-color: #fff; }
+    .spinner-lg { width: 26px; height: 26px; border-width: 3px; }
 
     /* ─── Progress ─── */
-    .progress-container {
-      margin-bottom: 16px; display: none;
-    }
+    .progress-container { margin-bottom: 18px; display: none; }
     .progress-container.active { display: block; }
-    .progress-bar-outer {
-      width: 100%; height: 3px; background: var(--border);
-      border-radius: 0; overflow: hidden;
-    }
-    .progress-bar-inner {
-      height: 100%; background: var(--accent);
-      border-radius: 0; transition: width 0.3s ease; width: 0%;
-    }
     .progress-text {
       display: flex; justify-content: space-between; align-items: center;
-      font-size: 0.68rem; color: var(--text-muted); margin-top: 6px;
-      font-family: var(--font-mono); letter-spacing: 0.5px; text-transform: uppercase;
+      font-size: 0.78rem; font-weight: 500; color: var(--text-secondary);
+      margin-bottom: 6px; gap: 12px;
+    }
+    .progress-text span { display: inline-flex; align-items: center; gap: 8px; }
+    .progress-bar-outer {
+      width: 100%; height: 6px; background: var(--bg-surface);
+      border-radius: 3px; overflow: hidden;
+    }
+    .progress-bar-inner {
+      height: 100%; width: 0%; background: var(--accent);
+      border-radius: 3px; transition: width 0.4s var(--transition);
     }
 
-    /* ─── Filters Row ─── */
+    /* ─── Stats ─── */
+    .stats { display: flex; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+    .stat-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+      padding: 16px 18px; flex: 1; min-width: 120px;
+    }
+    .stat-value {
+      font-family: var(--font-serif); font-size: 1.5rem; font-weight: 600;
+      letter-spacing: -0.01em; line-height: 1.2; color: var(--text);
+    }
+    .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 3px; }
+
+    /* ─── Filter panel ─── */
     .filters {
       background: var(--bg-surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 14px 20px; margin-bottom: 16px;
+      border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 18px;
       display: none;
     }
     .filters.active { display: block; }
-    .filters-title {
-      font-size: 0.62rem; font-weight: 700; color: var(--accent);
-      text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;
-      font-family: var(--font-mono);
-    }
-    .filters-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
-    .filter-input {
-      background: var(--bg-base); border: 1px solid var(--border);
-      border-radius: var(--radius); color: var(--text); padding: 7px 10px;
-      font-size: 0.78rem; font-family: var(--font-mono); outline: none;
-      transition: border-color 0.15s; min-width: 160px;
-    }
-    .filter-input:focus { border-color: var(--accent); }
-    .filter-input::placeholder { color: var(--text-muted); }
-    .filter-select {
-      background: var(--bg-base); border: 1px solid var(--border);
-      border-radius: var(--radius); color: var(--text); padding: 7px 10px;
-      font-size: 0.78rem; font-family: var(--font-mono); outline: none;
-    }
-    .filter-select option { background: var(--bg-card); }
+    .filters-title { margin-bottom: 12px; }
+    .filters-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
 
-    /* ─── Stats Row ─── */
-    .stats {
-      display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
+    /* ─── Preset chips ─── */
+    .filter-presets {
+      display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+      margin-bottom: 14px;
     }
-    .stat-card {
-      background: var(--bg-surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 14px 16px; flex: 1; min-width: 120px;
-      border-top: 2px solid var(--accent);
+    .preset-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 14px; border-radius: var(--radius-pill);
+      font-size: 0.76rem; font-weight: 600; font-family: var(--font-sans);
+      line-height: 1.5; white-space: nowrap; cursor: pointer;
+      background: var(--bg-card); color: var(--text-secondary);
+      border: 1px solid var(--border);
+      transition: all var(--transition);
     }
-    .stat-value {
-      font-size: 1.6rem; font-weight: 900; font-family: var(--font-sans);
-      letter-spacing: -1px;
+    .preset-chip:hover {
+      background: var(--accent-muted); color: var(--skill-matched-text);
+      border-color: var(--skill-matched-border); box-shadow: var(--shadow-sm);
     }
-    .stat-label {
-      font-size: 0.6rem; color: var(--text-muted); margin-top: 4px;
-      text-transform: uppercase; letter-spacing: 1.5px; font-family: var(--font-mono);
-    }
+    .preset-chip:active { transform: scale(0.98); }
+    .preset-chip:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
+    .preset-chip svg { color: var(--text-muted); }
+    .preset-chip:hover svg { color: var(--skill-matched-text); }
 
-    /* ─── Job Grid ─── */
+    /* ─── Job grid ─── */
     .job-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 12px;
+      gap: 16px;
     }
 
     .job-card {
       background: var(--bg-card); border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: var(--radius); padding: 16px;
-      transition: all 0.15s; position: relative; cursor: default;
-      display: flex; flex-direction: column; gap: 8px;
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+      padding: 18px; position: relative;
+      display: flex; flex-direction: column; gap: 9px;
+      transition: box-shadow var(--transition), transform var(--transition);
     }
-    .job-card:hover { border-color: var(--border-hover); border-left-color: var(--accent-hover); }
+    .job-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
 
     .job-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-    .job-card-title { font-size: 0.88rem; font-weight: 700; line-height: 1.35; flex: 1; font-family: var(--font-sans); }
+    .job-card-title {
+      font-size: var(--text-card-title); font-weight: 600; line-height: 1.35;
+      color: var(--text);
+    }
     .job-card-title a { color: var(--text); text-decoration: none; }
     .job-card-title a:hover { color: var(--accent); }
-    .job-card-company {
-      font-size: 0.68rem; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-mono);
-    }
+    .job-card-company { font-size: 0.8rem; color: var(--text-muted); margin-top: 1px; }
+
     .job-card-meta {
-      display: flex; gap: 8px; flex-wrap: wrap; font-size: 0.65rem; color: var(--text-muted);
-      font-family: var(--font-mono); letter-spacing: 0.3px;
+      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+      font-size: 0.78rem; color: var(--text-muted);
     }
-    .job-card-meta span { display: inline-flex; align-items: center; gap: 3px; }
+    .job-card-meta span { display: inline-flex; align-items: center; gap: 5px; }
+    .job-card-meta svg { color: var(--text-muted); }
 
-    /* Score pill */
-    .score-pill {
-      font-size: 0.72rem; font-weight: 700; padding: 3px 10px;
-      border-radius: 0; white-space: nowrap; flex-shrink: 0;
-      font-family: var(--font-mono); letter-spacing: 0.5px;
+    /* ─── Badges ─── */
+    .score-pill,
+    .skill-tag,
+    .external-badge,
+    .disqualified-badge {
+      display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+      border-radius: var(--radius-pill); font-family: var(--font-sans);
+      font-weight: 600; white-space: nowrap; line-height: 1.5; border: none;
     }
-    .score-high { background: var(--green-muted); color: var(--score-high-text); border: 1px solid var(--score-high-border); }
-    .score-medium { background: var(--yellow-muted); color: var(--score-med-text); border: 1px solid var(--score-med-border); }
-    .score-low { background: var(--red-muted); color: var(--score-low-text); border: 1px solid var(--score-low-border); }
+    .score-pill { font-size: 0.78rem; padding: 3px 12px; flex-shrink: 0; }
+    .score-high { background: var(--green-muted); color: var(--score-high-text); }
+    .score-medium { background: var(--yellow-muted); color: var(--score-med-text); }
+    .score-low { background: var(--red-muted); color: var(--score-low-text); }
 
-    /* Score bar in card */
+    .external-badge {
+      font-size: 0.72rem; padding: 2px 10px;
+      background: var(--red-muted); color: var(--score-low-text);
+    }
+    .disqualified-badge {
+      font-size: 0.72rem; padding: 2px 10px;
+      background: var(--bg-surface); color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    /* ─── Score bar in card ─── */
     .card-score-bar {
-      width: 100%; height: 2px; background: var(--border);
-      border-radius: 0; overflow: hidden;
+      width: 100%; height: 5px; background: var(--bg-surface);
+      border-radius: 3px; overflow: hidden;
     }
-    .card-score-fill { height: 100%; border-radius: 0; }
+    .card-score-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
 
-    /* Skill tags */
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-    .skill-tag {
-      display: inline-block; padding: 1px 7px; border-radius: 0;
-      font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.8px; font-family: var(--font-mono);
-    }
-    .skill-tag.matched { background: var(--accent-muted); color: var(--skill-matched-text); border: 1px solid var(--skill-matched-border); }
-    .skill-tag.missing { background: var(--red-muted); color: var(--skill-missing-text); border: 1px solid var(--skill-missing-border); }
+    /* ─── Skill tags ─── */
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .skill-tag { font-size: 0.74rem; padding: 2px 10px; }
+    .skill-tag.matched { background: var(--accent-muted); color: var(--skill-matched-text); }
+    .skill-tag.missing { background: var(--red-muted); color: var(--skill-missing-text); }
+    /* A missing skill the posting states as REQUIRED — ringed, not bordered, so the
+       pill keeps its exact geometry. */
+    .skill-tag.required { box-shadow: inset 0 0 0 1px var(--skill-missing-border); }
 
-    .job-card-actions { display: flex; gap: 6px; margin-top: auto; justify-content: flex-end; }
+    .job-card-actions { display: flex; gap: 8px; margin-top: auto; justify-content: flex-end; }
 
-    /* ─── Empty State ─── */
-    .empty-state {
-      text-align: center; padding: 80px 20px; color: var(--text-muted);
-    }
+    /* ─── Empty state ─── */
+    .empty-state { text-align: center; padding: 80px 20px; color: var(--text-muted); }
     .empty-state h2 {
-      font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 8px;
-      font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 1px;
+      font-family: var(--font-serif); font-size: 1.35rem; font-weight: var(--display-weight);
+      letter-spacing: -0.01em; color: var(--text); margin-bottom: 8px;
     }
-    .empty-state p { font-size: 0.75rem; font-family: var(--font-mono); letter-spacing: 0.5px; }
+    .empty-state p { font-size: 0.9rem; color: var(--text-muted); }
+    /* Sibling of h2/p — never wraps them, so the h2/p write contract is untouched. */
+    .empty-actions {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 10px; margin-top: 18px;
+    }
 
-    /* ─── Pagination / Load More ─── */
-    .load-more-row { text-align: center; padding: 20px; }
+    /* ─── Load more ─── */
+    .load-more-row { text-align: center; padding: 22px; }
 
     /* ─── Scrollbar ─── */
-    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 0; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 768px) {
-      .app { padding: 16px; }
-      .job-grid { grid-template-columns: 1fr; }
-      .stats { flex-direction: column; }
-    }
+    ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: var(--radius-pill); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
 
     /* ─── Toast ─── */
     .toast {
-      position: fixed; bottom: 24px; right: 24px; background: var(--bg-elevated);
-      border: 1px solid var(--border-hover); border-left: 3px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 12px 20px; font-size: 0.75rem; color: var(--text);
-      font-family: var(--font-mono); letter-spacing: 0.5px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.6); z-index: 1000;
+      position: fixed; bottom: 24px; right: 24px; z-index: 3000;
+      display: inline-flex; align-items: center; gap: 9px;
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: var(--shadow-lg);
+      padding: 11px 18px; font-size: 0.85rem; font-weight: 500;
+      font-family: var(--font-sans); color: var(--text);
+      pointer-events: none;
       transform: translateY(100px); opacity: 0; transition: all 0.3s ease;
     }
     .toast.show { transform: translateY(0); opacity: 1; }
-
-    /* External badge */
-    .external-badge {
-      font-size: 0.58rem; font-weight: 700; padding: 1px 6px;
-      border-radius: 0; background: var(--red-muted); color: var(--score-low-text);
-      border: 1px solid var(--score-low-border);
-      text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-mono);
-    }
-
-    .disqualified-badge {
-      font-size: 0.58rem; font-weight: 700; padding: 1px 6px;
-      border-radius: 0; background: var(--border); color: var(--text-muted);
-      border: 1px solid var(--border-hover);
-      text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-mono);
-    }
 
     /* ─── Modal ─── */
     .modal-overlay {
       position: fixed; inset: 0; background: var(--overlay-bg);
       z-index: 2000; display: none; align-items: flex-start; justify-content: center;
-      padding: 40px 20px; overflow-y: auto;
-      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      padding: 48px 20px; overflow-y: auto;
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
     }
     .modal-overlay.open { display: flex; }
 
     .modal {
-      background: var(--bg-surface); border: 1px solid var(--border-hover);
-      border-radius: var(--radius); width: 100%; max-width: 780px;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.7); position: relative;
-      animation: modalIn 0.2s ease;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); width: 100%; max-width: 760px;
+      box-shadow: var(--shadow-lg); position: relative;
+      animation: modalIn 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow: hidden;
     }
     @keyframes modalIn {
-      from { opacity: 0; transform: translateY(16px); }
+      from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .modal-banner {
-      width: 100%; height: 6px;
-      border-radius: var(--radius) var(--radius) 0 0; display: block;
-      background: repeating-linear-gradient(
-        -45deg,
-        var(--accent) 0px,
-        var(--accent) 4px,
-        transparent 4px,
-        transparent 8px
-      );
-    }
+    .modal-banner { width: 100%; height: 6px; display: block; background: var(--accent); }
 
     .modal-close {
-      position: absolute; top: 16px; right: 16px;
-      background: var(--bg-base); border: 1px solid var(--border); color: var(--text-muted);
-      width: 32px; height: 32px; border-radius: var(--radius); font-size: 1.1rem;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s; z-index: 1;
-      font-family: var(--font-mono);
+      position: absolute; top: 18px; right: 18px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--bg-surface); border: 1px solid var(--border);
+      color: var(--text-muted); font-size: 1.05rem; font-family: var(--font-sans);
+      line-height: 1; cursor: pointer; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--transition);
     }
-    .modal-close:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-
-    .modal-body { padding: 24px 28px 20px; }
-
-    .modal-header-row {
-      display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px;
+    .modal-close:hover {
+      background: var(--accent); border-color: var(--accent); color: #fff;
     }
+
+    .modal-body { padding: 28px 30px 24px; }
+
+    .modal-header-row { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
     .modal-logo {
       width: 56px; height: 56px; border-radius: var(--radius); object-fit: contain;
-      background: var(--bg-card); border: 1px solid var(--border); flex-shrink: 0;
+      background: var(--bg-surface); border: 1px solid var(--border); flex-shrink: 0;
     }
     .modal-title-group { flex: 1; min-width: 0; }
     .modal-title {
-      font-size: 1.3rem; font-weight: 900; line-height: 1.2; margin-bottom: 2px;
-      font-family: var(--font-sans); text-transform: uppercase;
+      font-family: var(--font-serif); font-size: 1.35rem; font-weight: var(--display-weight);
+      letter-spacing: -0.01em; line-height: 1.25; color: var(--text);
+      padding-right: 44px; margin-bottom: 2px;
     }
-    .modal-company {
-      font-size: 0.75rem; color: var(--text-muted); font-weight: 400;
-      font-family: var(--font-mono); letter-spacing: 0.5px; text-transform: uppercase;
-    }
+    .modal-company { font-size: 0.85rem; color: var(--text-muted); }
     .modal-company a { color: var(--accent); text-decoration: none; }
-    .modal-company a:hover { text-decoration: underline; }
+    .modal-company a:hover { color: var(--accent-hover); text-decoration: underline; }
 
-    .modal-meta {
-      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px;
-    }
+    .modal-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
     .modal-tag {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 4px 10px; border-radius: 0; font-size: 0.65rem; font-weight: 700;
-      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary);
-      text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-mono);
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 12px; border-radius: var(--radius-pill);
+      font-size: 0.76rem; font-weight: 600; font-family: var(--font-sans);
+      white-space: nowrap; line-height: 1.5;
+      background: var(--bg-surface); color: var(--text-secondary); border: none;
     }
-    .modal-tag.accent { background: var(--modal-tag-accent-bg); color: var(--modal-tag-accent-text); border-color: var(--modal-tag-accent-border); }
-    .modal-tag.green { background: var(--modal-tag-green-bg); color: var(--modal-tag-green-text); border-color: var(--modal-tag-green-border); }
+    .modal-tag.accent { background: var(--accent-muted); color: var(--accent); padding: 4px 14px; }
+    .modal-tag.green { background: var(--green-muted); color: var(--score-high-text); padding: 4px 14px; }
+    .modal-tag.danger { background: var(--red-muted); color: var(--score-low-text); }
 
-    .modal-section { margin-bottom: 18px; }
+    .modal-section { margin-bottom: 20px; }
+    /* Eyebrow — emitted from custom.js, so the style lives on the class itself. */
     .modal-section-title {
-      font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 2px; color: var(--accent); margin-bottom: 8px;
-      font-family: var(--font-mono);
-      padding-bottom: 6px; border-bottom: 1px solid var(--border);
+      font-size: var(--text-micro); font-weight: 600;
+      text-transform: uppercase; letter-spacing: var(--eyebrow-tracking);
+      color: var(--moss); margin-bottom: 8px;
     }
-    .modal-desc {
-      font-size: 0.82rem; line-height: 1.65; color: var(--text-secondary);
-      font-family: var(--font-sans);
-    }
-    .modal-desc p { margin-bottom: 8px; }
-    .modal-desc ul { padding-left: 18px; margin-bottom: 8px; }
+
+    .modal-desc { font-size: 0.9rem; line-height: 1.65; color: var(--text-secondary); }
+    .modal-desc p { margin-bottom: 10px; }
+    .modal-desc ul, .modal-desc ol { padding-left: 20px; margin-bottom: 10px; }
     .modal-desc li { margin-bottom: 4px; }
-    .modal-desc strong { color: var(--text); }
+    .modal-desc strong { color: var(--text); font-weight: 600; }
+    .modal-desc a { color: var(--accent); }
 
     .modal-skills { display: flex; flex-wrap: wrap; gap: 5px; }
+    /* Base is neutral: the employer's declared skills that we cannot cross-reference
+       against the resume must not read as "matched". */
     .modal-skill {
-      padding: 3px 10px; border-radius: 0; font-size: 0.62rem; font-weight: 700;
-      background: var(--accent-muted); color: var(--skill-matched-text); border: 1px solid var(--skill-matched-border);
-      text-transform: uppercase; letter-spacing: 0.8px; font-family: var(--font-mono);
+      display: inline-flex; align-items: center;
+      padding: 2px 10px; border-radius: var(--radius-pill);
+      font-size: 0.74rem; font-weight: 600; font-family: var(--font-sans);
+      line-height: 1.5; white-space: nowrap;
+      background: var(--bg-surface); color: var(--text-secondary);
+    }
+    .modal-skill.matched { background: var(--accent-muted); color: var(--skill-matched-text); }
+    .modal-skill.missing { background: var(--red-muted); color: var(--skill-missing-text); }
+
+    /* ─── Modal: Match section ─── */
+    .modal-match { display: flex; flex-direction: column; gap: 14px; }
+    .modal-match-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .modal-match-summary { font-size: 0.85rem; line-height: 1.5; color: var(--text-secondary); }
+    .modal-match-bars { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+    .modal-match-bar { display: flex; flex-direction: column; gap: 5px; }
+    .modal-match-bar-label {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+      font-size: 0.78rem; color: var(--text-muted);
+    }
+    .modal-match-bar-label b { font-weight: 600; color: var(--text-secondary); }
+    .modal-match-bar .card-score-fill { background: var(--accent); }
+
+    .thin-marker {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 2px 10px; border-radius: var(--radius-pill);
+      font-size: var(--text-micro); font-weight: 600; font-family: var(--font-sans);
+      line-height: 1.5; white-space: nowrap;
+      background: var(--bg-surface); color: var(--text-muted);
     }
 
-    .modal-info-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    .modal-ineligible {
+      background: var(--bg-surface); border-radius: var(--radius); padding: 12px 14px;
     }
+    .modal-ineligible-title {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 4px;
+    }
+    .modal-ineligible-title svg { color: var(--score-low-text); }
+    .modal-ineligible-reason { font-size: 0.85rem; line-height: 1.55; color: var(--text-secondary); }
+    .modal-ineligible-evidence {
+      margin-top: 9px; padding-left: 11px; border-left: 2px solid var(--border-hover);
+      font-size: 0.82rem; line-height: 1.55; font-style: italic; color: var(--text-muted);
+    }
+
+    .modal-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .modal-info-item {
-      background: var(--bg-card); border: 1px solid var(--border);
+      background: var(--bg-surface); border: 1px solid var(--border);
       border-radius: var(--radius); padding: 10px 12px;
     }
     .modal-info-label {
-      font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 3px;
-      font-family: var(--font-mono);
+      font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 3px;
     }
-    .modal-info-value {
-      font-size: 0.85rem; color: var(--text); font-weight: 600;
-      font-family: var(--font-sans);
-    }
+    .modal-info-value { font-size: 0.88rem; color: var(--text); font-weight: 500; }
 
     .modal-actions {
-      display: flex; gap: 8px; margin-top: 20px; padding-top: 16px;
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; padding-top: 18px;
       border-top: 1px solid var(--border);
     }
 
     .modal-overview {
-      font-size: 0.78rem; line-height: 1.55; color: var(--text-muted);
-      max-height: 100px; overflow-y: auto; font-family: var(--font-mono);
+      font-size: 0.85rem; line-height: 1.6; color: var(--text-secondary);
+      max-height: 100px; overflow-y: auto;
     }
 
     .modal-loading {
       display: flex; align-items: center; justify-content: center; gap: 10px;
-      padding: 60px 20px; color: var(--text-muted); font-size: 0.78rem;
-      font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 1px;
+      padding: 60px 20px; color: var(--text-muted); font-size: 0.9rem;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .app { padding: 20px 16px; }
+      .job-grid { grid-template-columns: 1fr; }
+      .stats { flex-direction: column; }
+      .controls-actions { margin-left: 0; }
     }
 
     @media (max-width: 600px) {
       .modal-info-grid { grid-template-columns: 1fr; }
+      .modal-match-bars { grid-template-columns: 1fr; }
       .modal-body { padding: 16px; }
     }
   </style>
@@ -519,11 +648,14 @@
   <div class="app">
     <div class="header">
       <div>
-        <h1>NUWorks Job Explorer</h1>
-        <div class="header-meta">Fetch, analyze, and filter every co-op listing &mdash; Beta</div>
+        <h1>Job Explorer</h1>
+        <div class="header-meta">Fetch, analyze, and filter every co-op listing</div>
       </div>
       <div class="header-actions">
-        <button class="btn btn-secondary" id="btn-open-nuworks" title="Open NUWorks">Open NUWorks</button>
+        <button class="btn btn-secondary" id="btn-open-nuworks" title="Open NUWorks">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path></svg>
+          Open NUWorks
+        </button>
       </div>
     </div>
 
@@ -531,56 +663,59 @@
     <div class="controls">
       <div class="controls-row">
         <div class="control-group">
-          <label>Jobs to Fetch</label>
+          <label for="ctl-max-jobs">Jobs to fetch</label>
           <input type="number" id="ctl-max-jobs" value="10000" min="100" step="100" style="width:110px" />
         </div>
         <div class="control-group">
-          <label>Job Type</label>
-          <select id="ctl-job-type">
+          <label for="ctl-job-type">Job type</label>
+          <select id="ctl-job-type" style="width:150px">
             <option value="5,3,17">All</option>
             <option value="5" selected>Co-op</option>
-            <option value="3">Full Time / Part Time</option>
+            <option value="3">Full time / part time</option>
             <option value="17">Internship</option>
           </select>
         </div>
         <div class="control-group">
-          <label>Qualification</label>
-          <select id="ctl-qualification">
-            <option value="">All Jobs & Interviews</option>
-            <option value="c" selected>All Job Listings</option>
-            <option value="f">All Jobs I qualify for</option>
-            <option value="g">Jobs Matching My Profile</option>
+          <label for="ctl-qualification">Qualification</label>
+          <select id="ctl-qualification" style="width:190px">
+            <option value="">All jobs &amp; interviews</option>
+            <option value="c" selected>All job listings</option>
+            <option value="f">All jobs I qualify for</option>
+            <option value="g">Jobs matching my profile</option>
           </select>
         </div>
         <div class="control-group">
-          <label>Days Since Posted</label>
-          <input type="number" id="ctl-postdate" value="90" min="1" style="width:80px" />
+          <label for="ctl-postdate">Days since posted</label>
+          <input type="number" id="ctl-postdate" value="90" min="1" style="width:110px" />
         </div>
-        <div class="control-group" style="flex-direction:row; align-items:center; gap:6px; align-self:flex-end;">
-          <input type="checkbox" id="ctl-exclude-applied" checked style="accent-color:var(--accent)" />
-          <label for="ctl-exclude-applied" style="text-transform:none;font-size:0.8rem;color:var(--text-secondary);cursor:pointer">Exclude Applied</label>
+        <div class="checkbox-row">
+          <input type="checkbox" id="ctl-exclude-applied" checked />
+          <label for="ctl-exclude-applied">Exclude applied</label>
         </div>
-        <div style="margin-left:auto; display:flex; gap:8px; align-self:flex-end;">
-          <button class="btn btn-primary" id="btn-fetch">Fetch &amp; Analyze</button>
-          <button class="btn btn-danger" id="btn-stop" style="display:none">Stop</button>
+        <div class="controls-actions">
+          <button class="btn btn-primary" id="btn-fetch">Fetch &amp; analyze</button>
+          <button class="btn btn-danger" id="btn-stop" style="display:none">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"></rect></svg>
+            Stop
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Progress -->
     <div class="progress-container" id="progress-container">
-      <div class="progress-bar-outer"><div class="progress-bar-inner" id="progress-bar"></div></div>
       <div class="progress-text">
         <span id="progress-status">Fetching jobs...</span>
         <span id="progress-count">0 / 0</span>
       </div>
+      <div class="progress-bar-outer"><div class="progress-bar-inner" id="progress-bar"></div></div>
     </div>
 
     <!-- Stats -->
     <div class="stats" id="stats-row" style="display:none">
       <div class="stat-card">
         <div class="stat-value" id="stat-total">0</div>
-        <div class="stat-label">Total Fetched</div>
+        <div class="stat-label">Total fetched</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" id="stat-qualified">0</div>
@@ -588,11 +723,11 @@
       </div>
       <div class="stat-card">
         <div class="stat-value" style="color:var(--score-high-text)" id="stat-high">0</div>
-        <div class="stat-label">70%+ Match</div>
+        <div class="stat-label">70%+ match</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" style="color:var(--score-med-text)" id="stat-medium">0</div>
-        <div class="stat-label">40-69% Match</div>
+        <div class="stat-label">40–69% match</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" id="stat-shown">0</div>
@@ -602,35 +737,54 @@
 
     <!-- Filters (shown after fetch) -->
     <div class="filters" id="filters-panel">
-      <div class="filters-title">Filter Results</div>
+      <div class="filters-title eyebrow">Filter results</div>
+      <div class="filter-presets" id="filter-presets">
+        <button type="button" class="preset-chip" data-preset="best-bets">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          Best bets
+        </button>
+        <button type="button" class="preset-chip" data-preset="closing-soon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          Closing soon
+        </button>
+        <button type="button" class="preset-chip" data-preset="newest">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          Newest
+        </button>
+        <button type="button" class="preset-chip" data-preset="reset">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+          Reset
+        </button>
+      </div>
       <div class="filters-row">
-        <input type="text" class="filter-input" id="filter-title" placeholder="Search job title..." />
-        <input type="text" class="filter-input" id="filter-company" placeholder="Search company..." />
-        <input type="text" class="filter-input" id="filter-skill" placeholder="Filter by skill..." />
+        <input type="text" class="filter-input" id="filter-title" placeholder="Search job title…" style="width:180px" />
+        <input type="text" class="filter-input" id="filter-company" placeholder="Search company…" style="width:180px" />
+        <input type="text" class="filter-input" id="filter-skill" placeholder="Filter by skill…" style="width:150px" />
         <div class="control-group">
-          <label>Min Score</label>
-          <input type="number" class="filter-input" id="filter-min-score" value="0" min="0" max="100" style="width:70px" />
+          <label for="filter-min-score">Min score</label>
+          <input type="number" class="filter-input" id="filter-min-score" value="0" min="0" max="100" style="width:84px" />
         </div>
         <div class="control-group">
-          <label>Max Score</label>
-          <input type="number" class="filter-input" id="filter-max-score" value="100" min="0" max="100" style="width:70px" />
+          <label for="filter-max-score">Max score</label>
+          <input type="number" class="filter-input" id="filter-max-score" value="100" min="0" max="100" style="width:84px" />
         </div>
-        <select class="filter-select" id="filter-sort">
-          <option value="score-desc">Score: High → Low</option>
-          <option value="score-asc">Score: Low → High</option>
-          <option value="date-desc">Newest First</option>
+        <select class="filter-select" id="filter-sort" style="width:180px">
+          <option value="score-desc">Score: high → low</option>
+          <option value="score-asc">Score: low → high</option>
+          <option value="date-desc">Newest first</option>
+          <option value="deadline-asc">Deadline: soonest</option>
           <option value="title-asc">Title: A → Z</option>
           <option value="company-asc">Company: A → Z</option>
         </select>
-        <div class="control-group" style="flex-direction:row;align-items:center;gap:6px;">
-          <input type="checkbox" id="filter-hide-disqualified" checked style="accent-color:var(--accent)" />
-          <label for="filter-hide-disqualified" style="text-transform:none;font-size:0.8rem;color:var(--text-secondary);cursor:pointer">Hide Ineligible</label>
+        <div class="checkbox-row">
+          <input type="checkbox" id="filter-hide-disqualified" checked />
+          <label for="filter-hide-disqualified">Hide ineligible</label>
         </div>
-        <div class="control-group" style="flex-direction:row;align-items:center;gap:6px;">
-          <input type="checkbox" id="filter-hide-external" style="accent-color:var(--accent)" />
-          <label for="filter-hide-external" style="text-transform:none;font-size:0.8rem;color:var(--text-secondary);cursor:pointer">Hide External</label>
+        <div class="checkbox-row">
+          <input type="checkbox" id="filter-hide-external" />
+          <label for="filter-hide-external">Hide external</label>
         </div>
-        <button class="btn btn-secondary btn-sm" id="btn-save-all-filtered">Save All Filtered</button>
+        <button class="btn btn-secondary btn-sm" id="btn-save-all-filtered">Save all filtered</button>
       </div>
     </div>
 
@@ -640,19 +794,20 @@
     <!-- Empty state -->
     <div class="empty-state" id="empty-state">
       <h2>No jobs loaded yet</h2>
-      <p>Configure your search above and click "Fetch &amp; Analyze" to get started.</p>
+      <p>Configure your search above and select "Fetch &amp; analyze" to get started.</p>
+      <div class="empty-actions" id="empty-actions" style="display:none"></div>
     </div>
 
     <!-- Load more -->
     <div class="load-more-row" id="load-more-row" style="display:none">
-      <button class="btn btn-secondary" id="btn-load-more">Show More</button>
+      <button class="btn btn-secondary" id="btn-load-more">Show more</button>
     </div>
   </div>
 
   <!-- Job Detail Modal -->
   <div class="modal-overlay" id="modal-overlay">
     <div class="modal" id="modal">
-      <button class="modal-close" id="modal-close">&times;</button>
+      <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
       <div id="modal-content">
         <div class="modal-loading">Loading job details...</div>
       </div>
