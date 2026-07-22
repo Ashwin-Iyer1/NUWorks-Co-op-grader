@@ -18,6 +18,7 @@ const StorageHelper = {
           "schoolYear",
           "gradDate",
           "autoGrading",
+          "profileSkills",
           "viewState",
           "lastAnalysisResults",
         ],

@@ -26,6 +26,59 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize Custom Dropdowns
   UiHelper.initIndustryDropdown();
 
+  // Pull the student's real grad date / class year / skills from NUWorks so the
+  // settings form can pre-fill instead of making them type everything. Returns
+  // the fetched profile (or null) and persists any newly-discovered values.
+  async function seedProfile(prefillForm = false) {
+    try {
+      const creds = await StorageHelper.getCredentials();
+      if (!creds.cookie || !creds.authorization) return null;
+
+      const user = await ApiHelper.getCurrentUser(creds);
+      if (!user || !user.id) return null;
+      const profile = await ApiHelper.getStudentProfile(user.id, creds);
+      if (!profile) return null;
+
+      const updates = {};
+      let gradDate = creds.gradDate;
+      let schoolYear = creds.schoolYear;
+
+      if (!gradDate && profile.graduation_date) {
+        const m = String(profile.graduation_date).match(/^(\d{4})-(\d{2})/);
+        if (m) {
+          gradDate = `${m[1]}-${m[2]}`;
+          updates.gradDate = gradDate;
+        }
+      }
+      if (!schoolYear && profile.year && profile.year._label) {
+        schoolYear = profile.year._label;
+        updates.schoolYear = schoolYear;
+      }
+      if (Array.isArray(profile.skills) && profile.skills.length) {
+        const names = profile.skills
+          .map((s) => s.skill_name || s._label)
+          .filter(Boolean);
+        if (names.length) updates.profileSkills = names.join(", ");
+      }
+
+      if (Object.keys(updates).length) {
+        chrome.storage.local.set(updates);
+      }
+
+      if (prefillForm) {
+        if (schoolYear && UiHelper.elements.schoolYear && !UiHelper.elements.schoolYear.value) {
+          UiHelper.elements.schoolYear.value = schoolYear;
+        }
+        if (gradDate && UiHelper.elements.gradDate && !UiHelper.elements.gradDate.value) {
+          UiHelper.elements.gradDate.value = gradDate;
+        }
+      }
+      return profile;
+    } catch {
+      return null;
+    }
+  }
+
   // --- Event Listeners ---
 
   // PDF Upload Listener
@@ -98,6 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
         UiHelper.elements.autoGrading.checked = creds.autoGrading;
       }
       UiHelper.showResumeView();
+      // Fill in any blanks (school year / grad date) straight from NUWorks.
+      seedProfile(true);
     });
   }
 
@@ -196,6 +251,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // 3. Resume check
       if (!result.resume || result.resume.trim() === "") {
         UiHelper.showResumeView();
+        // Pre-fill school year / grad date from the student's NUWorks profile.
+        seedProfile(true);
       } else {
         // 4. Persistence Check
         if (result.viewState === "analysis" && result.lastAnalysisResults) {
@@ -217,41 +274,54 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         // Get resume and credentials
         const storageResult = await StorageHelper.getCredentials();
-        const resumeText = storageResult.resume;
         const schoolYear = storageResult.schoolYear;
         const gradDate = storageResult.gradDate;
 
-        if (!resumeText) {
+        if (!storageResult.resume) {
           alert("Please save a resume first!");
           UiHelper.showResumeView();
           return; // Early return to cleanup in finally
         }
 
+        // Enrich the resume with the student's authoritative declared skills.
+        const resumeText = [storageResult.resume, storageResult.profileSkills]
+          .filter(Boolean)
+          .join("\n");
+
+        const creds = {
+          cookie: storageResult.cookie,
+          authorization: storageResult.authorization,
+        };
+
         const params = UiHelper.getSearchParams();
 
         // Fetch Jobs
-        const jobs = await ApiHelper.fetchJobs(params, {
-          cookie: storageResult.cookie,
-          authorization: storageResult.authorization,
-        });
+        const jobs = await ApiHelper.fetchJobs(params, creds);
 
-        // --- MATCHING LOGIC ---
+        // Authoritative, batched eligibility from NUWorks itself.
+        const jobIds = jobs.map((j) => j.job_id).filter(Boolean);
+        const qualifiedMap = await ApiHelper.getQualifiedStatus(jobIds, creds);
+
         // --- MATCHING LOGIC ---
         const matcher = new JobMatcher();
 
         // Use Promise.all for async filtering
         const scoredJobsResults = await Promise.all(
           jobs.map(async (job) => {
+            const serverQual = qualifiedMap[job.job_id]; // true / false / undefined
+
+            // Server says ineligible → drop it.
+            if (serverQual === false) return null;
+
             const description = job.job_desc || "";
             const title = job.job_title || "";
             const jobFullText = `${title} \n ${description}`;
 
-            // Check Qualifications (ASYNC now)
-            const isQualified = await matcher.isQualified(
-              jobFullText,
-              schoolYear,
-              gradDate
-            );
+            // Trust the server verdict; fall back to regex only when unknown.
+            const isQualified =
+              serverQual === true
+                ? true
+                : await matcher.isQualified(jobFullText, schoolYear, gradDate);
             if (!isQualified) {
               return null;
             }

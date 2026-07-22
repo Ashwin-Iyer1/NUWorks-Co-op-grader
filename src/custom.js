@@ -34,6 +34,60 @@ async function fetchJobPage(params, creds, page) {
   return data.models || [];
 }
 
+// Currently logged-in student (used to look up the profile id).
+async function fetchCurrentUser(creds) {
+  try {
+    const resp = await fetch(`${BASE_URL}/api/v2/auth/current-user`, {
+      headers: getHeaders(creds),
+    });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    return data.data || data.user || null;
+  } catch {
+    return null;
+  }
+}
+
+// Full student profile: real grad date, class year, major, work auth, skills.
+async function fetchStudentProfile(userId, creds) {
+  try {
+    const url = `${BASE_URL}/api/v2/student/profile?enable_translation=false&id=${encodeURIComponent(
+      userId
+    )}`;
+    const resp = await fetch(url, { headers: getHeaders(creds) });
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch {
+    return null;
+  }
+}
+
+// Authoritative, server-side batch eligibility. Returns { jobId: boolean }.
+async function fetchQualifiedStatus(jobIds, creds) {
+  const result = {};
+  if (!jobIds || jobIds.length === 0) return result;
+  const CHUNK = 50;
+  const headers = getHeaders(creds);
+  for (let i = 0; i < jobIds.length; i += CHUNK) {
+    const chunk = jobIds.slice(i, i + CHUNK);
+    const url = `${BASE_URL}/api/v2/jobs/discovery/qualified-status?jobs=${chunk.join(
+      ","
+    )}`;
+    try {
+      const resp = await fetch(url, { headers });
+      if (!resp.ok) continue;
+      const data = await resp.json();
+      const map = data.qualified || {};
+      for (const [id, status] of Object.entries(map)) {
+        result[id] = !/not\s*qualified/i.test(String(status));
+      }
+    } catch {
+      /* leave unknown ids absent → caller falls back to regex */
+    }
+  }
+  return result;
+}
+
 async function fetchJobDescription(jobId, creds) {
   const headers = getHeaders(creds);
   let resp = await fetch(`${BASE_URL}/api/v2/jobs/${jobId}`, { headers });
@@ -251,7 +305,14 @@ function wireModalActions(job, creds) {
 function getCredentials() {
   return new Promise((resolve) => {
     chrome.storage.local.get(
-      ["cookie", "authorization", "resume", "schoolYear", "gradDate"],
+      [
+        "cookie",
+        "authorization",
+        "resume",
+        "schoolYear",
+        "gradDate",
+        "profileSkills",
+      ],
       (result) => resolve(result)
     );
   });
@@ -259,6 +320,36 @@ function getCredentials() {
 
 // ─── DOM Refs ───
 const $ = (id) => document.getElementById(id);
+
+// ─── Field helpers (defensive — search & discovery responses vary) ───
+function jobCompensation(job) {
+  const from = job.compensation_from;
+  const to = job.compensation_to;
+  if (!from && !to) return "";
+  const freq =
+    (job.compensation_frequency && job.compensation_frequency._label) ||
+    job.compensation_frequency ||
+    "";
+  if (from && to && from !== to) return `$${from}–$${to} ${freq}`.trim();
+  return `$${from || to} ${freq}`.trim();
+}
+
+function jobRemote(job) {
+  const r = job.symp_remote_onsite;
+  if (!r) return "";
+  if (Array.isArray(r)) return r.map((x) => x._label || x).filter(Boolean).join(", ");
+  return r._label || (typeof r === "string" ? r : "");
+}
+
+function jobLocation(job) {
+  return job.location || job.job_location || "";
+}
+
+function jobTypeLabel(job) {
+  if (job.job_type_name) return job.job_type_name;
+  if (typeof job.job_type === "string") return job.job_type;
+  return "";
+}
 
 // ─── Render Jobs ───
 function renderJobCard(job) {
@@ -289,6 +380,13 @@ function renderJobCard(job) {
   }
 
   const postDate = job.postdate ? new Date(job.postdate).toLocaleDateString() : "";
+  const compensation = jobCompensation(job);
+  const remote = jobRemote(job);
+  const location = jobLocation(job);
+  const jobType = jobTypeLabel(job);
+  const deadline = job.deadline
+    ? new Date(job.deadline).toLocaleDateString()
+    : "";
 
   card.innerHTML = `
     <div class="job-card-header">
@@ -301,9 +399,12 @@ function renderJobCard(job) {
     <div class="card-score-bar"><div class="card-score-fill" style="width:${score}%;background:${barColor}"></div></div>
     <div class="job-card-meta">
       ${badges}
-      ${postDate ? `<span>${postDate}</span>` : ""}
-      ${job.job_type_name ? `<span>${job.job_type_name}</span>` : ""}
-      ${job.location ? `<span>${job.location}</span>` : ""}
+      ${compensation ? `<span title="Compensation">💰 ${compensation}</span>` : ""}
+      ${remote ? `<span title="Work mode">📍 ${remote}</span>` : ""}
+      ${postDate ? `<span title="Posted">🗓 ${postDate}</span>` : ""}
+      ${deadline ? `<span title="Deadline">⏳ ${deadline}</span>` : ""}
+      ${jobType ? `<span>${jobType}</span>` : ""}
+      ${location ? `<span>${location}</span>` : ""}
     </div>
     ${skillsHtml}
     <div class="job-card-actions">
@@ -514,9 +615,22 @@ async function startFetch() {
 }
 
 async function scoreBatch(jobs, matcher, creds) {
-  const resumeText = creds.resume;
   const schoolYear = creds.schoolYear;
   const gradDate = creds.gradDate;
+
+  // Enrich the resume with the student's authoritative declared skills (pulled
+  // from their NUWorks profile). This sharpens matching beyond the PDF text.
+  const resumeText = [creds.resume, creds.profileSkills]
+    .filter(Boolean)
+    .join("\n");
+
+  // One batched, authoritative eligibility check for the whole page. Lets us
+  // skip the per-job description fetch for every ineligible listing.
+  let qualifiedMap = {};
+  if (resumeText) {
+    const ids = jobs.map((j) => j.job_id).filter(Boolean);
+    qualifiedMap = await fetchQualifiedStatus(ids, creds);
+  }
 
   // Process in mini-batches to avoid blocking UI
   const CONCURRENCY = 10;
@@ -528,6 +642,19 @@ async function scoreBatch(jobs, matcher, creds) {
     const chunk = jobs.slice(i, i + CONCURRENCY);
     const chunkResults = await Promise.all(
       chunk.map(async (job) => {
+        const serverQual = qualifiedMap[job.job_id]; // true / false / undefined
+
+        // Server says ineligible → badge it without fetching the description.
+        if (resumeText && serverQual === false) {
+          return {
+            ...job,
+            isExternal: false,
+            disqualified: true,
+            matchScore: 0,
+            matchDetails: { matches: [], missing: [] },
+          };
+        }
+
         let desc = job.job_desc || "";
         let title = job.job_title || "";
         let contactBlurb = job.contact_blurb || "";
@@ -553,7 +680,11 @@ async function scoreBatch(jobs, matcher, creds) {
         let disqualified = false;
 
         if (resumeText) {
-          const qualified = await matcher.isQualified(fullText, schoolYear, gradDate);
+          // Trust the server verdict; fall back to regex only when unknown.
+          const qualified =
+            serverQual === true
+              ? true
+              : await matcher.isQualified(fullText, schoolYear, gradDate);
           if (qualified) {
             matchResult = matcher.calculateScore(resumeText, fullText);
           } else {
@@ -579,8 +710,46 @@ async function scoreBatch(jobs, matcher, creds) {
   return results;
 }
 
+// ─── Profile Auto-Seed ───
+// Pull the student's real grad date / class year / declared skills straight
+// from NUWorks so they don't have to be entered by hand. Best-effort.
+async function seedProfileFromNUWorks() {
+  try {
+    const creds = await getCredentials();
+    if (!creds.cookie || !creds.authorization) return;
+
+    const user = await fetchCurrentUser(creds);
+    if (!user || !user.id) return;
+    const profile = await fetchStudentProfile(user.id, creds);
+    if (!profile) return;
+
+    const updates = {};
+    if (!creds.gradDate && profile.graduation_date) {
+      const m = String(profile.graduation_date).match(/^(\d{4})-(\d{2})/);
+      if (m) updates.gradDate = `${m[1]}-${m[2]}`;
+    }
+    if (!creds.schoolYear && profile.year && profile.year._label) {
+      updates.schoolYear = profile.year._label;
+    }
+    if (Array.isArray(profile.skills) && profile.skills.length) {
+      const names = profile.skills
+        .map((s) => s.skill_name || s._label)
+        .filter(Boolean);
+      if (names.length) updates.profileSkills = names.join(", ");
+    }
+
+    if (Object.keys(updates).length) {
+      chrome.storage.local.set(updates);
+      console.log("NUWorks: seeded profile from server", updates);
+    }
+  } catch {
+    /* best-effort */
+  }
+}
+
 // ─── Event Listeners ───
 document.addEventListener("DOMContentLoaded", () => {
+  seedProfileFromNUWorks();
   $("btn-fetch").addEventListener("click", startFetch);
   $("btn-stop").addEventListener("click", () => { shouldStop = true; });
 

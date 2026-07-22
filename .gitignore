@@ -14,6 +14,9 @@ resume.txt
 # Large Data Files
 example_jobs.json
 
+# Network captures — contain live session cookies, auth tokens & personal data
+*.har
+
 
 
 # Misc

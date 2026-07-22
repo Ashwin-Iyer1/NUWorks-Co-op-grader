@@ -150,6 +150,21 @@ async function processJobs(jobList, tabId) {
     console.log("Auto-Grading Disabled or missing details.");
   }
 
+  // Ask Symplicity which of these jobs the student actually qualifies for, in a
+  // single batched request. This is authoritative and lets us skip the
+  // expensive per-job description fetch for every ineligible listing.
+  let qualifiedMap = {};
+  if (matcher) {
+    const ids = jobList
+      .map((j) => {
+        let id = j.job_id || j.id || (typeof j === "string" ? j : null);
+        if (id && String(id).includes("?")) id = String(id).split("?")[0];
+        return id;
+      })
+      .filter(Boolean);
+    qualifiedMap = await ApiHelper.getQualifiedStatus(ids, creds);
+  }
+
   const results = await Promise.all(
     jobList.map(async (job) => {
       try {
@@ -166,6 +181,17 @@ async function processJobs(jobList, tabId) {
 
         if (!jobId) {
           return { jobId: null };
+        }
+
+        // Server says the student is not eligible → badge as Ineligible without
+        // fetching the description.
+        if (matcher && qualifiedMap[jobId] === false) {
+          return {
+            jobId,
+            title: title || null,
+            isExternal: false,
+            matchResult: { score: 0, disqualified: true },
+          };
         }
 
         if (!desc || !title || !contactBlurb) {
@@ -186,11 +212,13 @@ async function processJobs(jobList, tabId) {
 
           if (matcher) {
             const fullText = `${title || ""} \n ${desc}`;
-            const qualified = await matcher.isQualified(
-              fullText,
-              schoolYear,
-              gradDate
-            );
+            // Trust the server's eligibility verdict when we have it; only fall
+            // back to the local regex heuristic when the server didn't answer.
+            const serverQual = qualifiedMap[jobId];
+            const qualified =
+              serverQual === true
+                ? true
+                : await matcher.isQualified(fullText, schoolYear, gradDate);
             if (qualified) {
               matchResult = matcher.calculateScore(resumeText, fullText);
             } else {

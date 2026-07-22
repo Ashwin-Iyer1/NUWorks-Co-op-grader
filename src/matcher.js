@@ -526,6 +526,22 @@ class JobMatcher {
   constructor() {
     this.skillDb = SKILL_DB;
     this.softSkills = SOFT_SKILLS;
+
+    // Precompile a regex for every skill ONCE. Previously extractExplicitSkills
+    // built ~316 RegExp objects on every call, and it runs twice per job, so a
+    // 500-job batch compiled >300k regexes. Compiling up front reuses them.
+    this.compiledSkills = [...SKILL_DB].map((skill) => ({
+      skill,
+      isSoft: SOFT_SKILLS.has(skill),
+      regex: new RegExp(
+        `\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
+        "i"
+      ),
+    }));
+
+    // Cache the resume-side analysis. The resume is identical for every job in
+    // a batch, so its skills/tokens/bigrams only need to be computed once.
+    this._resumeCache = null;
   }
 
   /**
@@ -698,27 +714,53 @@ class JobMatcher {
     const hard = new Set();
     const soft = new Set();
 
-    this.skillDb.forEach((skill) => {
-      const escapedSkill = skill.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      const regex = new RegExp(`\\b${escapedSkill}\\b`, "i");
+    for (const { skill, isSoft, regex } of this.compiledSkills) {
       if (regex.test(normalized) || normalized.includes(skill)) {
-        if (this.softSkills.has(skill)) {
+        if (isSoft) {
           soft.add(skill);
         } else {
           hard.add(skill);
         }
       }
-    });
+    }
 
     return { hard, soft };
   }
 
   /**
+   * Analyze the resume once and cache it. Recomputing the resume's skills,
+   * tokens and bigrams for every job in a batch is wasted work — the text
+   * never changes, so the results are deterministic and safe to reuse.
+   */
+  analyzeResume(resumeText) {
+    if (this._resumeCache && this._resumeCache.text === resumeText) {
+      return this._resumeCache;
+    }
+    const skills = this.extractExplicitSkills(resumeText);
+    const allSkills = new Set([...skills.hard, ...skills.soft]);
+    const tokens = this.tokenize(resumeText);
+    this._resumeCache = {
+      text: resumeText,
+      skills,
+      allSkills,
+      tokens,
+      tokenSet: new Set(tokens),
+      bigrams: new Set(this.extractBigrams(resumeText)),
+    };
+    return this._resumeCache;
+  }
+
+  /**
    * Detect if a skill appears in a "required" context vs "preferred/nice to have"
    */
-  classifyRequirements(text) {
+  classifyRequirements(text, candidateSkills) {
     const normalized = this.normalize(text);
     const lines = normalized.split(/\n|\.(?:\s)/);
+
+    // Only the skills already found in the text can appear on a line, so
+    // restricting to those (instead of the whole 316-entry DB) yields an
+    // identical result with far less work. Falls back to the full DB.
+    const candidates = candidateSkills || this.skillDb;
 
     const requiredContext =
       /required|must have|must be|essential|mandatory|minimum|necessary/i;
@@ -732,8 +774,9 @@ class JobMatcher {
     lines.forEach((line) => {
       const isRequired = requiredContext.test(line);
       const isPreferred = preferredContext.test(line);
+      if (!isRequired && !isPreferred) return;
 
-      this.skillDb.forEach((skill) => {
+      candidates.forEach((skill) => {
         if (line.includes(skill)) {
           if (isPreferred) {
             preferred.add(skill);
@@ -769,9 +812,8 @@ class JobMatcher {
    * Extract top dynamic keywords using TF with some IDF-like weighting.
    * Words that appear in the job but are rare/specific score higher.
    */
-  extractDynamicKeywords(jobText, resumeText) {
+  extractDynamicKeywords(jobText) {
     const jobTokens = this.tokenize(jobText);
-    const resumeTokens = new Set(this.tokenize(resumeText || ""));
     const freqMap = {};
 
     jobTokens.forEach((t) => {
@@ -879,29 +921,32 @@ class JobMatcher {
     }
 
     // 1. Explicit Skill Extraction (split hard vs soft)
-    const resumeSkillsResult = this.extractExplicitSkills(resumeText);
+    // Resume side is analyzed once and cached across the whole batch.
+    const resumeAnalysis = this.analyzeResume(resumeText);
     const jobSkillsResult = this.extractExplicitSkills(jobDescriptionText);
 
-    const resumeHard = resumeSkillsResult.hard;
-    const resumeSoft = resumeSkillsResult.soft;
     const jobHard = jobSkillsResult.hard;
     const jobSoft = jobSkillsResult.soft;
 
     // All resume skills combined for lookup
-    const allResumeSkills = new Set([...resumeHard, ...resumeSoft]);
+    const allResumeSkills = resumeAnalysis.allSkills;
 
-    // 2. Required vs Preferred classification
-    const { required, preferred } = this.classifyRequirements(jobDescriptionText);
+    // 2. Required vs Preferred classification (only the job's own skills can match)
+    const jobSkillSet = new Set([...jobHard, ...jobSoft]);
+    const { required, preferred } = this.classifyRequirements(
+      jobDescriptionText,
+      jobSkillSet
+    );
 
     // 3. Dynamic Keyword Extraction
-    const jobKeywords = this.extractDynamicKeywords(jobDescriptionText, resumeText);
-    const resumeTokensSet = new Set(this.tokenize(resumeText));
+    const jobKeywords = this.extractDynamicKeywords(jobDescriptionText);
+    const resumeTokensSet = resumeAnalysis.tokenSet;
 
     const matchedKeywords = jobKeywords.filter((k) => resumeTokensSet.has(k));
 
     // 4. Bigram matching
     const jobBigrams = this.extractBigrams(jobDescriptionText);
-    const resumeBigramSet = new Set(this.extractBigrams(resumeText));
+    const resumeBigramSet = resumeAnalysis.bigrams;
     const matchedBigrams = jobBigrams.filter((b) => resumeBigramSet.has(b));
 
     // Build display lists
@@ -961,7 +1006,7 @@ class JobMatcher {
     }
 
     // Part D: TF-IDF Cosine Similarity
-    const resumeTokens = this.tokenize(resumeText);
+    const resumeTokens = resumeAnalysis.tokens;
     const jobTokens = this.tokenize(jobDescriptionText);
     const { vecA, vecB } = this.computeTFIDFVectors(resumeTokens, jobTokens);
     let cosineScore = this.calculateCosineSimilarity(vecA, vecB) * 100;
