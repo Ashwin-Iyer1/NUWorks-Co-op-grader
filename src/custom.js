@@ -1307,6 +1307,10 @@ async function seedProfileFromNUWorks() {
 
 // ─── Event Listeners ───
 document.addEventListener("DOMContentLoaded", async () => {
+  // Theme: OS preference by default, overridable via the sun/moon toggle, and
+  // shared with the popup through chrome.storage.local.
+  setupThemeToggle($("theme-toggle"));
+
   seedProfileFromNUWorks();
   $("btn-fetch").addEventListener("click", startFetch);
   $("btn-stop").addEventListener("click", () => { shouldStop = true; });
