@@ -2,6 +2,7 @@ import JobMatcher, { normalizeSchoolYear } from "./matcher.js";
 import StorageHelper from "./storage.js";
 import ApiHelper from "./api.js";
 import UiHelper from "./ui.js";
+import { setupThemeToggle } from "./theme.js";
 const pdfjsLib = require("pdfjs-dist");
 // Set worker source to the file in public/ folder
 pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -22,6 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
     resumeFile,
     debugPdfBtn,
   } = UiHelper.elements;
+
+  // Theme: default to the OS preference, let the sun/moon toggle override it,
+  // and persist the choice so it applies across every extension page.
+  setupThemeToggle(document.getElementById("theme-toggle"));
 
   // Initialize Custom Dropdowns
   UiHelper.initIndustryDropdown();

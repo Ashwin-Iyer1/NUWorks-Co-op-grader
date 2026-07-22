@@ -1,4 +1,5 @@
 import JobMatcher, { ELIGIBILITY_COPY } from "./matcher.js";
+import { setupThemeToggle } from "./theme.js";
 
 // ─── State ───
 let allJobs = []; // All fetched + scored jobs
