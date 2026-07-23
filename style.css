@@ -792,6 +792,14 @@ footer .container {
   .nav-links a:not(.btn) {
     padding: 8px 0;
   }
+  .nav-links .btn {
+    justify-content: center;
+    margin-top: 6px;
+  }
+  .nav-links .theme-btn {
+    align-self: flex-start;
+    margin-top: 6px;
+  }
   .mobile-menu-btn {
     display: inline-flex;
   }
