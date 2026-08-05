@@ -1,0 +1,99 @@
+name: Release extension
+
+# Cuts a GitHub release whenever the version in public/manifest.json changes
+# on this branch. Optionally publishes to the Chrome Web Store — see the
+# publish-webstore job below.
+
+on:
+  push:
+    branches: [chrome-extension]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      released: ${{ steps.tag.outputs.new }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read manifest version
+        id: version
+        run: echo "version=$(jq -r .version public/manifest.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Check whether this version is already released
+        id: tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "v${{ steps.version.outputs.version }}" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            echo "v${{ steps.version.outputs.version }} already released — skipping"
+            echo "new=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "new=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.tag.outputs.new == 'true'
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Build
+        if: steps.tag.outputs.new == 'true'
+        run: |
+          npm ci
+          npm run build
+
+      - name: Package
+        if: steps.tag.outputs.new == 'true'
+        run: |
+          cd dist
+          zip -r "../nuworks-extension-v${{ steps.version.outputs.version }}.zip" . -x "*.map"
+
+      - name: Create GitHub release
+        if: steps.tag.outputs.new == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh release create "v${VERSION}" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "v${VERSION}" \
+            --generate-notes \
+            "nuworks-extension-v${VERSION}.zip"
+
+      - name: Upload zip for the publish job
+        if: steps.tag.outputs.new == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-zip
+          path: nuworks-extension-v*.zip
+
+  # Publishes the zip to the Chrome Web Store. Off by default — to enable:
+  #   1. Create CWS API credentials (client ID, client secret, refresh token).
+  #   2. Add repo secrets CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN.
+  #   3. Add a repo variable PUBLISH_TO_CWS set to "true".
+  publish-webstore:
+    needs: release
+    if: needs.release.outputs.released == 'true' && vars.PUBLISH_TO_CWS == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: extension-zip
+
+      - name: Upload and publish to Chrome Web Store
+        env:
+          EXTENSION_ID: ifcojjmgniboflalcgnclpleamjcpnge
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+        run: |
+          npx -y chrome-webstore-upload-cli@3 upload \
+            --source "nuworks-extension-v${{ needs.release.outputs.version }}.zip" \
+            --auto-publish
