@@ -74,7 +74,7 @@
     <header class="hero">
       <div class="container">
         <div class="hero-content">
-          <div class="badge">v1.8 now available</div>
+          <div class="badge" id="version-badge">v1.9 now available</div>
           <div class="eyebrow">For Northeastern co-op students</div>
           <h1>
             Find the co-ops that <em>actually fit</em> your resume.
@@ -388,6 +388,21 @@
         </div>
       </div>
     </footer>
+
+    <script>
+      // ── Version badge: pulled from the extension's manifest on GitHub ──
+      fetch(
+        "https://raw.githubusercontent.com/Ashwin-Iyer1/NUWorks-Co-op-grader/refs/heads/chrome-extension/public/manifest.json"
+      )
+        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+        .then((manifest) => {
+          if (manifest.version) {
+            document.getElementById("version-badge").textContent =
+              "v" + manifest.version + " now available";
+          }
+        })
+        .catch(() => {}); // keep the hardcoded fallback text
+    </script>
 
     <script>
       // ── Theme toggle: OS default, remembered in localStorage ──
