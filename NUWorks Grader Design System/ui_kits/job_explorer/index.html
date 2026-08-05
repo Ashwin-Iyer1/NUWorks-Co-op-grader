@@ -1,0 +1,107 @@
+<!-- @dsCard group="Job Explorer" viewport="1400x800" subtitle="Full-page app tab — Natural Professional style" -->
+<!-- @startingPoint section="Screens" subtitle="Job Explorer app — controls, stats, job grid" viewport="1400x800" -->
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<title>NUWorks Job Explorer</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+body{margin:0;font-family:var(--font-sans);background:var(--bg-base);color:var(--text);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}a:hover{color:var(--accent-hover)}
+</style>
+</head><body>
+<div id="root"></div>
+<script type="text/babel">
+const { Button, Input, Select, Checkbox, StatCard, JobCard, ProgressBar, Toast, Modal, ModalSection, Badge } = window.NUWorksGraderDesignSystem_866ea6;
+const JOBS = [
+  { title:"Software Engineer Co-op", company:"Klaviyo", score:82, meta:["Boston, MA","Posted 3d ago"], matched:["Python","React","SQL"], missing:["Kubernetes"] },
+  { title:"Data Analyst Co-op", company:"Wellington Management", score:76, meta:["Boston, MA","Posted 1w ago"], matched:["SQL","Excel","Python"], missing:["Tableau"] },
+  { title:"Quantitative Research Co-op", company:"MFS Investment Management", score:64, meta:["Boston, MA","Posted 5d ago"], matched:["Python","Statistics"], missing:["R","MATLAB"] },
+  { title:"Fintech Platform Co-op", company:"Brown Brothers Harriman", score:58, meta:["Boston, MA","Posted 2d ago"], matched:["Java","SQL"], missing:["Spring","AWS"], flags:["external"] },
+  { title:"Trading Systems Co-op", company:"Flow Traders", score:41, meta:["New York, NY","Posted 6d ago"], matched:["Python"], missing:["C++","Linux"] },
+  { title:"Supply Chain Analytics Co-op", company:"Chewy", score:23, meta:["Boston, MA","Posted 2w ago"], matched:["Excel"], missing:["SAP","R","Tableau"], flags:["disqualified"] },
+];
+function App() {
+  const [modal, setModal] = React.useState(null);
+  const [toast, setToast] = React.useState(false);
+  const save = () => { setToast(true); setTimeout(()=>setToast(false), 2000); };
+  return (
+    <div style={{maxWidth:1280,margin:"0 auto",padding:"28px 36px"}}>
+      <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",marginBottom:22,paddingBottom:18,borderBottom:"1px solid var(--border)",flexWrap:"wrap",gap:16}}>
+        <div>
+          <h1 style={{fontSize:"1.7rem",fontWeight:500,fontFamily:"var(--font-serif)",letterSpacing:"-0.01em",lineHeight:1.15,margin:0}}>Job Explorer</h1>
+          <div style={{fontSize:"0.88rem",color:"var(--text-muted)",marginTop:3}}>Fetch, analyze, and filter every co-op listing</div>
+        </div>
+        <Button variant="secondary">Open NUWorks</Button>
+      </div>
+      <div style={{background:"var(--bg-card)",border:"1px solid var(--border)",borderRadius:"var(--radius-lg)",boxShadow:"var(--shadow-sm)",padding:"18px 20px",marginBottom:18}}>
+        <div style={{display:"flex",gap:14,flexWrap:"wrap",alignItems:"flex-end"}}>
+          <Input label="Jobs to fetch" type="number" defaultValue={10000} style={{width:110}} />
+          <Select label="Job type" defaultValue="Co-op" options={["All","Co-op","Full Time / Part Time","Internship"]} style={{width:150}} />
+          <Select label="Qualification" defaultValue="All job listings" options={["All jobs & interviews","All job listings","All jobs I qualify for","Jobs matching my profile"]} style={{width:190}} />
+          <Input label="Days since posted" type="number" defaultValue={90} style={{width:110}} />
+          <Checkbox label="Exclude applied" defaultChecked style={{alignSelf:"flex-end",paddingBottom:9}} />
+          <div style={{marginLeft:"auto",display:"flex",gap:8,alignSelf:"flex-end"}}>
+            <Button variant="primary">Fetch &amp; analyze</Button>
+            <Button variant="danger">Stop</Button>
+          </div>
+        </div>
+      </div>
+      <div style={{marginBottom:18}}><ProgressBar progress={68} status="Analyzing jobs…" count="272 / 400" /></div>
+      <div style={{display:"flex",gap:14,marginBottom:18,flexWrap:"wrap"}}>
+        <StatCard value="400" label="Total fetched" />
+        <StatCard value="312" label="Qualified" />
+        <StatCard value="38" label="70%+ match" color="var(--score-high-text)" />
+        <StatCard value="96" label="40–69% match" color="var(--score-med-text)" />
+        <StatCard value="6" label="Shown (filtered)" />
+      </div>
+      <div style={{background:"var(--bg-surface)",border:"1px solid var(--border)",borderRadius:"var(--radius-lg)",padding:"16px 20px",marginBottom:18}}>
+        <div style={{fontSize:"0.72rem",fontWeight:600,color:"var(--moss)",textTransform:"uppercase",letterSpacing:"0.14em",marginBottom:12}}>Filter results</div>
+        <div style={{display:"flex",gap:12,flexWrap:"wrap",alignItems:"flex-end"}}>
+          <Input placeholder="Search job title…" style={{width:180}} />
+          <Input placeholder="Search company…" style={{width:180}} />
+          <Input placeholder="Filter by skill…" style={{width:150}} />
+          <Input label="Min score" type="number" defaultValue={0} style={{width:84}} />
+          <Select options={["Score: high → low","Score: low → high","Newest first","Title: A → Z","Company: A → Z"]} style={{width:180}} />
+          <Checkbox label="Hide ineligible" defaultChecked style={{alignSelf:"flex-end",paddingBottom:9}} />
+          <Button variant="secondary" size="sm" onClick={save}>Save all filtered</Button>
+        </div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(340px, 1fr))",gap:16}}>
+        {JOBS.map((j) => (
+          <JobCard key={j.title} {...j}
+            actions={<React.Fragment><Button variant="secondary" size="sm" onClick={()=>setModal(j)}>Details</Button><Button size="sm" onClick={save}>Save</Button></React.Fragment>} />
+        ))}
+      </div>
+      <div style={{textAlign:"center",padding:22}}><Button variant="secondary">Show more</Button></div>
+      {modal && (
+        <Modal open title={modal.title} company={`${modal.company} — ${modal.meta[0]}`}
+          tags={<React.Fragment>
+            <Badge variant={modal.score>=70?"score-high":modal.score>=40?"score-medium":"score-low"}>{modal.score}% match</Badge>
+            <Badge variant="neutral">Co-op</Badge>
+            <Badge variant="neutral">Jul – Dec 2026</Badge>
+          </React.Fragment>}
+          actions={<React.Fragment><Button onClick={save}>Save job</Button><Button variant="secondary">Open in NUWorks</Button></React.Fragment>}
+          onClose={()=>setModal(null)}>
+          <ModalSection title="Description">
+            Work alongside senior engineers on production systems. You'll ship features end-to-end, participate in code review, and present your work at the end of the co-op cycle.
+          </ModalSection>
+          <ModalSection title="Skills">
+            <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+              {modal.matched.map(s=><Badge key={s} variant="skill-matched">{s}</Badge>)}
+              {modal.missing.map(s=><Badge key={s} variant="skill-missing">{s}</Badge>)}
+            </div>
+          </ModalSection>
+        </Modal>
+      )}
+      <div style={{position:"fixed",bottom:24,right:24,pointerEvents:"none"}}><Toast show={toast} tone="success">Saved to NUWorks favorites</Toast></div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body></html>

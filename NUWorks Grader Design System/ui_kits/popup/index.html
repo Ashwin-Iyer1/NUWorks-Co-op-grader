@@ -1,0 +1,88 @@
+<!-- @dsCard group="Extension Popup" viewport="400x600" subtitle="Job Matcher popup — 400px panel, Natural Professional style" -->
+<!-- @startingPoint section="Screens" subtitle="Extension popup — Job Matcher form" viewport="400x600" -->
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<title>Extension Popup — Job Matcher</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+body{margin:0;display:flex;justify-content:center;background:var(--bg-surface);font-family:var(--font-sans)}
+a{color:var(--accent)}a:hover{color:var(--accent-hover)}
+.popup{width:400px;min-height:560px;background:var(--bg-base);color:var(--text);display:flex;flex-direction:column;border-left:1px solid var(--border);border-right:1px solid var(--border)}
+</style>
+</head><body>
+<div class="popup"><div id="root" style="display:flex;flex-direction:column;flex:1"></div></div>
+<script type="text/babel">
+const { Button, Input, Select, Checkbox, RangeSlider, JobCard } = window.NUWorksGraderDesignSystem_866ea6;
+const utilBtn = { background:"transparent", border:"1px solid var(--border)", color:"var(--text-muted)", cursor:"pointer", width:32, height:32, borderRadius:"50%", display:"inline-flex", alignItems:"center", justifyContent:"center", transition:"all 0.2s" };
+const GearIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>;
+const BroomIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>;
+const CapChip = () => <span style={{width:24,height:24,borderRadius:7,background:"var(--accent)",color:"#fff",display:"inline-flex",alignItems:"center",justifyContent:"center"}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></span>;
+function Header({ title, subtitle, right }) {
+  return (
+    <div style={{marginBottom:18}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <CapChip />
+          <h1 style={{fontSize:"1.3rem",fontWeight:500,margin:0,fontFamily:"var(--font-serif)",letterSpacing:"-0.01em",lineHeight:1.15}}>{title}</h1>
+        </div>
+        {right}
+      </div>
+      {subtitle && <p style={{fontSize:"0.82rem",color:"var(--text-muted)",margin:"5px 0 0"}}>{subtitle}</p>}
+    </div>
+  );
+}
+function Popup() {
+  const [view, setView] = React.useState("main");
+  const [score, setScore] = React.useState(0);
+  return (
+    <React.Fragment>
+      <div style={{padding:"20px 20px 12px", display:"flex", flexDirection:"column", flex:1}}>
+        {view === "main" && <React.Fragment>
+          <Header title="Job Matcher" subtitle="Configure and fetch jobs"
+            right={<div style={{display:"flex",gap:6}}><button style={utilBtn} title="Remove inactive jobs"><BroomIcon /></button><button style={utilBtn} title="Settings" onClick={()=>setView("resume")}><GearIcon /></button></div>} />
+          <div style={{display:"flex",flexDirection:"column",gap:14}}>
+            <Input label="Jobs to fetch" type="number" defaultValue={200} />
+            <Select label="Job type" defaultValue="Co-op" options={["All","Co-op","Full Time / Part Time","Internship"]} />
+            <Select label="Qualification" defaultValue="All job listings" options={["All jobs & interviews","All job listings","All jobs I qualify for","Jobs matching my profile"]} />
+            <Input label="Days since posted" type="number" defaultValue={30} />
+            <Checkbox label="Exclude applied jobs" defaultChecked />
+            <RangeSlider label="Min match score" value={score} step={10} hint="A good score is around 40-50%" onChange={e=>setScore(+e.target.value)} />
+            <Button variant="primary" style={{width:"100%"}} onClick={()=>setView("results")}>Analyze jobs</Button>
+          </div>
+        </React.Fragment>}
+        {view === "results" && <React.Fragment>
+          <Header title="Results" right={<span style={{fontSize:"0.8rem",color:"var(--text-muted)"}}>3 jobs</span>} />
+          <Button variant="ghost" size="sm" style={{alignSelf:"flex-start",marginBottom:10,marginLeft:-8}} onClick={()=>setView("main")}>&larr; Back to search</Button>
+          <div style={{display:"flex",flexDirection:"column",gap:10,maxHeight:400,overflowY:"auto",marginBottom:14}}>
+            <JobCard title="Software Engineer Co-op" company="Klaviyo" score={82} matched={["Python","React"]} missing={["Kubernetes"]} />
+            <JobCard title="Data Analyst Co-op" company="Wellington Management" score={54} matched={["SQL","Excel"]} missing={["Tableau","R"]} />
+            <JobCard title="Quantitative Trading Co-op" company="Flow Traders" score={21} matched={["Python"]} missing={["C++","OCaml"]} flags={["external"]} />
+          </div>
+          <Button variant="primary" style={{width:"100%"}}>Save all results</Button>
+        </React.Fragment>}
+        {view === "resume" && <React.Fragment>
+          <Header title="Resume settings" subtitle="Enter your details below" />
+          <div style={{display:"flex",flexDirection:"column",gap:14}}>
+            <Select label="Current school year" defaultValue="Junior" options={["Select year...","Freshman","Sophomore","Junior","Senior","Graduate"]} />
+            <Input label="Expected graduation date" type="month" defaultValue="2027-05" />
+            <Checkbox label="Automatic grading" />
+            <Input label="Upload PDF resume" type="file" />
+            <Button variant="primary" style={{width:"100%"}}>Save resume</Button>
+            <Button variant="ghost" style={{width:"100%"}} onClick={()=>setView("main")}>Cancel</Button>
+          </div>
+        </React.Fragment>}
+      </div>
+      <div style={{marginTop:"auto",padding:"12px 0",fontSize:"0.78rem",color:"var(--text-muted)",textAlign:"center",borderTop:"1px solid var(--border)"}}>
+        Made by <a href="https://ashwiniyer.com" target="_blank">Ashwin Iyer</a>
+      </div>
+    </React.Fragment>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Popup />);
+</script>
+</body></html>

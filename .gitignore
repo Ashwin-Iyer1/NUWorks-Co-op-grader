@@ -28,6 +28,8 @@ goodJobs.json
 job_scraper.log
 response.json
 
+*.DS_Store
+
 .vscode/
 __pycache__/
 dist.zip

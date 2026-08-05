@@ -1,0 +1,44 @@
+<!-- @dsCard group="Components" viewport="700x300" name="Forms" subtitle="Button, Input, Select, Checkbox, RangeSlider" -->
+<!DOCTYPE html>
+<html><head>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--bg-base);font-family:var(--font-sans);color:var(--text)}a{color:var(--accent)}a:hover{color:var(--accent-hover)}</style>
+</head><body>
+<div id="root"></div>
+<script type="text/babel">
+const { Button, Input, Select, Checkbox, RangeSlider } = window.NUWorksGraderDesignSystem_866ea6;
+function Card() {
+  const [v, setV] = React.useState(40);
+  const [c, setC] = React.useState(true);
+  return (
+    <div style={{padding:16, display:"grid", gridTemplateColumns:"1fr 1fr", gap:16}}>
+      <div style={{display:"flex", flexDirection:"column", gap:10}}>
+        <div style={{display:"flex", gap:8, flexWrap:"wrap", alignItems:"center"}}>
+          <Button variant="primary">Analyze Jobs</Button>
+          <Button variant="secondary">Open NUWorks</Button>
+          <Button variant="ghost">Cancel</Button>
+        </div>
+        <div style={{display:"flex", gap:8, flexWrap:"wrap", alignItems:"center"}}>
+          <Button variant="danger" size="sm">Stop</Button>
+          <Button variant="success" size="sm">Save All</Button>
+          <Button variant="primary" size="sm" disabled>Disabled</Button>
+          <Button variant="primary" size="lg">Add to Chrome</Button>
+        </div>
+        <Checkbox label="Exclude Applied Jobs" checked={c} onChange={e=>setC(e.target.checked)} />
+        <RangeSlider label="Min Match Score" value={v} step={10} hint="A good score is around 40-50%" onChange={e=>setV(+e.target.value)} />
+      </div>
+      <div style={{display:"flex", flexDirection:"column", gap:10}}>
+        <Input label="Jobs to scrape" type="number" defaultValue={200} />
+        <Select label="Job Type" defaultValue="Co-op" options={["All","Co-op","Full Time / Part Time","Internship"]} />
+        <Input label="Search" placeholder="Search job title..." />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Card />);
+</script>
+</body></html>

@@ -1,0 +1,11 @@
+/* NUWorks Grader layout & shape — soft, rounded, calm. Borders are warm hairlines; depth comes from soft shadows. */
+:root {
+  --radius-sm: 8px;    /* buttons, inputs, icon chips */
+  --radius: 10px;
+  --radius-lg: 14px;   /* cards, modals, screenshots */
+  --radius-pill: 999px; /* badges, score pills, nav chips */
+  --transition: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* @kind other */
+  --section-gap: 84px;
+  --container-max: 1060px;  /* marketing site */
+  --app-max: 1280px;        /* job explorer app */
+}
