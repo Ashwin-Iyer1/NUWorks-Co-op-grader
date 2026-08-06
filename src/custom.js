@@ -285,7 +285,7 @@ function renderMatchSection(scored) {
     head +=
       found > 0
         ? `<span class="modal-match-summary">Matched ${matched} of ${found} hard skills</span>`
-        : `<span class="modal-match-summary">This posting didn't name specific skills, so the score comes from overall text overlap.</span>`;
+        : `<span class="modal-match-summary">This posting didn't name specific skills, so the score comes from keyword overlap.</span>`;
 
     if (details.confidence === "low") {
       head += `<span class="thin-marker" title="${esc(THIN_TOOLTIP)}">${ICONS.info}${THIN_LABEL}</span>`;
@@ -294,9 +294,7 @@ function renderMatchSection(scored) {
     bars = `
       <div class="modal-match-bars">
         ${renderMatchBar("Skills", details.hardSkillScore)}
-        ${renderMatchBar("Soft skills", details.softSkillScore)}
         ${renderMatchBar("Keywords", details.keywordScore)}
-        ${renderMatchBar("Text similarity", details.cosineScore)}
       </div>
     `;
   }

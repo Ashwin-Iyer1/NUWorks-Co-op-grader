@@ -412,16 +412,12 @@ const UiHelper = {
     line.className = "score-detail-line";
     line.textContent =
       found === 0
-        ? "This posting didn't name specific skills, so the score comes from overall text overlap."
+        ? "This posting didn't name specific skills, so the score comes from keyword overlap."
         : `You have ${matched} of the ${found} skills this posting names.`;
     body.appendChild(line);
 
-    // softSkillScore is deliberately omitted — it carries a 0.05 weight.
     body.appendChild(UiHelper.createMetricRow("Skills", d.hardSkillScore));
     body.appendChild(UiHelper.createMetricRow("Keywords", d.keywordScore));
-    body.appendChild(
-      UiHelper.createMetricRow("Text similarity", d.cosineScore)
-    );
 
     if (d.confidence === "low") {
       const thin = document.createElement("span");

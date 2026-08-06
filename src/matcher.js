@@ -1213,76 +1213,6 @@ class JobMatcher {
   }
 
   /**
-   * Compute TF-IDF vectors for both documents
-   */
-  computeTFIDFVectors(tokensA, tokensB) {
-    // Build TF for each doc
-    const tfA = {};
-    const tfB = {};
-
-    tokensA.forEach((t) => {
-      tfA[t] = (tfA[t] || 0) + 1;
-    });
-    tokensB.forEach((t) => {
-      tfB[t] = (tfB[t] || 0) + 1;
-    });
-
-    // Normalize TF by doc length
-    const lenA = tokensA.length || 1;
-    const lenB = tokensB.length || 1;
-
-    Object.keys(tfA).forEach((k) => {
-      tfA[k] /= lenA;
-    });
-    Object.keys(tfB).forEach((k) => {
-      tfB[k] /= lenB;
-    });
-
-    // IDF: treat the two docs as our "corpus"
-    const allKeys = new Set([...Object.keys(tfA), ...Object.keys(tfB)]);
-    const idf = {};
-
-    allKeys.forEach((key) => {
-      const docCount = (tfA[key] ? 1 : 0) + (tfB[key] ? 1 : 0);
-      // IDF = log(N/df) where N=2
-      idf[key] = Math.log(2 / docCount) + 1; // +1 smoothing
-    });
-
-    // Build TF-IDF vectors
-    const vecA = {};
-    const vecB = {};
-
-    allKeys.forEach((key) => {
-      vecA[key] = (tfA[key] || 0) * idf[key];
-      vecB[key] = (tfB[key] || 0) * idf[key];
-    });
-
-    return { vecA, vecB };
-  }
-
-  /**
-   * Cosine Similarity
-   */
-  calculateCosineSimilarity(vecA, vecB) {
-    const allKeys = new Set([...Object.keys(vecA), ...Object.keys(vecB)]);
-
-    let dotProduct = 0;
-    let magA = 0;
-    let magB = 0;
-
-    allKeys.forEach((key) => {
-      const valA = vecA[key] || 0;
-      const valB = vecB[key] || 0;
-      dotProduct += valA * valB;
-      magA += valA * valA;
-      magB += valB * valB;
-    });
-
-    if (magA === 0 || magB === 0) return 0;
-    return dotProduct / (Math.sqrt(magA) * Math.sqrt(magB));
-  }
-
-  /**
    * Calculate Match Score with improved precision
    */
   calculateScore(resumeText, jobDescriptionText) {
@@ -1389,14 +1319,7 @@ class JobMatcher {
     // No `else` branch: when jobHard is empty, wHard is 0 below, so any value
     // assigned here is multiplied straight out of the total.
 
-    // Part B: Soft Skill Match (low weight — these inflate scores)
-    let softSkillScore = 0;
-    if (jobSoft.size > 0) {
-      const intersection = [...jobSoft].filter((s) => allResumeSkills.has(s));
-      softSkillScore = Math.min(100, (intersection.length / jobSoft.size) * 100);
-    }
-
-    // Part C: Dynamic Keyword Coverage
+    // Part B: Dynamic Keyword Coverage
     let keywordScore = 0;
     if (jobKeywords.length > 0) {
       const totalMatched = matchedKeywords.length + matchedBigrams.length * 1.5;
@@ -1404,43 +1327,25 @@ class JobMatcher {
       keywordScore = Math.min(100, coverage * 100);
     }
 
-    // Part D: TF-IDF Cosine Similarity
-    const resumeTokens = resumeAnalysis.tokens;
-    const { vecA, vecB } = this.computeTFIDFVectors(resumeTokens, jobTokens);
-    let cosineScore = this.calculateCosineSimilarity(vecA, vecB) * 100;
-
-    // Scale: raw TF-IDF cosine tends to be higher than raw TF, so scale ~0.4 -> 100%
-    cosineScore = Math.min(100, cosineScore * 2.5);
-
     // --- Weighted Final Score ---
-    // Hard skills dominate; soft skills are nearly irrelevant to differentiation
-    let wHard, wSoft, wKeyword, wCosine;
+    // Hard skills dominate; keywords cover the rest
+    let wHard, wKeyword;
 
     if (jobHard.size === 0) {
-      // No hard skills found — rely more on keywords and cosine
+      // No hard skills found — keywords are the only signal
       wHard = 0;
-      wSoft = 0.05;
-      wKeyword = 0.5;
-      wCosine = 0.45;
+      wKeyword = 1;
     } else if (jobHard.size <= 3) {
       // Few hard skills — balance with keywords
-      wHard = 0.45;
-      wSoft = 0.05;
-      wKeyword = 0.25;
-      wCosine = 0.25;
+      wHard = 0.65;
+      wKeyword = 0.35;
     } else {
       // Plenty of hard skills — they're the best signal
-      wHard = 0.55;
-      wSoft = 0.05;
-      wKeyword = 0.2;
-      wCosine = 0.2;
+      wHard = 0.75;
+      wKeyword = 0.25;
     }
 
-    const totalScore =
-      hardSkillScore * wHard +
-      softSkillScore * wSoft +
-      keywordScore * wKeyword +
-      cosineScore * wCosine;
+    const totalScore = hardSkillScore * wHard + keywordScore * wKeyword;
 
     // A near-empty posting carries almost no evidence either way, so shrink its
     // score toward a neutral prior instead of letting noise land it mid-band
@@ -1456,9 +1361,7 @@ class JobMatcher {
       missing: uniqueMissing,
       details: {
         hardSkillScore: Math.round(hardSkillScore),
-        softSkillScore: Math.round(softSkillScore),
         keywordScore: Math.round(keywordScore),
-        cosineScore: Math.round(cosineScore),
         hardSkillsFound: jobHard.size,
         hardSkillsMatched: hardMatched.length,
         // --- Additive explainability fields ---
