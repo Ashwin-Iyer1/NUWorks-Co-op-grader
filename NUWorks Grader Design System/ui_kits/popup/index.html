@@ -71,6 +71,7 @@ function Popup() {
             <Select label="Current school year" defaultValue="Junior" options={["Select year...","Freshman","Sophomore","Junior","Senior","Graduate"]} />
             <Input label="Expected graduation date" type="month" defaultValue="2027-05" />
             <Checkbox label="Automatic grading" />
+            <Checkbox label="Grade Ineligible Jobs" />
             <Input label="Upload PDF resume" type="file" />
             <Button variant="primary" style={{width:"100%"}}>Save resume</Button>
             <Button variant="ghost" style={{width:"100%"}} onClick={()=>setView("main")}>Cancel</Button>

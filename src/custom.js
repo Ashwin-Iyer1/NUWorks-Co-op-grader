@@ -273,7 +273,10 @@ function renderMatchSection(scored) {
 
   if (disqualified) {
     head += `<span class="disqualified-badge">Ineligible</span>`;
-  } else if (details) {
+  }
+  // Not an else: a job graded despite being ineligible carries both the badge
+  // and the match % ("Grade ineligible jobs").
+  if (details && (!disqualified || scored.gradedIneligible)) {
     const score = Math.round(Number(scored.matchScore) || 0);
     const tier = scoreTier(score);
     head += `<span class="score-pill ${TIER_CLASS[tier]}">${score}% match</span>`;
@@ -509,6 +512,7 @@ function getCredentials() {
         "resume",
         "schoolYear",
         "gradDate",
+        "gradeIneligible",
         "profileSkills",
       ],
       (result) => resolve(result)
@@ -604,7 +608,13 @@ function renderJobCard(job) {
         <div class="job-card-title">${job.job_title || "Untitled"}</div>
         <div class="job-card-company">${job.name || "Unknown Employer"}</div>
       </div>
-      ${!job.disqualified ? `<span class="score-pill ${tierClass}">${score}% match</span>` : `<span class="disqualified-badge">Ineligible</span>`}
+      ${
+        !job.disqualified
+          ? `<span class="score-pill ${tierClass}">${score}% match</span>`
+          : job.gradedIneligible
+            ? `<span class="disqualified-badge">Ineligible</span><span class="score-pill ${tierClass}">${score}% match</span>`
+            : `<span class="disqualified-badge">Ineligible</span>`
+      }
     </div>
     <div class="card-score-bar"><div class="card-score-fill" style="width:${score}%;background:${barColor}"></div></div>
     <div class="job-card-meta">
@@ -1156,6 +1166,7 @@ async function startFetch() {
 async function scoreBatch(jobs, matcher, creds) {
   const schoolYear = creds.schoolYear;
   const gradDate = creds.gradDate;
+  const gradeIneligible = !!creds.gradeIneligible;
 
   // Enrich the resume with the student's authoritative declared skills (pulled
   // from their NUWorks profile). This sharpens matching beyond the PDF text.
@@ -1184,7 +1195,9 @@ async function scoreBatch(jobs, matcher, creds) {
         const serverQual = qualifiedMap[job.job_id]; // true / false / undefined
 
         // Server says ineligible → badge it without fetching the description.
-        if (resumeText && serverQual === false) {
+        // With "Grade ineligible jobs" on we fall through instead, because the
+        // description is needed to compute the match %.
+        if (resumeText && serverQual === false && !gradeIneligible) {
           return {
             ...job,
             isExternal: false,
@@ -1226,6 +1239,8 @@ async function scoreBatch(jobs, matcher, creds) {
           // triggered it, which the modal renders.
           if (serverQual === true) {
             eligibility = { qualified: true, reason: null, evidence: null };
+          } else if (serverQual === false) {
+            eligibility = { qualified: false, reason: "server", evidence: null };
           } else if (typeof matcher.checkEligibility === "function") {
             eligibility = await matcher.checkEligibility(
               fullText,
@@ -1244,6 +1259,11 @@ async function scoreBatch(jobs, matcher, creds) {
             matchResult = matcher.calculateScore(resumeText, fullText);
           } else {
             disqualified = true;
+            // "Grade ineligible jobs": score it anyway so the card can show
+            // the match % next to the Ineligible badge.
+            if (gradeIneligible) {
+              matchResult = matcher.calculateScore(resumeText, fullText);
+            }
           }
         }
 
@@ -1253,6 +1273,9 @@ async function scoreBatch(jobs, matcher, creds) {
           contact_blurb: contactBlurb,
           isExternal: external,
           disqualified,
+          // Distinguishes "scored despite being ineligible" from the plain
+          // ineligible record whose 0 score is a placeholder, not a grade.
+          gradedIneligible: disqualified && !!matchResult,
           eligibility,
           matchScore: matchResult ? matchResult.score : 0,
           matchDetails: matchResult || { matches: [], missing: [] },

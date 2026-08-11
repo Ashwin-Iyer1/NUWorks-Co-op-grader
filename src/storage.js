@@ -18,6 +18,7 @@ const StorageHelper = {
           "schoolYear",
           "gradDate",
           "autoGrading",
+          "gradeIneligible",
           "profileSkills",
           "viewState",
           "lastAnalysisResults",
@@ -32,12 +33,14 @@ const StorageHelper = {
    * @param {string} schoolYear
    * @param {string} gradDate
    * @param {boolean} autoGrading
+   * @param {boolean} gradeIneligible
    * @returns {Promise<void>}
    */
-  saveUserDemographics: (schoolYear, gradDate, autoGrading) => {
+  saveUserDemographics: (schoolYear, gradDate, autoGrading, gradeIneligible) => {
     return new Promise((resolve) => {
-      chrome.storage.local.set({ schoolYear, gradDate, autoGrading }, () =>
-        resolve()
+      chrome.storage.local.set(
+        { schoolYear, gradDate, autoGrading, gradeIneligible },
+        () => resolve()
       );
     });
   },

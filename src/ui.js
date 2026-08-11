@@ -139,6 +139,7 @@ const UiHelper = {
       schoolYear: document.getElementById("school-year"),
       gradDate: document.getElementById("grad-date"),
       autoGrading: document.getElementById("auto-grading"),
+      gradeIneligible: document.getElementById("grade-ineligible"),
 
       // Industry Dropdown Elements
       industryDisplay: document.getElementById("industry-selected-display"),
@@ -490,6 +491,17 @@ const UiHelper = {
     scoreLine.className = `job-score score-${tier}`;
     scoreLine.textContent = `${score}%`;
 
+    // "Grade ineligible jobs" keeps disqualified postings in the list; they
+    // still carry the match % but must read as invalid at a glance.
+    let ineligibleBadge = null;
+    if (job.disqualified) {
+      ineligibleBadge = document.createElement("span");
+      ineligibleBadge.className = "disqualified-badge";
+      ineligibleBadge.textContent = "Ineligible";
+      const reason = job.eligibility && job.eligibility.reason;
+      ineligibleBadge.title = ELIGIBILITY_COPY[reason] || ELIGIBILITY_COPY.server;
+    }
+
     // Score bar
     const barContainer = document.createElement("div");
     barContainer.className = "score-bar-container";
@@ -575,7 +587,15 @@ const UiHelper = {
 
     card.appendChild(title);
     card.appendChild(company);
-    card.appendChild(scoreLine);
+    if (ineligibleBadge) {
+      const scoreRow = document.createElement("div");
+      scoreRow.className = "job-score-row";
+      scoreRow.appendChild(scoreLine);
+      scoreRow.appendChild(ineligibleBadge);
+      card.appendChild(scoreRow);
+    } else {
+      card.appendChild(scoreLine);
+    }
     card.appendChild(barContainer);
     card.appendChild(scoreDetail);
     if (matchedSkills.length > 0 || missingSkills.length > 0)
@@ -733,8 +753,11 @@ const UiHelper = {
         const creds = await StorageHelper.getCredentials();
 
         newBtn.innerText = "Saving all...";
+        // Ineligible jobs can appear in the list when "Grade ineligible jobs"
+        // is on; saving them to favorites would be noise.
+        const savable = jobs.filter((job) => !job.disqualified);
         const results = await Promise.all(
-          jobs.map((job) => ApiHelper.favoriteJob(job.job_id, creds))
+          savable.map((job) => ApiHelper.favoriteJob(job.job_id, creds))
         );
 
         const successCount = results.filter((s) => s).length;

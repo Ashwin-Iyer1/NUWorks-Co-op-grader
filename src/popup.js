@@ -57,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const SCHOOL_YEAR_OPTION = {
     freshman: "Freshman",
     sophomore: "Sophomore",
-    middler: "Middler",
     junior: "Junior",
     senior: "Senior",
     graduate: "Graduate",
@@ -209,6 +208,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (typeof creds.autoGrading !== "undefined") {
         UiHelper.elements.autoGrading.checked = creds.autoGrading;
       }
+      if (typeof creds.gradeIneligible !== "undefined") {
+        UiHelper.elements.gradeIneligible.checked = creds.gradeIneligible;
+      }
       UiHelper.setResumeError("");
       UiHelper.showResumeView(false);
       // Fill in any blanks (school year / grad date) straight from NUWorks.
@@ -234,6 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const schoolYear = UiHelper.elements.schoolYear.value;
       const gradDate = UiHelper.elements.gradDate.value;
       const autoGrading = UiHelper.elements.autoGrading.checked;
+      const gradeIneligible = UiHelper.elements.gradeIneligible.checked;
 
       if (!text) {
         UiHelper.setResumeError(
@@ -244,7 +247,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       Promise.all([
         StorageHelper.saveResume(text),
-        StorageHelper.saveUserDemographics(schoolYear, gradDate, autoGrading),
+        StorageHelper.saveUserDemographics(
+          schoolYear,
+          gradDate,
+          autoGrading,
+          gradeIneligible
+        ),
       ]).then(() => {
         console.log("Settings saved");
         UiHelper.setResumeError("");
@@ -441,6 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const storageResult = await StorageHelper.getCredentials();
         const schoolYear = storageResult.schoolYear;
         const gradDate = storageResult.gradDate;
+        const gradeIneligible = !!storageResult.gradeIneligible;
 
         if (!storageResult.resume) {
           UiHelper.setResumeError(
@@ -498,8 +507,9 @@ document.addEventListener("DOMContentLoaded", () => {
           jobs.map(async (job) => {
             const serverQual = qualifiedMap[job.job_id]; // true / false / undefined
 
-            // Server says ineligible → drop it.
-            if (serverQual === false) {
+            // Server says ineligible → drop it, unless the user asked for
+            // ineligible jobs to be graded anyway.
+            if (serverQual === false && !gradeIneligible) {
               countReason("server");
               tick();
               return null;
@@ -514,14 +524,16 @@ document.addEventListener("DOMContentLoaded", () => {
             const eligibility =
               serverQual === true
                 ? { qualified: true, reason: null, evidence: null }
-                : await evaluateEligibility(
-                    matcher,
-                    jobFullText,
-                    schoolYear,
-                    gradDate
-                  );
+                : serverQual === false
+                  ? { qualified: false, reason: "server", evidence: null }
+                  : await evaluateEligibility(
+                      matcher,
+                      jobFullText,
+                      schoolYear,
+                      gradDate
+                    );
 
-            if (!eligibility.qualified) {
+            if (!eligibility.qualified && !gradeIneligible) {
               countReason(eligibility.reason);
               tick();
               return null;
@@ -534,6 +546,9 @@ document.addEventListener("DOMContentLoaded", () => {
               ...job,
               matchScore: result.score,
               matchDetails: result,
+              // Kept in the list, but still flagged so the card renders the
+              // Ineligible badge next to the match %.
+              disqualified: !eligibility.qualified,
               eligibility,
             };
           })

@@ -412,7 +412,6 @@ export const ELIGIBILITY_COPY = {
 const CANONICAL_SCHOOL_YEARS = new Set([
   "freshman",
   "sophomore",
-  "middler",
   "junior",
   "senior",
   "graduate",
@@ -423,7 +422,6 @@ const CANONICAL_SCHOOL_YEARS = new Set([
 const UNDERGRAD_YEARS = [
   "freshman",
   "sophomore",
-  "middler",
   "junior",
   "senior",
   "bachelors",
@@ -437,9 +435,8 @@ const SCHOOL_YEAR_SYNONYMS = {
   "2nd year": "sophomore",
   "second year": "sophomore",
   sophomore: "sophomore",
-  middler: "middler",
-  "3rd year": "middler",
-  "third year": "middler",
+  "3rd year": "junior",
+  "third year": "junior",
   junior: "junior",
   "4th year": "senior",
   "fourth year": "senior",
@@ -817,7 +814,6 @@ class JobMatcher {
       const years = [
         "freshman",
         "sophomore",
-        "middler",
         "junior",
         "senior",
         "graduate",
@@ -831,8 +827,6 @@ class JobMatcher {
         let pattern;
         if (y === "freshman") {
           pattern = /\bfreshm(a|e)n\b/i;
-        } else if (y === "middler") {
-          pattern = /\bmiddler\b/i;
         } else if (y === "graduate") {
           // "graduate program", "recent graduate", "new graduate" and
           // "graduate school" are NOT statements that the posting wants a

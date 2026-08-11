@@ -159,6 +159,7 @@ async function processJobs(jobList, tabId) {
   let resumeText = null;
   let schoolYear = null;
   let gradDate = null;
+  const gradeIneligible = !!creds.gradeIneligible;
 
   if (creds.autoGrading && creds.resume && creds.gradDate && creds.schoolYear) {
     matcher = new JobMatcher();
@@ -204,8 +205,9 @@ async function processJobs(jobList, tabId) {
         }
 
         // Server says the student is not eligible → badge as Ineligible without
-        // fetching the description.
-        if (matcher && qualifiedMap[jobId] === false) {
+        // fetching the description. When "Grade ineligible jobs" is on we fall
+        // through instead: the description is needed to compute the match %.
+        if (matcher && qualifiedMap[jobId] === false && !gradeIneligible) {
           return {
             jobId,
             title: title || null,
@@ -244,14 +246,24 @@ async function processJobs(jobList, tabId) {
             eligibility =
               serverQual === true
                 ? { qualified: true, reason: null, evidence: null }
-                : await matcher.checkEligibility(
-                    fullText,
-                    schoolYear,
-                    gradDate
-                  );
+                : serverQual === false
+                  ? { qualified: false, reason: "server", evidence: null }
+                  : await matcher.checkEligibility(
+                      fullText,
+                      schoolYear,
+                      gradDate
+                    );
 
             if (eligibility.qualified) {
               matchResult = matcher.calculateScore(resumeText, fullText);
+            } else if (gradeIneligible) {
+              // Still ineligible, but the user wants the match % anyway.
+              // `graded` tells the badge to render both.
+              matchResult = {
+                ...matcher.calculateScore(resumeText, fullText),
+                disqualified: true,
+                graded: true,
+              };
             } else {
               // Explicit disqualified status; the reason lives on `eligibility`.
               matchResult = { score: 0, disqualified: true };
@@ -351,10 +363,20 @@ async function processJobs(jobList, tabId) {
         // place so Strategy 1 and Strategy 2 can never drift apart.
         const matchBadgeSpec = (job) => {
           if (job.matchResult.disqualified) {
+            const reasonCopy = REASON_COPY[job.reason] || REASON_COPY.server;
+            // "Grade ineligible jobs": the score was computed anyway, so the
+            // badge carries both the verdict and the match %.
+            if (job.matchResult.graded) {
+              return {
+                text: `Ineligible · ${job.matchResult.score}% Match`,
+                variant: "disqualified",
+                tooltip: `${reasonCopy} — ${scoreTooltip(job)}`,
+              };
+            }
             return {
               text: "Ineligible",
               variant: "disqualified",
-              tooltip: REASON_COPY[job.reason] || REASON_COPY.server,
+              tooltip: reasonCopy,
             };
           }
           const score = job.matchResult.score;
