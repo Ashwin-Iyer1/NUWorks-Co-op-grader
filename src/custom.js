@@ -70,6 +70,7 @@ const ICONS = {
   location: `<svg ${ICON_ATTRS}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`,
   posted: `<svg ${ICON_ATTRS}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`,
   deadline: `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
+  term: `<svg ${ICON_ATTRS}><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>`,
   info: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`,
   blocked: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>`,
   alert: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`,
@@ -260,8 +261,9 @@ function renderMatchBar(label, value) {
 
 // Why this posting scored what it scored — the one thing the modal never showed.
 // `scored` is the in-memory analysed record and may be undefined; every field it
-// carries is optional, so each block guards independently.
-function renderMatchSection(scored) {
+// carries is optional, so each block guards independently. `job` is the fresh
+// detail response, which carries the server's own non_qualified_reason lines.
+function renderMatchSection(scored, job) {
   if (!scored) return "";
 
   const details = scored.matchDetails?.details;
@@ -305,8 +307,16 @@ function renderMatchSection(scored) {
   let ineligible = "";
   if (disqualified) {
     const reason = scored.eligibility?.reason;
+    // NUWorks states its own reasons on the detail response ("You do not match
+    // the desired Applicant Type…"); those beat our generic server copy.
+    const serverReasons =
+      reason === "server" && Array.isArray(job?.non_qualified_reason)
+        ? job.non_qualified_reason.filter(Boolean)
+        : [];
     const copy =
-      (reason && ELIGIBILITY_COPY[reason]) || ELIGIBILITY_COPY.server;
+      serverReasons.length > 0
+        ? serverReasons.join(" ")
+        : (reason && ELIGIBILITY_COPY[reason]) || ELIGIBILITY_COPY.server;
     const evidence = scored.eligibility?.evidence;
     ineligible = `
       <div class="modal-ineligible">
@@ -364,7 +374,7 @@ function renderModalContent(job, scored) {
   const overview = profile.overview || "";
   const industry = (profile.industry || []).map((i) => i._label).join(", ");
   const employeeCount = profile.csm_number_of_employees?._label || "";
-  const orgType = profile.csm_organization_type?._label || "";
+  // const orgType = profile.csm_organization_type?._label || "";
 
   // Location
   const locations = (job.location || []).map((l) => l.address_text || l._label).filter(Boolean).join("; ") || job.job_location || "";
@@ -399,20 +409,50 @@ function renderModalContent(job, scored) {
   const contactBlurb = job.contact_blurb || "";
   const applyUrl = contactBlurb.match(/https?:\/\/[^\s<"]+/)?.[0] || "";
 
-  // Qualifications fields
-  const majors = (job.major || []).map((m) => m._label).filter(Boolean).join(", ");
-  const classLevels = (job.class_level || []).map((c) => c._label).filter(Boolean).join(", ");
-  const degreeLevels = (job.degree_level || []).map((d) => d._label).filter(Boolean).join(", ");
+  // Qualifications fields. The declared fields are often empty while the
+  // screen_* twins carry the real requirement (see gpa "0" vs screen_gpa "3.0"),
+  // so each one falls back to its screening counterpart.
+  const majors =
+    (job.major || []).map((m) => m._label).filter(Boolean).join(", ") ||
+    fieldLabel(job.screen_major);
+  const classLevels =
+    (job.class_level || []).map((c) => c._label).filter(Boolean).join(", ") ||
+    fieldLabel(job.screen_class_level);
+  const degreeLevels =
+    (job.degree_level || []).map((d) => d._label).filter(Boolean).join(", ") ||
+    fieldLabel(job.screen_degree_level);
   const workAuth = (job.work_authorization || []).map((w) => w._label).filter(Boolean).join(", ");
-  const gpa = job.gpa && job.gpa !== "0" ? job.gpa : "";
+  const gpa =
+    job.gpa && job.gpa !== "0"
+      ? job.gpa
+      : job.screen_gpa && job.screen_gpa !== "0"
+        ? job.screen_gpa
+        : "";
+
+  // Co-op-specific fields from the v3 detail response.
+  const workTerm = jobWorkTerm(job);
+  const workplace = fieldLabel(job.workplace_type);
+  const hours = fieldLabel(job.hours_per_week2);
+  const jobLength = fieldLabel(job.job_length_ms);
+  const jobFunction = fieldLabel(job.job_function2);
+  const expLevel = fieldLabel(job.desired_experience_level);
+  const openings = job.num_openings || job.number_of_openings_static || "";
+  const positionStart = job.start_date_nu
+    ? new Date(job.start_date_nu).toLocaleDateString()
+    : "";
+  // const colleges = fieldLabel(job.targeted_academic_majors);
+  const transit = fieldLabel(job.transportationm);
 
   // Status tags
   let statusTags = "";
   if (job.favorite) statusTags += `<span class="modal-tag green">Saved</span>`;
   if (job.applied) statusTags += `<span class="modal-tag green">Applied</span>`;
   if (job.expired) statusTags += `<span class="modal-tag danger">Expired</span>`;
+  if (workTerm) statusTags += `<span class="modal-tag accent">${esc(workTerm)}</span>`;
   if (remote) statusTags += `<span class="modal-tag">${remote}</span>`;
+  if (workplace) statusTags += `<span class="modal-tag">${esc(workplace)}</span>`;
   if (jobTypes) statusTags += `<span class="modal-tag">${jobTypes}</span>`;
+  if (jobLength) statusTags += `<span class="modal-tag">${esc(jobLength)}</span>`;
   if (compensation) statusTags += `<span class="modal-tag accent">${compensation}</span>`;
   if (locations) statusTags += `<span class="modal-tag">${locations}</span>`;
 
@@ -424,15 +464,25 @@ function renderModalContent(job, scored) {
   addInfo("Posted", posted);
   addInfo("Posting ends", endDate);
   if (deadline) addInfo("Deadline", deadline);
-  if (startDate) addInfo("Start date", startDate);
+  if (workTerm) addInfo("Work term", esc(workTerm));
+  if (positionStart) addInfo("Position start", positionStart);
+  else if (startDate) addInfo("Start date", startDate);
+  if (jobLength) addInfo("Job length", esc(jobLength));
+  if (hours) addInfo("Hours", esc(hours));
+  if (workplace) addInfo("Workplace", esc(workplace));
+  if (openings) addInfo("Openings", esc(openings));
+  if (jobFunction) addInfo("Job function", esc(jobFunction));
+  if (expLevel) addInfo("Experience level", esc(expLevel));
   if (industry) addInfo("Industry", industry);
-  if (orgType) addInfo("Company type", orgType);
+  // if (orgType) addInfo("Company type", orgType);
   if (employeeCount) addInfo("Employees", employeeCount);
   if (gpa) addInfo("Min GPA", gpa);
   if (classLevels) addInfo("Class level", classLevels);
   if (degreeLevels) addInfo("Degree level", degreeLevels);
   if (majors) addInfo("Majors", majors);
+  // if (colleges) addInfo("Colleges", esc(colleges));
   if (workAuth) addInfo("Work authorization", workAuth);
+  if (transit) addInfo("Transportation", esc(transit));
 
   const nuworksUrl = `${BASE_URL}/students/app/jobs/detail/${job.job_id}`;
 
@@ -440,7 +490,7 @@ function renderModalContent(job, scored) {
     <div class="modal-banner"></div>
     <div class="modal-body">
       <div class="modal-header-row">
-        ${logo ? `<img class="modal-logo" src="${logo}" onerror="this.style.display='none'" />` : ""}
+        ${logo ? `<img class="modal-logo" src="${logo}" />` : ""}
         <div class="modal-title-group">
           <div class="modal-title">${job.job_title || "Untitled"}</div>
           <div class="modal-company">
@@ -452,7 +502,7 @@ function renderModalContent(job, scored) {
 
       <div class="modal-meta">${statusTags}</div>
 
-      ${renderMatchSection(scored)}
+      ${renderMatchSection(scored, job)}
 
       ${infoItems ? `<div class="modal-section"><div class="modal-section-title">Details</div><div class="modal-info-grid">${infoItems}</div></div>` : ""}
 
@@ -485,6 +535,17 @@ function renderModalContent(job, scored) {
 }
 
 function wireModalActions(job, creds) {
+  // Hide the logo if it fails to load (e.g. .eps files browsers can't render).
+  // Must be a real listener — the extension page CSP blocks inline onerror
+  // attributes. wireModalActions runs synchronously after innerHTML is set,
+  // so the listener attaches before any network error can fire.
+  const logoEl = document.querySelector(".modal-logo");
+  if (logoEl) {
+    logoEl.addEventListener("error", () => {
+      logoEl.style.display = "none";
+    });
+  }
+
   const saveBtn = document.getElementById("modal-save-btn");
   if (saveBtn && !job.favorite) {
     saveBtn.addEventListener("click", async () => {
@@ -553,6 +614,50 @@ function jobTypeLabel(job) {
   return "";
 }
 
+// Symplicity wraps most enum-ish fields as {_id,_label} (or a title'd variant),
+// sometimes as an array of them. Flatten any of those shapes to display text.
+function fieldLabel(value) {
+  if (!value) return "";
+  if (Array.isArray(value)) {
+    return value
+      .map((v) => (v && typeof v === "object" ? v._label || v.title : v))
+      .filter(Boolean)
+      .join(", ");
+  }
+  if (typeof value === "object") return value._label || value.title || "";
+  return typeof value === "string" ? value : "";
+}
+
+// Work term ("2027 - Spring"). Some payloads omit el_work_term; the screening
+// applicant-type carries the same term label on co-op postings, so fall back.
+function jobWorkTerm(job) {
+  const direct = fieldLabel(job.el_work_term);
+  if (direct) return direct;
+  const screen = Array.isArray(job.screen_applicant_type)
+    ? job.screen_applicant_type
+    : [];
+  return screen.map((s) => s && s._label).find(Boolean) || "";
+}
+
+// Chronological order for "YYYY - Season" labels; anything unparseable sorts
+// after the parseable terms, alphabetically.
+const SEASON_ORDER = { spring: 0, summer: 1, fall: 2, winter: 3 };
+function compareWorkTerms(a, b) {
+  const parse = (t) => {
+    const year = (String(t).match(/\d{4}/) || [])[0];
+    const season = Object.keys(SEASON_ORDER).find((s) =>
+      String(t).toLowerCase().includes(s)
+    );
+    return year && season ? Number(year) * 10 + SEASON_ORDER[season] : null;
+  };
+  const pa = parse(a);
+  const pb = parse(b);
+  if (pa !== null && pb !== null) return pa - pb;
+  if (pa !== null) return -1;
+  if (pb !== null) return 1;
+  return String(a).localeCompare(String(b));
+}
+
 // ─── Render Jobs ───
 function renderJobCard(job) {
   const card = document.createElement("div");
@@ -601,6 +706,9 @@ function renderJobCard(job) {
   const deadline = job.deadline
     ? new Date(job.deadline).toLocaleDateString()
     : "";
+  const workTerm = jobWorkTerm(job);
+  const workplace = fieldLabel(job.workplace_type);
+  const jobLength = fieldLabel(job.job_length_ms);
 
   card.innerHTML = `
     <div class="job-card-header">
@@ -619,11 +727,14 @@ function renderJobCard(job) {
     <div class="card-score-bar"><div class="card-score-fill" style="width:${score}%;background:${barColor}"></div></div>
     <div class="job-card-meta">
       ${badges}
+      ${workTerm ? `<span title="Work term">${ICONS.term}${esc(workTerm)}</span>` : ""}
       ${compensation ? `<span title="Compensation">${ICONS.compensation}${compensation}</span>` : ""}
       ${remote ? `<span title="Work mode">${ICONS.location}${remote}</span>` : ""}
       ${postDate ? `<span title="Posted">${ICONS.posted}${postDate}</span>` : ""}
       ${deadline ? `<span title="Deadline">${ICONS.deadline}${deadline}</span>` : ""}
       ${jobType ? `<span>${jobType}</span>` : ""}
+      ${workplace ? `<span title="Workplace">${esc(workplace)}</span>` : ""}
+      ${jobLength ? `<span title="Job length">${esc(jobLength)}</span>` : ""}
       ${location ? `<span>${location}</span>` : ""}
     </div>
     ${skillsHtml}
@@ -826,7 +937,26 @@ function updateStats() {
 }
 
 // ─── Filtering & Sorting ───
+
+// Rebuild the work-term dropdown from the unique terms present in the fetched
+// jobs, chronologically ordered, preserving the current selection. Idempotent,
+// so applyFilters can call it every time the job set may have changed.
+function updateWorkTermOptions() {
+  const select = $("filter-work-term");
+  if (!select) return;
+  const current = select.value;
+  const terms = [...new Set(allJobs.map(jobWorkTerm).filter(Boolean))].sort(
+    compareWorkTerms
+  );
+  select.innerHTML = ['<option value="">All work terms</option>']
+    .concat(terms.map((t) => `<option value="${esc(t)}">${esc(t)}</option>`))
+    .join("");
+  // A selection that vanished with a new fetch falls back to "All work terms".
+  if (terms.includes(current)) select.value = current;
+}
+
 function applyFilters() {
+  updateWorkTermOptions();
   const titleQ = $("filter-title").value.toLowerCase().trim();
   const companyQ = $("filter-company").value.toLowerCase().trim();
   const skillQ = $("filter-skill").value.toLowerCase().trim();
@@ -834,11 +964,13 @@ function applyFilters() {
   const maxScore = parseInt($("filter-max-score").value) || 100;
   const hideDisq = $("filter-hide-disqualified").checked;
   const hideExt = $("filter-hide-external").checked;
+  const workTermQ = $("filter-work-term").value;
   const sortBy = $("filter-sort").value;
 
   filteredJobs = allJobs.filter((job) => {
     if (hideDisq && job.disqualified) return false;
     if (hideExt && job.isExternal) return false;
+    if (workTermQ && jobWorkTerm(job) !== workTermQ) return false;
     const score = job.matchScore ?? 0;
     if (score < minScore || score > maxScore) return false;
     if (titleQ && !(job.job_title || "").toLowerCase().includes(titleQ)) return false;
@@ -915,6 +1047,7 @@ function applyPreset(name) {
       $("filter-skill").value = "";
       $("filter-min-score").value = "0";
       $("filter-max-score").value = "100";
+      $("filter-work-term").value = "";
       $("filter-sort").value = "score-desc";
       $("filter-hide-disqualified").checked = true;
       $("filter-hide-external").checked = false;
@@ -1163,6 +1296,27 @@ async function startFetch() {
   }
 }
 
+// Fields that usually only exist on the per-job detail response, worth carrying
+// onto the scored record so the card, the work-term filter and the modal can
+// use them without a second fetch.
+const DETAIL_CARRY_FIELDS = [
+  "el_work_term",
+  "screen_applicant_type",
+  "workplace_type",
+  "hours_per_week2",
+  "job_length_ms",
+  "num_openings",
+  "start_date_nu",
+  "screen_gpa",
+  "screen_degree_level",
+  "screen_class_level",
+  "screen_major",
+  "desired_experience_level",
+  "job_function2",
+  "symp_remote_onsite",
+  "application_deadline",
+];
+
 async function scoreBatch(jobs, matcher, creds) {
   const schoolYear = creds.schoolYear;
   const gradDate = creds.gradDate;
@@ -1211,15 +1365,25 @@ async function scoreBatch(jobs, matcher, creds) {
         let desc = job.job_desc || "";
         let title = job.job_title || "";
         let contactBlurb = job.contact_blurb || "";
+        const detailExtras = {};
 
-        // If no description, try to fetch it
-        if (!desc && job.job_id) {
+        // Fetch the full record when the list payload is missing either the
+        // description or the detail-only fields (el_work_term etc.) — the list
+        // endpoint includes descriptions but not the co-op term, so without
+        // this the work-term filter would have nothing to offer.
+        const needsDetail = !desc || job.el_work_term === undefined;
+        if (needsDetail && job.job_id) {
           try {
             const full = await fetchJobDescription(job.job_id, creds);
             if (full) {
-              desc = full.job_desc || "";
-              title = full.job_title || title;
-              contactBlurb = full.contact_blurb || "";
+              desc = desc || full.job_desc || "";
+              title = title || full.job_title || "";
+              contactBlurb = contactBlurb || full.contact_blurb || "";
+              DETAIL_CARRY_FIELDS.forEach((f) => {
+                if (job[f] === undefined || job[f] === null) {
+                  detailExtras[f] = full[f];
+                }
+              });
             }
           } catch (e) {
             // Skip
@@ -1269,6 +1433,7 @@ async function scoreBatch(jobs, matcher, creds) {
 
         return {
           ...job,
+          ...detailExtras,
           job_desc: desc,
           contact_blurb: contactBlurb,
           isExternal: external,
@@ -1376,6 +1541,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   $("filter-skill").addEventListener("input", debouncedFilter);
   $("filter-min-score").addEventListener("input", debouncedFilter);
   $("filter-max-score").addEventListener("input", debouncedFilter);
+  $("filter-work-term").addEventListener("change", onFilterChange);
   $("filter-sort").addEventListener("change", onFilterChange);
   $("filter-hide-disqualified").addEventListener("change", onFilterChange);
   $("filter-hide-external").addEventListener("change", onFilterChange);
