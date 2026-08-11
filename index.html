@@ -255,7 +255,7 @@
       <div class="container">
         <div class="video-duo">
           <div class="video-duo-item">
-            <div class="section-header">
+            <div class="section-header" id="ineligible-video">
               <h2>Know why you weren't selected</h2>
               <p>
                 Quickly identify if a job application is inactive or if you were
@@ -263,9 +263,8 @@
               </p>
             </div>
             <div class="video-container">
-              <video controls playsinline>
-                <source src="ineligible-job-video.mov" type="video/quicktime" />
-                <source src="ineligible-job-video.mov" type="video/mp4" />
+              <video controls playsinline preload="metadata">
+                <source src="ineligible-job-video.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -509,6 +508,40 @@
       overlay.addEventListener("click", closeScreenshot);
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeScreenshot();
+      });
+
+      // ── #ineligible-video deep link: maximize + autoplay ──
+      const ineligibleContainer = document.querySelector(
+        "#ineligible-video + .video-container"
+      );
+      const ineligibleVideo = ineligibleContainer.querySelector("video");
+
+      function openIneligibleVideo() {
+        ineligibleContainer.classList.add("maximized");
+        overlay.classList.add("active");
+        // Browsers only allow autoplay when muted; controls let the user unmute.
+        ineligibleVideo.muted = true;
+        ineligibleVideo.play().catch(() => {});
+      }
+
+      function closeIneligibleVideo() {
+        if (!ineligibleContainer.classList.contains("maximized")) return;
+        ineligibleContainer.classList.remove("maximized");
+        overlay.classList.remove("active");
+        ineligibleVideo.pause();
+        // Clear the hash so re-clicking the extension link re-opens it.
+        history.replaceState(null, "", location.pathname + location.search);
+      }
+
+      function checkVideoHash() {
+        if (location.hash === "#ineligible-video") openIneligibleVideo();
+      }
+      window.addEventListener("hashchange", checkVideoHash);
+      checkVideoHash();
+
+      overlay.addEventListener("click", closeIneligibleVideo);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeIneligibleVideo();
       });
     </script>
   </body>

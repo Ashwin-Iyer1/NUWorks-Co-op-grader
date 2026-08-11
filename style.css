@@ -709,6 +709,18 @@ footer .container {
   box-shadow: var(--shadow-lg);
   background: var(--surface);
 }
+.video-container.maximized {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(1100px, 92vw);
+  z-index: 1001;
+}
+.video-container.maximized video {
+  max-height: 88vh;
+  object-fit: contain;
+}
 
 /* ─── Document pages (privacy policy) ─── */
 .doc {
