@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ashwin Iyer — Licensed under AGPL-3.0
+
 const { NlpManager } = require("node-nlp");
 
 async function train() {

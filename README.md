@@ -62,6 +62,14 @@ This project uses Parcel to bundle dependencies (like `nlp.js` and `pdfjs-dist`)
 └── README.md
 ```
 
+## License
+
+This project is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](LICENSE).
+
+- Copyright (c) 2026 Ashwin Iyer.
+- Copyright notices must be preserved in all forks and derivative works, as required by the license.
+- The names **"NUWorks Grader"** and **"nucoop.app"** are not licensed for use by forks or derivatives. Forks must use their own name and domain.
+
 ## Credits
 
 Made by [Ashwin Iyer](https://ashwiniyer.com)

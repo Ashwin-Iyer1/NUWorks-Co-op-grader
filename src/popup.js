@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ashwin Iyer — Licensed under AGPL-3.0
+
 import JobMatcher, { normalizeSchoolYear } from "./matcher.js";
 import StorageHelper from "./storage.js";
 import ApiHelper from "./api.js";

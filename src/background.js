@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ashwin Iyer — Licensed under AGPL-3.0
+
 import ApiHelper from "./api.js";
 import StorageHelper from "./storage.js";
 import JobMatcher from "./matcher.js";

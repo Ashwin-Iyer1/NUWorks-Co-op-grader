@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ashwin Iyer — Licensed under AGPL-3.0
+
 // Shared light/dark theming for the extension's own pages (the popup and the
 // Job Explorer). The design tokens define `:root` (light) and `[data-theme="dark"]`
 // (dark); this module decides which is active and writes `data-theme` onto <html>.

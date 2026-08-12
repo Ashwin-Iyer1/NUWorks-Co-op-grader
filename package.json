@@ -14,7 +14,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "AGPL-3.0",
   "dependencies": {
     "dotenv": "^17.2.3",
     "node-nlp": "^5.0.0-alpha.5",

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ashwin Iyer — Licensed under AGPL-3.0
+
 import JobMatcher, { ELIGIBILITY_COPY } from "./matcher.js";
 import { setupThemeToggle } from "./theme.js";
 

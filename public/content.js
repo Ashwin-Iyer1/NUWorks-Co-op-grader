@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ashwin Iyer — Licensed under AGPL-3.0
+
 // Injector logic moved to manifest.json (world: MAIN)
 console.log("Content script loaded (Manifest Injection Mode).");
 

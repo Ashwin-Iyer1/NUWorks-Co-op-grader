@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ashwin Iyer — Licensed under AGPL-3.0
+
 /**
  * api.js
  * Handles all network requests to Symplicity API

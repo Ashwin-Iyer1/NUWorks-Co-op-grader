@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ashwin Iyer — Licensed under AGPL-3.0
+
 // EXPANDED Common skills database for various majors
 const SKILL_DB = new Set([
   // --- TECH: Languages ---
