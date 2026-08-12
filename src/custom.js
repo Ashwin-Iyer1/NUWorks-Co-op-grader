@@ -1231,20 +1231,34 @@ async function startFetch() {
   const matcher = new JobMatcher();
   let totalFetched = 0;
   let fetchError = null;
+  // Symplicity's `page` param is 1-based — page=0 returns page 1 again, so a
+  // 0-based loop fetched, scored and rendered the whole first page twice.
+  const seenJobIds = new Set();
 
   try {
-    for (let page = 0; page < maxPages && !shouldStop; page++) {
-      $("progress-status").innerHTML = `<span class="spinner"></span> Fetching batch ${page + 1}...`;
+    for (let page = 1; page <= maxPages && !shouldStop; page++) {
+      $("progress-status").innerHTML = `<span class="spinner"></span> Fetching batch ${page}...`;
       const jobs = await fetchJobPage(params, creds, page);
 
       if (!jobs || jobs.length === 0) break;
 
-      totalFetched += jobs.length;
+      // The !postdate sort can shift a boundary job onto two consecutive
+      // pages mid-run; drop anything already fetched so no job is ever
+      // analyzed or rendered twice.
+      const newJobs = jobs.filter((job) => {
+        const id = job.job_id || job.id;
+        if (!id) return true;
+        if (seenJobIds.has(id)) return false;
+        seenJobIds.add(id);
+        return true;
+      });
+
+      totalFetched += newJobs.length;
       $("progress-count").textContent = `${totalFetched} fetched`;
       $("progress-bar").style.width = `${Math.min((totalFetched / maxJobs) * 100, 95)}%`;
 
-      $("progress-status").innerHTML = `<span class="spinner"></span> Analyzing batch ${page + 1} (${jobs.length} jobs)...`;
-      const scoredBatch = await scoreBatch(jobs, matcher, creds);
+      $("progress-status").innerHTML = `<span class="spinner"></span> Analyzing batch ${page} (${newJobs.length} jobs)...`;
+      const scoredBatch = await scoreBatch(newJobs, matcher, creds);
       allJobs.push(...scoredBatch);
 
       scheduleMidFetchRender();
