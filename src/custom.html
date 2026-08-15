@@ -519,6 +519,28 @@
     }
     .toast.show { transform: translateY(0); opacity: 1; }
 
+    /* ─── Semantic AI opt-in dialog ─── */
+    .semantic-dialog { max-width: 520px; }
+    .semantic-dialog-body { padding: 26px 28px; }
+    .semantic-dialog-body h2 { margin: 0 0 12px; font-size: 1.15rem; }
+    .semantic-dialog-body p {
+      margin: 0 0 12px; font-size: 0.88rem; line-height: 1.55;
+      color: var(--text-secondary);
+    }
+    .semantic-warn {
+      font-size: 0.85rem; line-height: 1.5; color: var(--text-secondary);
+      border: 1px solid var(--border-strong); border-radius: var(--radius-md, 8px);
+      padding: 10px 14px; background: var(--input-bg);
+    }
+    .semantic-dialog-actions {
+      display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px;
+    }
+    #download-status {
+      font-weight: 600; color: var(--text); font-size: 0.95rem;
+    }
+    #download-overlay .progress-bar-outer { margin: 4px 0 14px; }
+    .download-note { font-size: 0.82rem; color: var(--text-muted); }
+
     /* ─── Modal ─── */
     .modal-overlay {
       position: fixed; inset: 0; background: var(--overlay-bg);
@@ -739,6 +761,10 @@
           <input type="checkbox" id="ctl-exclude-applied" checked />
           <label for="ctl-exclude-applied">Exclude applied</label>
         </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="ctl-semantic" />
+          <label for="ctl-semantic" title="On-device AI model that scores meaning, not just keywords">Semantic AI</label>
+        </div>
         <div class="controls-actions">
           <button class="btn btn-primary" id="btn-fetch">Fetch &amp; analyze</button>
           <button class="btn btn-danger" id="btn-stop" style="display:none">
@@ -854,6 +880,60 @@
     <!-- Load more -->
     <div class="load-more-row" id="load-more-row" style="display:none">
       <button class="btn btn-secondary" id="btn-load-more">Show more</button>
+    </div>
+  </div>
+
+  <!-- Semantic AI opt-in dialog -->
+  <div class="modal-overlay" id="semantic-overlay">
+    <div class="modal semantic-dialog">
+      <div class="semantic-dialog-body">
+        <h2>Enable Semantic AI matching?</h2>
+        <p>
+          A small AI language model (<b>mdbr-leaf-ir</b>, 23M parameters) runs
+          <b>entirely on your device</b> and re-reads every job description to
+          score how well it fits your resume by <i>meaning</i>, not just
+          keyword overlap &mdash; so "built REST services in Flask" counts
+          toward "backend web development experience". Match scores become a
+          blend of 65% keyword and 35% semantic similarity. Your resume and
+          the job text never leave your computer.
+        </p>
+        <p>
+          Enabling downloads the AI runtime and model
+          (<b>~46&nbsp;MB, one time</b>); they are kept for future sessions.
+        </p>
+        <div class="semantic-warn">
+          <b>Heads up:</b> scoring is <b>computationally intensive</b>. On
+          lower-powered machines (MacBook Air, Chromebooks, older laptops) a
+          large job batch can take several minutes in the background and may
+          spin up fans or drain battery. Scores stay usable the whole time
+          &mdash; the AI refinement just arrives later.
+        </div>
+        <div class="semantic-dialog-actions">
+          <button class="btn btn-secondary" id="semantic-cancel">Not now</button>
+          <button class="btn btn-primary" id="semantic-accept">Enable &amp; download (~46 MB)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Semantic AI download progress -->
+  <div class="modal-overlay" id="download-overlay">
+    <div class="modal semantic-dialog">
+      <div class="semantic-dialog-body">
+        <h2>Setting up Semantic AI</h2>
+        <p id="download-status">Preparing download…</p>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="download-bar" style="width:0%"></div>
+        </div>
+        <p class="download-note">
+          One-time download of the AI runtime (~23&nbsp;MB) and model
+          (~23&nbsp;MB). Both are kept on this device, so this won't happen
+          again. Scoring starts automatically when it finishes.
+        </p>
+        <div class="semantic-dialog-actions">
+          <button class="btn btn-secondary" id="download-hide">Hide — continue in background</button>
+        </div>
+      </div>
     </div>
   </div>
 

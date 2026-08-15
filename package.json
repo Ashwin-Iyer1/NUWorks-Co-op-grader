@@ -7,7 +7,7 @@
     "train": "node train.js",
     "train:auto": "node train-auto.js",
     "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
-    "build": "npm run clean && parcel build src/index.html src/custom.html src/bench.html src/background.js --dist-dir dist --no-cache --public-url ./"
+    "build": "npm run clean && parcel build src/index.html src/custom.html src/bench.html src/background.js src/embeddings-worker.js --dist-dir dist --no-cache --no-source-maps --public-url ./ && node -e \"require('fs').rmSync('dist/ort/ort-wasm-simd-threaded.asyncify.wasm',{force:true})\""
   },
   "staticFiles": {
     "staticPath": "public"

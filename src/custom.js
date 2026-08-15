@@ -583,6 +583,7 @@ function getCredentials() {
         "gradDate",
         "gradeIneligible",
         "profileSkills",
+        "semanticEnabled",
       ],
       (result) => resolve(result)
     );
@@ -1491,6 +1492,54 @@ async function enrichJobDetails(creds) {
 const SEMANTIC_WEIGHT = 0.35;
 let semanticRunId = 0;
 
+// ── Download progress modal ──
+// Opens on the first progress message from the worker (only downloads emit
+// them — cached loads are silent), updates the bar, and closes when the
+// scorer is ready. "Hide" suppresses it for the rest of this download; the
+// status chip keeps mirroring the progress.
+let downloadOverlayDismissed = false;
+// Minimum on-screen time: on a fast connection the whole download can finish
+// in under a second, and a modal that flashes and vanishes reads as a glitch.
+const DOWNLOAD_OVERLAY_MIN_MS = 5000;
+let downloadOverlayShownAt = 0;
+let downloadHideTimer = null;
+
+function showDownloadProgress(m) {
+  if (downloadOverlayDismissed) return;
+  clearTimeout(downloadHideTimer);
+  const overlay = $("download-overlay");
+  if (!overlay.classList.contains("open")) {
+    overlay.classList.add("open");
+    downloadOverlayShownAt = Date.now();
+  }
+  $("download-status").textContent =
+    m.pct !== undefined ? `${m.label}… ${m.pct}%` : `${m.label}…`;
+  $("download-bar").style.width = `${m.pct ?? 0}%`;
+}
+
+function hideDownloadProgress() {
+  clearTimeout(downloadHideTimer);
+  const overlay = $("download-overlay");
+  if (!overlay.classList.contains("open")) {
+    downloadOverlayDismissed = false;
+    return;
+  }
+  const remaining =
+    DOWNLOAD_OVERLAY_MIN_MS - (Date.now() - downloadOverlayShownAt);
+  if (remaining > 0) {
+    // Linger in a finished state so the user can read what just happened.
+    $("download-status").textContent = "Download complete — starting scoring…";
+    $("download-bar").style.width = "100%";
+    downloadHideTimer = setTimeout(() => {
+      overlay.classList.remove("open");
+      downloadOverlayDismissed = false;
+    }, remaining);
+  } else {
+    overlay.classList.remove("open");
+    downloadOverlayDismissed = false;
+  }
+}
+
 // The scorer wraps a worker holding the loaded model — keep it warm across
 // fetch runs so only the FIRST run pays the model-load cost. Recreated only
 // when the resume text changes.
@@ -1502,7 +1551,17 @@ async function getSemanticScorer(resumeText) {
   }
   if (semanticCache.scorer) semanticCache.scorer.dispose();
   semanticCache = { key: resumeText, scorer: null };
-  const scorer = await createSemanticScorer(resumeText);
+  const scorer = await createSemanticScorer(resumeText, {
+    // First-enable downloads (runtime + model) get a prominent progress
+    // modal; the small status chip mirrors it for after the user hides it.
+    onProgress: (m) => {
+      setBgTask("semantic", {
+        label: m.pct !== undefined ? `${m.label} ${m.pct}%` : m.label,
+      });
+      showDownloadProgress(m);
+    },
+  });
+  hideDownloadProgress();
   // A concurrent call may have won the race; don't clobber its worker.
   if (semanticCache.key === resumeText && !semanticCache.scorer) {
     semanticCache.scorer = scorer;
@@ -1513,6 +1572,10 @@ async function getSemanticScorer(resumeText) {
 }
 
 async function semanticRefine(creds) {
+  // Opt-in feature: never load (or download) the model unless the user
+  // explicitly enabled Semantic AI via the checkbox + consent dialog.
+  if (!creds.semanticEnabled) return;
+
   const runId = ++semanticRunId;
 
   const resumeText = [creds.resume, creds.profileSkills]
@@ -1811,6 +1874,68 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   $("btn-open-nuworks").addEventListener("click", openNUWorks);
+
+  // ── Semantic AI opt-in ──
+  // The checkbox never turns on directly: checking it opens the consent
+  // dialog (what the model is + the weak-hardware warning), and only Accept
+  // flips the stored flag and triggers the one-time ~46MB download.
+  const semCheckbox = $("ctl-semantic");
+  const semOverlay = $("semantic-overlay");
+  chrome.storage.local.get(["semanticEnabled", "semanticConsented"], (r) => {
+    semCheckbox.checked = !!r.semanticEnabled;
+    // Enabled before the consent flag existed → they already accepted once.
+    if (r.semanticEnabled && !r.semanticConsented) {
+      chrome.storage.local.set({ semanticConsented: true });
+    }
+  });
+  semCheckbox.addEventListener("change", () => {
+    if (semCheckbox.checked) {
+      // The consent dialog is shown ONCE. After a past accept, re-checking
+      // just re-enables — the downloaded files were kept, so it's instant.
+      chrome.storage.local.get(["semanticConsented"], async (r) => {
+        if (r.semanticConsented) {
+          chrome.storage.local.set({ semanticEnabled: true });
+          showToast("Semantic AI enabled");
+          const creds = await getCredentials();
+          semanticRefine({ ...creds, semanticEnabled: true }).catch((e) =>
+            console.error("Semantic refinement failed:", e)
+          );
+        } else {
+          semCheckbox.checked = false; // stays off until the dialog is accepted
+          semOverlay.classList.add("open");
+        }
+      });
+    } else {
+      chrome.storage.local.set({ semanticEnabled: false });
+      // Stop any in-flight refinement; downloaded files are kept so
+      // re-enabling is instant.
+      semanticRunId++;
+      setBgTask("semantic", null);
+      showToast("Semantic AI off. Downloaded files kept for re-enabling.");
+    }
+  });
+  $("semantic-cancel").addEventListener("click", () =>
+    semOverlay.classList.remove("open")
+  );
+  semOverlay.addEventListener("click", (e) => {
+    if (e.target === semOverlay) semOverlay.classList.remove("open");
+  });
+  $("download-hide").addEventListener("click", () => {
+    downloadOverlayDismissed = true;
+    $("download-overlay").classList.remove("open");
+  });
+
+  $("semantic-accept").addEventListener("click", async () => {
+    semOverlay.classList.remove("open");
+    semCheckbox.checked = true;
+    chrome.storage.local.set({ semanticEnabled: true, semanticConsented: true });
+    // Warm the model now (downloads runtime + weights, progress in the status
+    // chip) and refine any jobs already on screen.
+    const creds = await getCredentials();
+    semanticRefine({ ...creds, semanticEnabled: true }).catch((e) =>
+      console.error("Semantic refinement failed:", e)
+    );
+  });
 
   $("btn-load-more").addEventListener("click", () => {
     renderJobs(false);

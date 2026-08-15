@@ -19,10 +19,61 @@ const QUERY_PREFIX =
   "Represent this sentence for searching relevant passages: ";
 
 env.allowLocalModels = false;
-// This worker runs on the chrome-extension:// origin, so this resolves to the
-// ort/ folder shipped inside the package — MV3 forbids remotely hosted code.
-// The model WEIGHTS are data and stream from the HF CDN (cached after once).
+// The tiny .mjs loader ships in the package (it is JavaScript — MV3 forbids
+// executing remotely hosted code, so it cannot be fetched at runtime).
 env.backends.onnx.wasm.wasmPaths = `${self.location.origin}/ort/`;
+
+// The 22.5MB ORT .wasm binary does NOT ship in the package. Semantic AI is
+// opt-in: on first enable it's fetched from the project's GitHub repo (serves
+// CORS + CORP headers), persisted in the Cache API, and handed to ORT as raw
+// bytes via wasmBinary. WebAssembly bytes are data, unlike the .mjs loader.
+// The model weights stream from the HF CDN the same way (transformers.js's
+// own cache). Together: ~46MB one-time download, then fully offline.
+const WASM_URL =
+  "https://raw.githubusercontent.com/Ashwin-Iyer1/NUWorks-Co-op-grader/refs/heads/chrome-extension/public/ort/ort-wasm-simd-threaded.asyncify.wasm";
+const RUNTIME_CACHE = "nuwg-semantic-runtime";
+
+async function loadWasmBinary() {
+  const cache = await caches.open(RUNTIME_CACHE);
+  const cached = await cache.match(WASM_URL);
+  if (cached) return cached.arrayBuffer();
+
+  const resp = await fetch(WASM_URL);
+  if (!resp.ok) {
+    throw new Error(`AI runtime download failed: HTTP ${resp.status}`);
+  }
+
+  // Stream so the page can show a real percentage for the ~22.5MB download.
+  const total = Number(resp.headers.get("content-length")) || 0;
+  const reader = resp.body.getReader();
+  const parts = [];
+  let loaded = 0;
+  let lastPct = -1;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    parts.push(value);
+    loaded += value.length;
+    if (total) {
+      const pct = Math.round((loaded / total) * 100);
+      if (pct !== lastPct) {
+        lastPct = pct;
+        self.postMessage({ type: "progress", label: "Downloading AI runtime", pct });
+      }
+    }
+  }
+  const bytes = new Uint8Array(loaded);
+  let offset = 0;
+  for (const part of parts) {
+    bytes.set(part, offset);
+    offset += part.length;
+  }
+  await cache.put(
+    WASM_URL,
+    new Response(bytes, { headers: { "Content-Type": "application/wasm" } })
+  );
+  return bytes.buffer;
+}
 
 let extractor = null;
 let resumeVec = null;
@@ -49,9 +100,38 @@ self.onmessage = async (e) => {
           Math.max(1, Math.floor((self.navigator.hardwareConcurrency || 2) / 2))
         );
       }
+      env.backends.onnx.wasm.wasmBinary = await loadWasmBinary();
+
+      // transformers.js fires the SAME progress events when streaming the
+      // model out of its cache as when downloading it, and reading 23MB off
+      // disk on every cold page-open would flash the "downloading" modal for
+      // a download that isn't happening. Only report progress when the big
+      // weights file is genuinely absent from the cache.
+      let isRealDownload = true;
+      try {
+        const tCache = await caches.open("transformers-cache");
+        const keys = await tCache.keys();
+        isRealDownload = !keys.some(
+          (r) => r.url.includes(MODEL_ID) && r.url.includes(".onnx")
+        );
+      } catch {
+        // Cache API unavailable → every load is a real download; report it.
+      }
+
       const t0 = performance.now();
       extractor = await pipeline("feature-extraction", MODEL_ID, {
         dtype: "q8",
+        // Surface the one-time ~23MB weights download as page-visible
+        // progress; only the big weights file is worth reporting.
+        progress_callback: (p) => {
+          if (isRealDownload && p.status === "progress" && p.total > 5_000_000) {
+            self.postMessage({
+              type: "progress",
+              label: "Downloading AI model",
+              pct: Math.round((p.loaded / p.total) * 100),
+            });
+          }
+        },
       });
       console.log(
         `[Semantic] ${MODEL_ID} ready in ${Math.round(performance.now() - t0)} ms ` +

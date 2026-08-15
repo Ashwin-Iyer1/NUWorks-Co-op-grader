@@ -99,7 +99,11 @@ export function createSemanticScorer(resumeText, opts = {}) {
   return new Promise((resolveScorer) => {
     let worker;
     try {
-      worker = new Worker(new URL("embeddings-worker.js", import.meta.url), {
+      // Plain URL to a standalone build entry (see package.json build). Using
+      // `new URL(..., import.meta.url)` here made Parcel emit an inline
+      // <script type=importmap> into the HTML, which the extension CSP
+      // rightly blocks — MV3 pages cannot run ANY inline script.
+      worker = new Worker(chrome.runtime.getURL("embeddings-worker.js"), {
         type: "module",
       });
     } catch (e) {
@@ -148,6 +152,9 @@ export function createSemanticScorer(resumeText, opts = {}) {
         const p = pending.get(msg.id);
         pending.delete(msg.id);
         if (p) p.resolve({ cosines: msg.cosines, ms: msg.ms || 0 });
+      } else if (msg.type === "progress") {
+        // First-enable downloads (runtime .wasm, model weights).
+        if (opts.onProgress) opts.onProgress(msg);
       } else if (msg.type === "error") {
         // A scoped scoring error fails just that batch; anything else
         // (model load, resume embed) takes the whole scorer down.
