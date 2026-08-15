@@ -411,13 +411,26 @@ const UiHelper = {
     const found = Number(d.hardSkillsFound) || 0;
     const matched = Number(d.hardSkillsMatched) || 0;
 
+    const inferred = Array.isArray(d.inferred) ? d.inferred : [];
+
     const line = document.createElement("p");
     line.className = "score-detail-line";
     line.textContent =
       found === 0
         ? "This posting didn't name specific skills, so the score comes from keyword overlap."
-        : `You have ${matched} of the ${found} skills this posting names.`;
+        : inferred.length > 0
+          ? `You have ${matched} of the ${found} skills this posting names, plus ${inferred.length} implied by your resume.`
+          : `You have ${matched} of the ${found} skills this posting names.`;
     body.appendChild(line);
+
+    if (inferred.length > 0) {
+      const inferredLine = document.createElement("p");
+      inferredLine.className = "score-detail-line";
+      inferredLine.textContent = `Implied: ${inferred
+        .map((i) => `${i.skill} (via ${i.via})`)
+        .join(", ")}.`;
+      body.appendChild(inferredLine);
+    }
 
     body.appendChild(UiHelper.createMetricRow("Skills", d.hardSkillScore));
     body.appendChild(UiHelper.createMetricRow("Keywords", d.keywordScore));
@@ -438,7 +451,7 @@ const UiHelper = {
   /**
    * A labelled group of skill chips ("You have" / "They want").
    */
-  createSkillGroup: (label, skills, variant, requiredNames) => {
+  createSkillGroup: (label, skills, variant, requiredNames, inferredVia) => {
     const group = document.createElement("div");
     group.className = "snippet-group";
 
@@ -457,10 +470,18 @@ const UiHelper = {
         requiredNames instanceof Set &&
         requiredNames.has(String(skill).toLowerCase());
 
+      const via =
+        variant === "matched" && inferredVia instanceof Map
+          ? inferredVia.get(String(skill).toLowerCase())
+          : undefined;
+
       tag.className = isRequired
         ? `skill-tag ${variant} required`
-        : `skill-tag ${variant}`;
+        : via
+          ? `skill-tag ${variant} inferred`
+          : `skill-tag ${variant}`;
       if (isRequired) tag.title = "This posting lists this skill as required.";
+      if (via) tag.title = `Credited because your resume shows ${via}.`;
       tag.textContent = skill;
       tags.appendChild(tag);
     });
@@ -542,9 +563,22 @@ const UiHelper = {
       )
     );
 
+    const inferredVia = new Map(
+      (Array.isArray(details.inferred) ? details.inferred : []).map((i) => [
+        String(i.skill).toLowerCase(),
+        i.via,
+      ])
+    );
+
     if (matchedSkills.length > 0) {
       snippets.appendChild(
-        UiHelper.createSkillGroup("You have", matchedSkills, "matched", null)
+        UiHelper.createSkillGroup(
+          "You have",
+          matchedSkills,
+          "matched",
+          null,
+          inferredVia
+        )
       );
     }
     if (missingSkills.length > 0) {

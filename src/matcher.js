@@ -399,6 +399,153 @@ const SKILL_ALIASES = {
 };
 
 /**
+ * Specific skill -> the broader skills it demonstrates.
+ *
+ * Direction matters: having the SPECIFIC skill is evidence of the GENERAL one,
+ * never the reverse (a resume with "pytorch" supports a posting asking for
+ * "machine learning"; a resume with "machine learning" says nothing about
+ * pytorch). Keys and values are canonical SKILL_DB names so extraction and
+ * inference share one vocabulary. Inferred matches earn INFERRED_CREDIT, not
+ * full credit — the posting asked for the general term, and the specific tool
+ * is strong-but-indirect evidence.
+ */
+const SKILL_IMPLICATIONS = {
+  // Web / JS ecosystem
+  typescript: ["javascript"],
+  react: ["javascript"],
+  angular: ["javascript"],
+  vue: ["javascript"],
+  svelte: ["javascript"],
+  "next.js": ["react", "javascript"],
+  nuxt: ["vue", "javascript"],
+  gatsby: ["react", "javascript"],
+  remix: ["react", "javascript"],
+  "react native": ["react", "javascript"],
+  "node.js": ["javascript"],
+  express: ["node.js", "javascript"],
+  sass: ["css"],
+  less: ["css"],
+  tailwind: ["css"],
+  bootstrap: ["css"],
+
+  // Python ecosystem
+  django: ["python"],
+  flask: ["python"],
+  fastapi: ["python"],
+  pandas: ["python", "data analysis"],
+  numpy: ["python"],
+  matplotlib: ["python", "data visualization"],
+  seaborn: ["python", "data visualization"],
+  jupyter: ["python"],
+
+  // ML / data science
+  "scikit-learn": ["python", "machine learning"],
+  pytorch: ["python", "machine learning", "deep learning"],
+  tensorflow: ["python", "machine learning", "deep learning"],
+  keras: ["python", "deep learning"],
+  "deep learning": ["machine learning"],
+  "natural language processing": ["machine learning"],
+  "computer vision": ["machine learning"],
+  "reinforcement learning": ["machine learning"],
+  "neural networks": ["machine learning", "deep learning"],
+  regression: ["statistics", "machine learning"],
+  classification: ["machine learning"],
+  clustering: ["machine learning"],
+  "predictive modeling": ["machine learning"],
+  biostatistics: ["statistics"],
+  statistics: ["data analysis"],
+
+  // JVM / other backends
+  "spring boot": ["spring", "java"],
+  spring: ["java"],
+  rails: ["ruby"],
+  laravel: ["php"],
+  "asp.net": [".net", "c#"],
+
+  // Mobile
+  swiftui: ["swift", "ios"],
+  "jetpack compose": ["kotlin", "android"],
+  flutter: ["dart"],
+  xcode: ["ios"],
+
+  // Databases
+  postgresql: ["sql"],
+  mysql: ["sql"],
+  sqlite: ["sql"],
+  mariadb: ["sql"],
+  mongodb: ["nosql"],
+  redis: ["nosql"],
+  cassandra: ["nosql"],
+  couchdb: ["nosql"],
+  elasticsearch: ["nosql"],
+  dynamodb: ["nosql", "aws"],
+  snowflake: ["sql", "data warehousing"],
+  redshift: ["sql", "data warehousing", "aws"],
+  bigquery: ["sql", "data warehousing", "gcp"],
+
+  // Cloud & DevOps
+  kubernetes: ["docker"],
+  jenkins: ["ci/cd"],
+  "github actions": ["ci/cd"],
+  "gitlab ci": ["ci/cd"],
+  lambda: ["aws"],
+  cloudformation: ["aws"],
+
+  // Testing
+  jest: ["testing", "javascript"],
+  mocha: ["testing", "javascript"],
+  chai: ["testing", "javascript"],
+  cypress: ["testing"],
+  playwright: ["testing"],
+  selenium: ["testing"],
+  junit: ["testing", "java"],
+  pytest: ["testing", "python"],
+  "unit testing": ["testing"],
+  "integration testing": ["testing"],
+
+  // Data engineering / BI
+  spark: ["big data"],
+  hadoop: ["big data"],
+  airflow: ["etl", "data engineering"],
+  dbt: ["etl", "data engineering"],
+  tableau: ["data visualization"],
+  "power bi": ["data visualization"],
+  looker: ["data visualization"],
+
+  // Engineering (non-SW)
+  solidworks: ["cad"],
+  catia: ["cad"],
+  autocad: ["cad"],
+  revit: ["cad"],
+  simulink: ["matlab"],
+  verilog: ["fpga"],
+  vhdl: ["fpga"],
+
+  // Finance
+  vba: ["excel"],
+  "financial modeling": ["excel", "financial analysis"],
+  valuation: ["financial analysis"],
+  "equity research": ["financial analysis"],
+
+  // Business / marketing
+  scrum: ["agile"],
+  kanban: ["agile"],
+  seo: ["digital marketing"],
+  sem: ["digital marketing"],
+  "google ads": ["digital marketing"],
+  "facebook ads": ["digital marketing"],
+  "email marketing": ["digital marketing"],
+  "social media marketing": ["digital marketing"],
+  "content marketing": ["digital marketing"],
+  ppc: ["digital marketing"],
+  salesforce: ["crm"],
+  hubspot: ["crm"],
+};
+
+/** Score credit an inferred (implied) skill match earns vs a direct match. */
+const INFERRED_CREDIT = 0.7;
+
+/**
  * Shared, user-facing copy for every reason a posting can be ineligible.
  * Exported so the popup, the explorer and the injected badges all render the
  * exact same sentence for the same reason code.
@@ -686,6 +833,50 @@ const STOP_WORDS = new Set([
   "group",
 ]);
 
+/**
+ * Very conservative suffix-stripping stemmer for keyword/bigram matching.
+ *
+ * Both the resume and the job pass through the SAME function before
+ * comparison, so the output only has to be consistent, not linguistically
+ * correct — "coding" and "code" both landing on "cod" is a successful match,
+ * not a bug. Applies at most ONE rule (plural OR -ing OR -ed) so short stems
+ * never get double-stripped into collisions. Raw tokens are still what gets
+ * displayed; stems exist purely inside the match sets.
+ */
+function stemToken(token) {
+  if (token.length <= 3) return token;
+  if (token.endsWith("ies") && token.length > 4) {
+    return token.slice(0, -3) + "y";
+  }
+  if (token.endsWith("sses")) return token.slice(0, -2);
+  if (
+    token.endsWith("s") &&
+    !token.endsWith("ss") &&
+    !token.endsWith("us") &&
+    !token.endsWith("is")
+  ) {
+    return token.slice(0, -1);
+  }
+  for (const suffix of ["ing", "ed"]) {
+    if (!token.endsWith(suffix)) continue;
+    let stem = token.slice(0, -suffix.length);
+    // Too short to be a real stem ("used" -> "us", "ring" -> "r").
+    if (stem.length < 3) return token;
+    // Undo consonant doubling: "running" -> "runn" -> "run".
+    const last = stem[stem.length - 1];
+    if (stem.length > 3 && last === stem[stem.length - 2] && !"aeiou".includes(last)) {
+      stem = stem.slice(0, -1);
+    }
+    return stem;
+  }
+  return token;
+}
+
+/** Stem every word of an "alpha beta" bigram, preserving the space. */
+function stemBigram(bigram) {
+  return bigram.split(" ").map(stemToken).join(" ");
+}
+
 /** Escape a literal string for safe interpolation into a RegExp. */
 function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -762,6 +953,19 @@ class JobMatcher {
     // Every canonical name the matcher can ever emit (SKILL_DB plus alias
     // targets such as "r" that intentionally live outside the DB).
     this.canonicalSkills = new Set(this.regexByCanonical.keys());
+
+    // general skill -> the specific skills that count as evidence for it.
+    // Inverted from SKILL_IMPLICATIONS so scoring can ask "the posting wants
+    // X and the resume lacks it — does the resume hold anything that implies
+    // X?" in one lookup.
+    this.impliedBy = new Map();
+    for (const [specific, generals] of Object.entries(SKILL_IMPLICATIONS)) {
+      for (const general of generals) {
+        const list = this.impliedBy.get(general);
+        if (list) list.push(specific);
+        else this.impliedBy.set(general, [specific]);
+      }
+    }
 
     // Cache the resume-side analysis. The resume is identical for every job in
     // a batch, so its skills/tokens/bigrams only need to be computed once.
@@ -1091,13 +1295,18 @@ class JobMatcher {
     const skills = this.extractExplicitSkills(resumeText);
     const allSkills = new Set([...skills.hard, ...skills.soft]);
     const tokens = this.tokenize(resumeText);
+    const bigrams = new Set(this.extractBigrams(resumeText, tokens));
     this._resumeCache = {
       text: resumeText,
       skills,
       allSkills,
       tokens,
       tokenSet: new Set(tokens),
-      bigrams: new Set(this.extractBigrams(resumeText, tokens)),
+      bigrams,
+      // Stemmed shadows of the sets above so "designing" on the job side can
+      // meet "design"/"designed" on the resume side.
+      stemSet: new Set(tokens.map(stemToken)),
+      stemmedBigrams: new Set([...bigrams].map(stemBigram)),
     };
     return this._resumeCache;
   }
@@ -1263,22 +1472,52 @@ class JobMatcher {
     );
     const resumeTokensSet = resumeAnalysis.tokenSet;
 
-    const matchedKeywords = jobKeywords.filter((k) => resumeTokensSet.has(k));
+    // Exact token match first, stem match as the fallback, so "designing" in
+    // the posting still meets "designed" on the resume.
+    const resumeStemSet = resumeAnalysis.stemSet;
+    const matchedKeywords = jobKeywords.filter(
+      (k) => resumeTokensSet.has(k) || resumeStemSet.has(stemToken(k))
+    );
 
-    // 4. Bigram matching
+    // 4. Bigram matching (also stem-aware)
     const jobBigrams = this.extractBigrams(jobDescriptionText, jobTokens);
     const resumeBigramSet = resumeAnalysis.bigrams;
-    const matchedBigrams = jobBigrams.filter((b) => resumeBigramSet.has(b));
+    const resumeStemmedBigrams = resumeAnalysis.stemmedBigrams;
+    const matchedBigrams = jobBigrams.filter(
+      (b) => resumeBigramSet.has(b) || resumeStemmedBigrams.has(stemBigram(b))
+    );
+
+    // 5. Inferred skills: the posting wants a skill the resume doesn't state,
+    //    but the resume holds a specific skill that implies it (pytorch =>
+    //    machine learning). Recorded with the evidence skill so the UI can
+    //    explain the credit.
+    const inferred = [];
+    const inferredSet = new Set();
+    jobHard.forEach((skill) => {
+      if (allResumeSkills.has(skill)) return;
+      const sources = this.impliedBy.get(skill);
+      if (!sources) return;
+      const via = sources.find((s) => allResumeSkills.has(s));
+      if (via) {
+        inferred.push({ skill, via });
+        inferredSet.add(skill);
+      }
+    });
 
     // Build display lists
-    // Hard skills matched/missing take priority, then soft, then keywords
+    // Hard skills matched/missing take priority, then soft, then keywords.
+    // Inferred skills count as matched (the resume supports them), never as
+    // missing.
     const hardMatched = [...jobHard].filter((s) => allResumeSkills.has(s));
-    const hardMissing = [...jobHard].filter((s) => !allResumeSkills.has(s));
+    const hardMissing = [...jobHard].filter(
+      (s) => !allResumeSkills.has(s) && !inferredSet.has(s)
+    );
     const softMatched = [...jobSoft].filter((s) => allResumeSkills.has(s));
 
     // Combine for display (hard skills first, then top keywords)
     const displayMatches = [
       ...hardMatched,
+      ...inferred.map((i) => i.skill),
       ...softMatched.slice(0, 2),
       ...matchedKeywords.slice(0, 3),
     ];
@@ -1305,6 +1544,8 @@ class JobMatcher {
         weightedTotal += weight;
         if (allResumeSkills.has(skill)) {
           weightedMatch += weight;
+        } else if (inferredSet.has(skill)) {
+          weightedMatch += weight * INFERRED_CREDIT;
         }
       });
 
@@ -1363,10 +1604,14 @@ class JobMatcher {
         // --- Additive explainability fields ---
         required: [...required],
         preferred: [...preferred],
+        // [{ skill, via }] — skills credited because the resume holds a more
+        // specific skill that implies them.
+        inferred,
         missingRequired: [...hardMissing].filter((s) => required.has(s)),
         requiredCoverage: required.size
-          ? [...required].filter((s) => allResumeSkills.has(s)).length /
-            required.size
+          ? [...required].filter(
+              (s) => allResumeSkills.has(s) || inferredSet.has(s)
+            ).length / required.size
           : null,
         confidence,
         jobTokenCount,

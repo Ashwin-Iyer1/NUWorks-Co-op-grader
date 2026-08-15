@@ -33,3 +33,4 @@ response.json
 .vscode/
 __pycache__/
 dist.zip
+exmaplePayload.json

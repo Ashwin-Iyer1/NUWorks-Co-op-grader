@@ -479,8 +479,13 @@ document.addEventListener("DOMContentLoaded", () => {
         setStatus(`Fetched ${fetchedCount} jobs`);
         await nextFrame();
 
-        // Authoritative, batched eligibility from NUWorks itself.
-        const jobIds = jobs.map((j) => j.job_id).filter(Boolean);
+        // Authoritative eligibility. The list payload already carries the
+        // verdict inline on each row (`qualified`), so the batch endpoint is
+        // only asked about rows that arrived without it.
+        const jobIds = jobs
+          .filter((j) => j.qualified === undefined || j.qualified === null)
+          .map((j) => j.job_id)
+          .filter(Boolean);
         setStatus("Checking eligibility...");
         await nextFrame();
         const qualifiedMap = await ApiHelper.getQualifiedStatus(jobIds, creds);
@@ -507,7 +512,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // Use Promise.all for async filtering
         const scoredJobsResults = await Promise.all(
           jobs.map(async (job) => {
-            const serverQual = qualifiedMap[job.job_id]; // true / false / undefined
+            // Inline verdict from the list row first; batch endpoint as
+            // fallback. Same rule as api.js: not "Not Qualified" = pass.
+            const serverQual =
+              job.qualified !== undefined && job.qualified !== null
+                ? !/not\s*qualified/i.test(String(job.qualified))
+                : qualifiedMap[job.job_id]; // true / false / undefined
 
             // Server says ineligible → drop it, unless the user asked for
             // ineligible jobs to be graded anyway.

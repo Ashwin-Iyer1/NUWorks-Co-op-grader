@@ -460,6 +460,9 @@
     /* A missing skill the posting states as REQUIRED — ringed, not bordered, so the
        pill keeps its exact geometry. */
     .skill-tag.required { box-shadow: inset 0 0 0 1px var(--skill-missing-border); }
+    /* A skill credited by inference (resume shows a more specific tool) — same
+       matched palette, thin inner edge, help cursor for the tooltip. */
+    .skill-tag.matched.inferred { box-shadow: inset 0 0 0 1px var(--skill-matched-text); opacity: 0.85; cursor: help; }
 
     .job-card-actions { display: flex; gap: 8px; margin-top: auto; justify-content: flex-end; }
 

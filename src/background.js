@@ -175,10 +175,16 @@ async function processJobs(jobList, tabId) {
 
   // Ask Symplicity which of these jobs the student actually qualifies for, in a
   // single batched request. This is authoritative and lets us skip the
-  // expensive per-job description fetch for every ineligible listing.
+  // expensive per-job description fetch for every ineligible listing. Rows
+  // whose intercepted payload already carried the `qualified` verdict inline
+  // are excluded — only the gaps get asked about.
   let qualifiedMap = {};
   if (matcher) {
     const ids = jobList
+      .filter(
+        (j) =>
+          typeof j === "string" || j.qualified === undefined || j.qualified === null
+      )
       .map((j) => {
         let id = j.job_id || j.id || (typeof j === "string" ? j : null);
         if (id && String(id).includes("?")) id = String(id).split("?")[0];
@@ -206,10 +212,19 @@ async function processJobs(jobList, tabId) {
           return { jobId: null };
         }
 
+        // Inline verdict when the payload carried it; batch result otherwise.
+        // Same rule as api.js: anything that isn't "Not Qualified" is a pass.
+        const serverQual =
+          typeof job === "object" &&
+          job.qualified !== undefined &&
+          job.qualified !== null
+            ? !/not\s*qualified/i.test(String(job.qualified))
+            : qualifiedMap[jobId]; // true / false / undefined
+
         // Server says the student is not eligible → badge as Ineligible without
         // fetching the description. When "Grade ineligible jobs" is on we fall
         // through instead: the description is needed to compute the match %.
-        if (matcher && qualifiedMap[jobId] === false && !gradeIneligible) {
+        if (matcher && serverQual === false && !gradeIneligible) {
           return {
             jobId,
             title: title || null,
@@ -244,7 +259,6 @@ async function processJobs(jobList, tabId) {
             const fullText = `${title || ""} \n ${desc}`;
             // Trust the server's eligibility verdict when we have it; only fall
             // back to the local regex heuristic when the server didn't answer.
-            const serverQual = qualifiedMap[jobId];
             eligibility =
               serverQual === true
                 ? { qualified: true, reason: null, evidence: null }

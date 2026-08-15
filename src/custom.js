@@ -687,10 +687,24 @@ function renderJobCard(job) {
     )
   );
 
+  // Skills credited because the resume shows a more specific tool (pytorch =>
+  // machine learning). The chip looks matched but explains itself on hover.
+  const inferredVia = new Map(
+    (job.matchDetails?.details?.inferred || []).map((i) => [
+      String(i.skill).toLowerCase(),
+      i.via,
+    ])
+  );
+
   let skillsHtml = "";
   if (matchedSkills.length || missingSkills.length) {
     skillsHtml = `<div class="skill-tags">`;
-    matchedSkills.forEach((s) => { skillsHtml += `<span class="skill-tag matched">${s}</span>`; });
+    matchedSkills.forEach((s) => {
+      const via = inferredVia.get(String(s).toLowerCase());
+      skillsHtml += `<span class="skill-tag matched${via ? " inferred" : ""}"${
+        via ? ` title="Credited because your resume shows ${esc(via)}."` : ""
+      }>${s}</span>`;
+    });
     missingSkills.forEach((s) => {
       const isRequired = requiredMissing.has(String(s).toLowerCase());
       skillsHtml += `<span class="skill-tag missing${isRequired ? " required" : ""}"${
@@ -1195,6 +1209,8 @@ async function startFetch() {
   allJobs = [];
   filteredJobs = [];
   displayedCount = 0;
+  // Retire any enrichment pass still patching the previous run's jobs.
+  enrichRunId++;
   lastMidFetchRender = 0;
   clearTimeout(midFetchRenderTimer);
   midFetchRenderTimer = null;
@@ -1296,6 +1312,14 @@ async function startFetch() {
     showToast(`Fetched & analyzed ${allJobs.length} jobs`);
   }
 
+  // Results are already scored and on screen; fill in the detail-only fields
+  // (work terms, external-application links) in the background.
+  if (!fetchError && !shouldStop) {
+    enrichJobDetails(creds).catch((e) =>
+      console.error("Detail enrichment failed:", e)
+    );
+  }
+
   // Re-check: a session can expire mid-run, and the button was just re-enabled
   // unconditionally above.
   preflight();
@@ -1333,6 +1357,68 @@ const DETAIL_CARRY_FIELDS = [
   "application_deadline",
 ];
 
+// ─── Background Detail Enrichment ───
+// Scoring runs entirely off the list payload; the fields only the per-job
+// detail response carries (el_work_term for the work-term filter,
+// contact_blurb for external-application detection, the screen_* twins for the
+// cards) are filled in here AFTER results are already on screen, so the user
+// never waits on one request per job just to see scores. A new fetch run
+// bumps the token, which makes any in-flight enrichment pass quietly stand
+// down instead of patching a job list that no longer exists.
+let enrichRunId = 0;
+
+async function enrichJobDetails(creds) {
+  const runId = ++enrichRunId;
+  // Ineligible rows that weren't graded are placeholders — spending a request
+  // per job on them is exactly what the old eager fetch was criticized for.
+  const pending = allJobs.filter(
+    (j) =>
+      j.job_id &&
+      j.el_work_term === undefined &&
+      !(j.disqualified && !j.gradedIneligible)
+  );
+  if (pending.length === 0) return;
+
+  const CONCURRENCY = 10;
+  // Refresh the grid roughly every 5 chunks so work-term tags and External
+  // badges appear progressively rather than all at once at the end.
+  const RENDER_EVERY = CONCURRENCY * 5;
+  let patched = 0;
+  let lastRenderAt = 0;
+
+  for (let i = 0; i < pending.length; i += CONCURRENCY) {
+    if (runId !== enrichRunId) return;
+    const chunk = pending.slice(i, i + CONCURRENCY);
+    await Promise.all(
+      chunk.map(async (job) => {
+        try {
+          const full = await fetchJobDescription(job.job_id, creds);
+          if (!full || runId !== enrichRunId) return;
+          DETAIL_CARRY_FIELDS.forEach((f) => {
+            if (job[f] === undefined || job[f] === null) job[f] = full[f];
+          });
+          if (!job.contact_blurb) job.contact_blurb = full.contact_blurb || "";
+          job.isExternal = isExternalApplication(
+            job.job_desc || full.job_desc || "",
+            job.contact_blurb
+          );
+          patched++;
+        } catch {
+          // Leave the row un-enriched; the modal fetches its own copy anyway.
+        }
+      })
+    );
+    if (patched - lastRenderAt >= RENDER_EVERY) {
+      lastRenderAt = patched;
+      applyFilters();
+    }
+  }
+
+  if (runId === enrichRunId && patched > lastRenderAt) {
+    applyFilters();
+  }
+}
+
 async function scoreBatch(jobs, matcher, creds) {
   const schoolYear = creds.schoolYear;
   const gradDate = creds.gradDate;
@@ -1344,12 +1430,17 @@ async function scoreBatch(jobs, matcher, creds) {
     .filter(Boolean)
     .join("\n");
 
-  // One batched, authoritative eligibility check for the whole page. Lets us
-  // skip the per-job description fetch for every ineligible listing.
+  // The v2 list payload already carries the server's eligibility verdict
+  // inline on every row (`qualified`: "Not Qualified" / ""), so the batched
+  // qualified-status endpoint only needs to answer for rows that somehow
+  // arrived without it.
   let qualifiedMap = {};
   if (resumeText) {
-    const ids = jobs.map((j) => j.job_id).filter(Boolean);
-    qualifiedMap = await fetchQualifiedStatus(ids, creds);
+    const idsMissingVerdict = jobs
+      .filter((j) => j.qualified === undefined || j.qualified === null)
+      .map((j) => j.job_id)
+      .filter(Boolean);
+    qualifiedMap = await fetchQualifiedStatus(idsMissingVerdict, creds);
   }
 
   // Process in mini-batches to avoid blocking UI
@@ -1362,7 +1453,12 @@ async function scoreBatch(jobs, matcher, creds) {
     const chunk = jobs.slice(i, i + CONCURRENCY);
     const chunkResults = await Promise.all(
       chunk.map(async (job) => {
-        const serverQual = qualifiedMap[job.job_id]; // true / false / undefined
+        // Inline verdict from the list row first; batch endpoint as fallback.
+        // Same rule as api.js: anything that isn't "Not Qualified" is a pass.
+        const serverQual =
+          job.qualified !== undefined && job.qualified !== null
+            ? !/not\s*qualified/i.test(String(job.qualified))
+            : qualifiedMap[job.job_id]; // true / false / undefined
 
         // Server says ineligible → badge it without fetching the description.
         // With "Grade ineligible jobs" on we fall through instead, because the
@@ -1383,11 +1479,12 @@ async function scoreBatch(jobs, matcher, creds) {
         let contactBlurb = job.contact_blurb || "";
         const detailExtras = {};
 
-        // Fetch the full record when the list payload is missing either the
-        // description or the detail-only fields (el_work_term etc.) — the list
-        // endpoint includes descriptions but not the co-op term, so without
-        // this the work-term filter would have nothing to offer.
-        const needsDetail = !desc || job.el_work_term === undefined;
+        // Only fetch the full record when the list payload lacked a
+        // description — scoring needs nothing else. The detail-only fields
+        // (el_work_term, contact_blurb, screen_*) are filled in AFTER results
+        // render, by the background enrichment pass, instead of costing one
+        // blocking request per job here.
+        const needsDetail = !desc;
         if (needsDetail && job.job_id) {
           try {
             const full = await fetchJobDescription(job.job_id, creds);
