@@ -77,6 +77,7 @@
         </a>
         <div class="nav-links">
           <a href="#features">Features</a>
+          <a href="#semantic-ai">Semantic AI</a>
           <a href="#how-it-works">How it works</a>
           <a
             href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension"
@@ -108,7 +109,7 @@
     <header class="hero">
       <div class="container">
         <div class="hero-content">
-          <div class="badge" id="version-badge">v1.9 now available</div>
+          <div class="badge" id="version-badge">v2.5 now available</div>
           <div class="eyebrow">For Northeastern co-op students</div>
           <h1>
             Find the co-ops that <em>actually fit</em> your resume.
@@ -116,7 +117,8 @@
           <p class="hero-desc">
             NUWorks Grader reads every posting the way you would — then scores
             it against your skills, flags the ones you're not eligible for, and
-            saves the strong matches. All in your browser, all private.
+            saves the strong matches. Opt in to on-device Semantic AI to score by
+            meaning, not just keywords. All in your browser, all private.
           </p>
           <div class="cta-group">
             <a
@@ -137,6 +139,10 @@
             <div class="stat">
               <span class="number">250+</span>
               <span class="label">Skills recognized</span>
+            </div>
+            <div class="stat">
+              <span class="number">On-device</span>
+              <span class="label">Semantic AI (opt-in)</span>
             </div>
             <div class="stat">
               <span class="number">Free</span>
@@ -197,8 +203,9 @@
         <div class="section-header centered" style="margin-top: 68px">
           <h2>A redesigned Job Explorer and popup</h2>
           <p>
-            Match scores, an explainable breakdown for every job, smart filters,
-            and a calm interface that follows your system light or dark theme.
+            Match scores, an explainable breakdown for every job (now including a
+            Semantic AI bar), smart filters, and a calm interface that follows
+            your system light or dark theme.
           </p>
         </div>
         <div class="feature-screenshot-hero">
@@ -210,6 +217,9 @@
             <div class="store-shot">
               <img src="store-screenshots/store-3-match-breakdown.jpg" class="feature-screenshot" alt="A job's match breakdown with sub-scores and matched skills" />
             </div>
+            <!-- <div class="store-shot wide">
+              <img src="screenshots/explorer-details.jpg" class="feature-screenshot" alt="The Job Explorer details view showing Skills, Keywords, and Semantic (AI) bars beside the full job description" />
+            </div> -->
           </div>
         </div>
 
@@ -280,6 +290,144 @@
               Your resume and data never leave your browser. All processing
               happens locally within the extension.
             </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 0-4 4v1a4 4 0 0 0-3 3.9V12a4 4 0 0 0 1 2.7V16a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4v-1.3A4 4 0 0 0 19 12v-1.1A4 4 0 0 0 16 7V6a4 4 0 0 0-4-4z"></path><path d="M12 2v18M8 9h8M8 14h8"></path></svg>
+            </div>
+            <h3>Semantic AI matching <span class="pill">Opt-in</span></h3>
+            <p>
+              A 23M-parameter language model runs on your device and scores
+              each posting by meaning. Match becomes 65% keyword + 35% AI, with
+              the split shown on every card.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="18" r="3"></circle><path d="M8.5 7.5 15.5 16.5M6 9v6a3 3 0 0 0 3 3h6"></path></svg>
+            </div>
+            <h3>Implied skills</h3>
+            <p>
+              Listing React implies JavaScript; PyTorch implies Python. Related
+              skills earn partial credit and show up as dotted chips, so you're
+              not penalized for not spelling everything out.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"></path></svg>
+            </div>
+            <h3>Faster Job Explorer</h3>
+            <p>
+              Scores render from a single listing call — no per-job fetching.
+              Extra details load in the background with a status chip, and the
+              AI refinement never blocks the page.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="semantic-ai" class="section ai-section">
+      <div class="container">
+        <div class="section-header centered">
+          <span class="ai-eyebrow">New in v2.5 · Opt-in</span>
+          <h2>Semantic AI that reads job descriptions like you do</h2>
+          <p>
+            Turn on Semantic AI and a small language model runs entirely on
+            your device, re-reading every posting to score how well it fits
+            your resume by <em>meaning</em> — not just keyword overlap.
+          </p>
+        </div>
+
+        <div class="feature-screenshot-hero">
+          <img
+            src="screenshots/explorer-semantic.jpg"
+            class="feature-screenshot"
+            alt="The Job Explorer with Semantic AI enabled, showing a blended match score plus a Keyword · AI split on every card"
+          />
+        </div>
+
+        <div class="ai-grid">
+          <div class="ai-card">
+            <div class="ai-card-num">01</div>
+            <h3>Keyword layer</h3>
+            <p>
+              The classic scorer checks required skills, keywords, and
+              eligibility — fast, transparent, and always on. It now also
+              credits <strong>implied skills</strong>: React on your resume
+              counts toward a JavaScript requirement.
+            </p>
+          </div>
+          <div class="ai-card">
+            <div class="ai-card-num">02</div>
+            <h3>Semantic layer</h3>
+            <p>
+              <code>mdbr-leaf-ir</code> (23M parameters, #1 on the BEIR
+              retrieval benchmark for its size) embeds your resume and each job
+              description, then measures how close they sit in meaning. “Built
+              REST services in Flask” counts toward “backend web development”.
+            </p>
+          </div>
+          <div class="ai-card">
+            <div class="ai-card-num">03</div>
+            <h3>Blended score</h3>
+            <p>
+              Your final match is <strong>65% keyword + 35% semantic</strong>.
+              Every card shows the split (<em>Keyword 96 · AI 79</em>) and the
+              details view adds a dedicated Semantic&nbsp;(AI) bar so you can
+              see exactly what moved the number.
+            </p>
+          </div>
+        </div>
+
+        <div class="ai-detail-row">
+          <div class="ai-detail-copy">
+            <h3>Explainable, down to the bar</h3>
+            <p>
+              Open any posting and the match breakdown shows Skills, Keywords,
+              and Semantic&nbsp;(AI) side by side. Hover a card's split to see
+              the raw cosine similarity behind the AI number.
+            </p>
+            <ul class="ai-facts">
+              <li>
+                <strong>Private by design.</strong> Your resume and every job
+                description are embedded in a Web Worker in your browser.
+                Nothing is uploaded.
+              </li>
+              <li>
+                <strong>Lightweight until you opt in.</strong> The extension
+                ships without the model. Ticking “Semantic AI” downloads the
+                runtime and model once (~46&nbsp;MB) and keeps them cached.
+              </li>
+              <li>
+                <strong>Scores never wait on it.</strong> Keyword scores appear
+                instantly; the AI refinement streams in behind a “Refining
+                scores” chip and never blocks the page.
+              </li>
+              <li>
+                <strong>Honest about hardware.</strong> Before enabling, you're
+                told it's compute-intensive on MacBook Airs, Chromebooks and
+                older laptops. Thread count auto-scales to your CPU.
+              </li>
+            </ul>
+          </div>
+          <div class="ai-detail-shots">
+            <img
+              src="screenshots/explorer-match-breakdown.jpg"
+              class="feature-screenshot"
+              alt="A job's match breakdown with Skills, Keywords, and Semantic (AI) bars"
+            />
+            <img
+              src="screenshots/semantic-consent.jpg"
+              class="feature-screenshot"
+              alt="The opt-in dialog explaining Semantic AI and warning that it can be computationally intensive"
+            />
+            <img
+              src="screenshots/semantic-download.jpg"
+              class="feature-screenshot"
+              alt="The one-time download progress dialog for the AI runtime and model"
+            />
           </div>
         </div>
       </div>
