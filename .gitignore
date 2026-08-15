@@ -34,3 +34,4 @@ response.json
 __pycache__/
 dist.zip
 exmaplePayload.json
+resumeText.txt

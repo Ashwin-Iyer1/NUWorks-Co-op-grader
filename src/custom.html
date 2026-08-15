@@ -389,6 +389,24 @@
     .preset-chip svg { color: var(--text-muted); }
     .preset-chip:hover svg { color: var(--skill-matched-text); }
 
+    /* Chips for the post-fetch background passes (detail enrichment, semantic
+       scoring). Deliberately quiet: scores are already usable while they run. */
+    .bg-status { display: none; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .bg-status.active { display: flex; }
+    .bg-status-chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: var(--font-sans); font-size: 0.78rem; color: var(--text-muted);
+      border: 1px solid var(--border); border-radius: var(--radius-pill);
+      padding: 4px 12px;
+    }
+    .bg-status-chip .spinner { width: 11px; height: 11px; }
+
+    /* "Keyword 65 · AI 72" ingredients line under the blended score bar. */
+    .score-split {
+      font-family: var(--font-sans); font-size: 0.72rem;
+      color: var(--text-muted); margin: 4px 0 2px; cursor: help;
+    }
+
     /* ─── Job grid ─── */
     .job-grid {
       display: grid;
@@ -819,6 +837,9 @@
         <button class="btn btn-secondary btn-sm" id="btn-save-all-filtered">Save all filtered</button>
       </div>
     </div>
+
+    <!-- Background task status: scores are usable while these run -->
+    <div id="bg-status" class="bg-status" aria-live="polite"></div>
 
     <!-- Job Grid -->
     <div id="job-grid" class="job-grid"></div>

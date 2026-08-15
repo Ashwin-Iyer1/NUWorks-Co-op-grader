@@ -1,6 +1,7 @@
 // Copyright (c) 2026 Ashwin Iyer — Licensed under AGPL-3.0
 
 import JobMatcher, { ELIGIBILITY_COPY } from "./matcher.js";
+import { createSemanticScorer, cosineToScore } from "./embeddings.js";
 import { setupThemeToggle } from "./theme.js";
 
 // ─── State ───
@@ -302,6 +303,11 @@ function renderMatchSection(scored, job) {
       <div class="modal-match-bars">
         ${renderMatchBar("Skills", details.hardSkillScore)}
         ${renderMatchBar("Keywords", details.keywordScore)}
+        ${
+          details.semanticScore !== undefined
+            ? renderMatchBar("Semantic (AI)", details.semanticScore)
+            : ""
+        }
       </div>
     `;
   }
@@ -714,6 +720,16 @@ function renderJobCard(job) {
     skillsHtml += `</div>`;
   }
 
+  // Once the semantic pass has touched this job, show the two ingredients of
+  // the blended score. baseMatchScore is the pure lexical score preserved by
+  // semanticRefine; the AI number is the calibrated embedding similarity.
+  const semScore = job.matchDetails?.details?.semanticScore;
+  const semLine =
+    semScore !== undefined
+      ? `<div class="score-split" title="Blended score: ${Math.round((1 - SEMANTIC_WEIGHT) * 100)}% keyword match + ${Math.round(SEMANTIC_WEIGHT * 100)}% semantic similarity (mdbr-leaf-ir, cosine ${job.matchDetails.details.semanticCosine})">` +
+        `Keyword ${job.baseMatchScore ?? job.matchScore} · AI ${semScore}</div>`
+      : "";
+
   const postDate = job.postdate ? new Date(job.postdate).toLocaleDateString() : "";
   const compensation = jobCompensation(job);
   const remote = jobRemote(job);
@@ -741,6 +757,7 @@ function renderJobCard(job) {
       }
     </div>
     <div class="card-score-bar"><div class="card-score-fill" style="width:${score}%;background:${barColor}"></div></div>
+    ${semLine}
     <div class="job-card-meta">
       ${badges}
       ${workTerm ? `<span title="Work term">${ICONS.term}${esc(workTerm)}</span>` : ""}
@@ -1209,8 +1226,12 @@ async function startFetch() {
   allJobs = [];
   filteredJobs = [];
   displayedCount = 0;
-  // Retire any enrichment pass still patching the previous run's jobs.
+  // Retire any enrichment/semantic pass still patching the previous run's
+  // jobs, and drop their status chips — the new run posts its own.
   enrichRunId++;
+  semanticRunId++;
+  setBgTask("details", null);
+  setBgTask("semantic", null);
   lastMidFetchRender = 0;
   clearTimeout(midFetchRenderTimer);
   midFetchRenderTimer = null;
@@ -1313,10 +1334,14 @@ async function startFetch() {
   }
 
   // Results are already scored and on screen; fill in the detail-only fields
-  // (work terms, external-application links) in the background.
+  // (work terms, external-application links) and refine scores with the
+  // semantic model in the background. Independent passes — run concurrently.
   if (!fetchError && !shouldStop) {
     enrichJobDetails(creds).catch((e) =>
       console.error("Detail enrichment failed:", e)
+    );
+    semanticRefine(creds).catch((e) =>
+      console.error("Semantic refinement failed:", e)
     );
   }
 
@@ -1357,6 +1382,29 @@ const DETAIL_CARRY_FIELDS = [
   "application_deadline",
 ];
 
+// ─── Background Task Status ───
+// Small chips under the filters showing that the post-fetch passes are still
+// running. Scores are already usable while they run — this only tells the
+// user why work-term tags / External badges are trickling in and why scores
+// are still settling. State per task: { label, done, total } or null (hidden).
+const bgTasks = { details: null, semantic: null };
+
+function setBgTask(name, state) {
+  bgTasks[name] = state;
+  const el = $("bg-status");
+  if (!el) return;
+  const chips = Object.values(bgTasks)
+    .filter(Boolean)
+    .map(
+      (t) =>
+        `<span class="bg-status-chip"><span class="spinner"></span>${esc(t.label)}${
+          t.total ? ` ${t.done}/${t.total}` : ""
+        }</span>`
+    );
+  el.innerHTML = chips.join("");
+  el.classList.toggle("active", chips.length > 0);
+}
+
 // ─── Background Detail Enrichment ───
 // Scoring runs entirely off the list payload; the fields only the per-job
 // detail response carries (el_work_term for the work-term filter,
@@ -1378,6 +1426,12 @@ async function enrichJobDetails(creds) {
       !(j.disqualified && !j.gradedIneligible)
   );
   if (pending.length === 0) return;
+
+  setBgTask("details", {
+    label: "Loading extra details",
+    done: 0,
+    total: pending.length,
+  });
 
   const CONCURRENCY = 10;
   // Refresh the grid roughly every 5 chunks so work-term tags and External
@@ -1408,14 +1462,147 @@ async function enrichJobDetails(creds) {
         }
       })
     );
+    if (runId === enrichRunId) {
+      setBgTask("details", {
+        label: "Loading extra details",
+        done: Math.min(i + CONCURRENCY, pending.length),
+        total: pending.length,
+      });
+    }
     if (patched - lastRenderAt >= RENDER_EVERY) {
       lastRenderAt = patched;
       applyFilters();
     }
   }
 
-  if (runId === enrichRunId && patched > lastRenderAt) {
-    applyFilters();
+  if (runId === enrichRunId) {
+    setBgTask("details", null);
+    if (patched > lastRenderAt) applyFilters();
+  }
+}
+
+// ─── Background Semantic Refinement ───
+// Second background pass: an on-device embedding model (see embeddings.js)
+// re-reads every scored posting and blends a semantic-similarity signal into
+// the lexical score, catching paraphrased fit that keyword overlap misses
+// ("built REST services in Flask" vs "backend web development experience").
+// Runs AFTER results render; the first ever run also downloads the ~23MB
+// model, so scores may refine noticeably later on that one occasion.
+const SEMANTIC_WEIGHT = 0.35;
+let semanticRunId = 0;
+
+// The scorer wraps a worker holding the loaded model — keep it warm across
+// fetch runs so only the FIRST run pays the model-load cost. Recreated only
+// when the resume text changes.
+let semanticCache = { key: null, scorer: null };
+
+async function getSemanticScorer(resumeText) {
+  if (semanticCache.scorer && semanticCache.key === resumeText) {
+    return semanticCache.scorer;
+  }
+  if (semanticCache.scorer) semanticCache.scorer.dispose();
+  semanticCache = { key: resumeText, scorer: null };
+  const scorer = await createSemanticScorer(resumeText);
+  // A concurrent call may have won the race; don't clobber its worker.
+  if (semanticCache.key === resumeText && !semanticCache.scorer) {
+    semanticCache.scorer = scorer;
+    return scorer;
+  }
+  if (scorer) scorer.dispose();
+  return semanticCache.scorer;
+}
+
+async function semanticRefine(creds) {
+  const runId = ++semanticRunId;
+
+  const resumeText = [creds.resume, creds.profileSkills]
+    .filter(Boolean)
+    .join("\n");
+  if (!resumeText) return;
+
+  // The first ever run also downloads the ~23MB model, so name that phase.
+  const modelWarm = semanticCache.scorer && semanticCache.key === resumeText;
+  if (!modelWarm) setBgTask("semantic", { label: "Loading scoring model…" });
+  const scorer = await getSemanticScorer(resumeText);
+  if (!scorer || runId !== semanticRunId) {
+    if (runId === semanticRunId) setBgTask("semantic", null);
+    return;
+  }
+
+  // Only rows that actually carry a graded score; placeholder-ineligible rows
+  // keep their 0.
+  const targets = allJobs.filter(
+    (j) => j.job_desc && j.matchDetails?.details && !(j.disqualified && !j.gradedIneligible)
+  );
+  if (targets.length === 0) {
+    setBgTask("semantic", null);
+    return;
+  }
+
+  setBgTask("semantic", {
+    label: "Refining scores",
+    done: 0,
+    total: targets.length,
+  });
+  console.log(
+    `[Semantic] Scoring ${targets.length} postings against the resume ` +
+      `(blend: ${Math.round((1 - SEMANTIC_WEIGHT) * 100)}% keyword + ${Math.round(SEMANTIC_WEIGHT * 100)}% semantic)`
+  );
+  const passStart = performance.now();
+  let inferMs = 0;
+
+  // 16 benched fastest (78.7 ms/doc vs 85.7 at 8, 136 at 1 on 16 threads).
+  const BATCH = 16;
+  let refined = 0;
+  for (let i = 0; i < targets.length; i += BATCH) {
+    if (runId !== semanticRunId) return;
+    const batch = targets.slice(i, i + BATCH);
+    try {
+      const { cosines, ms } = await scorer.similarities(
+        batch.map((j) => `${j.job_title || ""}\n${j.job_desc}`)
+      );
+      inferMs += ms;
+      batch.forEach((job, k) => {
+        const semantic = cosineToScore(cosines[k]);
+        // Blend from the ORIGINAL lexical score every time, so a re-run can
+        // never compound the semantic signal into itself.
+        if (job.baseMatchScore === undefined) {
+          job.baseMatchScore = job.matchScore;
+        }
+        job.matchScore = Math.round(
+          job.baseMatchScore * (1 - SEMANTIC_WEIGHT) + semantic * SEMANTIC_WEIGHT
+        );
+        job.matchDetails.score = job.matchScore;
+        job.matchDetails.details.semanticScore = semantic;
+        job.matchDetails.details.semanticCosine = Number(
+          cosines[k].toFixed(4)
+        );
+        refined++;
+      });
+    } catch (e) {
+      console.warn("Semantic batch failed, keeping lexical scores:", e);
+      if (runId === semanticRunId) setBgTask("semantic", null);
+      return;
+    }
+    if (runId === semanticRunId) {
+      setBgTask("semantic", {
+        label: "Refining scores",
+        done: refined,
+        total: targets.length,
+      });
+    }
+    // Refresh every ~40 jobs so scores visibly settle as the pass advances.
+    if (refined % 40 < BATCH) applyFilters();
+  }
+
+  if (runId === semanticRunId) {
+    setBgTask("semantic", null);
+    if (refined > 0) applyFilters();
+    console.log(
+      `[Semantic] Done: ${refined}/${targets.length} scores refined in ` +
+        `${Math.round(performance.now() - passStart)} ms ` +
+        `(inference ${inferMs} ms, ${(inferMs / Math.max(1, refined)).toFixed(1)} ms/job)`
+    );
   }
 }
 

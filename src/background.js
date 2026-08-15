@@ -24,9 +24,22 @@ const BADGE_THEME = {
   disqualified: { bg: "#f1ece3", text: "#5f584d", border: "#d8cfbf" },
 };
 
+// Last values written to storage, so unchanged headers don't trigger a write.
+// Every storage.set from this listener is a chrome.* call racing the service
+// worker's lifecycle — Chrome occasionally drops such calls with an internal
+// "No SW" error (crbug, extension_function_dispatcher.cc), so the fewer the
+// better.
+let lastSeenCookie = null;
+let lastSeenAuthorization = null;
+
 const onSendHeadersListener = function (details) {
+  // Ignore the extension's own traffic (explorer enrichment, badge-path detail
+  // fetches): the credentials on those requests CAME from storage, so writing
+  // them back is a no-op feedback loop that just spams the listener.
+  if (details.initiator && details.initiator.startsWith("chrome-extension://")) {
+    return;
+  }
   if (details.url.includes("northeastern-csm.symplicity.com/api/")) {
-    console.log("Symplicity Request Detected:", details.url);
     if (details.requestHeaders) {
       const cookie = details.requestHeaders.find(
         (header) => header.name.toLowerCase() === "cookie"
@@ -34,10 +47,12 @@ const onSendHeadersListener = function (details) {
       const authorization = details.requestHeaders.find(
         (header) => header.name.toLowerCase() === "authorization"
       );
-      if (cookie) {
+      if (cookie && cookie.value !== lastSeenCookie) {
+        lastSeenCookie = cookie.value;
         chrome.storage.local.set({ cookie: cookie.value });
       }
-      if (authorization) {
+      if (authorization && authorization.value !== lastSeenAuthorization) {
+        lastSeenAuthorization = authorization.value;
         chrome.storage.local.set({ authorization: authorization.value });
       }
     }
