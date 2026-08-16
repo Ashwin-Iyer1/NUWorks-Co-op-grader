@@ -40,7 +40,7 @@ Semantic scoring runs in a dedicated Web Worker after keyword scores are already
 ### Benchmarking
 
 - `node benchmark-semantic.mjs` — scores a resume (`resumeText.txt`) against a saved job batch (`exmaplePayload.json`), prints the cosine distribution used for calibration, the top/bottom rankings, the biggest keyword-vs-semantic disagreements, and the blended scores. Re-run it to refit the calibration constants if the model changes.
-- `bench.html` (built into the extension at `chrome-extension://<id>/bench.html`) — drives the exact production worker and sweeps thread count, batch size, and document length cap, projecting the time for a 253-job run. Use DevTools CPU throttling to simulate a slower machine.
+- `bench.html` — not part of the release build; run `npm run build:bench` to include it, then open `chrome-extension://<id>/bench.html`. It drives the exact production worker and sweeps thread count, batch size, and document length cap, projecting the time for a 253-job run. Use DevTools CPU throttling to simulate a slower machine.
 
 ## Installation
 
@@ -57,7 +57,7 @@ This project uses Parcel to bundle dependencies (`@huggingface/transformers`, `p
    ```bash
    npm run build
    ```
-   This generates a `dist/` folder (~3 MB — the AI model is not bundled).
+   This generates a `dist/` folder (~2.6 MB — the AI model is not bundled).
 
 ### 2. Load in Chrome
 
@@ -69,7 +69,7 @@ This project uses Parcel to bundle dependencies (`@huggingface/transformers`, `p
 ## Development
 
 - **Source Code**: All source files are in `src/`.
-- **Static Assets**: Manifest, icons, and the ONNX runtime loader are in `public/`.
+- **Static Assets**: Manifest, icons, the pdf.js worker, and the ONNX runtime loader are in `public/`. Content scripts (`content.js`, `interceptor.js`) live in `src/` and are minified by Parcel.
 - **`public/ort/ort-wasm-simd-threaded.asyncify.wasm`** is deliberately excluded from the built package but must stay committed on the `chrome-extension` branch: the extension downloads it at runtime from this repo's raw GitHub URL when a user opts into Semantic AI. Renaming or removing it breaks that download.
 - **Manifest notes**: the extension declares `wasm-unsafe-eval` in its CSP and sets COOP/COEP headers so extension pages are cross-origin isolated — required for multithreaded WebAssembly. MV3 forbids inline scripts and remotely hosted code, so the (tiny) ORT `.mjs` loader ships in the package while the `.wasm` binary and model weights are fetched as data.
 
@@ -85,7 +85,8 @@ This project uses Parcel to bundle dependencies (`@huggingface/transformers`, `p
 │   ├── matcher.js            # Eligibility gate + skill/keyword scoring engine
 │   ├── embeddings.js         # Semantic AI: text helpers, calibration, worker client
 │   ├── embeddings-worker.js  # Semantic AI: model loading + inference (Web Worker)
-│   ├── bench.js / bench.html # In-browser performance benchmark
+│   ├── content.js / interceptor.js # Content scripts (NUWorks page + fetch interceptor)
+│   ├── bench.js / bench.html # In-browser performance benchmark (npm run build:bench)
 │   ├── api.js / storage.js / ui.js / theme.js
 │   └── ...
 ├── benchmark-semantic.mjs    # Node benchmark: resume vs. job batch, calibration

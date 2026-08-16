@@ -35,3 +35,6 @@ __pycache__/
 dist.zip
 exmaplePayload.json
 resumeText.txt
+
+# Claude Design export (local only, not part of the extension)
+NUWorks Grader Design System/
