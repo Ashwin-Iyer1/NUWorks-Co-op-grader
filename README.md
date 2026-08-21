@@ -66,17 +66,57 @@ python train.py --epochs 3 --batch-size 128 --lr 3e-5
 ```
 
 - The model is only 23M params, so at the default 256-token cap a batch of 128 uses
-  roughly 4–6 GB of VRAM — nowhere near the 16 GB ceiling. Bigger batches genuinely
-  help here: CoSENT and contrastive losses compare pairs *within* a batch, so more
-  pairs per batch means a stronger training signal. `--batch-size 256` also fits if
-  you want to push it (keep `--lr 3e-5`).
+  roughly 4–6 GB of VRAM — nowhere near the 16 GB ceiling.
 - To train on full-length texts instead of the production-matched 256-token cap, use
   `--max-seq-length 512 --batch-size 64`.
-- Expect the whole run to take ~5–10 minutes. Watch the per-dataset
-  `eval_*_loss` values printed each epoch; if the HF eval loss starts rising while
-  train loss falls, cut back to `--epochs 2`.
+- Expect the whole run to take ~5–10 minutes.
 - A quick pipeline sanity check first: `python train.py --max-samples 200 --epochs 1
   --batch-size 8`.
+
+#### How many epochs?
+
+3 epochs is plenty for ~14k pairs on a 23M-param model; 1–4 is the standard range
+for contrastive/CoSENT fine-tuning, and the failure mode past that is memorizing
+the training pairs (the Neuralframe set has only 28 distinct job positions and
+template-like text, so there is real repetition to latch onto). Trust the
+per-epoch `eval_*_loss` values over the epoch count:
+
+- Both eval losses still falling after epoch 3 → 4–5 epochs is fine, gains are
+  usually marginal.
+- `eval_hf_loss` flat or rising while train loss falls → overfitting; drop to
+  `--epochs 2`. Weight the HF eval most heavily — it is the only full-length,
+  production-realistic text, and a model that aces synthetic Neuralframe pairs but
+  degrades on HF will likely also degrade on real NUWorks postings.
+- The final arbiter is `evaluate.py`: if held-out Spearman beats the base model on
+  both test sets, the tune is good regardless of epoch count. When training on a
+  single dataset, the best epoch's checkpoint is kept automatically.
+
+#### Batch size vs. VRAM
+
+Don't max out batch size just to fill VRAM — batch size changes what the model
+learns, not just throughput, and past ~256 the trade turns against you:
+
+- **Bigger helps at first.** CoSENT and the contrastive loss compare pairs *within*
+  a batch, so 32 → 128 genuinely strengthens the training signal.
+- **You run out of steps, not memory.** At batch 128, ~14k pairs give ~110 optimizer
+  steps per epoch; at 512 only ~27 (~80 updates across a whole 3-epoch run). Small
+  models fine-tune by taking many small steps; starving the run of updates
+  undertrains it, and compensating with a higher LR gets unstable at this size.
+- **The time saving is trivial** (a 5–10 minute run becoming 3–4), and large batches
+  often shift the bottleneck to CPU-side tokenization anyway, so wall-clock barely
+  moves while GPU occupancy climbs.
+- **What to actually do:** run `--batch-size 128` and `--batch-size 256` (same
+  `--lr 3e-5`), compare held-out Spearman from `evaluate.py`, keep the winner. If
+  experimenting with 512, pair it with `--epochs 4` and LR ~4e-5. Maximize the
+  test-set correlation, not the VRAM meter.
+
+#### Does fine-tuning grow the ONNX download?
+
+No. Fine-tuning changes weight *values*, not the parameter count or architecture,
+so the export stays the same size: ~90 MB fp32 and ~23 MB int8-quantized — identical
+to what users download today. Dropping the Dense head changes nothing either; it was
+never part of the exported transformer ONNX. Only structural choices (quantization
+level, a different base model) move the size.
 
 `evaluate.py` prints Spearman correlation (grading quality), ROC-AUC (binary), and the
 cosine percentiles for both the base and fine-tuned model, so you can verify the
