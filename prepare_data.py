@@ -21,6 +21,11 @@ Sources (downloaded anonymously via kagglehub — no Kaggle account needed):
                6.2k full-text pairs labeled No Fit / Potential Fit / Good Fit.
                Enable with --include-hf.
 
+Splits are grouped by resume identity: a resume (or, for the synthetic
+neuralframe set, any resume built from shared template fragments) appears in
+exactly one of train/val/test, so held-out metrics reflect resumes the model
+has never seen.
+
 Usage:
     python prepare_data.py [--include-hf] [--out-dir data]
 """
@@ -53,12 +58,42 @@ def clean(text):
     return re.sub(r"\s+", " ", str(text)).strip()
 
 
+def fragment_groups(df, columns):
+    """Union-find over shared field values: rows sharing any fragment (same
+    career objective, skills list, ...) land in one group, so a template can
+    never appear in both train and test."""
+    parent = list(range(len(df)))
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    for col in columns:
+        first = {}
+        for i, v in enumerate(df[col].tolist()):
+            if pd.isna(v) or not str(v).strip():
+                continue
+            if v in first:
+                ra, rb = find(i), find(first[v])
+                if ra != rb:
+                    parent[ra] = rb
+            else:
+                first[v] = i
+    return [find(i) for i in range(len(df))]
+
+
 def build_neuralframe(out_dir):
     path = kagglehub.dataset_download("saugataroyarghya/resume-dataset")
     df = pd.read_csv(os.path.join(path, "resume_data.csv"), encoding="utf-8-sig")
 
+    # These resumes are recombinations of a small pool of template fragments,
+    # so split by fragment-sharing group rather than by row.
+    groups = fragment_groups(df, ["career_objective", "skills", "positions"])
+
     rows = []
-    for _, r in df.iterrows():
+    for (_, r), group in zip(df.iterrows(), groups):
         resume_parts = []
         if isinstance(r.get("career_objective"), str):
             resume_parts.append(clean(r["career_objective"]))
@@ -102,7 +137,8 @@ def build_neuralframe(out_dir):
         if resume_parts and job_parts and pd.notna(score):
             rows.append({"resume": " ".join(resume_parts),
                          "job": " ".join(job_parts),
-                         "score": round(float(score), 4)})
+                         "score": round(float(score), 4),
+                         "_group": group})
 
     write_splits(pd.DataFrame(rows), "neuralframe", out_dir)
 
@@ -139,18 +175,35 @@ def build_hf(out_dir):
 
 
 def write_splits(df, name, out_dir, val_frac=0.1, test_frac=0.1):
-    df = df.drop_duplicates(subset=["resume", "job"]).sample(frac=1.0, random_state=SEED)
+    """Grouped split: all rows sharing a _group value (same resume, or resumes
+    built from shared template fragments) land in the same split, so the test
+    set only ever contains resume content the model never trained on."""
+    df = df.drop_duplicates(subset=["resume", "job"])
+    if "_group" not in df.columns:
+        df = df.assign(_group=df["resume"])
+
+    sizes = df.groupby("_group").size().sample(frac=1.0, random_state=SEED)
     n = len(df)
-    n_test, n_val = int(n * test_frac), int(n * val_frac)
-    splits = {
-        "test": df.iloc[:n_test],
-        "val": df.iloc[n_test:n_test + n_val],
-        "train": df.iloc[n_test + n_val:],
-    }
-    for split, part in splits.items():
+    assignment, cum = {}, 0.0
+    for group, size in sizes.items():
+        if cum < n * test_frac:
+            assignment[group] = "test"
+        elif cum < n * (test_frac + val_frac):
+            assignment[group] = "val"
+        else:
+            assignment[group] = "train"
+        cum += size
+
+    which = df["_group"].map(assignment)
+    for split in ("test", "val", "train"):
+        part = (df[which == split]
+                .drop(columns="_group")
+                .sample(frac=1.0, random_state=SEED))
         out = os.path.join(out_dir, f"{name}_{split}.csv")
         part.to_csv(out, index=False)
-        print(f"{out}: {len(part)} pairs (mean score {part['score'].mean():.3f})")
+        n_groups = df.loc[which == split, "_group"].nunique()
+        print(f"{out}: {len(part)} pairs, {n_groups} resume groups "
+              f"(mean score {part['score'].mean():.3f})")
 
 
 def main():

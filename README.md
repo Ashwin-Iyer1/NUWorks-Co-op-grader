@@ -41,6 +41,12 @@ Datasets that were evaluated and rejected outright: *Jobsphere ATS Resume Scorin
 - **MatryoshkaLoss wrapper** keeps embeddings accurate when truncated below 384
   dims, in case the extension ever shrinks vectors further to save memory and
   compute.
+- **Leakage-proof splits.** Train/val/test are split by *resume group*, not by row:
+  an HF resume (they recur against up to 82 different JDs) appears in exactly one
+  split, and Neuralframe resumes — which are recombinations of a small pool of
+  template fragments (~171 career objectives, ~340 skill lists) — are grouped by
+  union-find over shared fragments first. Held-out metrics therefore measure
+  performance on resume content the model has never seen, not memorized templates.
 
 ## Usage
 
