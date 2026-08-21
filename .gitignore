@@ -1,0 +1,4 @@
+# Generated locally; datasets re-download via prepare_data.py
+data/
+models/
+__pycache__/

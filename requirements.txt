@@ -1,0 +1,11 @@
+# Fine-tuning stack for MongoDB/mdbr-leaf-mt (resume <-> job-description grading).
+# Install CPU-only torch first if you don't have a GPU:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+sentence-transformers>=3.4
+accelerate>=1.1
+datasets>=2.19
+kagglehub>=0.3
+pandas>=2.0
+scipy>=1.10
+# Only needed for export_onnx.py:
+#   pip install "optimum[onnxruntime]" onnx
