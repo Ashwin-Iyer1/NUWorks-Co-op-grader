@@ -38,7 +38,10 @@ def main():
     export_dynamic_quantized_onnx_model(model, "avx2", args.out)
 
     onnx_dir = os.path.join(args.out, "onnx")
-    quant = [f for f in os.listdir(onnx_dir) if "qint8" in f or "quantized" in f]
+    quant = [
+        f for f in os.listdir(onnx_dir)
+        if "qint8" in f or "quint8" in f or "quantized" in f
+    ]
     if quant and not os.path.exists(os.path.join(onnx_dir, "model_quantized.onnx")):
         shutil.copyfile(os.path.join(onnx_dir, quant[0]),
                         os.path.join(onnx_dir, "model_quantized.onnx"))
