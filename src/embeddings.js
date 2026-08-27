@@ -13,10 +13,7 @@
 // stay off the main thread — when it ran on the page, each batch blocked the
 // event loop for hundreds of milliseconds and in-flight fetches appeared hung.
 
-// Validation-fitted display calibration for the BGE fine-tune. This changes
-// only the user-facing 0–100 value; cosine similarity still determines rank.
-const SCORE_SLOPE = 1.9226748511;
-const SCORE_INTERCEPT = -0.9568563562;
+import { DEFAULT_SEMANTIC_CALIBRATION } from "./semantic-model-version.mjs";
 
 /**
  * HTML job description -> the plain text the tokenizer should see. Unlike
@@ -41,8 +38,26 @@ export function htmlToText(html) {
 }
 
 /** Map a raw cosine onto the extension's 0-100 scale. */
-export function cosineToScore(cos) {
-  const t = SCORE_SLOPE * cos + SCORE_INTERCEPT;
+export function cosineToScore(cos, calibration = DEFAULT_SEMANTIC_CALIBRATION) {
+  let t;
+  if (calibration?.method === "affine") {
+    t = Number(calibration.slope) * cos + Number(calibration.intercept);
+  } else {
+    const xs = calibration?.cosine_knots || [];
+    const ys = calibration?.score_knots || [];
+    if (xs.length < 2 || xs.length !== ys.length) {
+      return 0;
+    }
+    if (cos <= xs[0]) t = ys[0];
+    else if (cos >= xs[xs.length - 1]) t = ys[ys.length - 1];
+    else {
+      let upper = 1;
+      while (upper < xs.length && cos > xs[upper]) upper++;
+      const lower = upper - 1;
+      const fraction = (cos - xs[lower]) / (xs[upper] - xs[lower]);
+      t = ys[lower] + fraction * (ys[upper] - ys[lower]);
+    }
+  }
   return Math.round(Math.max(0, Math.min(1, t)) * 100);
 }
 

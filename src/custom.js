@@ -3,11 +3,14 @@
 import JobMatcher, { ELIGIBILITY_COPY } from "./matcher.js";
 import { createSemanticScorer, cosineToScore } from "./embeddings.js";
 import {
+  DEFAULT_SEMANTIC_CALIBRATION,
+  LEGACY_SEMANTIC_CALIBRATION,
   SEMANTIC_MODEL_REVISION_KEY,
   IS_MODEL_UPDATE_TEST_BUILD,
   countCachedModelAssets,
   deleteCachedModelAssets,
   fetchLatestModelRevision,
+  fetchModelCalibration,
   installedRevisionForComparison,
   isModelUpdateAvailable,
 } from "./semantic-model-version.mjs";
@@ -1503,6 +1506,7 @@ let semanticRunId = 0;
 let latestSemanticModelRevision = null;
 let modelRevisionToLoad = null;
 let modelUpgradeBusy = false;
+const semanticCalibrationByRevision = new Map();
 
 function semanticStorageGet(keys) {
   return new Promise((resolve, reject) => {
@@ -1659,6 +1663,32 @@ function semanticScorerKey(resumeText, revision = modelRevisionToLoad) {
   return `${revision || "main"}\n${resumeText}`;
 }
 
+async function getSemanticCalibration(revision) {
+  if (!revision) return LEGACY_SEMANTIC_CALIBRATION;
+  if (semanticCalibrationByRevision.has(revision)) {
+    return semanticCalibrationByRevision.get(revision);
+  }
+  try {
+    const calibration = await fetchModelCalibration(revision);
+    semanticCalibrationByRevision.set(revision, calibration);
+    return calibration;
+  } catch (error) {
+    // Older pinned revisions do not contain calibration.json. The latest
+    // expanded model has an identical bundled fallback so a cached model can
+    // still produce calibrated scores while temporarily offline.
+    const calibration =
+      revision === latestSemanticModelRevision
+        ? DEFAULT_SEMANTIC_CALIBRATION
+        : LEGACY_SEMANTIC_CALIBRATION;
+    semanticCalibrationByRevision.set(revision, calibration);
+    console.warn(
+      `[Semantic] Using ${calibration.model_release} calibration fallback:`,
+      error
+    );
+    return calibration;
+  }
+}
+
 async function getSemanticScorer(
   resumeText,
   revision = modelRevisionToLoad
@@ -1669,6 +1699,7 @@ async function getSemanticScorer(
   }
   if (semanticCache.scorer) semanticCache.scorer.dispose();
   semanticCache = { key: cacheKey, scorer: null };
+  const calibration = await getSemanticCalibration(revision);
   const scorer = await createSemanticScorer(resumeText, {
     revision,
     // First-enable downloads (runtime + model) get a prominent progress
@@ -1680,6 +1711,7 @@ async function getSemanticScorer(
       showDownloadProgress(m);
     },
   });
+  if (scorer) scorer.calibration = calibration;
   hideDownloadProgress();
   // A concurrent call may have won the race; don't clobber its worker.
   if (semanticCache.key === cacheKey && !semanticCache.scorer) {
@@ -1819,7 +1851,7 @@ async function semanticRefine(creds) {
       );
       inferMs += ms;
       batch.forEach((job, k) => {
-        const semantic = cosineToScore(cosines[k]);
+        const semantic = cosineToScore(cosines[k], scorer.calibration);
         // Blend from the ORIGINAL lexical score every time, so a re-run can
         // never compound the semantic signal into itself.
         if (job.baseMatchScore === undefined) {

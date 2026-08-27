@@ -1,15 +1,18 @@
 // Benchmark: the fine-tuned resume grader's semantic similarity of a real
 // resume against a real NUWorks job batch (exmaplePayload.json), side by side
 // with the lexical matcher. Also prints the cosine distribution used to
-// calibrate COS_FLOOR / COS_CEIL in src/embeddings.js.
+// validate the revision-pinned calibration.json distribution.
 //
 // Usage: node benchmark-semantic.mjs
 import { readFileSync } from "fs";
 import { pipeline } from "@huggingface/transformers";
 import JobMatcher from "./src/matcher.js";
 import { htmlToText, cosineToScore, chunkText } from "./src/embeddings.js";
-
-const QUERY_PREFIX = "Represent this sentence for searching relevant passages: ";
+import {
+  SEMANTIC_MODEL_ID,
+  fetchLatestModelRevision,
+  fetchModelCalibration,
+} from "./src/semantic-model-version.mjs";
 
 const resume = readFileSync("resumeText.txt", "utf8");
 const payload = JSON.parse(readFileSync("exmaplePayload.json", "utf8"));
@@ -18,19 +21,24 @@ console.log(`Jobs with descriptions: ${jobs.length}`);
 
 // ── Load model ──
 let t0 = performance.now();
+const revision = await fetchLatestModelRevision();
+const calibration = await fetchModelCalibration(revision);
 const extractor = await pipeline(
   "feature-extraction",
-  "turtlecap/mdbr-leaf-mt-resume-grader",
+  SEMANTIC_MODEL_ID,
   {
     dtype: "q8",
     use_external_data_format: false,
+    revision,
   }
 );
-console.log(`Model load: ${(performance.now() - t0).toFixed(0)} ms`);
+console.log(
+  `Model ${revision.slice(0, 8)} load: ${(performance.now() - t0).toFixed(0)} ms`
+);
 
 // ── Embed resume (chunk & average, using the production chunker) ──
 t0 = performance.now();
-const chunks = chunkText(htmlToText(resume)).map((c) => QUERY_PREFIX + c);
+const chunks = chunkText(htmlToText(resume));
 const rRes = await extractor(chunks, { pooling: "mean", normalize: true });
 const dim = rRes.dims[rRes.dims.length - 1];
 const resumeVec = new Float32Array(dim);
@@ -84,7 +92,7 @@ const rows = jobs.map((j, i) => ({
   title: (j.job_title || "?").slice(0, 58),
   company: (j.name || "?").slice(0, 24),
   cos: cosines[i],
-  sem: cosineToScore(cosines[i]),
+  sem: cosineToScore(cosines[i], calibration),
   lex: lexical[i],
 }));
 

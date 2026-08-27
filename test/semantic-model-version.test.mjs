@@ -5,8 +5,10 @@ import {
   countCachedModelAssets,
   deleteCachedModelAssets,
   fetchLatestModelRevision,
+  fetchModelCalibration,
   installedRevisionForComparison,
   isModelUpdateAvailable,
+  validateSemanticCalibration,
 } from "../src/semantic-model-version.mjs";
 
 const REVISION_A = "a".repeat(40);
@@ -101,6 +103,36 @@ test("the Hub revision parser validates the response", async () => {
     })),
     /invalid model revision/
   );
+});
+
+test("model calibration is fetched at the pinned revision and validated", async () => {
+  let requestedUrl = "";
+  const calibration = await fetchModelCalibration(REVISION_A, async (url) => {
+    requestedUrl = url;
+    return {
+      ok: true,
+      json: async () => ({
+        schema_version: 1,
+        method: "quantile_piecewise_linear",
+        cosine_knots: [0.4, 0.6, 0.8],
+        score_knots: [0.1, 0.4, 0.9],
+      }),
+    };
+  });
+  assert.match(requestedUrl, new RegExp(`/resolve/${REVISION_A}/calibration\\.json$`));
+  assert.deepEqual(calibration.cosine_knots, [0.4, 0.6, 0.8]);
+
+  assert.throws(
+    () =>
+      validateSemanticCalibration({
+        schema_version: 1,
+        method: "quantile_piecewise_linear",
+        cosine_knots: [0.6, 0.5],
+        score_knots: [0.2, 0.7],
+      }),
+    /must increase/
+  );
+  await assert.rejects(fetchModelCalibration("main", async () => ({})), /pinned/);
 });
 
 test("cache helpers target only this model and remove its ONNX file", async () => {

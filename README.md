@@ -25,7 +25,7 @@ Keyword matching can't see that "built REST services in Flask" satisfies "backen
 
 - **The model** is [`turtlecap/mdbr-leaf-mt-resume-grader`](https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader), a 33.36M-parameter `BAAI/bge-small-en-v1.5` fine-tune trained on 26,677 weighted resume/job pairs (384 dimensions, 256-token window). It runs entirely on your device via [Transformers.js](https://huggingface.co/docs/transformers.js) and the ONNX WebAssembly runtime; **your resume and the job text never leave your computer.**
 - **Scoring is geometric, not rule-based.** Your resume (chunked to fit the model window and averaged into one vector) and each job description (capped to approximately the model's 256-token window) are converted into 384-dimensional vectors encoding their meaning. The raw score is the **cosine similarity** between the two vectors: how close the two texts sit in the model's learned meaning-space. This fine-tune uses bare resume and job text, without the previous retrieval query prefix.
-- **Calibration**: the displayed AI score uses a validation-fitted affine mapping for the BGE fine-tune (`1.9227 × cosine − 0.9569`, clipped to 0–100). Calibration changes only the displayed value; cosine similarity still determines semantic rank.
+- **Calibration**: the displayed AI score uses a resume-stratified, monotonic quantile mapping fitted across 24 held-out resume categories and shipped as `calibration.json` beside each Hugging Face model revision. Calibration changes only the displayed value; cosine similarity still determines semantic rank. Older cached model revisions retain their original affine mapping until upgraded.
 - **Blending**: the visible match score becomes **65% keyword score + 35% semantic score**. Each card shows both ingredients ("Keyword 65 · AI 72"), and the detail modal gets a "Semantic (AI)" bar. The keyword layer stays in charge of the deterministic, explainable parts; the AI catches paraphrased fit.
 - **What it does *not* do**: it doesn't understand seniority, hard requirements, or negation — a "PhD required" posting can still score high on topic. That's exactly why it's weighted at 35% and why the eligibility gate and keyword layer remain authoritative.
 
@@ -41,7 +41,7 @@ Semantic scoring runs in a dedicated Web Worker after keyword scores are already
 
 ### Benchmarking
 
-- `node benchmark-semantic.mjs` — scores a resume (`resumeText.txt`) against a saved job batch (`exmaplePayload.json`), prints the cosine distribution used for calibration, the top/bottom rankings, the biggest keyword-vs-semantic disagreements, and the blended scores. Re-run it to refit the calibration constants if the model changes.
+- `node benchmark-semantic.mjs` — scores a resume (`resumeText.txt`) against a saved job batch (`exmaplePayload.json`), prints the calibrated cosine distribution, the top/bottom rankings, the biggest keyword-vs-semantic disagreements, and the blended scores. Re-run it to validate the model revision's `calibration.json` when weights change.
 - `bench.html` — not part of the release build; run `npm run build:bench` to include it, then open `chrome-extension://<id>/bench.html`. It drives the exact production worker and sweeps thread count, batch size, and document length cap, projecting the time for a 253-job run. Use DevTools CPU throttling to simulate a slower machine.
 
 ## Installation
