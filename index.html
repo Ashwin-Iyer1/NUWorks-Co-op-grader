@@ -118,8 +118,9 @@
             NUWorks Grader reads every posting the way you would — then scores
             it against your skills, flags the ones you're not eligible for, and
             saves the strong matches. Opt in to a resume-specific Semantic AI
-            model, fine-tuned on 26,677 labeled resume–job pairs, to score by
-            meaning—not just keywords. All in your browser, all private.
+            model, fine-tuned on 6,804 NUWorks labels with external replay
+            training, to score by meaning—not just keywords. All in your
+            browser, all private.
           </p>
           <div class="cta-group">
             <a
@@ -302,7 +303,7 @@
     <section id="semantic-ai" class="section ai-section">
       <div class="container">
         <div class="section-header centered">
-          <span class="ai-eyebrow">Upgraded BGE model · Resume-tuned · Opt-in</span>
+          <span class="ai-eyebrow">Expanded BGE model · Tested on 24 unseen resumes · Opt-in</span>
           <h2>Semantic AI trained for resume-to-job fit</h2>
           <p>
             Turn on Semantic AI and a compact model fine-tuned on labeled
@@ -322,35 +323,36 @@
 
         <div class="ai-benchmark" aria-labelledby="benchmark-title">
           <div class="ai-benchmark-copy">
-            <span class="benchmark-kicker">Held-out evaluation · 820 pairs</span>
-            <h3 id="benchmark-title">Better at putting the right jobs first</h3>
+            <span class="benchmark-kicker">Fresh unseen-resume evaluation · 960 pairs</span>
+            <h3 id="benchmark-title">The gain holds on resumes it never saw</h3>
             <p>
-              The new int8 BGE model improves both rank correlation and
-              top-of-list quality over the previous shipped model. Spearman
-              measures how consistently stronger matches rank above weaker
-              ones; NDCG@10 rewards putting the best jobs near the top.
+              We froze 24 previously unused resumes across 24 career categories,
+              paired each with 40 randomly selected NUWorks jobs, and labeled
+              the resulting matches only after training was complete. The new
+              int8 model improved every individual resume over the previous
+              model.
             </p>
           </div>
           <div class="benchmark-results">
             <div class="benchmark-result">
               <span class="benchmark-dataset">Spearman correlation</span>
-              <strong>0.666</strong>
-              <span>from 0.515 with the previous model</span>
-              <b>29% higher rank correlation</b>
+              <strong>0.768</strong>
+              <span>from 0.567 with the previous model</span>
+              <b>36% higher rank correlation</b>
             </div>
             <div class="benchmark-result">
               <span class="benchmark-dataset">NDCG@10</span>
-              <strong>0.848</strong>
-              <span>from 0.787 with the previous model</span>
-              <b>67.4% top-choice accuracy</b>
+              <strong>0.868</strong>
+              <span>from 0.774 with the previous model</span>
+              <b>24 of 24 resumes improved</b>
             </div>
           </div>
           <p class="benchmark-note">
-            Int8 ONNX, semantic-only ranking on an untouched, resume-grouped
-            test split (46 rankable resumes). Top-choice accuracy was 58.7%
-            previously. On the separate 962-pair NeuralFrame test, Spearman was
-            0.611. Public-dataset metrics are ranking measures, not hiring
-            success rates.
+            Int8 ONNX, semantic-only ranking. Median per-resume Spearman was
+            0.796, and 23 of 24 resumes scored at least 0.50. These resumes were
+            excluded from every training, validation, and prior test split; the
+            jobs came from the existing NUWorks pool. Metrics measure ranking
+            quality, not hiring success.
           </p>
         </div>
 
@@ -372,10 +374,11 @@
               <a href="https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader" target="_blank" rel="noopener noreferrer"><code>mdbr-leaf-mt-resume-grader</code></a>
               is now a 33.36M-parameter
               <a href="https://huggingface.co/BAAI/bge-small-en-v1.5" target="_blank" rel="noopener noreferrer">BGE-small</a>
-              fine-tune trained on 26,677 resume–job pairs. It embeds your
-              resume and each posting, then measures how close they sit in
-              meaning. “Built REST services in Flask” counts toward “backend
-              web development”.
+              fine-tune adapted on 6,804 NUWorks resume–job labels, then replayed
+              against a 26,677-example weighted external schedule to preserve
+              broader matching quality. It embeds your resume and each posting,
+              then measures how close they sit in meaning. “Built REST services
+              in Flask” counts toward “backend web development”.
             </p>
           </div>
           <div class="ai-card">
