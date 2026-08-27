@@ -118,7 +118,7 @@
             NUWorks Grader reads every posting the way you would — then scores
             it against your skills, flags the ones you're not eligible for, and
             saves the strong matches. Opt in to a resume-specific Semantic AI
-            model, fine-tuned on 13,979 labeled resume–job pairs, to score by
+            model, fine-tuned on 26,677 labeled resume–job pairs, to score by
             meaning—not just keywords. All in your browser, all private.
           </p>
           <div class="cta-group">
@@ -268,7 +268,7 @@
             </div>
             <h3>Semantic AI matching <span class="pill">Opt-in</span></h3>
             <p>
-              A 23M-parameter model fine-tuned for resume–job fit runs on your
+              A 33M-parameter BGE model fine-tuned for resume–job fit runs on your
               device and scores each posting by meaning. Match becomes 65%
               keyword + 35% AI, with the split shown on every card.
             </p>
@@ -302,7 +302,7 @@
     <section id="semantic-ai" class="section ai-section">
       <div class="container">
         <div class="section-header centered">
-          <span class="ai-eyebrow">New in v2.6 · Resume-tuned · Opt-in</span>
+          <span class="ai-eyebrow">Upgraded BGE model · Resume-tuned · Opt-in</span>
           <h2>Semantic AI trained for resume-to-job fit</h2>
           <p>
             Turn on Semantic AI and a compact model fine-tuned on labeled
@@ -322,33 +322,35 @@
 
         <div class="ai-benchmark" aria-labelledby="benchmark-title">
           <div class="ai-benchmark-copy">
-            <span class="benchmark-kicker">Held-out evaluation · 1,782 pairs</span>
+            <span class="benchmark-kicker">Held-out evaluation · 820 pairs</span>
             <h3 id="benchmark-title">Better at putting the right jobs first</h3>
             <p>
-              Fine-tuning more than doubled rank correlation on one test set
-              and improved it by two-thirds on the other. Spearman correlation
-              measures how consistently the model ranks stronger matches above
-              weaker ones; higher is better.
+              The new int8 BGE model improves both rank correlation and
+              top-of-list quality over the previous shipped model. Spearman
+              measures how consistently stronger matches rank above weaker
+              ones; NDCG@10 rewards putting the best jobs near the top.
             </p>
           </div>
           <div class="benchmark-results">
             <div class="benchmark-result">
-              <span class="benchmark-dataset">HF test · 820 pairs</span>
-              <strong>0.534</strong>
-              <span>from 0.260 with the base model</span>
-              <b>2.05× rank correlation</b>
+              <span class="benchmark-dataset">Spearman correlation</span>
+              <strong>0.666</strong>
+              <span>from 0.515 with the previous model</span>
+              <b>29% higher rank correlation</b>
             </div>
             <div class="benchmark-result">
-              <span class="benchmark-dataset">NeuralFrame · 962 pairs</span>
-              <strong>0.624</strong>
-              <span>from 0.375 with the base model</span>
-              <b>1.66× rank correlation</b>
+              <span class="benchmark-dataset">NDCG@10</span>
+              <strong>0.848</strong>
+              <span>from 0.787 with the previous model</span>
+              <b>67.4% top-choice accuracy</b>
             </div>
           </div>
           <p class="benchmark-note">
-            Spearman correlation on untouched test splits, using normalized
-            resume and job embeddings with cosine similarity. Figures rounded
-            to three decimals.
+            Int8 ONNX, semantic-only ranking on an untouched, resume-grouped
+            test split (46 rankable resumes). Top-choice accuracy was 58.7%
+            previously. On the separate 962-pair NeuralFrame test, Spearman was
+            0.611. Public-dataset metrics are ranking measures, not hiring
+            success rates.
           </p>
         </div>
 
@@ -368,10 +370,12 @@
             <h3>Semantic layer</h3>
             <p>
               <a href="https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader" target="_blank" rel="noopener noreferrer"><code>mdbr-leaf-mt-resume-grader</code></a>
-              is a 23M-parameter model fine-tuned on 13,979 labeled resume–job
-              pairs. It embeds your resume and each posting, then measures how
-              close they sit in meaning. “Built REST services in Flask” counts
-              toward “backend web development”.
+              is now a 33.36M-parameter
+              <a href="https://huggingface.co/BAAI/bge-small-en-v1.5" target="_blank" rel="noopener noreferrer">BGE-small</a>
+              fine-tune trained on 26,677 resume–job pairs. It embeds your
+              resume and each posting, then measures how close they sit in
+              meaning. “Built REST services in Flask” counts toward “backend
+              web development”.
             </p>
           </div>
           <div class="ai-card">
@@ -403,7 +407,7 @@
               <li>
                 <strong>Lightweight until you opt in.</strong> The extension
                 ships without the model. Ticking “Semantic AI” downloads the
-                runtime and model once (~46&nbsp;MB) and keeps them cached.
+                runtime and model once (~57&nbsp;MB) and keeps them cached.
               </li>
               <li>
                 <strong>Scores never wait on it.</strong> Keyword scores appear
