@@ -7,3 +7,5 @@ dist/
 node_modules/
 NUWorks Grader Design System/
 .venv/
+exmaplePayload.json
+resumeText.txt
