@@ -36,5 +36,11 @@ dist.zip
 exmaplePayload.json
 resumeText.txt
 
+.venv/
+
+data/
+
+models/
+
 # Claude Design export (local only, not part of the extension)
 NUWorks Grader Design System/
