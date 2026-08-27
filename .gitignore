@@ -2,3 +2,8 @@
 data/
 models/
 __pycache__/
+.parcel-cache/
+dist/
+node_modules/
+NUWorks Grader Design System/
+.venv/
