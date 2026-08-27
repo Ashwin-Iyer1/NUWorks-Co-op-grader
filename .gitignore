@@ -12,3 +12,5 @@ resumeText.txt
 
 archive/
 openai_labels/
+.env
+more_job_descs.json

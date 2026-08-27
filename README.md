@@ -91,6 +91,46 @@ explicitly, use a comma-separated option such as
 `--categories ENGINEERING,FINANCE,HEALTHCARE`. Run `python
 generate_openai_labels.py --help` for all budget, concurrency, and input options.
 
+To add later NUWorks payloads without relabeling exact duplicates, pass the
+original file first and reuse the same output directory:
+
+```powershell
+python generate_openai_labels.py `
+  --jobs-json exmaplePayload.json more_job_descs.json
+python generate_openai_labels.py `
+  --jobs-json exmaplePayload.json more_job_descs.json --execute
+```
+
+The default `--budget-scope run` reserves at most 10M tokens for each invocation.
+If the dry run cannot schedule every missing resume/job matrix, wait until the
+complimentary quota resets at 00:00 UTC and run the identical command again;
+successful pairs are skipped. Use `--budget-scope output` only when the 10M cap
+should cover the complete lifetime of the output directory instead.
+
+Prepare leakage-safe splits before training. The default holds out two entire
+resume identities for validation and two for testing, so resume text never
+crosses a split boundary:
+
+```bash
+python prepare_openai_labels.py
+python train.py --data-dir data --datasets openai \
+  --base-model models/experiments/e14_bge_small_bs64 \
+  --output models/experiments/openai_bge_continued \
+  --epochs 3 --batch-size 64 --lr 3e-5 \
+  --batch-sampler grouped --matryoshka-dims ""
+
+# Replay the original data at a lower rate to prevent catastrophic forgetting.
+python train.py --data-dir data --datasets hf neuralframe \
+  --dataset-weights hf=3,neuralframe=1 \
+  --base-model models/experiments/openai_bge_continued \
+  --output models/experiments/openai_bge_replay \
+  --epochs 1 --batch-size 64 --lr 1e-5 \
+  --batch-sampler no_duplicates --matryoshka-dims ""
+
+python evaluate_production.py --model models/experiments/openai_bge_replay \
+  --datasets openai hf neuralframe --split test
+```
+
 GPU is auto-detected: bf16 mixed precision, TF32 matmuls, and dataloader workers
 switch on automatically when CUDA is available — no flags needed.
 

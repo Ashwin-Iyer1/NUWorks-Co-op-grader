@@ -1,4 +1,7 @@
 import unittest
+import json
+import tempfile
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -10,6 +13,7 @@ from generate_openai_labels import (
     find_job_records,
     grade_pair,
     html_to_text,
+    load_job_sources,
     plan_tasks,
     redact_contact_details,
     select_diverse_resumes,
@@ -133,6 +137,42 @@ class LabelGeneratorTests(unittest.TestCase):
         self.assertEqual(result["label"]["score"], 75)
         self.assertEqual(result["usage"]["total_tokens"], 150)
         self.assertFalse(MATCH_SCHEMA["additionalProperties"])
+
+    def test_multiple_job_sources_deduplicate_and_version_changed_ids(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            first = root / "first.json"
+            second = root / "second.json"
+            first.write_text(
+                json.dumps(
+                    {
+                        "models": [
+                            {"job_id": "1", "job_title": "One", "job_desc": "Alpha"},
+                            {"job_id": "2", "job_title": "Two", "job_desc": "Beta"},
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            second.write_text(
+                json.dumps(
+                    {
+                        "models": [
+                            {"job_id": "2", "job_title": "Two", "job_desc": "Beta"},
+                            {"job_id": "1", "job_title": "One", "job_desc": "Changed"},
+                            {"job_id": "3", "job_title": "Three", "job_desc": "Gamma"},
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            jobs = load_job_sources([first, second])
+
+        self.assertEqual(len(jobs), 4)
+        self.assertEqual(jobs[0].job_id, "job-1")
+        self.assertTrue(jobs[2].job_id.startswith("job-1-"))
+        self.assertEqual(len({job.text for job in jobs}), 4)
 
 
 if __name__ == "__main__":

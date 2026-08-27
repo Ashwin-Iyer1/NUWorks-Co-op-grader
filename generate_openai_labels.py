@@ -35,7 +35,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 
-MODEL = "gpt-5.6-terra"
+MODEL = "gpt-5.6-luna"
 DEFAULT_CATEGORY_ORDER = (
     "INFORMATION-TECHNOLOGY",
     "ENGINEERING",
@@ -303,6 +303,44 @@ def load_jobs(payload_path: Path, *, max_chars: int = 16_000) -> list[JobRecord]
     if not records:
         raise ValueError(f"No usable job descriptions found in {payload_path}")
     return records
+
+
+def load_job_sources(
+    payload_paths: Iterable[Path], *, max_chars: int = 16_000
+) -> list[JobRecord]:
+    """Merge job payloads without relabeling exact duplicates.
+
+    Exact description duplicates keep the ID from the first payload, which
+    lets an existing JSONL checkpoint skip already-labeled pairs. If a later
+    payload reuses a job ID for changed text, preserve both descriptions but
+    version the later ID by content so it receives a fresh label.
+    """
+
+    merged: list[JobRecord] = []
+    seen_texts: set[str] = set()
+    text_by_id: dict[str, str] = {}
+    for payload_path in payload_paths:
+        for job in load_jobs(payload_path, max_chars=max_chars):
+            if job.text in seen_texts:
+                continue
+            job_id = job.job_id
+            if job_id in text_by_id and text_by_id[job_id] != job.text:
+                suffix = hashlib.sha256(job.text.encode("utf-8")).hexdigest()[:8]
+                job_id = f"{job_id}-{suffix}"
+            # Extremely unlikely, but keep conflict resolution deterministic
+            # if multiple changed versions of the same source job are present.
+            while job_id in text_by_id and text_by_id[job_id] != job.text:
+                suffix = hashlib.sha256(
+                    f"{job_id}\n{job.text}".encode("utf-8")
+                ).hexdigest()[:8]
+                job_id = f"{job.job_id}-{suffix}"
+            record = JobRecord(job_id, job.title, job.text)
+            merged.append(record)
+            seen_texts.add(record.text)
+            text_by_id[record.job_id] = record.text
+    if not merged:
+        raise ValueError("No usable job descriptions found in supplied payloads")
+    return merged
 
 
 def select_diverse_resumes(
@@ -642,7 +680,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--resume-csv", type=Path, default=Path("archive/Resume/Resume.csv")
     )
     parser.add_argument(
-        "--jobs-json", type=Path, default=Path("exmaplePayload.json")
+        "--jobs-json",
+        type=Path,
+        nargs="+",
+        default=[Path("exmaplePayload.json")],
+        help="one or more job payloads, merged in the supplied order",
     )
     parser.add_argument("--out-dir", type=Path, default=Path("openai_labels"))
     parser.add_argument("--model", default=MODEL)
@@ -654,8 +696,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--max-jobs", type=int)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--workers", type=int, default=8)
-    parser.add_argument("--token-budget", type=int, default=10_000_000)
+    parser.add_argument("--workers", type=int, default=100)
+    parser.add_argument("--token-budget", type=int, default=100_000_000)
+    parser.add_argument(
+        "--budget-scope",
+        choices=("run", "output"),
+        default="run",
+        help=(
+            "run: apply the budget only to new requests in this invocation "
+            "(for a daily quota); output: include all prior JSONL usage"
+        ),
+    )
     parser.add_argument(
         "--safety-margin",
         type=float,
@@ -719,7 +770,7 @@ def main(argv: list[str] | None = None) -> int:
         redact_pii=not args.no_redact_pii,
         max_chars=args.max_resume_chars,
     )
-    jobs = load_jobs(args.jobs_json, max_chars=args.max_job_chars)
+    jobs = load_job_sources(args.jobs_json, max_chars=args.max_job_chars)
     if args.max_jobs:
         jobs = jobs[: args.max_jobs]
 
@@ -741,6 +792,9 @@ def main(argv: list[str] | None = None) -> int:
         for pair_id, record in existing.items()
         if record.get("status") == "ok"
     }
+    usage_counted_against_budget = (
+        previously_used if args.budget_scope == "output" else 0
+    )
     selected, tasks, usable_budget = plan_tasks(
         candidates,
         jobs,
@@ -750,7 +804,7 @@ def main(argv: list[str] | None = None) -> int:
         max_output_tokens=args.max_output_tokens,
         input_reserve_multiplier=args.input_reserve_multiplier,
         completed_pair_ids=completed,
-        previously_used_tokens=previously_used,
+        previously_used_tokens=usage_counted_against_budget,
     )
 
     reserved_tokens = sum(task.reserved_tokens for task in tasks)
@@ -759,6 +813,7 @@ def main(argv: list[str] | None = None) -> int:
         "model": args.model,
         "execute": args.execute,
         "redact_pii": not args.no_redact_pii,
+        "job_sources": [str(path) for path in args.jobs_json],
         "source_resume_count": len(resumes),
         "source_job_count": len(jobs),
         "selected_resume_count": len(selected),
@@ -770,11 +825,13 @@ def main(argv: list[str] | None = None) -> int:
         "already_completed_pairs": len(completed),
         "token_budget": args.token_budget,
         "usable_budget_after_safety_margin": usable_budget,
-        "previously_used_tokens": previously_used,
+        "budget_scope": args.budget_scope,
+        "historical_reported_tokens": previously_used,
+        "tokens_counted_against_budget": usage_counted_against_budget,
         "estimated_new_input_tokens": estimated_input,
         "reserved_new_tokens": reserved_tokens,
         "remaining_unreserved_tokens": (
-            usable_budget - previously_used - reserved_tokens
+            usable_budget - usage_counted_against_budget - reserved_tokens
         ),
         "max_output_tokens_per_request": args.max_output_tokens,
         "workers": args.workers,
@@ -794,7 +851,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Planned API requests: {len(tasks):,}")
     print(
         f"Conservative reservation: {reserved_tokens:,} new tokens; "
-        f"{previously_used:,} previously used; "
+        f"{usage_counted_against_budget:,} prior tokens counted by the "
+        f"{args.budget_scope!r} budget scope; "
         f"{usable_budget:,} usable after safety margin."
     )
     print(

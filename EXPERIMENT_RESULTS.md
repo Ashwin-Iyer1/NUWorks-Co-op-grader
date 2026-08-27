@@ -22,6 +22,42 @@ Locked HF test results using production mean-vector inference:
 
 The BGE int8 model is the best overall accuracy/robustness result. The weighted `mdbr-leaf-mt` model is a strong alternative when minimizing download size matters.
 
+## OpenAI-labeled NUWorks follow-up
+
+An additional 2,772 NUWorks pairs were labeled by `gpt-5.6-terra`: 11
+category-diverse resumes, each scored against 252 unique job descriptions.
+`prepare_openai_labels.py` split them by resume identity into 7 train, 2
+validation, and 2 test resumes (1,764 / 504 / 504 pairs). No resume text crosses
+a split boundary.
+
+Fine-tuning the shipped BGE model on only the OpenAI labels produced excellent
+NUWorks ranking but caused catastrophic forgetting: HF test Spearman fell from
+0.6640 to 0.5544. The selected model therefore uses two stages:
+
+1. Three epochs on the OpenAI training split with resume-grouped batches,
+   CoSENT, batch size 64, and learning rate `3e-5`.
+2. One replay epoch on the original HF 3:1 over NeuralFrame mixture with
+   no-duplicate batches and learning rate `1e-5`.
+
+Production-parity int8 ONNX test results:
+
+| Model | NUWorks Spearman | NUWorks NDCG@10 | HF Spearman | HF NDCG@10 | HF Top-1 | NeuralFrame Spearman |
+|---|---:|---:|---:|---:|---:|---:|
+| Current BGE int8 | 0.3710 | 0.5942 | 0.6655 | 0.8476 | 67.4% | 0.6111 |
+| OpenAI + replay BGE int8 | **0.7760** | **0.7820** | **0.6670** | **0.8559** | 67.4% | **0.6221** |
+
+The candidate is worth updating: it more than doubles NUWorks held-out
+correlation without regressing the existing tests, and its quantized ONNX file
+remains 34.0 MB. NUWorks Top-1 stayed 0/2 resumes for both models, so that metric
+is too coarsely sampled to support a claim; NDCG and correlation are the useful
+signals until more distinct resumes are labeled.
+
+Artifacts:
+
+- PyTorch candidate: `models/experiments/openai_bge_replay`
+- Deployment export: `models/experiments/openai_bge_replay_onnx`
+- Benchmark JSON: `models/experiments/results/openai_bge_replay_q8_test.json`
+
 ## Validation ablations
 
 All rows below use the production mean-vector path unless named otherwise.

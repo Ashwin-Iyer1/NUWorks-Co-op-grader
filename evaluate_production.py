@@ -127,7 +127,7 @@ def score_dataset(model, frame, batch_size, char_cap, chunk_chars):
 
 def evaluate_model(
     model_path, data_dir, split, batch_size, char_cap, chunk_chars,
-    predictions_dir=None, backend=None, model_file=None,
+    predictions_dir=None, backend=None, model_file=None, dataset_names=None,
 ):
     model_kwargs = {"file_name": model_file} if model_file else None
     model = SentenceTransformer(model_path, backend=backend or "torch", model_kwargs=model_kwargs)
@@ -136,7 +136,7 @@ def evaluate_model(
         del model[2]
 
     output = {"model": model_path, "split": split, "datasets": {}}
-    for name in ("hf", "neuralframe"):
+    for name in dataset_names or ("hf", "neuralframe"):
         path = os.path.join(data_dir, f"{name}_{split}.csv")
         if not os.path.exists(path):
             continue
@@ -182,6 +182,12 @@ def main():
     parser.add_argument("--json-out")
     parser.add_argument("--backend", choices=("torch", "onnx"), default="torch")
     parser.add_argument("--model-file", help="backend file, e.g. onnx/model_quantized.onnx")
+    parser.add_argument(
+        "--datasets",
+        nargs="+",
+        default=["hf", "neuralframe"],
+        help="dataset prefixes to evaluate (default: hf neuralframe)",
+    )
     args = parser.parse_args()
     results = evaluate_model(
         args.model,
@@ -193,6 +199,7 @@ def main():
         args.predictions_dir,
         args.backend,
         args.model_file,
+        args.datasets,
     )
     rendered = json.dumps(results, indent=2)
     if args.json_out:
