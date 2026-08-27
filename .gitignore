@@ -45,3 +45,5 @@ models/
 
 # Claude Design export (local only, not part of the extension)
 NUWorks Grader Design System/
+more_job_descs.json
+openai_labels/
