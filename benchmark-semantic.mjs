@@ -1,7 +1,7 @@
-// Benchmark: mdbr-leaf-ir semantic similarity of a real resume against a real
-// NUWorks job batch (exmaplePayload.json), side by side with the lexical
-// matcher. Also prints the cosine distribution used to calibrate
-// COS_FLOOR / COS_CEIL in src/embeddings.js.
+// Benchmark: the fine-tuned resume grader's semantic similarity of a real
+// resume against a real NUWorks job batch (exmaplePayload.json), side by side
+// with the lexical matcher. Also prints the cosine distribution used to
+// calibrate COS_FLOOR / COS_CEIL in src/embeddings.js.
 //
 // Usage: node benchmark-semantic.mjs
 import { readFileSync } from "fs";
@@ -18,9 +18,14 @@ console.log(`Jobs with descriptions: ${jobs.length}`);
 
 // ── Load model ──
 let t0 = performance.now();
-const extractor = await pipeline("feature-extraction", "MongoDB/mdbr-leaf-ir", {
-  dtype: "q8",
-});
+const extractor = await pipeline(
+  "feature-extraction",
+  "turtlecap/mdbr-leaf-mt-resume-grader",
+  {
+    dtype: "q8",
+    use_external_data_format: false,
+  }
+);
 console.log(`Model load: ${(performance.now() - t0).toFixed(0)} ms`);
 
 // ── Embed resume (chunk & average, using the production chunker) ──
@@ -45,7 +50,7 @@ for (let i = 0; i < jobs.length; i += BATCH) {
   const batch = jobs.slice(i, i + BATCH);
   // Mirror the production char cap (embeddings-worker.js default).
   const texts = batch.map((j) =>
-    htmlToText(`${j.job_title || ""}\n${j.job_desc}`).slice(0, 2000)
+    htmlToText(`${j.job_title || ""}\n${j.job_desc}`).slice(0, 1200)
   );
   const out = await extractor(texts, { pooling: "mean", normalize: true });
   const d = out.dims[out.dims.length - 1];

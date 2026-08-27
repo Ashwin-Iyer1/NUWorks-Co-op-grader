@@ -727,7 +727,7 @@ function renderJobCard(job) {
   const semScore = job.matchDetails?.details?.semanticScore;
   const semLine =
     semScore !== undefined
-      ? `<div class="score-split" title="Blended score: ${Math.round((1 - SEMANTIC_WEIGHT) * 100)}% keyword match + ${Math.round(SEMANTIC_WEIGHT * 100)}% semantic similarity (mdbr-leaf-ir, cosine ${job.matchDetails.details.semanticCosine})">` +
+      ? `<div class="score-split" title="Blended score: ${Math.round((1 - SEMANTIC_WEIGHT) * 100)}% keyword match + ${Math.round(SEMANTIC_WEIGHT * 100)}% semantic similarity (mdbr-leaf-mt-resume-grader, cosine ${job.matchDetails.details.semanticCosine})">` +
         `Keyword ${job.baseMatchScore ?? job.matchScore} · AI ${semScore}</div>`
       : "";
 

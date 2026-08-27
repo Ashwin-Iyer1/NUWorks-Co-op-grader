@@ -11,7 +11,7 @@
 import { pipeline, env } from "@huggingface/transformers";
 import { htmlToText, chunkText } from "./embeddings.js";
 
-const MODEL_ID = "MongoDB/mdbr-leaf-ir";
+const MODEL_ID = "turtlecap/mdbr-leaf-mt-resume-grader";
 
 // From the model's config_sentence_transformers.json: the QUERY side gets this
 // prefix, documents are embedded bare. The resume plays the query role.
@@ -121,6 +121,10 @@ self.onmessage = async (e) => {
       const t0 = performance.now();
       extractor = await pipeline("feature-extraction", MODEL_ID, {
         dtype: "q8",
+        // The Hub config currently marks model_quantized.onnx as external-data
+        // format, but the uploaded 22.99MB file is self-contained and has no
+        // `_data` sidecar. Override that metadata so Transformers.js loads it.
+        use_external_data_format: false,
         // Surface the one-time ~23MB weights download as page-visible
         // progress; only the big weights file is worth reporting.
         progress_callback: (p) => {
@@ -135,13 +139,13 @@ self.onmessage = async (e) => {
       });
       console.log(
         `[Semantic] ${MODEL_ID} ready in ${Math.round(performance.now() - t0)} ms ` +
-          `(int8 ONNX ~23MB, 384-dim, 512-token window, WASM backend, ` +
+          `(int8 ONNX ~23MB, 384-dim, 256-token window, WASM backend, ` +
           `threads=${env.backends.onnx.wasm.numThreads ?? "auto"}, ` +
           `crossOriginIsolated=${self.crossOriginIsolated})`
       );
 
-      // Chunk-and-average the resume: at ~850 tokens it overflows the
-      // 512-token window, and plain truncation would drop the tail sections.
+      // Chunk-and-average the resume: it normally overflows the model's
+      // 256-token window, and plain truncation would drop the tail sections.
       const t1 = performance.now();
       const chunks = chunkText(htmlToText(msg.resumeText)).map(
         (c) => QUERY_PREFIX + c
@@ -163,12 +167,10 @@ self.onmessage = async (e) => {
       self.postMessage({ type: "ready" });
     } else if (msg.type === "score") {
       const t0 = performance.now();
-      // Attention cost is quadratic in tokens, so the char cap is the main
-      // speed/quality dial. 2000 chars (~250 tokens) measured 0.979 rank
-      // correlation with the full 512-token window on a real 253-job batch
-      // (capsweep, repo history) while cutting inference ~15-40%; 1000 chars
-      // degraded the top-25 noticeably. 4000 ≈ the full window.
-      const charCap = msg.charCap || 2000;
+      // The fine-tuned model was trained with a 256-token window. Roughly
+      // 1,200 characters fills that window for typical job descriptions;
+      // the tokenizer applies the exact token limit for denser text.
+      const charCap = msg.charCap || 1200;
       const cleaned = msg.texts.map((t) => htmlToText(t).slice(0, charCap));
       const out = await extractor(cleaned, {
         pooling: "mean",

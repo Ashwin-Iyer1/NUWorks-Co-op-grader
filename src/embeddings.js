@@ -2,24 +2,23 @@
 
 // Semantic similarity scoring via a small on-device embedding model.
 //
-// Model: MongoDB/mdbr-leaf-ir — a 23M-param, 384-dim BERT (mean pooling,
-// 512-token context), #1 on the public BEIR leaderboard for ≤100M-param
-// models. The int8 ONNX weights (~23MB) stream from the Hugging Face CDN on
-// first use and are cached by the browser; the ONNX runtime .wasm ships
-// INSIDE the extension (public/ort/) because MV3 forbids remotely hosted code.
+// Model: turtlecap/mdbr-leaf-mt-resume-grader — a resume/job-specific,
+// 23M-param, 384-dim BERT (mean pooling, 256-token context), fine-tuned from
+// MongoDB/mdbr-leaf-mt. Its int8 ONNX weights (~23MB) stream from the Hugging
+// Face CDN on first use and are cached by the browser. The separate ONNX
+// runtime loader ships with the extension; its .wasm data is cached at runtime.
 //
 // This module is the PAGE side: pure text helpers plus a thin client for the
 // dedicated worker (embeddings-worker.js) that owns the model. Inference must
 // stay off the main thread — when it ran on the page, each batch blocked the
 // event loop for hundreds of milliseconds and in-flight fetches appeared hung.
 
-// Cosine -> 0-100 calibration, fit on a real resume vs. a real 253-job
-// NUWorks batch (benchmark-semantic.mjs). Observed distribution: p10=0.07,
-// median=0.18, p90=0.28, max=0.37 — so 0.07 maps to 0 ("clearly unrelated":
-// pharmacy, PT aide, VFX) and 0.36+ maps to 100 (the strongest software /
-// data / quant fits). Re-run the benchmark to refit if the model changes.
-const COS_FLOOR = 0.07;
-const COS_CEIL = 0.36;
+// Cosine -> 0-100 calibration for the fine-tuned model. Across 1,782 held-out
+// resume/job pairs, p10 was 0.82–0.83, the median was 0.89–0.92, and the
+// strongest pairs approached 0.98. These bounds preserve useful spread rather
+// than letting the old base-model calibration turn nearly every score into 100.
+const COS_FLOOR = 0.8;
+const COS_CEIL = 0.97;
 
 /**
  * HTML job description -> the plain text the tokenizer should see. Unlike
@@ -50,14 +49,14 @@ export function cosineToScore(cos) {
 }
 
 /**
- * Split long text into ~1800-char chunks so each stays inside the model's
- * 512-token window. Prefers paragraph boundaries, but a PDF-extracted resume
- * is often ONE giant line, so oversized paragraphs are further split on
- * sentence/bullet boundaries — plain truncation would silently drop
- * everything past the first ~2000 characters. Exported for the worker and the
- * benchmark script so all callers exercise identical chunking.
+ * Split long text into ~1100-char chunks so each usually stays inside the
+ * model's 256-token window. Prefers paragraph boundaries, but a PDF-extracted
+ * resume is often ONE giant line, so oversized paragraphs are further split
+ * on sentence/bullet boundaries — plain truncation would silently drop
+ * everything past the first chunk. Exported for the worker and benchmark so
+ * all callers exercise identical chunking.
  */
-export function chunkText(text, target = 1800) {
+export function chunkText(text, target = 1100) {
   const pieces = [];
   for (const para of text.split(/\n+/)) {
     if (para.length <= target) {

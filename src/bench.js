@@ -98,9 +98,9 @@ async function run() {
         out(`<p>Scorer failed to load with numThreads=${t} — see console.</p>`);
         continue;
       }
-      await scorer.similarities(docs.slice(0, 4), 4000); // warmup/compile
+      await scorer.similarities(docs.slice(0, 4), 2000); // warmup/compile
       setStatus(`Threads=${t}: scoring ${N} docs…`);
-      const r = await timedPass(scorer, docs, 8, 4000);
+      const r = await timedPass(scorer, docs, 8, 2000);
       threadRows.push([
         `${t}`,
         r.perDoc.toFixed(1),
@@ -117,7 +117,7 @@ async function run() {
       }
     }
     table(
-      "Thread count (batch 8, full 512-token docs)",
+      "Thread count (batch 8, full 256-token docs)",
       ["threads", "ms/doc", `total ms (${N} docs)`, "projected 253 jobs"],
       threadRows
     );
@@ -126,7 +126,7 @@ async function run() {
     setStatus(`Batch sweep with ${bestThreads} thread(s)…`);
     const batchRows = [];
     for (const b of [1, 4, 8, 16, 32]) {
-      const r = await timedPass(bestScorer, docs, b, 4000);
+      const r = await timedPass(bestScorer, docs, b, 2000);
       batchRows.push([
         `${b}`,
         r.perDoc.toFixed(1),
@@ -143,10 +143,10 @@ async function run() {
     // ── Sweep 3: document char cap (attention is O(tokens²)) ──
     setStatus("Char-cap sweep…");
     const capRows = [];
-    for (const cap of [1000, 2000, 4000]) {
+    for (const cap of [600, 1200, 2000]) {
       const r = await timedPass(bestScorer, docs, 8, cap);
       capRows.push([
-        `${cap} (~${Math.round(cap / 8)} tokens)`,
+        `${cap} (~${Math.round(cap / 5)} tokens)`,
         r.perDoc.toFixed(1),
         Math.round(r.wall),
         Math.round((r.perDoc * 253) / 1000) + " s",
