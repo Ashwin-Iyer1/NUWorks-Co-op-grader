@@ -20,6 +20,11 @@ NUWorks Grader Design System/
 public/model.nlp
 model.nlp
 
+.venv/
+
+data/
+
+models/
 # Misc
 *.pem
 *.crx
