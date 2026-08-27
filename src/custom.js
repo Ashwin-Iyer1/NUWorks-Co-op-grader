@@ -2,6 +2,15 @@
 
 import JobMatcher, { ELIGIBILITY_COPY } from "./matcher.js";
 import { createSemanticScorer, cosineToScore } from "./embeddings.js";
+import {
+  SEMANTIC_MODEL_REVISION_KEY,
+  IS_MODEL_UPDATE_TEST_BUILD,
+  countCachedModelAssets,
+  deleteCachedModelAssets,
+  fetchLatestModelRevision,
+  installedRevisionForComparison,
+  isModelUpdateAvailable,
+} from "./semantic-model-version.mjs";
 import { setupThemeToggle } from "./theme.js";
 
 // ─── State ───
@@ -1487,10 +1496,101 @@ async function enrichJobDetails(creds) {
 // re-reads every scored posting and blends a semantic-similarity signal into
 // the lexical score, catching paraphrased fit that keyword overlap misses
 // ("built REST services in Flask" vs "backend web development experience").
-// Runs AFTER results render; the first ever run also downloads the ~23MB
+// Runs AFTER results render; the first ever run also downloads the ~34MB
 // model, so scores may refine noticeably later on that one occasion.
 const SEMANTIC_WEIGHT = 0.35;
 let semanticRunId = 0;
+let latestSemanticModelRevision = null;
+let modelRevisionToLoad = null;
+let modelUpgradeBusy = false;
+
+function semanticStorageGet(keys) {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get(keys, (result) => {
+      const error = chrome.runtime.lastError;
+      if (error) reject(new Error(error.message));
+      else resolve(result || {});
+    });
+  });
+}
+
+function semanticStorageSet(values) {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.set(values, () => {
+      const error = chrome.runtime.lastError;
+      if (error) reject(new Error(error.message));
+      else resolve();
+    });
+  });
+}
+
+function semanticStorageRemove(keys) {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.remove(keys, () => {
+      const error = chrome.runtime.lastError;
+      if (error) reject(new Error(error.message));
+      else resolve();
+    });
+  });
+}
+
+function shortRevision(revision) {
+  return revision ? revision.slice(0, 8) : "legacy";
+}
+
+function hideSemanticUpgradeBadge() {
+  const badge = $("semantic-upgrade-badge");
+  badge.hidden = true;
+  badge.disabled = false;
+  badge.querySelector("span").textContent = "AI upgrade";
+}
+
+async function checkSemanticModelUpdate() {
+  hideSemanticUpgradeBadge();
+  const state = await semanticStorageGet([
+    "semanticEnabled",
+    SEMANTIC_MODEL_REVISION_KEY,
+  ]);
+  if (!state.semanticEnabled) return false;
+
+  try {
+    const [latestRevision, cachedAssetCount] = await Promise.all([
+      fetchLatestModelRevision(),
+      countCachedModelAssets(),
+    ]);
+    latestSemanticModelRevision = latestRevision;
+    const storedRevision = state[SEMANTIC_MODEL_REVISION_KEY] || null;
+    const updateAvailable = isModelUpdateAvailable({
+      storedRevision,
+      latestRevision,
+      cachedAssetCount,
+    });
+
+    // Keep an explicitly installed revision pinned. A brand-new user with no
+    // cache starts directly on the latest SHA; a legacy /main cache stays put
+    // until its owner clicks the upgrade badge.
+    modelRevisionToLoad =
+      storedRevision || (cachedAssetCount === 0 ? latestRevision : null);
+
+    if (!updateAvailable) return false;
+
+    const badge = $("semantic-upgrade-badge");
+    const comparedRevision = installedRevisionForComparison(storedRevision);
+    badge.hidden = false;
+    badge.querySelector("span").textContent = IS_MODEL_UPDATE_TEST_BUILD
+      ? "Test AI upgrade"
+      : "AI upgrade";
+    badge.title =
+      `Semantic AI update ${shortRevision(comparedRevision)} → ` +
+      `${shortRevision(latestRevision)}. Click to replace the cached model.`;
+    return true;
+  } catch (error) {
+    // Version checks are best-effort. Offline users keep their installed model
+    // and Semantic AI continues to function from cache.
+    console.warn("[Semantic] Model update check failed:", error);
+    return false;
+  }
+}
 
 // ── Download progress modal ──
 // Opens on the first progress message from the worker (only downloads emit
@@ -1540,18 +1640,37 @@ function hideDownloadProgress() {
   }
 }
 
+function failDownloadProgress(message) {
+  clearTimeout(downloadHideTimer);
+  $("download-status").textContent = message;
+  $("download-bar").style.width = "0%";
+  setTimeout(() => {
+    $("download-overlay").classList.remove("open");
+    downloadOverlayDismissed = false;
+  }, 1600);
+}
+
 // The scorer wraps a worker holding the loaded model — keep it warm across
 // fetch runs so only the FIRST run pays the model-load cost. Recreated only
 // when the resume text changes.
 let semanticCache = { key: null, scorer: null };
 
-async function getSemanticScorer(resumeText) {
-  if (semanticCache.scorer && semanticCache.key === resumeText) {
+function semanticScorerKey(resumeText, revision = modelRevisionToLoad) {
+  return `${revision || "main"}\n${resumeText}`;
+}
+
+async function getSemanticScorer(
+  resumeText,
+  revision = modelRevisionToLoad
+) {
+  const cacheKey = semanticScorerKey(resumeText, revision);
+  if (semanticCache.scorer && semanticCache.key === cacheKey) {
     return semanticCache.scorer;
   }
   if (semanticCache.scorer) semanticCache.scorer.dispose();
-  semanticCache = { key: resumeText, scorer: null };
+  semanticCache = { key: cacheKey, scorer: null };
   const scorer = await createSemanticScorer(resumeText, {
+    revision,
     // First-enable downloads (runtime + model) get a prominent progress
     // modal; the small status chip mirrors it for after the user hides it.
     onProgress: (m) => {
@@ -1563,12 +1682,84 @@ async function getSemanticScorer(resumeText) {
   });
   hideDownloadProgress();
   // A concurrent call may have won the race; don't clobber its worker.
-  if (semanticCache.key === resumeText && !semanticCache.scorer) {
+  if (semanticCache.key === cacheKey && !semanticCache.scorer) {
     semanticCache.scorer = scorer;
+    if (scorer && revision) {
+      await semanticStorageSet({ [SEMANTIC_MODEL_REVISION_KEY]: revision });
+    }
     return scorer;
   }
   if (scorer) scorer.dispose();
   return semanticCache.scorer;
+}
+
+async function upgradeSemanticModel() {
+  if (modelUpgradeBusy) return;
+  modelUpgradeBusy = true;
+  const badge = $("semantic-upgrade-badge");
+  badge.disabled = true;
+  badge.querySelector("span").textContent = "Updating…";
+  $("download-title").textContent = "Updating Semantic AI";
+  $("download-note").innerHTML =
+    "The old cached model is being replaced with the latest ~34&nbsp;MB " +
+    "int8 ONNX model. The separate AI runtime stays cached.";
+  downloadOverlayDismissed = false;
+  showDownloadProgress({ label: "Preparing model update", pct: 0 });
+
+  try {
+    const latestRevision =
+      latestSemanticModelRevision || (await fetchLatestModelRevision());
+    latestSemanticModelRevision = latestRevision;
+
+    semanticRunId++;
+    if (semanticCache.scorer) semanticCache.scorer.dispose();
+    semanticCache = { key: null, scorer: null };
+    const removed = await deleteCachedModelAssets();
+    await semanticStorageRemove([SEMANTIC_MODEL_REVISION_KEY]);
+    modelRevisionToLoad = latestRevision;
+    console.log(
+      `[Semantic] Removed ${removed.deleted} cached model asset(s), ` +
+        `${removed.onnxDeleted} ONNX; installing ${latestRevision}`
+    );
+
+    const creds = await getCredentials();
+    const actualResumeText = [creds.resume, creds.profileSkills]
+      .filter(Boolean)
+      .join("\n");
+    const warmupText =
+      actualResumeText || "Semantic AI model update verification";
+    const scorer = await getSemanticScorer(warmupText, latestRevision);
+    if (!scorer) throw new Error("The updated model could not be loaded.");
+
+    if (!actualResumeText) {
+      scorer.dispose();
+      semanticCache = { key: null, scorer: null };
+    }
+    hideSemanticUpgradeBadge();
+    showToast(
+      `Semantic AI updated to ${shortRevision(latestRevision)}`
+    );
+
+    // Re-score jobs already on screen without making the user fetch again.
+    if (actualResumeText && allJobs.length) {
+      semanticRefine({ ...creds, semanticEnabled: true }).catch((error) =>
+        console.error("Semantic refinement after model update failed:", error)
+      );
+    }
+  } catch (error) {
+    console.error("[Semantic] Model upgrade failed:", error);
+    failDownloadProgress("Update failed — keeping Semantic AI enabled.");
+    badge.hidden = false;
+    showToast(`Semantic AI update failed: ${error.message || error}`);
+  } finally {
+    modelUpgradeBusy = false;
+    badge.disabled = false;
+    if (!badge.hidden) {
+      badge.querySelector("span").textContent = IS_MODEL_UPDATE_TEST_BUILD
+        ? "Test AI upgrade"
+        : "AI upgrade";
+    }
+  }
 }
 
 async function semanticRefine(creds) {
@@ -1583,8 +1774,10 @@ async function semanticRefine(creds) {
     .join("\n");
   if (!resumeText) return;
 
-  // The first ever run also downloads the ~23MB model, so name that phase.
-  const modelWarm = semanticCache.scorer && semanticCache.key === resumeText;
+  // The first ever run also downloads the ~34MB model, so name that phase.
+  const modelWarm =
+    semanticCache.scorer &&
+    semanticCache.key === semanticScorerKey(resumeText);
   if (!modelWarm) setBgTask("semantic", { label: "Loading scoring model…" });
   const scorer = await getSemanticScorer(resumeText);
   if (!scorer || runId !== semanticRunId) {
@@ -1878,24 +2071,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ── Semantic AI opt-in ──
   // The checkbox never turns on directly: checking it opens the consent
   // dialog (what the model is + the weak-hardware warning), and only Accept
-  // flips the stored flag and triggers the one-time ~46MB download.
+  // flips the stored flag and triggers the one-time ~57MB download.
   const semCheckbox = $("ctl-semantic");
   const semOverlay = $("semantic-overlay");
-  chrome.storage.local.get(["semanticEnabled", "semanticConsented"], (r) => {
-    semCheckbox.checked = !!r.semanticEnabled;
+  try {
+    const semanticState = await semanticStorageGet([
+      "semanticEnabled",
+      "semanticConsented",
+    ]);
+    semCheckbox.checked = !!semanticState.semanticEnabled;
     // Enabled before the consent flag existed → they already accepted once.
-    if (r.semanticEnabled && !r.semanticConsented) {
-      chrome.storage.local.set({ semanticConsented: true });
+    if (semanticState.semanticEnabled && !semanticState.semanticConsented) {
+      await semanticStorageSet({ semanticConsented: true });
     }
-  });
-  semCheckbox.addEventListener("change", () => {
+    if (semanticState.semanticEnabled) await checkSemanticModelUpdate();
+  } catch (error) {
+    console.warn("[Semantic] Could not initialize model update checks:", error);
+  }
+  semCheckbox.addEventListener("change", async () => {
     if (semCheckbox.checked) {
       // The consent dialog is shown ONCE. After a past accept, re-checking
       // just re-enables — the downloaded files were kept, so it's instant.
-      chrome.storage.local.get(["semanticConsented"], async (r) => {
-        if (r.semanticConsented) {
-          chrome.storage.local.set({ semanticEnabled: true });
+      try {
+        const state = await semanticStorageGet(["semanticConsented"]);
+        if (state.semanticConsented) {
+          await semanticStorageSet({ semanticEnabled: true });
           showToast("Semantic AI enabled");
+          await checkSemanticModelUpdate();
           const creds = await getCredentials();
           semanticRefine({ ...creds, semanticEnabled: true }).catch((e) =>
             console.error("Semantic refinement failed:", e)
@@ -1904,13 +2106,17 @@ document.addEventListener("DOMContentLoaded", async () => {
           semCheckbox.checked = false; // stays off until the dialog is accepted
           semOverlay.classList.add("open");
         }
-      });
+      } catch (error) {
+        semCheckbox.checked = false;
+        showToast(`Could not enable Semantic AI: ${error.message || error}`);
+      }
     } else {
-      chrome.storage.local.set({ semanticEnabled: false });
+      await semanticStorageSet({ semanticEnabled: false });
       // Stop any in-flight refinement; downloaded files are kept so
       // re-enabling is instant.
       semanticRunId++;
       setBgTask("semantic", null);
+      hideSemanticUpgradeBadge();
       showToast("Semantic AI off. Downloaded files kept for re-enabling.");
     }
   });
@@ -1924,11 +2130,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     downloadOverlayDismissed = true;
     $("download-overlay").classList.remove("open");
   });
+  $("semantic-upgrade-badge").addEventListener("click", upgradeSemanticModel);
 
   $("semantic-accept").addEventListener("click", async () => {
     semOverlay.classList.remove("open");
     semCheckbox.checked = true;
-    chrome.storage.local.set({ semanticEnabled: true, semanticConsented: true });
+    await semanticStorageSet({
+      semanticEnabled: true,
+      semanticConsented: true,
+    });
+    $("download-title").textContent = "Setting up Semantic AI";
+    $("download-note").innerHTML =
+      "One-time download of the AI runtime (~23&nbsp;MB) and model " +
+      "(~34&nbsp;MB). Both are kept on this device, so this won't happen " +
+      "again. Scoring starts automatically when it finishes.";
+    await checkSemanticModelUpdate();
     // Warm the model now (downloads runtime + weights, progress in the status
     // chip) and refine any jobs already on screen.
     const creds = await getCredentials();

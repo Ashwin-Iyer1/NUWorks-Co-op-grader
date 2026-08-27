@@ -3,8 +3,8 @@
 // Semantic similarity scoring via a small on-device embedding model.
 //
 // Model: turtlecap/mdbr-leaf-mt-resume-grader — a resume/job-specific,
-// 23M-param, 384-dim BERT (mean pooling, 256-token context), fine-tuned from
-// MongoDB/mdbr-leaf-mt. Its int8 ONNX weights (~23MB) stream from the Hugging
+// 33.36M-param, 384-dim BGE model (mean pooling, 256-token context). Its int8
+// ONNX weights (~34MB) stream from the Hugging
 // Face CDN on first use and are cached by the browser. The separate ONNX
 // runtime loader ships with the extension; its .wasm data is cached at runtime.
 //
@@ -13,12 +13,10 @@
 // stay off the main thread — when it ran on the page, each batch blocked the
 // event loop for hundreds of milliseconds and in-flight fetches appeared hung.
 
-// Cosine -> 0-100 calibration for the fine-tuned model. Across 1,782 held-out
-// resume/job pairs, p10 was 0.82–0.83, the median was 0.89–0.92, and the
-// strongest pairs approached 0.98. These bounds preserve useful spread rather
-// than letting the old base-model calibration turn nearly every score into 100.
-const COS_FLOOR = 0.8;
-const COS_CEIL = 0.97;
+// Validation-fitted display calibration for the BGE fine-tune. This changes
+// only the user-facing 0–100 value; cosine similarity still determines rank.
+const SCORE_SLOPE = 1.9226748511;
+const SCORE_INTERCEPT = -0.9568563562;
 
 /**
  * HTML job description -> the plain text the tokenizer should see. Unlike
@@ -44,7 +42,7 @@ export function htmlToText(html) {
 
 /** Map a raw cosine onto the extension's 0-100 scale. */
 export function cosineToScore(cos) {
-  const t = (cos - COS_FLOOR) / (COS_CEIL - COS_FLOOR);
+  const t = SCORE_SLOPE * cos + SCORE_INTERCEPT;
   return Math.round(Math.max(0, Math.min(1, t)) * 100);
 }
 
@@ -171,6 +169,7 @@ export function createSemanticScorer(resumeText, opts = {}) {
       type: "init",
       resumeText,
       numThreads: opts.numThreads,
+      revision: opts.revision,
     });
   });
 }

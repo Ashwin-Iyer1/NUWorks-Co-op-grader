@@ -23,9 +23,9 @@ Keyword matching can't see that "built REST services in Flask" satisfies "backen
 
 ### How it works
 
-- **The model** is [`turtlecap/mdbr-leaf-mt-resume-grader`](https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader), a 23M-parameter sentence-embedding model fine-tuned specifically on resume/job pairs from `MongoDB/mdbr-leaf-mt` (BERT family, 384 dimensions, 256-token window). It runs entirely on your device via [Transformers.js](https://huggingface.co/docs/transformers.js) and the ONNX WebAssembly runtime; **your resume and the job text never leave your computer.**
-- **Scoring is geometric, not rule-based.** Your resume (query-prefixed, chunked to fit the model window, and averaged into one vector) and each job description (capped to approximately the model's 256-token window) are converted into 384-dimensional vectors encoding their meaning. The raw score is the **cosine similarity** between the two vectors: how close the two texts sit in the model's learned meaning-space. It rewards shared domain, concepts, and responsibilities regardless of exact wording.
-- **Calibration**: the fine-tuned model's raw cosines cluster high. On 1,782 held-out resume/job pairs, p10 was approximately 0.82–0.83, the median was 0.89–0.92, and the strongest pairs approached 0.98. Cosines are mapped linearly from 0.80→0 to 0.97→100 so the displayed AI score retains a useful spread.
+- **The model** is [`turtlecap/mdbr-leaf-mt-resume-grader`](https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader), a 33.36M-parameter `BAAI/bge-small-en-v1.5` fine-tune trained on 26,677 weighted resume/job pairs (384 dimensions, 256-token window). It runs entirely on your device via [Transformers.js](https://huggingface.co/docs/transformers.js) and the ONNX WebAssembly runtime; **your resume and the job text never leave your computer.**
+- **Scoring is geometric, not rule-based.** Your resume (chunked to fit the model window and averaged into one vector) and each job description (capped to approximately the model's 256-token window) are converted into 384-dimensional vectors encoding their meaning. The raw score is the **cosine similarity** between the two vectors: how close the two texts sit in the model's learned meaning-space. This fine-tune uses bare resume and job text, without the previous retrieval query prefix.
+- **Calibration**: the displayed AI score uses a validation-fitted affine mapping for the BGE fine-tune (`1.9227 × cosine − 0.9569`, clipped to 0–100). Calibration changes only the displayed value; cosine similarity still determines semantic rank.
 - **Blending**: the visible match score becomes **65% keyword score + 35% semantic score**. Each card shows both ingredients ("Keyword 65 · AI 72"), and the detail modal gets a "Semantic (AI)" bar. The keyword layer stays in charge of the deterministic, explainable parts; the AI catches paraphrased fit.
 - **What it does *not* do**: it doesn't understand seniority, hard requirements, or negation — a "PhD required" posting can still score high on topic. That's exactly why it's weighted at 35% and why the eligibility gate and keyword layer remain authoritative.
 
@@ -33,7 +33,9 @@ Keyword matching can't see that "built REST services in Flask" satisfies "backen
 
 1. Open the Job Explorer and tick **Semantic AI** in the fetch controls.
 2. A consent dialog explains the feature and warns that scoring is CPU-intensive on low-powered machines (MacBook Air, Chromebooks): a large batch may take several minutes in the background, and may spin fans or use battery. Scores stay usable throughout — the AI refinement simply arrives later.
-3. Accept to download the ONNX runtime (~23 MB, served from this repo) and the model weights (~23 MB, from the Hugging Face CDN). A progress dialog shows the download; both files are cached on your device, so this happens **once**. Unticking the box disables scoring but keeps the files, so re-enabling is instant and never re-prompts.
+3. Accept to download the ONNX runtime (~23 MB, served from this repo) and the model weights (~34 MB, from the Hugging Face CDN). A progress dialog shows the download; both files are cached on your device. Unticking the box disables scoring but keeps the files, so re-enabling is instant and never re-prompts.
+
+When an opted-in user opens the Job Explorer, the extension checks the model repository's latest commit SHA without downloading model weights. If that SHA differs from the installed revision, an **AI upgrade** badge appears beside the Semantic AI checkbox. Clicking it removes the old cached model assets, downloads the new revision, and re-scores jobs already on screen. Updates are never downloaded automatically.
 
 Semantic scoring runs in a dedicated Web Worker after keyword scores are already on screen, uses at most half your CPU cores (capped at 4), and shows its progress in the status strip. If the model can't load (offline first run, unsupported browser), the extension silently keeps keyword-only scores.
 
@@ -58,6 +60,18 @@ This project uses Parcel to bundle dependencies (`@huggingface/transformers`, `p
    npm run build
    ```
    This generates a `dist/` folder (~2.6 MB — the AI model is not bundled).
+
+To test the model-upgrade UI without publishing another Hugging Face revision:
+
+```bash
+npm run build:test-model-update
+```
+
+This also writes to `dist/`, but compiles in a deliberately stale installed
+revision and renames the unpacked extension to **Model Update Test**. Open
+`custom.html` while Semantic AI is enabled and the upgrade badge will appear.
+The spoof exists only in this test build. Run `npm run build` afterward to
+replace `dist/` with the production-safe build.
 
 ### 2. Load in Chrome
 
@@ -85,6 +99,7 @@ This project uses Parcel to bundle dependencies (`@huggingface/transformers`, `p
 │   ├── matcher.js            # Eligibility gate + skill/keyword scoring engine
 │   ├── embeddings.js         # Semantic AI: text helpers, calibration, worker client
 │   ├── embeddings-worker.js  # Semantic AI: model loading + inference (Web Worker)
+│   ├── semantic-model-version.mjs # Hub SHA checks and targeted cache maintenance
 │   ├── content.js / interceptor.js # Content scripts (NUWorks page + fetch interceptor)
 │   ├── bench.js / bench.html # In-browser performance benchmark (npm run build:bench)
 │   ├── api.js / storage.js / ui.js / theme.js
@@ -105,4 +120,4 @@ This project is licensed under the [GNU Affero General Public License v3.0 (AGPL
 
 Made by [Ashwin Iyer](https://ashwiniyer.com)
 
-Semantic matching uses [`turtlecap/mdbr-leaf-mt-resume-grader`](https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader), fine-tuned from [`MongoDB/mdbr-leaf-mt`](https://huggingface.co/MongoDB/mdbr-leaf-mt), via [Transformers.js](https://huggingface.co/docs/transformers.js).
+Semantic matching uses [`turtlecap/mdbr-leaf-mt-resume-grader`](https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader), fine-tuned from [`BAAI/bge-small-en-v1.5`](https://huggingface.co/BAAI/bge-small-en-v1.5), via [Transformers.js](https://huggingface.co/docs/transformers.js).

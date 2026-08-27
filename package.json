@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "A powerful Chrome Extension designed to help Northeastern University students optimize their co-op search on NUWorks (Symplicity). This tool adds advanced filtering, resume matching, and bulk automation features to the standard NUWorks interface.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test test/*.test.mjs",
     "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
-    "build": "npm run clean && parcel build src/index.html src/custom.html src/background.js src/embeddings-worker.js src/content.js src/interceptor.js --dist-dir dist --no-cache --no-source-maps --public-url ./ && node -e \"require('fs').rmSync('dist/ort/ort-wasm-simd-threaded.asyncify.wasm',{force:true})\"",
-    "build:bench": "npm run clean && parcel build src/index.html src/custom.html src/background.js src/embeddings-worker.js src/bench.html src/content.js src/interceptor.js --dist-dir dist --no-cache --no-source-maps --public-url ./ && node -e \"require('fs').rmSync('dist/ort/ort-wasm-simd-threaded.asyncify.wasm',{force:true})\""
+    "build:bundle": "npm run clean && parcel build src/index.html src/custom.html src/background.js src/embeddings-worker.js src/content.js src/interceptor.js --dist-dir dist --no-cache --no-source-maps --public-url ./ && node -e \"require('fs').rmSync('dist/ort/ort-wasm-simd-threaded.asyncify.wasm',{force:true})\"",
+    "build:bench:bundle": "npm run clean && parcel build src/index.html src/custom.html src/background.js src/embeddings-worker.js src/bench.html src/content.js src/interceptor.js --dist-dir dist --no-cache --no-source-maps --public-url ./ && node -e \"require('fs').rmSync('dist/ort/ort-wasm-simd-threaded.asyncify.wasm',{force:true})\"",
+    "build": "npm run build:bundle",
+    "build:test-model-update": "npm run build && node scripts/mark-model-update-test-build.mjs",
+    "build:bench": "npm run build:bench:bundle"
   },
   "staticFiles": {
     "staticPath": "public"

@@ -10,13 +10,7 @@
 // {type:"score", id, texts} -> {type:"scores", id, cosines} | {type:"error", id}.
 import { pipeline, env } from "@huggingface/transformers";
 import { htmlToText, chunkText } from "./embeddings.js";
-
-const MODEL_ID = "turtlecap/mdbr-leaf-mt-resume-grader";
-
-// From the model's config_sentence_transformers.json: the QUERY side gets this
-// prefix, documents are embedded bare. The resume plays the query role.
-const QUERY_PREFIX =
-  "Represent this sentence for searching relevant passages: ";
+import { SEMANTIC_MODEL_ID } from "./semantic-model-version.mjs";
 
 env.allowLocalModels = false;
 // The tiny .mjs loader ships in the package (it is JavaScript — MV3 forbids
@@ -28,7 +22,7 @@ env.backends.onnx.wasm.wasmPaths = `${self.location.origin}/ort/`;
 // CORS + CORP headers), persisted in the Cache API, and handed to ORT as raw
 // bytes via wasmBinary. WebAssembly bytes are data, unlike the .mjs loader.
 // The model weights stream from the HF CDN the same way (transformers.js's
-// own cache). Together: ~46MB one-time download, then fully offline.
+// own cache). Together: ~57MB one-time download, then fully offline.
 const WASM_URL =
   "https://raw.githubusercontent.com/Ashwin-Iyer1/NUWorks-Co-op-grader/refs/heads/chrome-extension/public/ort/ort-wasm-simd-threaded.asyncify.wasm";
 const RUNTIME_CACHE = "nuwg-semantic-runtime";
@@ -103,7 +97,7 @@ self.onmessage = async (e) => {
       env.backends.onnx.wasm.wasmBinary = await loadWasmBinary();
 
       // transformers.js fires the SAME progress events when streaming the
-      // model out of its cache as when downloading it, and reading 23MB off
+      // model out of its cache as when downloading it, and reading 34MB off
       // disk on every cold page-open would flash the "downloading" modal for
       // a download that isn't happening. Only report progress when the big
       // weights file is genuinely absent from the cache.
@@ -112,20 +106,20 @@ self.onmessage = async (e) => {
         const tCache = await caches.open("transformers-cache");
         const keys = await tCache.keys();
         isRealDownload = !keys.some(
-          (r) => r.url.includes(MODEL_ID) && r.url.includes(".onnx")
+          (r) => r.url.includes(SEMANTIC_MODEL_ID) && r.url.includes(".onnx")
         );
       } catch {
         // Cache API unavailable → every load is a real download; report it.
       }
 
       const t0 = performance.now();
-      extractor = await pipeline("feature-extraction", MODEL_ID, {
+      const modelOptions = {
         dtype: "q8",
-        // The Hub config currently marks model_quantized.onnx as external-data
-        // format, but the uploaded 22.99MB file is self-contained and has no
+        // The Hub config can mark model_quantized.onnx as external-data
+        // format, but the uploaded 34MB file is self-contained and has no
         // `_data` sidecar. Override that metadata so Transformers.js loads it.
         use_external_data_format: false,
-        // Surface the one-time ~23MB weights download as page-visible
+        // Surface the one-time ~34MB weights download as page-visible
         // progress; only the big weights file is worth reporting.
         progress_callback: (p) => {
           if (isRealDownload && p.status === "progress" && p.total > 5_000_000) {
@@ -136,10 +130,18 @@ self.onmessage = async (e) => {
             });
           }
         },
-      });
+      };
+      // Pin model assets to the exact Hub SHA selected by custom.js. A new SHA
+      // creates new cache URLs instead of silently reusing mutable /main files.
+      if (msg.revision) modelOptions.revision = msg.revision;
+      extractor = await pipeline(
+        "feature-extraction",
+        SEMANTIC_MODEL_ID,
+        modelOptions
+      );
       console.log(
-        `[Semantic] ${MODEL_ID} ready in ${Math.round(performance.now() - t0)} ms ` +
-          `(int8 ONNX ~23MB, 384-dim, 256-token window, WASM backend, ` +
+        `[Semantic] ${SEMANTIC_MODEL_ID}@${msg.revision || "main"} ready in ${Math.round(performance.now() - t0)} ms ` +
+          `(int8 ONNX ~34MB, 384-dim, 256-token window, WASM backend, ` +
           `threads=${env.backends.onnx.wasm.numThreads ?? "auto"}, ` +
           `crossOriginIsolated=${self.crossOriginIsolated})`
       );
@@ -147,9 +149,9 @@ self.onmessage = async (e) => {
       // Chunk-and-average the resume: it normally overflows the model's
       // 256-token window, and plain truncation would drop the tail sections.
       const t1 = performance.now();
-      const chunks = chunkText(htmlToText(msg.resumeText)).map(
-        (c) => QUERY_PREFIX + c
-      );
+      // This BGE fine-tune was trained with bare resume/job text. The previous
+      // mdbr model's retrieval prompt must not be added to resume chunks.
+      const chunks = chunkText(htmlToText(msg.resumeText));
       const res = await extractor(chunks, { pooling: "mean", normalize: true });
       const dim = res.dims[res.dims.length - 1];
       resumeVec = new Float32Array(dim);
@@ -162,7 +164,7 @@ self.onmessage = async (e) => {
       for (let i = 0; i < dim; i++) resumeVec[i] /= norm;
 
       console.log(
-        `[Semantic] Resume embedded as ${chunks.length} chunk(s) in ${Math.round(performance.now() - t1)} ms (query-prefixed, mean-pooled, averaged)`
+        `[Semantic] Resume embedded as ${chunks.length} chunk(s) in ${Math.round(performance.now() - t1)} ms (mean-pooled, averaged)`
       );
       self.postMessage({ type: "ready" });
     } else if (msg.type === "score") {

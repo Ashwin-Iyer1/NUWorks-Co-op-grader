@@ -254,6 +254,18 @@
     .checkbox-row label {
       font-size: 0.88rem; color: var(--text-secondary); cursor: pointer;
     }
+    .semantic-upgrade-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 9px; border: 1px solid var(--accent);
+      border-radius: var(--radius-pill); background: var(--accent-muted);
+      color: var(--accent); font: 700 0.68rem/1.2 var(--font-sans);
+      letter-spacing: 0.01em; cursor: pointer;
+      transition: transform var(--transition), background var(--transition);
+    }
+    .semantic-upgrade-badge:hover { transform: translateY(-1px); background: var(--accent-glow); }
+    .semantic-upgrade-badge:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
+    .semantic-upgrade-badge:disabled { cursor: wait; opacity: 0.7; transform: none; }
+    .semantic-upgrade-badge[hidden] { display: none; }
 
     /* ─── Buttons ─── */
     .btn {
@@ -764,6 +776,16 @@
         <div class="checkbox-row">
           <input type="checkbox" id="ctl-semantic" />
           <label for="ctl-semantic" title="On-device AI model that scores meaning, not just keywords">Semantic AI</label>
+          <button
+            type="button"
+            class="semantic-upgrade-badge"
+            id="semantic-upgrade-badge"
+            title="A newer Semantic AI model is available. Click to replace the cached model."
+            hidden
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>
+            <span>AI upgrade</span>
+          </button>
         </div>
         <div class="controls-actions">
           <button class="btn btn-primary" id="btn-fetch">Fetch &amp; analyze</button>
@@ -890,7 +912,7 @@
         <h2>Enable Semantic AI matching?</h2>
         <p>
           A small, resume-specific AI language model
-          (<b>mdbr-leaf-mt-resume-grader</b>, 23M parameters) runs
+          (<b>mdbr-leaf-mt-resume-grader</b>, 33M parameters) runs
           <b>entirely on your device</b> and re-reads every job description to
           score how well it fits your resume by <i>meaning</i>, not just
           keyword overlap &mdash; so "built REST services in Flask" counts
@@ -900,7 +922,7 @@
         </p>
         <p>
           Enabling downloads the AI runtime and model
-          (<b>~46&nbsp;MB, one time</b>); they are kept for future sessions.
+          (<b>~57&nbsp;MB, one time</b>); they are kept for future sessions.
         </p>
         <div class="semantic-warn">
           <b>Heads up:</b> scoring is <b>computationally intensive</b>. On
@@ -911,7 +933,7 @@
         </div>
         <div class="semantic-dialog-actions">
           <button class="btn btn-secondary" id="semantic-cancel">Not now</button>
-          <button class="btn btn-primary" id="semantic-accept">Enable &amp; download (~46 MB)</button>
+          <button class="btn btn-primary" id="semantic-accept">Enable &amp; download (~57 MB)</button>
         </div>
       </div>
     </div>
@@ -921,14 +943,14 @@
   <div class="modal-overlay" id="download-overlay">
     <div class="modal semantic-dialog">
       <div class="semantic-dialog-body">
-        <h2>Setting up Semantic AI</h2>
+        <h2 id="download-title">Setting up Semantic AI</h2>
         <p id="download-status">Preparing download…</p>
         <div class="progress-bar-outer">
           <div class="progress-bar-inner" id="download-bar" style="width:0%"></div>
         </div>
-        <p class="download-note">
+        <p class="download-note" id="download-note">
           One-time download of the AI runtime (~23&nbsp;MB) and model
-          (~23&nbsp;MB). Both are kept on this device, so this won't happen
+          (~34&nbsp;MB). Both are kept on this device, so this won't happen
           again. Scoring starts automatically when it finishes.
         </p>
         <div class="semantic-dialog-actions">
