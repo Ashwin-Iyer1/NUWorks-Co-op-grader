@@ -805,6 +805,74 @@ footer .container {
 .ai-section .feature-screenshot-hero {
   margin-bottom: 40px;
 }
+.ai-benchmark {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+  gap: 26px 34px;
+  align-items: center;
+  margin: 0 0 24px;
+  padding: 30px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.benchmark-kicker,
+.benchmark-dataset {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.ai-benchmark-copy h3 {
+  font-size: 1.35rem;
+  margin: 8px 0;
+}
+.ai-benchmark-copy p,
+.benchmark-note {
+  color: var(--text-2);
+}
+.ai-benchmark-copy p {
+  font-size: 0.94rem;
+}
+.benchmark-results {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.benchmark-result {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 19px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+.benchmark-result strong {
+  margin: 8px 0 1px;
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 2.65rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text);
+}
+.benchmark-result > span:not(.benchmark-dataset) {
+  font-size: 0.78rem;
+  color: var(--text-2);
+}
+.benchmark-result b {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--moss);
+}
+.benchmark-note {
+  grid-column: 1 / -1;
+  margin: -12px 0 0;
+  font-size: 0.75rem;
+}
 .ai-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -845,6 +913,11 @@ footer .container {
   border-radius: 6px;
   padding: 1px 6px;
   color: var(--text);
+}
+.ai-card a {
+  color: inherit;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
 }
 .ai-detail-row {
   display: grid;
@@ -909,12 +982,21 @@ footer .container {
   top: -1px;
 }
 @media (max-width: 900px) {
+  .ai-benchmark,
   .ai-grid,
   .ai-detail-row {
     grid-template-columns: 1fr;
   }
   .ai-detail-row {
     gap: 28px;
+  }
+}
+@media (max-width: 560px) {
+  .ai-benchmark {
+    padding: 22px;
+  }
+  .benchmark-results {
+    grid-template-columns: 1fr;
   }
 }
 

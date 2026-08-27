@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <meta
       name="description"
-      content="A powerful Chrome Extension to help Northeastern University students optimize their co-op search on NUWorks (Symplicity)."
+      content="Score NUWorks co-ops against your resume with explainable matching and a resume-specific semantic model that runs privately in your browser."
     />
     <link rel="canonical" href="https://nucoop.app/" />
 
@@ -20,7 +20,7 @@
     />
     <meta
       property="og:description"
-      content="A powerful Chrome Extension to help Northeastern University students optimize their co-op search on NUWorks (Symplicity)."
+      content="Score NUWorks co-ops against your resume with explainable matching and a resume-specific semantic model that runs privately in your browser."
     />
     <meta property="og:url" content="https://nucoop.app/" />
     <meta property="og:image" content="https://nucoop.app/og-image.jpg" />
@@ -39,7 +39,7 @@
     />
     <meta
       name="twitter:description"
-      content="A powerful Chrome Extension to help Northeastern University students optimize their co-op search on NUWorks (Symplicity)."
+      content="Score NUWorks co-ops against your resume with explainable matching and a resume-specific semantic model that runs privately in your browser."
     />
     <meta name="twitter:image" content="https://nucoop.app/og-image.jpg" />
 
@@ -109,7 +109,7 @@
     <header class="hero">
       <div class="container">
         <div class="hero-content">
-          <div class="badge" id="version-badge">v2.5 now available</div>
+          <div class="badge" id="version-badge">v2.6 now available</div>
           <div class="eyebrow">For Northeastern co-op students</div>
           <h1>
             Find the co-ops that <em>actually fit</em> your resume.
@@ -117,8 +117,9 @@
           <p class="hero-desc">
             NUWorks Grader reads every posting the way you would — then scores
             it against your skills, flags the ones you're not eligible for, and
-            saves the strong matches. Opt in to on-device Semantic AI to score by
-            meaning, not just keywords. All in your browser, all private.
+            saves the strong matches. Opt in to a resume-specific Semantic AI
+            model, fine-tuned on 13,979 labeled resume–job pairs, to score by
+            meaning—not just keywords. All in your browser, all private.
           </p>
           <div class="cta-group">
             <a
@@ -233,16 +234,6 @@
         <div class="feature-grid">
           <div class="feature-card">
             <div class="feature-icon">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path></svg>
-            </div>
-            <h3>NLP-powered qualification</h3>
-            <p>
-              A trained language model detects subtle requirements like
-              graduation dates and school years automatically.
-            </p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 5v6c0 5 3.8 8.5 9 11 5.2-2.5 9-6 9-11V5z"></path><path d="m9 12 2 2 4-4"></path></svg>
             </div>
             <h3>Auto-grading &amp; visual badges</h3>
@@ -273,33 +264,13 @@
           </div>
           <div class="feature-card">
             <div class="feature-icon">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-            </div>
-            <h3>Manual control &amp; settings</h3>
-            <p>
-              Toggle auto-grading, trigger grading manually on any page, and
-              update your profile settings with ease.
-            </p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-            </div>
-            <h3>Privacy first</h3>
-            <p>
-              Your resume and data never leave your browser. All processing
-              happens locally within the extension.
-            </p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 0-4 4v1a4 4 0 0 0-3 3.9V12a4 4 0 0 0 1 2.7V16a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4v-1.3A4 4 0 0 0 19 12v-1.1A4 4 0 0 0 16 7V6a4 4 0 0 0-4-4z"></path><path d="M12 2v18M8 9h8M8 14h8"></path></svg>
             </div>
             <h3>Semantic AI matching <span class="pill">Opt-in</span></h3>
             <p>
-              A 23M-parameter language model runs on your device and scores
-              each posting by meaning. Match becomes 65% keyword + 35% AI, with
-              the split shown on every card.
+              A 23M-parameter model fine-tuned for resume–job fit runs on your
+              device and scores each posting by meaning. Match becomes 65%
+              keyword + 35% AI, with the split shown on every card.
             </p>
           </div>
           <div class="feature-card">
@@ -331,12 +302,13 @@
     <section id="semantic-ai" class="section ai-section">
       <div class="container">
         <div class="section-header centered">
-          <span class="ai-eyebrow">New in v2.5 · Opt-in</span>
-          <h2>Semantic AI that reads job descriptions like you do</h2>
+          <span class="ai-eyebrow">New in v2.6 · Resume-tuned · Opt-in</span>
+          <h2>Semantic AI trained for resume-to-job fit</h2>
           <p>
-            Turn on Semantic AI and a small language model runs entirely on
-            your device, re-reading every posting to score how well it fits
-            your resume by <em>meaning</em> — not just keyword overlap.
+            Turn on Semantic AI and a compact model fine-tuned on labeled
+            resume–job pairs runs entirely on your device, re-reading every
+            posting to score how well it fits by <em>meaning</em>—not just
+            keyword overlap.
           </p>
         </div>
 
@@ -346,6 +318,38 @@
             class="feature-screenshot"
             alt="The Job Explorer with Semantic AI enabled, showing a blended match score plus a Keyword · AI split on every card"
           />
+        </div>
+
+        <div class="ai-benchmark" aria-labelledby="benchmark-title">
+          <div class="ai-benchmark-copy">
+            <span class="benchmark-kicker">Held-out evaluation · 1,782 pairs</span>
+            <h3 id="benchmark-title">Better at putting the right jobs first</h3>
+            <p>
+              Fine-tuning more than doubled rank correlation on one test set
+              and improved it by two-thirds on the other. Spearman correlation
+              measures how consistently the model ranks stronger matches above
+              weaker ones; higher is better.
+            </p>
+          </div>
+          <div class="benchmark-results">
+            <div class="benchmark-result">
+              <span class="benchmark-dataset">HF test · 820 pairs</span>
+              <strong>0.534</strong>
+              <span>from 0.260 with the base model</span>
+              <b>2.05× rank correlation</b>
+            </div>
+            <div class="benchmark-result">
+              <span class="benchmark-dataset">NeuralFrame · 962 pairs</span>
+              <strong>0.624</strong>
+              <span>from 0.375 with the base model</span>
+              <b>1.66× rank correlation</b>
+            </div>
+          </div>
+          <p class="benchmark-note">
+            Spearman correlation on untouched test splits, using normalized
+            resume and job embeddings with cosine similarity. Figures rounded
+            to three decimals.
+          </p>
         </div>
 
         <div class="ai-grid">
@@ -363,10 +367,11 @@
             <div class="ai-card-num">02</div>
             <h3>Semantic layer</h3>
             <p>
-              <code>mdbr-leaf-ir</code> (23M parameters, #1 on the BEIR
-              retrieval benchmark for its size) embeds your resume and each job
-              description, then measures how close they sit in meaning. “Built
-              REST services in Flask” counts toward “backend web development”.
+              <a href="https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader" target="_blank" rel="noopener noreferrer"><code>mdbr-leaf-mt-resume-grader</code></a>
+              is a 23M-parameter model fine-tuned on 13,979 labeled resume–job
+              pairs. It embeds your resume and each posting, then measures how
+              close they sit in meaning. “Built REST services in Flask” counts
+              toward “backend web development”.
             </p>
           </div>
           <div class="ai-card">
