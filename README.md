@@ -62,6 +62,35 @@ python train.py                         # → models/mdbr-leaf-mt-resume-grader
 python evaluate.py --model models/mdbr-leaf-mt-resume-grader
 ```
 
+### Generate OpenAI-labeled NUWorks pairs
+
+`generate_openai_labels.py` selects one representative resume from each of 11
+broad career categories and grades every selected resume against every job in
+`exmaplePayload.json`. The default is a free dry run: it currently plans 2,772
+pairs (11 resumes x 252 unique jobs) while keeping the conservative reservation
+below a 10-million-token budget.
+
+```powershell
+# Review the selected categories, request count, budget, and cost estimate.
+python generate_openai_labels.py
+Get-Content openai_labels\plan.json
+
+# Keep the key local; do not paste it into source code or chat.
+$env:OPENAI_API_KEY = "your-key-here"
+python generate_openai_labels.py --execute --workers 8
+```
+
+The threaded run checkpoints each response to `openai_labels/pairs.jsonl` and
+creates `openai_labels/train.csv`, with a normalized `score` from 0 to 1 for the
+existing training pipeline. Re-running the same command skips successful pairs.
+Contact details are redacted by default, API response storage is disabled, and
+strict JSON output captures both the overall grade and diagnostic sub-scores.
+
+For a low-cost pilot, add `--resume-count 2 --max-jobs 10`. To choose backgrounds
+explicitly, use a comma-separated option such as
+`--categories ENGINEERING,FINANCE,HEALTHCARE`. Run `python
+generate_openai_labels.py --help` for all budget, concurrency, and input options.
+
 GPU is auto-detected: bf16 mixed precision, TF32 matmuls, and dataloader workers
 switch on automatically when CUDA is available — no flags needed.
 

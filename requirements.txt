@@ -7,5 +7,7 @@ datasets>=2.19
 kagglehub>=0.3
 pandas>=2.0
 scipy>=1.10
+openai>=2.0
+tiktoken>=0.9
 # Only needed for export_onnx.py:
 #   pip install "optimum[onnxruntime]" onnx
