@@ -39,3 +39,7 @@ __pycache__/
 dist.zip
 exmaplePayload.json
 resumeText.txt
+more_job_descs.json
+
+archive/
+openai_labels/
