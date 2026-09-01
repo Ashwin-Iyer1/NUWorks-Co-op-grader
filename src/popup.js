@@ -124,6 +124,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Event Listeners ---
 
+  // The popup is useful for a quick fetch, but Job Explorer is the primary
+  // full-page workspace. Keep its launcher at the top of the main view so the
+  // richer filtering, sorting and batch tools are discoverable without first
+  // finding the injected button inside NUWorks.
+  const openJobExplorerBtn = document.getElementById("open-job-explorer-btn");
+  if (openJobExplorerBtn) {
+    openJobExplorerBtn.addEventListener("click", () => {
+      chrome.tabs.create({ url: chrome.runtime.getURL("custom.html") });
+    });
+  }
+
   // PDF Upload Listener
   if (resumeFile) {
     resumeFile.addEventListener("change", async (e) => {

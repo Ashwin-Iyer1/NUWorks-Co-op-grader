@@ -280,6 +280,102 @@ p.subtitle {
   display: block;
 }
 
+/* ─── Job Explorer launcher ─── */
+
+.explorer-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px;
+  border: 1px solid var(--score-high-border);
+  border-radius: var(--radius);
+  background: var(--moss-tint);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition), box-shadow var(--transition),
+    transform var(--transition), background-color var(--transition);
+}
+
+.explorer-card:hover {
+  border-color: var(--moss);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.explorer-card:active {
+  transform: scale(0.99);
+}
+
+.explorer-card:focus-visible {
+  outline: none;
+  border-color: var(--moss);
+  box-shadow: 0 0 0 3px var(--green-muted);
+}
+
+.explorer-card-icon {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--moss);
+  box-shadow: var(--shadow-sm);
+}
+
+.explorer-card-copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.explorer-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.explorer-card-badge {
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  color: var(--moss);
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.explorer-card-description {
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.explorer-card-arrow {
+  flex: none;
+  color: var(--moss);
+  transition: transform var(--transition);
+}
+
+.explorer-card:hover .explorer-card-arrow {
+  transform: translateX(2px);
+}
+
 /* ─── Utility icon buttons (settings / remove inactive) ─── */
 
 #settings-btn,
