@@ -1,0 +1,118 @@
+/* Copyright (c) 2026 Ashwin Iyer — Licensed under AGPL-3.0 */
+/* Shared linen, clay and moss tokens come from the Job Explorer. */
+.nu-hub.controls { padding: 0; overflow: hidden; }
+.nu-hub > summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 22px; cursor: pointer; list-style: none; }
+.nu-hub > summary::-webkit-details-marker { display: none; }
+.nu-summary-copy { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 18px; }
+.nu-summary-copy strong { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; }
+.nu-summary-copy > span { font-size: .85rem; }
+.nu-disclosure { width: 9px; height: 9px; border-right: 1.5px solid var(--text-secondary); border-bottom: 1.5px solid var(--text-secondary); transform: rotate(45deg); margin: -4px 3px 0; flex-shrink: 0; }
+.nu-hub[open] .nu-disclosure { transform: rotate(225deg); margin-top: 4px; }
+.nu-hub[open] > summary { border-bottom: 1px solid var(--border); }
+.nu-workspace { display: grid; grid-template-columns: 180px minmax(0, 1fr); }
+.nu-hub nav { display: flex; flex-direction: column; gap: 4px; padding: 18px 10px; background: var(--bg-base); border-right: 1px solid var(--border); }
+.nu-tab { appearance: none; display: block; width: 100%; padding: 11px 12px; border: 0; border-radius: 7px; background: transparent; color: var(--text-secondary); text-align: left; font: 500 .88rem var(--font-sans); cursor: pointer; }
+.nu-tab:hover { background: var(--bg-surface); color: var(--text); }
+.nu-tab[aria-selected="true"] { background: var(--accent-muted); color: var(--accent); font-weight: 600; box-shadow: inset 3px 0 var(--accent); }
+.nu-main { min-width: 0; padding: 0 24px 24px; }
+.nu-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 60px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+.nu-status { font-size: .78rem; }
+.nu-toolbar .nu-refresh { padding: 5px 10px; font-size: .78rem; box-shadow: none; }
+.nu-content { min-width: 0; }
+.nu-view { display: grid; gap: 24px; }
+.nu-section { min-width: 0; }
+.nu-section h3 { font-family: var(--font-serif); font-size: 1.35rem; font-weight: 500; line-height: 1.25; margin: 0 0 12px; }
+.nu-section h4 { font-size: .95rem; font-weight: 600; line-height: 1.4; }
+.nu-intro, .nu-section-body > .nu-muted { max-width: 68ch; margin-bottom: 16px; color: var(--text-secondary); font-size: .85rem; line-height: 1.6; }
+.nu-section-body > a { display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--border); padding: 12px 0; color: var(--accent); text-decoration: none; font-weight: 500; overflow-wrap: anywhere; }
+.nu-section-body > a::after { content: '↗'; color: var(--text-secondary); flex-shrink: 0; }
+.nu-section a:hover, .nu-row a:hover, .nu-application > a:hover { text-decoration: underline; }
+.nu-section-body > a:last-child { border-bottom: 0; }
+.nu-recommendation-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; margin-bottom: 16px; }
+.nu-recommendation-controls label { color: var(--text-secondary); font-size: .8rem; font-weight: 600; }
+.nu-recommendation-controls select { min-width: 0; max-width: 100%; font-size: .85rem; padding: 8px 10px; box-shadow: none; }
+.nu-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.nu-job { display: flex; flex-direction: column; align-items: flex-start; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius); min-width: 0; background: var(--bg-card); transition: border-color .15s; }
+.nu-job:hover { border-color: var(--border-strong); }
+.nu-job-company { font-size: .8rem; color: var(--text-secondary); margin-bottom: 5px; overflow-wrap: anywhere; }
+.nu-job h4 { margin-bottom: 12px; }
+.nu-job-title { border: 0; background: none; padding: 0; color: var(--text); font: inherit; font-weight: 600; line-height: 1.4; text-align: left; cursor: pointer; overflow-wrap: anywhere; }
+.nu-job-title:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.nu-job-location { font-size: .8rem; color: var(--text-secondary); margin-top: auto; overflow-wrap: anywhere; }
+.nu-job-deadline { color: var(--moss); font-size: .78rem; margin-top: 8px; }
+.nu-pagination { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.nu-pagination:empty { display: none; }
+.nu-pagination > span { margin-right: auto; font-size: .8rem; }
+.nu-pagination .btn { padding: 6px 12px; font-size: .8rem; }
+.nu-muted { color: var(--text-secondary); }
+.nu-row { padding: 12px 0; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+.nu-row strong { font-size: .88rem; font-weight: 600; }
+.nu-row p { white-space: pre-wrap; margin: 4px 0; font-size: .85rem; }
+.nu-row a, .nu-application > a { display: inline-block; color: var(--accent); margin: 8px 0; font-size: .85rem; text-underline-offset: 3px; }
+.nu-row-heading { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+.nu-alert { padding: 16px 0; border-bottom: 1px solid var(--border); }
+.nu-alert:first-child { padding-top: 0; }
+.nu-badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--radius-pill); color: var(--text-secondary); background: var(--bg-surface); font-size: .73rem; font-weight: 600; }
+.nu-badge-positive { color: var(--green); background: var(--green-muted); }
+.nu-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 20px; margin: 14px 0; }
+.nu-facts dt { font-size: .75rem; color: var(--text-secondary); margin-bottom: 4px; }
+.nu-facts dd { font-size: .9rem; font-weight: 500; overflow-wrap: anywhere; }
+.nu-alert-filters { font-size: .78rem; color: var(--text-secondary); background: var(--bg-base); border-radius: 6px; padding: 8px 10px; line-height: 1.6; }
+.nu-notification { position: relative; padding: 16px 12px; }
+.nu-notification-unread { border-left: 3px solid var(--moss); background: var(--moss-tint); padding-left: 14px; }
+.nu-notification > .nu-badge { display: table; margin-bottom: 8px; }
+.nu-notification strong { font-weight: 500; }
+.nu-notification p { font-size: .78rem; }
+.nu-empty { padding: 24px 20px; border-radius: var(--radius); background: var(--bg-base); border: 1px dashed var(--border-hover); }
+.nu-empty strong { display: block; font-size: .95rem; font-weight: 500; }
+.nu-empty p { font-size: .85rem; margin-top: 5px; max-width: 60ch; }
+.nu-empty .btn { margin-top: 14px; }
+.nu-error { border-color: var(--score-low-border); }
+.nu-loading { padding: 28px 0; font-size: .85rem; color: var(--text-secondary); display: flex; align-items: center; gap: 10px; }
+.nu-loading::before { content: ''; width: 14px; height: 14px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: nu-spin .8s linear infinite; }
+@keyframes nu-spin { to { transform: rotate(360deg); } }
+.nu-keyword.btn { margin: 0 8px 8px 0; padding: 7px 14px; border-radius: var(--radius-pill); font-weight: 500; }
+.nu-application { padding: 20px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-base); }
+.nu-application .nu-row { border: 0; padding: 6px 0; }
+.nu-application .nu-facts { grid-template-columns: 1fr; margin-top: 0; }
+.nu-document-list { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 8px 0 12px; }
+.nu-document-list li { padding: 6px 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; font-size: .85rem; }
+.nu-extra-details { margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px; }
+.nu-extra-details summary { cursor: pointer; font-size: .85rem; font-weight: 600; color: var(--text-secondary); }
+.nu-hub :is(button, a, select, summary):focus-visible, .nu-application :is(a, summary):focus-visible, .nu-content:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.search-controls-heading { margin-bottom: 18px; }
+.search-controls-heading h2 { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; }
+.search-controls-heading p { color: var(--text-secondary); font-size: .85rem; margin-top: 3px; }
+.search-controls .controls-row { display: grid; grid-template-columns: minmax(100px, .7fr) minmax(150px, 1fr) minmax(200px, 1.4fr) minmax(120px, .7fr); gap: 16px; }
+.search-controls .control-group :is(input, select) { width: 100% !important; min-width: 0; }
+.search-controls-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; border-top: 1px solid var(--border); margin-top: 18px; padding-top: 16px; }
+.search-controls-footer .controls-actions { margin-left: auto; }
+.search-controls-footer .checkbox-row { min-height: 36px; }
+@media (max-width: 900px) {
+  .nu-workspace { grid-template-columns: 155px minmax(0, 1fr); }
+  .nu-main { padding: 0 18px 18px; }
+  .nu-grid { grid-template-columns: 1fr; }
+  .search-controls .controls-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .nu-hub > summary { padding: 16px; }
+  .nu-summary-copy { display: block; }
+  .nu-summary-copy > span { display: block; margin-top: 3px; max-width: 28ch; }
+  .nu-workspace { grid-template-columns: minmax(0, 1fr); }
+  .nu-hub nav { flex-direction: row; flex-wrap: wrap; padding: 10px; border-right: 0; border-bottom: 1px solid var(--border); gap: 4px; }
+  .nu-tab { width: auto; flex: 1 0 calc(33% - 8px); padding: 9px 7px; font-size: .78rem; text-align: center; }
+  .nu-tab[aria-selected="true"] { box-shadow: inset 0 -2px var(--accent); }
+  .nu-main { padding: 0 16px 18px; }
+  .nu-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nu-recommendation-controls { display: grid; }
+  .nu-recommendation-controls select { width: 100%; }
+  .search-controls-footer { gap: 8px 20px; }
+  .search-controls-footer .controls-actions { width: 100%; margin: 8px 0 0; }
+  .search-controls-footer .controls-actions .btn-primary { flex: 1; }
+  .nu-application { padding: 14px; }
+  .filters-row > :is(input, select) { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nu-loading::before { animation: none; }
+  .nu-job { transition: none; }
+}

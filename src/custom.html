@@ -720,6 +720,7 @@
       .modal-body { padding: 16px; }
     }
   </style>
+  <link rel="stylesheet" href="nuworks-hub.css" />
 </head>
 <body>
   <div class="app">
@@ -740,8 +741,23 @@
       </div>
     </div>
 
+    <details id="nuworks-hub" class="controls nu-hub">
+      <summary><span class="nu-summary-copy"><strong>My NUWorks</strong><span class="nu-muted">Your recommendations, updates, and career resources</span></span><span class="nu-disclosure" aria-hidden="true"></span></summary>
+      <div class="nu-workspace">
+        <nav aria-label="My NUWorks sections"></nav>
+        <div class="nu-main">
+          <div class="nu-toolbar">
+            <span class="nu-status nu-muted" role="status"></span>
+            <button type="button" class="btn btn-secondary nu-refresh">Refresh</button>
+          </div>
+          <div class="nu-content" id="nu-panel" role="tabpanel" tabindex="0"></div>
+        </div>
+      </div>
+    </details>
+
     <!-- Fetch Controls -->
-    <div class="controls">
+    <div class="controls search-controls">
+      <div class="search-controls-heading"><h2>Find your next role</h2><p>Choose your search, then compare jobs against your resume.</p></div>
       <div class="controls-row">
         <div class="control-group">
           <label for="ctl-max-jobs">Jobs to fetch</label>
@@ -769,6 +785,8 @@
           <label for="ctl-postdate">Days since posted</label>
           <input type="number" id="ctl-postdate" value="90" min="1" style="width:110px" />
         </div>
+      </div>
+      <div class="search-controls-footer">
         <div class="checkbox-row">
           <input type="checkbox" id="ctl-exclude-applied" checked />
           <label for="ctl-exclude-applied">Exclude applied</label>
@@ -852,9 +870,9 @@
         </button>
       </div>
       <div class="filters-row">
-        <input type="text" class="filter-input" id="filter-title" placeholder="Search job title…" style="width:180px" />
-        <input type="text" class="filter-input" id="filter-company" placeholder="Search company…" style="width:180px" />
-        <input type="text" class="filter-input" id="filter-skill" placeholder="Filter by skill…" style="width:150px" />
+        <input type="text" class="filter-input" id="filter-title" aria-label="Search job title" placeholder="Search job title…" style="width:180px" />
+        <input type="text" class="filter-input" id="filter-company" aria-label="Search company" placeholder="Search company…" style="width:180px" />
+        <input type="text" class="filter-input" id="filter-skill" aria-label="Filter by skill" placeholder="Filter by skill…" style="width:150px" />
         <div class="control-group">
           <label for="filter-min-score">Min score</label>
           <input type="number" class="filter-input" id="filter-min-score" value="0" min="0" max="100" style="width:84px" />
@@ -866,7 +884,7 @@
         <select class="filter-select" id="filter-work-term" style="width:160px" title="Work term">
           <option value="">All work terms</option>
         </select>
-        <select class="filter-select" id="filter-sort" style="width:180px">
+        <select class="filter-select" id="filter-sort" aria-label="Sort results" style="width:180px">
           <option value="score-desc">Score: high → low</option>
           <option value="score-asc">Score: low → high</option>
           <option value="date-desc">Newest first</option>

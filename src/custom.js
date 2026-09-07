@@ -15,6 +15,8 @@ import {
   isModelUpdateAvailable,
 } from "./semantic-model-version.mjs";
 import { setupThemeToggle } from "./theme.js";
+import { createNuworksReader } from "./nuworks-data.mjs";
+import { setupNuworksHub, appendApplicationDetails } from "./nuworks-hub.js";
 
 // ─── State ───
 let allJobs = []; // All fetched + scored jobs
@@ -234,7 +236,10 @@ function showToast(msg, duration = 3000) {
 }
 
 // ─── Modal ───
+const readNuworks = createNuworksReader(getCredentials, getHeaders);
+let modalGeneration = 0;
 function openModal(jobId) {
+  const generation = ++modalGeneration;
   const overlay = $("modal-overlay");
   const content = $("modal-content");
   content.innerHTML = `<div class="modal-loading"><span class="spinner spinner-lg"></span>Loading job details...</div>`;
@@ -250,15 +255,19 @@ function openModal(jobId) {
     try {
       const creds = await getCredentials();
       const job = await fetchJobDetail(jobId, creds);
+      if (generation !== modalGeneration) return;
       content.innerHTML = renderModalContent(job, scored);
+      appendApplicationDetails(content.querySelector(".modal-body"), job, readNuworks);
       wireModalActions(job, creds);
     } catch (err) {
-      content.innerHTML = `<div class="modal-loading">Failed to load: ${err.message}</div>`;
+      if (generation === modalGeneration)
+        content.innerHTML = `<div class="modal-loading">${esc(describeFetchError(err))}</div>`;
     }
   })();
 }
 
 function closeModal() {
+  modalGeneration++;
   $("modal-overlay").classList.remove("open");
   document.body.style.overflow = "";
 }
@@ -2084,6 +2093,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Theme: OS preference by default, overridable via the sun/moon toggle, and
   // shared with the popup through chrome.storage.local.
   setupThemeToggle($("theme-toggle"));
+  setupNuworksHub({
+    read: readNuworks, openJob: openModal, describeError: describeFetchError,
+    useKeyword: (keyword) => {
+      $("filter-title").value = keyword;
+      $("filters-panel").classList.add("active");
+      applyFilters();
+      $("filter-title").focus();
+      showToast("Title filter updated. Fetch jobs if you haven’t loaded results yet.");
+    },
+  });
 
   seedProfileFromNUWorks();
   $("btn-fetch").addEventListener("click", startFetch);
