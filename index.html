@@ -67,6 +67,7 @@
   </script>
 
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <nav class="navbar">
       <div class="container">
         <a href="#" class="logo">
@@ -75,7 +76,7 @@
           </span>
           NUWorks Grader
         </a>
-        <div class="nav-links">
+        <div class="nav-links" id="primary-navigation">
           <a href="#features">Features</a>
           <a href="#semantic-ai">Semantic AI</a>
           <a href="#how-it-works">How it works</a>
@@ -100,12 +101,13 @@
             Add to Chrome
           </a>
         </div>
-        <button class="mobile-menu-btn" type="button" aria-label="Menu">
+        <button class="mobile-menu-btn" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
       </div>
     </nav>
 
+    <main id="main-content">
     <header class="hero">
       <div class="container">
         <div class="hero-content">
@@ -117,10 +119,8 @@
           <p class="hero-desc">
             NUWorks Grader reads every posting the way you would — then scores
             it against your skills, flags the ones you're not eligible for, and
-            saves the strong matches. Opt in to a resume-specific Semantic AI
-            model, fine-tuned on 6,804 NUWorks labels with external replay
-            training, to score by meaning—not just keywords. All in your
-            browser, all private.
+            saves the strong matches. Optional Semantic AI matches by meaning,
+            too. All in your browser, all private.
           </p>
           <div class="cta-group">
             <a
@@ -131,7 +131,7 @@
             >
               Add to Chrome<span class="btn-sub">It's free</span>
             </a>
-            <a href="#features" class="btn btn-quiet large">See how it works</a>
+            <a href="#how-it-works" class="btn btn-quiet large">See how it works</a>
           </div>
           <div class="hero-stats">
             <div class="stat">
@@ -152,27 +152,19 @@
             </div>
           </div>
         </div>
-        <div class="hero-image">
-          <video width="100%" height="auto" autoplay loop muted playsinline controls>
+        <figure class="hero-image">
+          <video width="100%" preload="none" poster="job_explorer_screenshot.png" playsinline controls aria-label="NUWorks Grader walkthrough">
             <source src="video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-        </div>
+          <figcaption>See your next co-op more clearly.<span>Play the walkthrough</span></figcaption>
+        </figure>
       </div>
     </header>
 
     <div class="logo-carousel">
       <p class="logo-carousel-heading">Where our users land offers</p>
       <div class="logo-track">
-        <!-- Set 1 -->
-        <div class="logo-slide"><img src="images/Klaviyo_logo.png" alt="Klaviyo" class="logo-invert" /></div>
-        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington Management" class="logo-invert" /></div>
-        <div class="logo-slide"><img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS Investment Management" /></div>
-        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Brown_Brothers_Harriman_Logo_1.svg" alt="Brown Brothers Harriman" /></div>
-        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Flow_Traders_logo.svg" alt="Flow Traders" class="logo-invert-hue" /></div>
-        <div class="logo-slide"><img src="images/Chewy_pet_food_logo.svg" alt="Chewy" /></div>
-        <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Wolters_Kluwer_Logo.svg" alt="Wolters Kluwer" /></div>
-        <!-- Set 2 (duplicate for seamless marquee) -->
         <div class="logo-slide"><img src="images/Klaviyo_logo.png" alt="Klaviyo" class="logo-invert" /></div>
         <div class="logo-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Wellington_Management_logo.svg" alt="Wellington Management" class="logo-invert" /></div>
         <div class="logo-slide"><img src="https://www.wikicorporates.org/mediawiki/images/2/24/Sun-Life-MFS-Investment-Management.svg" alt="MFS Investment Management" /></div>
@@ -185,7 +177,10 @@
 
     <section id="features" class="features tinted">
       <div class="container">
-        <!-- The two feature screenshots (left untouched). -->
+        <div class="section-header centered">
+          <h2>A clearer view of every opportunity</h2>
+          <p>Match scores and eligibility badges, right where you browse. Spot the roles that fit before opening another posting.</p>
+        </div>
         <div class="feature-screenshot-section">
           <div class="feature-screenshot-pair">
             <img
@@ -200,9 +195,10 @@
             />
           </div>
         </div>
+        <p class="gallery-caption">Select any screenshot for a closer look.</p>
 
         <!-- The redesigned Job Explorer & popup — store screenshots. -->
-        <div class="section-header centered" style="margin-top: 68px">
+        <div class="section-header centered subsection">
           <h2>A redesigned Job Explorer and popup</h2>
           <p>
             Match scores, an explainable breakdown for every job (now including a
@@ -225,7 +221,7 @@
           </div>
         </div>
 
-        <div class="section-header centered" style="margin-top: 76px">
+        <div class="section-header centered subsection">
           <h2>Why use this extension?</h2>
           <p>
             Stop wasting time on jobs that don't match your profile. Let smart,
@@ -472,7 +468,7 @@
               </p>
             </div>
             <div class="video-container">
-              <video controls playsinline>
+              <video controls playsinline preload="metadata">
                 <source src="custom.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -482,7 +478,7 @@
       </div>
     </section>
 
-    <section id="how-it-works" class="steps tinted" style="padding-top: 44px">
+    <section id="how-it-works" class="steps">
       <div class="container">
         <div class="section-header centered">
           <h2>Up and running in under a minute</h2>
@@ -537,6 +533,7 @@
       </div>
     </section>
 
+    </main>
     <footer class="footer">
       <div class="container">
         <div class="footer-content">
@@ -562,7 +559,7 @@
               target="_blank"
               >GitHub</a
             >
-            <a href="privacy_policy.html" target="_blank">Privacy policy</a>
+            <a href="privacy_policy.html">Privacy policy</a>
             <a
               href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/issues"
               target="_blank"
@@ -623,85 +620,45 @@
         });
       })();
 
-      // ── Mobile menu ──
-      document
-        .querySelector(".mobile-menu-btn")
-        .addEventListener("click", () => {
-          const links = document.querySelector(".nav-links");
-          links.style.display =
-            links.style.display === "flex" ? "none" : "flex";
-        });
-
       // ── Click a screenshot to maximize it ──
       const screenshots = document.querySelectorAll(".feature-screenshot");
       const overlay = document.createElement("div");
       overlay.className = "screenshot-overlay";
       document.body.appendChild(overlay);
 
-      let activeClone = null;
-      let activeOriginal = null;
-
-      function closeScreenshot() {
-        if (!activeClone || !activeOriginal) return;
-        activeClone.classList.remove("maximized");
-        overlay.classList.remove("active");
-        const rect = activeOriginal.getBoundingClientRect();
-        Object.assign(activeClone.style, {
-          top: `${rect.top}px`,
-          left: `${rect.left}px`,
-          width: `${rect.width}px`,
-          height: `${rect.height}px`,
-        });
-        activeClone.addEventListener(
-          "transitionend",
-          () => {
-            if (activeClone && activeClone.parentNode) activeClone.remove();
-            if (activeOriginal) activeOriginal.style.visibility = "";
-            activeClone = null;
-            activeOriginal = null;
-          },
-          { once: true }
-        );
-      }
-
-      screenshots.forEach((img) => {
-        img.addEventListener("click", () => {
-          if (activeClone) return;
-          activeOriginal = img;
-          const rect = img.getBoundingClientRect();
-          const clone = img.cloneNode();
-          activeClone = clone;
-          Object.assign(clone.style, {
-            position: "fixed",
-            top: `${rect.top}px`,
-            left: `${rect.left}px`,
-            width: `${rect.width}px`,
-            height: `${rect.height}px`,
-            margin: "0",
-            transition: "all 0.4s cubic-bezier(0.2, 0, 0.2, 1)",
-            zIndex: "1001",
-          });
-          document.body.appendChild(clone);
-          img.style.visibility = "hidden";
-          overlay.classList.add("active");
-          clone.getBoundingClientRect();
-          clone.classList.add("maximized");
-          Object.assign(clone.style, {
-            top: "5vh",
-            left: "5vw",
-            width: "90vw",
-            height: "90vh",
-          });
-          clone.addEventListener("click", (e) => {
-            e.stopPropagation();
-            closeScreenshot();
-          });
-        });
+      const viewer = document.createElement("dialog");
+      viewer.className = "screenshot-viewer";
+      viewer.setAttribute("aria-label", "Screenshot preview");
+      const closeButton = document.createElement("button");
+      closeButton.className = "btn btn-secondary";
+      closeButton.type = "button";
+      closeButton.textContent = "Close preview";
+      const preview = document.createElement("img");
+      viewer.append(closeButton, preview);
+      document.body.appendChild(viewer);
+      closeButton.addEventListener("click", () => viewer.close());
+      viewer.addEventListener("click", (event) => {
+        if (event.target === viewer) viewer.close();
       });
-
-      overlay.addEventListener("click", closeScreenshot);
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeScreenshot();
+      viewer.addEventListener("close", () => {
+        document.body.classList.remove("preview-open");
+      });
+      screenshots.forEach((img) => {
+        img.loading = "lazy";
+        img.decoding = "async";
+        const trigger = document.createElement("button");
+        trigger.type = "button";
+        trigger.className = "screenshot-trigger";
+        trigger.setAttribute("aria-label", "Enlarge: " + img.alt);
+        trigger.setAttribute("aria-haspopup", "dialog");
+        img.replaceWith(trigger);
+        trigger.appendChild(img);
+        trigger.addEventListener("click", () => {
+          preview.src = img.src;
+          preview.alt = img.alt;
+          viewer.showModal();
+          document.body.classList.add("preview-open");
+        });
       });
 
       // ── #ineligible-video deep link: maximize + autoplay ──
@@ -738,5 +695,6 @@
         if (e.key === "Escape") closeIneligibleVideo();
       });
     </script>
+    <script src="navigation.js"></script>
   </body>
 </html>

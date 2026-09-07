@@ -19,6 +19,7 @@
   </head>
 
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <nav class="navbar">
       <div class="container">
         <a href="index.html" class="logo">
@@ -27,7 +28,7 @@
           </span>
           NUWorks Grader
         </a>
-        <div class="nav-links">
+        <div class="nav-links" id="primary-navigation">
           <a href="index.html#features">Features</a>
           <a href="index.html#how-it-works">How it works</a>
           <a
@@ -51,13 +52,13 @@
             Add to Chrome
           </a>
         </div>
-        <button class="mobile-menu-btn" type="button" aria-label="Menu">
+        <button class="mobile-menu-btn" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
       </div>
     </nav>
 
-    <main class="doc">
+    <main class="doc" id="main-content">
       <h1>Privacy Policy</h1>
       <div class="doc-meta">Northeastern Co-op Screener · Last updated January 1, 2026</div>
 
@@ -234,13 +235,7 @@
         });
       })();
 
-      document
-        .querySelector(".mobile-menu-btn")
-        .addEventListener("click", () => {
-          const links = document.querySelector(".nav-links");
-          links.style.display =
-            links.style.display === "flex" ? "none" : "flex";
-        });
     </script>
+    <script src="navigation.js"></script>
   </body>
 </html>
