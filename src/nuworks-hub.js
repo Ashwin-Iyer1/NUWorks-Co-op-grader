@@ -150,46 +150,46 @@ export function setupNuworksHub({ read, openJob, describeError, useKeyword }) {
       body.append(controls, jobs, pagination);
       render();
     }),
-    "Saved alerts": async parent => section(parent, "Your saved search alerts", "/api/v2/agents?includeDefs=true", async (body, data) => {
-      let definitions = [];
-      try { definitions = flattenFields(await read("/api/v2/jobs/filters/students")); } catch { /* alerts remain usable without labels */ }
-      function filterLabel(key, value) {
-        const field = definitions.find(f => f.field_key === key);
-        const options = field?.field_type_options?.picklist_options || [];
-        const labels = (Array.isArray(value) ? value : [value]).map(v => {
-          const option = options.find(o => String(o.id) === String(v));
-          return option?.value || values(v);
-        });
-        return `${field?.field_name || key.replaceAll("_", " ")}: ${labels.join(", ")}`;
-      }
-      if (!data.models?.length) body.append(emptyState("No saved searches yet", "Save a search in NUWorks to receive alerts for new roles."));
-      if (data.total > (data.models?.length || 0)) body.append(node("p", `Showing ${data.models.length} of ${data.total} alerts. View all in NUWorks.`, "nu-muted"));
-      for (const alert of data.models || []) {
-        const filters = Object.entries(alert.filtersUsed || {}).map(([key, val]) => filterLabel(key, val)).join("; ");
-        const item = node("article", null, "nu-alert");
-        const heading = node("div", null, "nu-row-heading");
-        heading.append(node("h4", alert.label || "Saved search"), node("span", Number(alert.enabled) ? "Active" : "Paused", `nu-badge ${Number(alert.enabled) ? "nu-badge-positive" : ""}`));
-        item.append(heading, facts([["Frequency", alert.frequency || alert.period?._label], ["Next update", displayDate(alert.next_run)], ["Latest results", alert.latest_res_count]]));
-        if (filters) item.append(node("p", filters, "nu-alert-filters"));
-        body.append(item);
-      }
-      body.append(link("Manage alerts in NUWorks", "/students/app/jobs/search"));
-    }),
-    Notifications: async parent => section(parent, "Notifications", "/api/v2/my/notifications?includeAggregator=1", (body, data) => {
-      body.append(node("p", `${data.totalUnread ?? 0} unread · ${data.total ?? 0} total`, "nu-muted"));
-      if (data.total > (data.model?.length || 0)) body.append(node("p", `Showing the latest ${data.model?.length || 0} notifications.`, "nu-muted"));
-      if (!data.model?.length) body.append(emptyState("You’re all caught up", "Updates from NUWorks will appear here."));
-      for (const item of data.model || []) {
-        const el = row(plain(item.template) || "NUWorks notification", displayDate(item.time));
-        el.classList.add("nu-notification");
-        if (!Number(item.read_flag)) {
-          el.classList.add("nu-notification-unread");
-          el.prepend(node("span", "Unread", "nu-badge nu-badge-positive"));
-        }
-        if (safeLink(item.url)) el.append(link("Open notification", item.url));
-        body.append(el);
-      }
-    }),
+    // "Saved alerts": async parent => section(parent, "Your saved search alerts", "/api/v2/agents?includeDefs=true", async (body, data) => {
+    //   let definitions = [];
+    //   try { definitions = flattenFields(await read("/api/v2/jobs/filters/students")); } catch { /* alerts remain usable without labels */ }
+    //   function filterLabel(key, value) {
+    //     const field = definitions.find(f => f.field_key === key);
+    //     const options = field?.field_type_options?.picklist_options || [];
+    //     const labels = (Array.isArray(value) ? value : [value]).map(v => {
+    //       const option = options.find(o => String(o.id) === String(v));
+    //       return option?.value || values(v);
+    //     });
+    //     return `${field?.field_name || key.replaceAll("_", " ")}: ${labels.join(", ")}`;
+    //   }
+    //   if (!data.models?.length) body.append(emptyState("No saved searches yet", "Save a search in NUWorks to receive alerts for new roles."));
+    //   if (data.total > (data.models?.length || 0)) body.append(node("p", `Showing ${data.models.length} of ${data.total} alerts. View all in NUWorks.`, "nu-muted"));
+    //   for (const alert of data.models || []) {
+    //     const filters = Object.entries(alert.filtersUsed || {}).map(([key, val]) => filterLabel(key, val)).join("; ");
+    //     const item = node("article", null, "nu-alert");
+    //     const heading = node("div", null, "nu-row-heading");
+    //     heading.append(node("h4", alert.label || "Saved search"), node("span", Number(alert.enabled) ? "Active" : "Paused", `nu-badge ${Number(alert.enabled) ? "nu-badge-positive" : ""}`));
+    //     item.append(heading, facts([["Frequency", alert.frequency || alert.period?._label], ["Next update", displayDate(alert.next_run)], ["Latest results", alert.latest_res_count]]));
+    //     if (filters) item.append(node("p", filters, "nu-alert-filters"));
+    //     body.append(item);
+    //   }
+    //   body.append(link("Manage alerts in NUWorks", "/students/app/jobs/search"));
+    // }),
+    // Notifications: async parent => section(parent, "Notifications", "/api/v2/my/notifications?includeAggregator=1", (body, data) => {
+    //   body.append(node("p", `${data.totalUnread ?? 0} unread · ${data.total ?? 0} total`, "nu-muted"));
+    //   if (data.total > (data.model?.length || 0)) body.append(node("p", `Showing the latest ${data.model?.length || 0} notifications.`, "nu-muted"));
+    //   if (!data.model?.length) body.append(emptyState("You’re all caught up", "Updates from NUWorks will appear here."));
+    //   for (const item of data.model || []) {
+    //     const el = row(plain(item.template) || "NUWorks notification", displayDate(item.time));
+    //     el.classList.add("nu-notification");
+    //     if (!Number(item.read_flag)) {
+    //       el.classList.add("nu-notification-unread");
+    //       el.prepend(node("span", "Unread", "nu-badge nu-badge-positive"));
+    //     }
+    //     if (safeLink(item.url)) el.append(link("Open notification", item.url));
+    //     body.append(el);
+    //   }
+    // }),
     "Recent searches": async parent => {
       await Promise.allSettled([
         section(parent, "Recent keywords", "/api/v2//search/recent/keywords?context=students_jobs", (body, data) => {
