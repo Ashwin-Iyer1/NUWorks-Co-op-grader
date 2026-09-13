@@ -614,6 +614,52 @@ function getCredentials() {
 // ─── DOM Refs ───
 const $ = (id) => document.getElementById(id);
 
+const DEFAULT_SEMANTIC_WEIGHT_PERCENT = 35;
+
+function getSemanticWeight() {
+  const rawValue = Number($("ai-semantic-weight")?.value);
+  const percent = Number.isFinite(rawValue)
+    ? Math.max(0, Math.min(100, rawValue))
+    : DEFAULT_SEMANTIC_WEIGHT_PERCENT;
+  return percent / 100;
+}
+
+function updateSemanticWeightUI() {
+  const input = $("ai-semantic-weight");
+  if (!input) return;
+
+  const semanticPercent = Math.round(getSemanticWeight() * 100);
+  const keywordPercent = 100 - semanticPercent;
+  input.value = String(semanticPercent);
+  input.setAttribute(
+    "aria-valuetext",
+    `${semanticPercent}% Semantic AI, ${keywordPercent}% keyword`
+  );
+  input.style.setProperty("--semantic-weight", `${semanticPercent}%`);
+  $("ai-semantic-weight-value").textContent =
+    `${semanticPercent}% AI / ${keywordPercent}% keyword`;
+}
+
+function applySemanticWeight(job, semanticWeight = getSemanticWeight()) {
+  const semanticScore = Number(job.matchDetails?.details?.semanticScore);
+  if (!Number.isFinite(semanticScore)) return false;
+
+  if (job.baseMatchScore === undefined) job.baseMatchScore = job.matchScore;
+  const keywordScore = Number(job.baseMatchScore);
+  if (!Number.isFinite(keywordScore)) return false;
+
+  job.matchScore = Math.round(
+    keywordScore * (1 - semanticWeight) + semanticScore * semanticWeight
+  );
+  job.matchDetails.score = job.matchScore;
+  return true;
+}
+
+function reblendSemanticScores() {
+  const semanticWeight = getSemanticWeight();
+  allJobs.forEach((job) => applySemanticWeight(job, semanticWeight));
+}
+
 // ─── Field helpers (defensive — search & discovery responses vary) ───
 function jobCompensation(job) {
   const from = job.compensation_from;
@@ -746,9 +792,10 @@ function renderJobCard(job) {
   // the blended score. baseMatchScore is the pure lexical score preserved by
   // semanticRefine; the AI number is the calibrated embedding similarity.
   const semScore = job.matchDetails?.details?.semanticScore;
+  const semanticWeight = getSemanticWeight();
   const semLine =
     semScore !== undefined
-      ? `<div class="score-split" title="Blended score: ${Math.round((1 - SEMANTIC_WEIGHT) * 100)}% keyword match + ${Math.round(SEMANTIC_WEIGHT * 100)}% semantic similarity (mdbr-leaf-mt-resume-grader, cosine ${job.matchDetails.details.semanticCosine})">` +
+      ? `<div class="score-split" title="Blended score: ${Math.round((1 - semanticWeight) * 100)}% keyword match + ${Math.round(semanticWeight * 100)}% semantic similarity (mdbr-leaf-mt-resume-grader, cosine ${job.matchDetails.details.semanticCosine})">` +
         `Keyword ${job.baseMatchScore ?? job.matchScore} · AI ${semScore}</div>`
       : "";
 
@@ -1106,6 +1153,9 @@ function applyPreset(name) {
       $("filter-sort").value = "score-desc";
       $("filter-hide-disqualified").checked = true;
       $("filter-hide-external").checked = false;
+      $("ai-semantic-weight").value = String(DEFAULT_SEMANTIC_WEIGHT_PERCENT);
+      updateSemanticWeightUI();
+      reblendSemanticScores();
       break;
     default:
       return;
@@ -1127,6 +1177,7 @@ const PREF_VALUE_IDS = [
   "filter-min-score",
   "filter-max-score",
   "filter-sort",
+  "ai-semantic-weight",
 ];
 const PREF_CHECK_IDS = ["filter-hide-disqualified", "filter-hide-external"];
 
@@ -1510,7 +1561,6 @@ async function enrichJobDetails(creds) {
 // ("built REST services in Flask" vs "backend web development experience").
 // Runs AFTER results render; the first ever run also downloads the ~34MB
 // model, so scores may refine noticeably later on that one occasion.
-const SEMANTIC_WEIGHT = 0.35;
 let semanticRunId = 0;
 let latestSemanticModelRevision = null;
 let modelRevisionToLoad = null;
@@ -1558,13 +1608,29 @@ function hideSemanticUpgradeBadge() {
   badge.querySelector("span").textContent = "AI upgrade";
 }
 
+function hideSemanticRangeSlider() {
+  const sliderParent = $("semantic-weight-control");
+  if (sliderParent) sliderParent.hidden = true;
+}
+
+function showSemanticRangeSlider() {
+  const sliderParent = $("semantic-weight-control");
+  if (!sliderParent) return;
+  sliderParent.hidden = false;
+  updateSemanticWeightUI();
+}
+
 async function checkSemanticModelUpdate() {
   hideSemanticUpgradeBadge();
   const state = await semanticStorageGet([
     "semanticEnabled",
     SEMANTIC_MODEL_REVISION_KEY,
   ]);
-  if (!state.semanticEnabled) return false;
+  if (!state.semanticEnabled) {
+    hideSemanticRangeSlider();
+    return false;
+  }
+  showSemanticRangeSlider();
 
   try {
     const [latestRevision, cachedAssetCount] = await Promise.all([
@@ -1841,9 +1907,10 @@ async function semanticRefine(creds) {
     done: 0,
     total: targets.length,
   });
+  const initialSemanticWeight = getSemanticWeight();
   console.log(
     `[Semantic] Scoring ${targets.length} postings against the resume ` +
-      `(blend: ${Math.round((1 - SEMANTIC_WEIGHT) * 100)}% keyword + ${Math.round(SEMANTIC_WEIGHT * 100)}% semantic)`
+      `(blend: ${Math.round((1 - initialSemanticWeight) * 100)}% keyword + ${Math.round(initialSemanticWeight * 100)}% semantic)`
   );
   const passStart = performance.now();
   let inferMs = 0;
@@ -1859,6 +1926,7 @@ async function semanticRefine(creds) {
         batch.map((j) => `${j.job_title || ""}\n${j.job_desc}`)
       );
       inferMs += ms;
+      const semanticWeight = getSemanticWeight();
       batch.forEach((job, k) => {
         const semantic = cosineToScore(cosines[k], scorer.calibration);
         // Blend from the ORIGINAL lexical score every time, so a re-run can
@@ -1866,14 +1934,11 @@ async function semanticRefine(creds) {
         if (job.baseMatchScore === undefined) {
           job.baseMatchScore = job.matchScore;
         }
-        job.matchScore = Math.round(
-          job.baseMatchScore * (1 - SEMANTIC_WEIGHT) + semantic * SEMANTIC_WEIGHT
-        );
-        job.matchDetails.score = job.matchScore;
         job.matchDetails.details.semanticScore = semantic;
         job.matchDetails.details.semanticCosine = Number(
           cosines[k].toFixed(4)
         );
+        applySemanticWeight(job, semanticWeight);
         refined++;
       });
     } catch (e) {
@@ -2168,6 +2233,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       semanticRunId++;
       setBgTask("semantic", null);
       hideSemanticUpgradeBadge();
+      hideSemanticRangeSlider();
       showToast("Semantic AI off. Downloaded files kept for re-enabling.");
     }
   });
@@ -2237,6 +2303,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   $("filter-sort").addEventListener("change", onFilterChange);
   $("filter-hide-disqualified").addEventListener("change", onFilterChange);
   $("filter-hide-external").addEventListener("change", onFilterChange);
+  $("ai-semantic-weight").addEventListener("input", () => {
+    updateSemanticWeightUI();
+    reblendSemanticScores();
+    debouncedFilter();
+  });
 
   // Save all filtered
   $("btn-save-all-filtered").addEventListener("click", async () => {
@@ -2270,5 +2341,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Controls and filters come back exactly as they were left, before anything
   // reads them — so before the first applyFilters and before preflight.
   await restoreExplorerPrefs();
+  updateSemanticWeightUI();
   await preflight();
 });

@@ -371,17 +371,88 @@
     /* ─── Filter panel ─── */
     .filters {
       background: var(--bg-surface); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 18px;
+      border-radius: var(--radius-lg); padding: 18px 20px 20px; margin-bottom: 18px;
       display: none;
     }
     .filters.active { display: block; }
-    .filters-title { margin-bottom: 12px; }
-    .filters-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; }
+    .filters-header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; margin-bottom: 16px;
+    }
+    .filters-title { flex: none; }
+    .filter-presets { margin-left: auto; }
+    .filter-fields {
+      display: grid;
+      grid-template-columns: minmax(170px, 1.15fr) minmax(170px, 1.15fr)
+        minmax(150px, 0.9fr) minmax(150px, 0.8fr) minmax(180px, 0.95fr);
+      gap: 12px;
+    }
+    .filter-fields .control-group { min-width: 0; }
+    .filter-fields :is(input, select) { width: 100% !important; min-width: 0; }
+    .filters-footer {
+      display: grid;
+      grid-template-columns: auto auto minmax(270px, 1fr) auto;
+      align-items: end; gap: 18px 24px;
+      margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .score-filter-group { border: 0; min-width: 188px; }
+    .score-filter-group legend {
+      margin-bottom: 6px; font-size: var(--text-label); font-weight: 600;
+      color: var(--text-secondary); letter-spacing: var(--label-tracking);
+    }
+    .score-filter-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .score-filter-inputs .control-group { gap: 3px; }
+    .score-filter-inputs .control-group label { font-size: 0.72rem; color: var(--text-muted); }
+    .score-filter-inputs input { width: 90px !important; }
+    .filter-toggle-group {
+      min-height: 57px; display: flex; flex-wrap: wrap;
+      align-items: center; align-content: center; gap: 8px 18px;
+    }
+    .semantic-weight-control { min-width: 270px; gap: 4px; }
+    .semantic-weight-control[hidden] { display: none; }
+    .semantic-weight-label,
+    .semantic-weight-hint {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .semantic-weight-value {
+      color: var(--text-muted); font-size: 0.76rem; font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+    .semantic-weight-control input[type="range"] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 18px; padding: 0; border: 0; box-shadow: none;
+      background: transparent; cursor: pointer;
+    }
+    .semantic-weight-control input[type="range"]::-webkit-slider-runnable-track {
+      height: 4px; border-radius: 2px;
+      background: linear-gradient(to right, var(--accent) 0 var(--semantic-weight), var(--border-hover) var(--semantic-weight) 100%);
+    }
+    .semantic-weight-control input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px;
+      border: 2px solid var(--bg-surface); border-radius: 50%;
+      background: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow-sm);
+    }
+    .semantic-weight-control input[type="range"]::-moz-range-track {
+      height: 4px; border-radius: 2px; background: var(--border-hover);
+    }
+    .semantic-weight-control input[type="range"]::-moz-range-progress {
+      height: 4px; border-radius: 2px; background: var(--accent);
+    }
+    .semantic-weight-control input[type="range"]::-moz-range-thumb {
+      width: 12px; height: 12px; border: 2px solid var(--bg-surface);
+      border-radius: 50%; background: var(--accent);
+    }
+    .semantic-weight-control input[type="range"]:focus-visible {
+      outline: 2px solid var(--accent); outline-offset: 3px; box-shadow: none;
+    }
+    .semantic-weight-hint { font-size: 0.76rem; color: var(--text-muted); }
+    .filters-footer > .btn {
+      grid-column: -2 / -1; justify-self: end; min-height: 38px;
+    }
 
     /* ─── Preset chips ─── */
     .filter-presets {
       display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
-      margin-bottom: 14px;
     }
     .preset-chip {
       display: inline-flex; align-items: center; gap: 5px;
@@ -707,17 +778,34 @@
     }
 
     /* ─── Responsive ─── */
+    @media (max-width: 1100px) {
+      .filter-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .filters-footer { grid-template-columns: auto 1fr auto; }
+      .semantic-weight-control { grid-column: 1 / 3; }
+    }
+
     @media (max-width: 768px) {
       .app { padding: 20px 16px; }
       .job-grid { grid-template-columns: 1fr; }
       .stats { flex-direction: column; }
       .controls-actions { margin-left: 0; }
+      .filters-header { align-items: flex-start; flex-direction: column; }
+      .filter-presets { margin-left: 0; }
+      .filter-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filters-footer { grid-template-columns: 1fr 1fr; align-items: end; }
+      .semantic-weight-control { grid-column: 1 / -1; }
+      .filters-footer > .btn { justify-self: end; }
     }
 
     @media (max-width: 600px) {
       .modal-info-grid { grid-template-columns: 1fr; }
       .modal-match-bars { grid-template-columns: 1fr; }
       .modal-body { padding: 16px; }
+      .filters { padding: 16px; }
+      .filter-fields, .filters-footer { grid-template-columns: 1fr; }
+      .semantic-weight-control { grid-column: auto; min-width: 0; }
+      .score-filter-inputs input { width: 100% !important; }
+      .filters-footer > .btn { width: 100%; justify-self: stretch; }
     }
   </style>
   <link rel="stylesheet" href="nuworks-hub.css" />
@@ -850,55 +938,89 @@
 
     <!-- Filters (shown after fetch) -->
     <div class="filters" id="filters-panel">
-      <div class="filters-title eyebrow">Filter results</div>
-      <div class="filter-presets" id="filter-presets">
-        <button type="button" class="preset-chip" data-preset="best-bets">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-          Best bets
-        </button>
-        <button type="button" class="preset-chip" data-preset="closing-soon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          Closing soon
-        </button>
-        <button type="button" class="preset-chip" data-preset="newest">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-          Newest
-        </button>
-        <button type="button" class="preset-chip" data-preset="reset">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-          Reset
-        </button>
+      <div class="filters-header">
+        <div class="filters-title eyebrow">Filter results</div>
+        <div class="filter-presets" id="filter-presets">
+          <button type="button" class="preset-chip" data-preset="best-bets">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            Best bets
+          </button>
+          <button type="button" class="preset-chip" data-preset="closing-soon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Closing soon
+          </button>
+          <button type="button" class="preset-chip" data-preset="newest">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Newest
+          </button>
+          <button type="button" class="preset-chip" data-preset="reset">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+            Reset
+          </button>
+        </div>
       </div>
-      <div class="filters-row">
-        <input type="text" class="filter-input" id="filter-title" aria-label="Search job title" placeholder="Search job title…" style="width:180px" />
-        <input type="text" class="filter-input" id="filter-company" aria-label="Search company" placeholder="Search company…" style="width:180px" />
-        <input type="text" class="filter-input" id="filter-skill" aria-label="Filter by skill" placeholder="Filter by skill…" style="width:150px" />
+      <div class="filter-fields">
         <div class="control-group">
-          <label for="filter-min-score">Min score</label>
-          <input type="number" class="filter-input" id="filter-min-score" value="0" min="0" max="100" style="width:84px" />
+          <label for="filter-title">Job title</label>
+          <input type="text" class="filter-input" id="filter-title" placeholder="Any title" />
         </div>
         <div class="control-group">
-          <label for="filter-max-score">Max score</label>
-          <input type="number" class="filter-input" id="filter-max-score" value="100" min="0" max="100" style="width:84px" />
+          <label for="filter-company">Company</label>
+          <input type="text" class="filter-input" id="filter-company" placeholder="Any company" />
         </div>
-        <select class="filter-select" id="filter-work-term" style="width:160px" title="Work term">
-          <option value="">All work terms</option>
-        </select>
-        <select class="filter-select" id="filter-sort" aria-label="Sort results" style="width:180px">
-          <option value="score-desc">Score: high → low</option>
-          <option value="score-asc">Score: low → high</option>
-          <option value="date-desc">Newest first</option>
-          <option value="deadline-asc">Deadline: soonest</option>
-          <option value="title-asc">Title: A → Z</option>
-          <option value="company-asc">Company: A → Z</option>
-        </select>
-        <div class="checkbox-row">
-          <input type="checkbox" id="filter-hide-disqualified" checked />
-          <label for="filter-hide-disqualified">Hide ineligible</label>
+        <div class="control-group">
+          <label for="filter-skill">Skill</label>
+          <input type="text" class="filter-input" id="filter-skill" placeholder="Any skill" />
         </div>
-        <div class="checkbox-row">
-          <input type="checkbox" id="filter-hide-external" />
-          <label for="filter-hide-external">Hide external</label>
+        <div class="control-group">
+          <label for="filter-work-term">Work term</label>
+          <select class="filter-select" id="filter-work-term">
+            <option value="">All work terms</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="filter-sort">Sort by</label>
+          <select class="filter-select" id="filter-sort">
+            <option value="score-desc">Score: high → low</option>
+            <option value="score-asc">Score: low → high</option>
+            <option value="date-desc">Newest first</option>
+            <option value="deadline-asc">Deadline: soonest</option>
+            <option value="title-asc">Title: A → Z</option>
+            <option value="company-asc">Company: A → Z</option>
+          </select>
+        </div>
+      </div>
+      <div class="filters-footer">
+        <fieldset class="score-filter-group">
+          <legend>Match score</legend>
+          <div class="score-filter-inputs">
+            <div class="control-group">
+              <label for="filter-min-score">Minimum</label>
+              <input type="number" class="filter-input" id="filter-min-score" value="0" min="0" max="100" />
+            </div>
+            <div class="control-group">
+              <label for="filter-max-score">Maximum</label>
+              <input type="number" class="filter-input" id="filter-max-score" value="100" min="0" max="100" />
+            </div>
+          </div>
+        </fieldset>
+        <div class="filter-toggle-group">
+          <div class="checkbox-row">
+            <input type="checkbox" id="filter-hide-disqualified" checked />
+            <label for="filter-hide-disqualified">Hide ineligible</label>
+          </div>
+          <div class="checkbox-row">
+            <input type="checkbox" id="filter-hide-external" />
+            <label for="filter-hide-external">Hide external</label>
+          </div>
+        </div>
+        <div class="control-group semantic-weight-control" id="semantic-weight-control" hidden>
+          <label class="semantic-weight-label" for="ai-semantic-weight">
+            <span>Score weighting</span>
+            <output class="semantic-weight-value" id="ai-semantic-weight-value" for="ai-semantic-weight">35% AI / 65% keyword</output>
+          </label>
+          <input type="range" id="ai-semantic-weight" min="0" max="100" step="1" value="35" aria-describedby="ai-semantic-weight-hint" />
+          <span class="semantic-weight-hint" id="ai-semantic-weight-hint"><span>Keyword</span><span>Semantic AI</span></span>
         </div>
         <button class="btn btn-secondary btn-sm" id="btn-save-all-filtered">Save all filtered</button>
       </div>
