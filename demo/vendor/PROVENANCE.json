@@ -1,0 +1,11 @@
+{
+  "source": "https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader",
+  "branch": "chrome-extension",
+  "commit": "347a854994222a2be8f33ae24172dcc6e9aa5246",
+  "path": "src/matcher.js",
+  "vendored_file": "matcher.mjs",
+  "sha256": "184a57c2e5d82d642592a74174e52cf3fca2ba0d77acbe8a491438d2e37735aa",
+  "modifications": "None. Renamed extension from .js to .mjs for native browser and Node ES module loading.",
+  "license": "AGPL-3.0",
+  "scope": "Lexical scoring only. No semantic model, NUWorks API, eligibility inference, or hiring-outcome prediction."
+}

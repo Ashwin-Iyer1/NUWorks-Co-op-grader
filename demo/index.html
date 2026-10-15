@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Try NUCoop's real lexical résumé matcher with fictional jobs. Compare roles, inspect skill evidence, and export a shortlist without an account.">
+  <meta name="theme-color" content="#f6f4ef">
+  <title>Try the Job Explorer · NUCoop</title>
+  <link rel="stylesheet" href="./demo.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#explorer">Skip to job explorer</a>
+  <header class="topbar">
+    <a class="brand" href="https://nucoop.app/" aria-label="NUCoop home"><span class="brand-mark" aria-hidden="true">n.</span> NUCoop <span class="brand-divider">/</span><span class="brand-detail">The job explorer</span></a>
+    <a class="text-link" href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/tree/chrome-extension" target="_blank" rel="noopener noreferrer">View source <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Interactive product demo</p>
+        <h1 id="page-title">A shorter list.<br><em>A clearer reason.</em></h1>
+        <p class="intro-copy">A good match should come with an explanation. Choose a sample résumé, explore the roles, and see exactly which skills connect.</p>
+      </div>
+      <aside class="demo-note"><span class="note-icon" aria-hidden="true">✳</span><div><strong>Real matcher. Fictional opportunities.</strong><p>All employers, jobs, pay, and sample résumés are invented. The extension’s actual lexical matcher runs here in your browser. No account or installation.</p><a href="#method">How this demo works <span aria-hidden="true">↓</span></a></div></aside>
+    </section>
+
+    <section class="workspace" id="explorer" aria-label="Job explorer" tabindex="-1">
+      <aside class="profile-panel" aria-labelledby="profile-title">
+        <div class="panel-heading"><span class="step">01</span><h2 id="profile-title">Your starting point</h2></div>
+        <label for="profile">Sample résumé</label>
+        <select id="profile"><option value="engineering">Software engineering</option><option value="markets">Data &amp; financial research</option><option value="product">Product &amp; design</option></select>
+        <div class="profile-card"><span class="profile-avatar" aria-hidden="true">↗</span><p id="profile-focus">Build &amp; ship</p><span>Fictional student profile</span></div>
+        <details class="resume-editor"><summary>Read &amp; edit the sample</summary><label for="resume">Résumé text</label><textarea id="resume" rows="12" maxlength="12000" spellcheck="false" aria-describedby="resume-help"></textarea><p id="resume-help">Try adding a skill and watch the evidence change. Text stays in this page’s memory and is cleared on reload.</p><button class="text-button" id="restore-profile" type="button">Restore sample text</button></details>
+        <div class="profile-skills"><div class="small-heading"><h3>Recognized skills</h3><span id="skill-count">0</span></div><div class="tags" id="resume-skills"></div></div>
+        <div class="privacy-note"><strong>Only the lexical signal</strong><p>This demo does not load the optional semantic AI model or check NUWorks eligibility. A score is a ranking aid, never a hiring probability.</p></div>
+      </aside>
+
+      <div class="results-panel">
+        <div class="results-heading"><div><p class="eyebrow">02 / Explore the possibilities</p><h2>Find your next direction.</h2></div><span class="dataset-label">9 fictional roles</span></div>
+        <div class="toolbar">
+          <label class="search-field" for="search"><span aria-hidden="true">⌕</span><span class="sr-only">Search jobs</span><input type="search" id="search" placeholder="Role, skill, company, or city…" autocomplete="off"></label>
+          <label class="select-field" for="sort"><span>Sort by</span><select id="sort" aria-label="Sort by"><option value="match">Best lexical match</option><option value="pay">Highest sample pay</option></select></label>
+        </div>
+        <fieldset class="track-filter"><legend class="sr-only">Filter by field</legend><label><input type="radio" name="track" value="All" checked><span>All fields</span></label><label><input type="radio" name="track" value="Engineering"><span>Engineering</span></label><label><input type="radio" name="track" value="Data & finance"><span>Data &amp; finance</span></label><label><input type="radio" name="track" value="Product & design"><span>Product &amp; design</span></label></fieldset>
+        <div class="secondary-filters"><label for="workstyle">Work style<select id="workstyle" aria-label="Work style"><option value="All">Any work style</option><option>Remote</option><option>Hybrid</option><option>On-site</option></select></label><label class="range-filter" for="minimum">Minimum score <output id="minimum-value" for="minimum">0</output><input type="range" id="minimum" min="0" max="100" step="5" value="0"></label><button class="text-button" id="reset-filters" type="button">Reset filters</button></div>
+        <div class="results-summary"><p role="status" id="result-count" aria-live="polite">Preparing sample matches…</p><button type="button" class="shortlist-toggle" id="saved-only" aria-pressed="false">Shortlist <span id="saved-count">0</span></button><button type="button" class="text-button" id="export" disabled>Export CSV <span aria-hidden="true">↓</span></button></div>
+        <div id="job-list" class="job-grid"></div>
+        <noscript><div class="empty-state"><h3>JavaScript runs the matcher.</h3><p>Enable JavaScript to explore the fictional roles and calculate scores entirely in your browser.</p><a href="https://nucoop.app/">Read about NUCoop</a></div></noscript>
+      </div>
+    </section>
+
+    <section class="method" id="method" aria-labelledby="method-title">
+      <div><p class="eyebrow">Under the surface</p><h2 id="method-title">A score you can inspect.</h2><p>Useful rankings start with visible evidence. Open any role to see the skills found in both texts, the gaps worth reviewing, and the signals behind the score.</p></div>
+      <div class="method-notes"><details><summary>What actually runs here?</summary><p>An unmodified copy of the extension’s lexical matcher at commit <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/blob/347a854994222a2be8f33ae24172dcc6e9aa5246/src/matcher.js" target="_blank" rel="noopener noreferrer">347a854</a>. It recognizes skill aliases, gives extra weight to stated requirements, and credits related skills when supported by specific evidence.</p><p>The optional ONNX semantic model, real listings, résumé PDF parsing, and eligibility checks are available in the extension and are outside this demo.</p></details><details><summary>How should I read the score?</summary><p>The score blends weighted hard-skill coverage with repeated keywords and phrases. For postings with more than three recognized hard skills, the split is 75% skills and 25% keywords. With one to three skills it is 65% / 35%; with none, only keywords contribute.</p><p>Required skills receive 1.5× weight and preferred skills 0.7×. Inferred skills receive 70% credit. Skill coverage saturates at 65%; keyword coverage has its own saturation rule. Short postings are pulled toward a neutral score. A high score is not complete coverage, verified competence, eligibility, or a probability of receiving an offer.</p></details><details><summary>What happens to my text and shortlist?</summary><p>Scoring happens in this tab. This demo makes no API requests, loads no analytics, stores no résumé text, and sends no text to a model provider. Reloading clears your changes and shortlist. CSV exports contain fictional roles and matching evidence; they do not include the résumé body.</p><p>All fixture content is original and fictional. Source code and license are included with the demo: <a href="./vendor/PROVENANCE.json">matcher provenance</a> and <a href="./vendor/LICENSE">AGPL-3.0 license</a>.</p></details></div>
+    </section>
+    <section class="end-cta"><div><h2>Bring the workflow to your search.</h2><p>The extension works with your NUWorks session and adds optional on-device semantic matching.</p></div><a class="button primary" href="https://nucoop.app/">Explore the extension <span aria-hidden="true">↗</span></a></section>
+  </main>
+  <footer><span>NUCoop · An Ashwin Iyer project</span><span>Fictional data. Transparent matching.</span></footer>
+  <div class="compare-tray" id="compare-tray" hidden><div><strong id="compare-count">0 roles selected</strong><span>Compare up to three, side by side.</span></div><button type="button" class="text-button" id="clear-compare">Clear</button><button type="button" class="button primary" id="open-compare">Compare roles <span aria-hidden="true">↗</span></button></div>
+  <p class="sr-only" id="announcement" role="status" aria-live="polite"></p>
+  <dialog id="detail-dialog" aria-labelledby="detail-title"><div class="dialog-top"><span class="eyebrow">Behind the match</span><button class="icon-button" type="button" data-close="detail-dialog" aria-label="Close role details">×</button></div><div id="detail-content"></div></dialog>
+  <dialog id="comparison-dialog" class="comparison-dialog" aria-labelledby="comparison-title"><div class="dialog-top"><div><p class="eyebrow">Make the tradeoffs visible</p><h2 id="comparison-title">Your roles, side by side.</h2></div><button class="icon-button" type="button" data-close="comparison-dialog" aria-label="Close comparison">×</button></div><div id="comparison-content"></div></dialog>
+</body>
+</html>
