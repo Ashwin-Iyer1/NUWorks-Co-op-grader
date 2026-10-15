@@ -1,5 +1,7 @@
 # NUCoop interactive demo
 
+[Try the live explorer](https://nucoop.app/demo/) · [Read the case study](https://ashwiniyer.com/projects/nucoop)
+
 A portable, dependency-free product demo of the real extension's lexical matcher. All nine job postings, employers, pay rates, and three sample résumés are original fictional fixtures. This is not a live job board or a hiring-outcome predictor.
 
 ## Run
