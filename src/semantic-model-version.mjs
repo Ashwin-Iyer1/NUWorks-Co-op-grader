@@ -2,13 +2,14 @@
 
 export const SEMANTIC_MODEL_ID = "turtlecap/mdbr-leaf-mt-resume-grader";
 export const SEMANTIC_MODEL_REVISION_KEY = "semanticModelRevision";
+export const SEMANTIC_MODEL_CALIBRATIONS_KEY = "semanticModelCalibrations";
 export const TRANSFORMERS_CACHE_NAME = "transformers-cache";
 
 // Bundled fallback for the expanded 2026-08-27 model. The same payload lives
 // beside the weights as calibration.json and is fetched at the pinned model
 // revision. Keeping a bundled copy lets a cached model continue to score while
 // offline after it has been upgraded.
-export const DEFAULT_SEMANTIC_CALIBRATION = Object.freeze({
+export const EXPANDED_SEMANTIC_CALIBRATION = Object.freeze({
   schema_version: 1,
   model_release: "expanded-openai-bge-replay-2026-08-27",
   method: "quantile_piecewise_linear",
@@ -22,8 +23,31 @@ export const DEFAULT_SEMANTIC_CALIBRATION = Object.freeze({
   ]),
 });
 
-// Revisions published before calibration.json used this affine display map.
-// It remains available for users who have not clicked the model upgrade yet.
+// Runtime fields from the frozen r2 calibration.json (SHA-256
+// 3424ce9d3f94df53f5f12d962859408d07543fd2c6d8d38a9fb410cf7a65da6e).
+// The full validation provenance stays with that file on the Hub.
+export const DEFAULT_SEMANTIC_CALIBRATION = Object.freeze({
+  schema_version: 1,
+  model_release: "major-agnostic-bge-2026-10-15-r2",
+  method: "quantile_piecewise_linear",
+  cosine_knots: Object.freeze([
+    0.1776963988029566, 0.23981984925483318, 0.8022639657486932,
+  ]),
+  score_knots: Object.freeze([0, 0, 0.7033154226801739]),
+});
+export const DEFAULT_SEMANTIC_CALIBRATION_REVISION =
+  "d67ad62deee2dfefa2f9d365b42abbbedfb88ef4";
+
+// A fallback is valid only for the exact immutable weights it accompanied.
+// Add each promoted release's SHA and calibration together; never infer this
+// association from whichever revision happens to be latest on the Hub.
+export const BUNDLED_SEMANTIC_CALIBRATIONS = Object.freeze({
+  a77f5eb7d1c206088789eab5a270b9943a59304a: EXPANDED_SEMANTIC_CALIBRATION,
+  [DEFAULT_SEMANTIC_CALIBRATION_REVISION]: DEFAULT_SEMANTIC_CALIBRATION,
+});
+
+// Historical revisions used this affine display map. Retain it for explicit
+// legacy comparisons; an unversioned /main cache cannot safely select it.
 export const LEGACY_SEMANTIC_CALIBRATION = Object.freeze({
   schema_version: 1,
   model_release: "legacy-bge-affine",
@@ -150,6 +174,50 @@ export async function fetchModelCalibration(
     throw new Error(`Model calibration fetch failed: HTTP ${response.status}`);
   }
   return validateSemanticCalibration(await response.json());
+}
+
+export async function resolveModelCalibration(
+  revision,
+  { cachedRecords = {}, fetchImpl = globalThis.fetch } = {}
+) {
+  if (!/^[a-f0-9]{40}$/i.test(String(revision || ""))) {
+    throw new Error(
+      "The installed AI model version is unknown. Connect to the internet and " +
+        "choose AI upgrade before scoring. Keyword scores remain available."
+    );
+  }
+
+  const cached = cachedRecords?.[revision];
+  if (cached?.model_id === SEMANTIC_MODEL_ID && cached.revision === revision) {
+    try {
+      return validateSemanticCalibration(cached.calibration);
+    } catch {
+      // Corrupt/stale storage must not prevent fetching a valid pinned copy.
+    }
+  }
+
+  try {
+    return await fetchModelCalibration(revision, fetchImpl);
+  } catch (error) {
+    const bundled = BUNDLED_SEMANTIC_CALIBRATIONS[revision];
+    if (bundled) return validateSemanticCalibration(bundled);
+    throw new Error(
+      `Matching AI calibration for model ${revision.slice(0, 8)} is unavailable. ` +
+        "Connect to the internet and try again. Keyword scores remain available.",
+      { cause: error }
+    );
+  }
+}
+
+export function calibrationCacheRecord(revision, calibration) {
+  if (!/^[a-f0-9]{40}$/i.test(String(revision || ""))) {
+    throw new Error("A pinned model revision is required for calibration storage.");
+  }
+  return {
+    model_id: SEMANTIC_MODEL_ID,
+    revision,
+    calibration: validateSemanticCalibration(calibration),
+  };
 }
 
 function isModelAssetRequest(request) {

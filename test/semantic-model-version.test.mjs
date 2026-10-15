@@ -2,17 +2,96 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  BUNDLED_SEMANTIC_CALIBRATIONS,
+  DEFAULT_SEMANTIC_CALIBRATION,
+  DEFAULT_SEMANTIC_CALIBRATION_REVISION,
+  calibrationCacheRecord,
   countCachedModelAssets,
   deleteCachedModelAssets,
   fetchLatestModelRevision,
   fetchModelCalibration,
   installedRevisionForComparison,
   isModelUpdateAvailable,
+  resolveModelCalibration,
   validateSemanticCalibration,
 } from "../src/semantic-model-version.mjs";
 
 const REVISION_A = "a".repeat(40);
 const REVISION_B = "b".repeat(40);
+const TEST_CALIBRATION = {
+  schema_version: 1,
+  model_release: "test-release",
+  method: "quantile_piecewise_linear",
+  cosine_knots: [0.2, 0.8],
+  score_knots: [0.1, 0.9],
+};
+
+test("an offline model uses only its validated persistent calibration", async () => {
+  const cachedRecords = {
+    [REVISION_A]: calibrationCacheRecord(REVISION_A, TEST_CALIBRATION),
+  };
+  const offline = async () => { throw new Error("offline"); };
+  assert.deepEqual(
+    await resolveModelCalibration(REVISION_A, { cachedRecords, fetchImpl: offline }),
+    TEST_CALIBRATION
+  );
+  await assert.rejects(
+    resolveModelCalibration(REVISION_B, { cachedRecords, fetchImpl: offline }),
+    /Matching AI calibration.*unavailable/
+  );
+});
+
+test("a mismatched or invalid cache entry is replaced by pinned remote data", async () => {
+  for (const record of [
+    { ...calibrationCacheRecord(REVISION_A, TEST_CALIBRATION), revision: REVISION_B },
+    { ...calibrationCacheRecord(REVISION_A, TEST_CALIBRATION), model_id: "another/model" },
+    calibrationCacheRecord(REVISION_A, TEST_CALIBRATION),
+  ]) {
+    if (record.revision === REVISION_A && record.model_id !== "another/model") {
+      record.calibration = { ...TEST_CALIBRATION, score_knots: [0.9, 0.1] };
+    }
+    let calls = 0;
+    const result = await resolveModelCalibration(REVISION_A, {
+      cachedRecords: { [REVISION_A]: record },
+      fetchImpl: async (url) => {
+        calls++;
+        assert.ok(url.includes(`/resolve/${REVISION_A}/`));
+        return { ok: true, json: async () => TEST_CALIBRATION };
+      },
+    });
+    assert.equal(calls, 1);
+    assert.deepEqual(result, TEST_CALIBRATION);
+  }
+});
+
+test("bundled fallback is bound to a known SHA, never the current Hub head", async () => {
+  const offline = async () => { throw new Error("offline"); };
+  const revision = "a77f5eb7d1c206088789eab5a270b9943a59304a";
+  assert.deepEqual(
+    await resolveModelCalibration(revision, { fetchImpl: offline }),
+    BUNDLED_SEMANTIC_CALIBRATIONS[revision]
+  );
+  await assert.rejects(resolveModelCalibration(REVISION_B, { fetchImpl: offline }), /unavailable/);
+  await assert.rejects(resolveModelCalibration(null, { fetchImpl: offline }), /choose AI upgrade/);
+});
+
+test("invalid remote calibration fails closed for an unknown model", async () => {
+  await assert.rejects(
+    resolveModelCalibration(REVISION_B, {
+      fetchImpl: async () => ({ ok: true, json: async () => ({ schema_version: 99 }) }),
+    }),
+    /Matching AI calibration.*unavailable/
+  );
+});
+
+test("published r2 SHA can load its exact bundled curve offline", async () => {
+  assert.equal(DEFAULT_SEMANTIC_CALIBRATION_REVISION, "d67ad62deee2dfefa2f9d365b42abbbedfb88ef4");
+  const calibration = await resolveModelCalibration(DEFAULT_SEMANTIC_CALIBRATION_REVISION, {
+    fetchImpl: async () => { throw new Error("offline"); },
+  });
+  assert.deepEqual(calibration, DEFAULT_SEMANTIC_CALIBRATION);
+  assert.equal(calibration.model_release, "major-agnostic-bge-2026-10-15-r2");
+});
 
 test("a test override takes precedence over the stored revision", () => {
   assert.equal(

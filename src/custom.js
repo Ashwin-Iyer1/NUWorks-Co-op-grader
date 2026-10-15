@@ -3,14 +3,14 @@
 import JobMatcher, { ELIGIBILITY_COPY } from "./matcher.js";
 import { createSemanticScorer, cosineToScore } from "./embeddings.js";
 import {
-  DEFAULT_SEMANTIC_CALIBRATION,
-  LEGACY_SEMANTIC_CALIBRATION,
+  SEMANTIC_MODEL_CALIBRATIONS_KEY,
   SEMANTIC_MODEL_REVISION_KEY,
   IS_MODEL_UPDATE_TEST_BUILD,
   countCachedModelAssets,
   deleteCachedModelAssets,
   fetchLatestModelRevision,
-  fetchModelCalibration,
+  calibrationCacheRecord,
+  resolveModelCalibration,
   installedRevisionForComparison,
   isModelUpdateAvailable,
 } from "./semantic-model-version.mjs";
@@ -1626,6 +1626,9 @@ async function checkSemanticModelUpdate() {
     "semanticEnabled",
     SEMANTIC_MODEL_REVISION_KEY,
   ]);
+  // Preserve the installed pin even when the network or Cache API is offline.
+  const storedRevision = state[SEMANTIC_MODEL_REVISION_KEY] || null;
+  modelRevisionToLoad = storedRevision;
   if (!state.semanticEnabled) {
     hideSemanticRangeSlider();
     return false;
@@ -1638,7 +1641,6 @@ async function checkSemanticModelUpdate() {
       countCachedModelAssets(),
     ]);
     latestSemanticModelRevision = latestRevision;
-    const storedRevision = state[SEMANTIC_MODEL_REVISION_KEY] || null;
     const updateAvailable = isModelUpdateAvailable({
       storedRevision,
       latestRevision,
@@ -1739,29 +1741,29 @@ function semanticScorerKey(resumeText, revision = modelRevisionToLoad) {
 }
 
 async function getSemanticCalibration(revision) {
-  if (!revision) return LEGACY_SEMANTIC_CALIBRATION;
   if (semanticCalibrationByRevision.has(revision)) {
     return semanticCalibrationByRevision.get(revision);
   }
+  let cachedRecords = {};
   try {
-    const calibration = await fetchModelCalibration(revision);
-    semanticCalibrationByRevision.set(revision, calibration);
-    return calibration;
+    const state = await semanticStorageGet([SEMANTIC_MODEL_CALIBRATIONS_KEY]);
+    cachedRecords = state[SEMANTIC_MODEL_CALIBRATIONS_KEY] || {};
   } catch (error) {
-    // Older pinned revisions do not contain calibration.json. The latest
-    // expanded model has an identical bundled fallback so a cached model can
-    // still produce calibrated scores while temporarily offline.
-    const calibration =
-      revision === latestSemanticModelRevision
-        ? DEFAULT_SEMANTIC_CALIBRATION
-        : LEGACY_SEMANTIC_CALIBRATION;
-    semanticCalibrationByRevision.set(revision, calibration);
-    console.warn(
-      `[Semantic] Using ${calibration.model_release} calibration fallback:`,
-      error
-    );
-    return calibration;
+    console.warn("[Semantic] Could not read cached model calibration:", error);
   }
+  const calibration = await resolveModelCalibration(revision, { cachedRecords });
+  try {
+    await semanticStorageSet({
+      [SEMANTIC_MODEL_CALIBRATIONS_KEY]: {
+        ...cachedRecords,
+        [revision]: calibrationCacheRecord(revision, calibration),
+      },
+    });
+  } catch (error) {
+    console.warn("[Semantic] Could not persist model calibration:", error);
+  }
+  semanticCalibrationByRevision.set(revision, calibration);
+  return calibration;
 }
 
 async function getSemanticScorer(
@@ -1817,6 +1819,9 @@ async function upgradeSemanticModel() {
     const latestRevision =
       latestSemanticModelRevision || (await fetchLatestModelRevision());
     latestSemanticModelRevision = latestRevision;
+
+    // Verify the matching score map before removing a working installed model.
+    await getSemanticCalibration(latestRevision);
 
     semanticRunId++;
     if (semanticCache.scorer) semanticCache.scorer.dispose();
@@ -1886,7 +1891,21 @@ async function semanticRefine(creds) {
     semanticCache.scorer &&
     semanticCache.key === semanticScorerKey(resumeText);
   if (!modelWarm) setBgTask("semantic", { label: "Loading scoring model…" });
-  const scorer = await getSemanticScorer(resumeText);
+  let scorer;
+  try {
+    scorer = await getSemanticScorer(resumeText);
+  } catch (error) {
+    if (runId === semanticRunId) {
+      setBgTask("semantic", null);
+      failDownloadProgress(error.message || "Semantic AI could not start.");
+      showToast(
+        error.message || "Semantic AI could not start. Keyword scores remain available.",
+        7000
+      );
+    }
+    console.warn("[Semantic] Scoring unavailable:", error);
+    return;
+  }
   if (!scorer || runId !== semanticRunId) {
     if (runId === semanticRunId) setBgTask("semantic", null);
     return;
