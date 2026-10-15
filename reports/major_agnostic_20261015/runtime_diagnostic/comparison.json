@@ -1,0 +1,112 @@
+{
+  "node_ort": "1.24.3",
+  "token_checks": [
+    {
+      "row": 0,
+      "key": "input_ids",
+      "equal": true
+    },
+    {
+      "row": 0,
+      "key": "attention_mask",
+      "equal": true
+    },
+    {
+      "row": 0,
+      "key": "token_type_ids",
+      "equal": true
+    },
+    {
+      "row": 1,
+      "key": "input_ids",
+      "equal": true
+    },
+    {
+      "row": 1,
+      "key": "attention_mask",
+      "equal": true
+    },
+    {
+      "row": 1,
+      "key": "token_type_ids",
+      "equal": true
+    },
+    {
+      "row": 2,
+      "key": "input_ids",
+      "equal": true
+    },
+    {
+      "row": 2,
+      "key": "attention_mask",
+      "equal": true
+    },
+    {
+      "row": 2,
+      "key": "token_type_ids",
+      "equal": true
+    }
+  ],
+  "comparisons": {
+    "all": {
+      "python_same_mode": [
+        {
+          "cosine": 0.9999999999999889,
+          "max_abs": 4.470348358154297e-8
+        },
+        {
+          "cosine": 0.9969696322490782,
+          "max_abs": 0.012741535902023315
+        },
+        {
+          "cosine": 0.9975486081104631,
+          "max_abs": 0.015803644433617592
+        }
+      ],
+      "python_fixture": [
+        {
+          "cosine": 0.9999999999999889,
+          "max_abs": 4.470348358154297e-8
+        },
+        {
+          "cosine": 0.9969696322490782,
+          "max_abs": 0.012741535902023315
+        },
+        {
+          "cosine": 0.9975486079296731,
+          "max_abs": 0.015803640708327293
+        }
+      ]
+    },
+    "disabled": {
+      "python_same_mode": [
+        {
+          "cosine": 0.9977652835723667,
+          "max_abs": 0.010167086496949196
+        },
+        {
+          "cosine": 0.9969696330561459,
+          "max_abs": 0.012741543352603912
+        },
+        {
+          "cosine": 0.9982742418693431,
+          "max_abs": 0.009195268154144287
+        }
+      ],
+      "python_fixture": [
+        {
+          "cosine": 0.9999999999999889,
+          "max_abs": 4.470348358154297e-8
+        },
+        {
+          "cosine": 0.9969696324652263,
+          "max_abs": 0.012741543352603912
+        },
+        {
+          "cosine": 0.9975486079296731,
+          "max_abs": 0.015803640708327293
+        }
+      ]
+    }
+  }
+}

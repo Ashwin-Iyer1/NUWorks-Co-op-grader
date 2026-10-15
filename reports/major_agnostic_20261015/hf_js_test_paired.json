@@ -1,0 +1,1462 @@
+{
+  "pairs": 820,
+  "resumes": 57,
+  "jobs": 248,
+  "coverage": {
+    "category": [
+      {
+        "value": "unknown",
+        "resumes": 57,
+        "pairs": 820,
+        "mean_label": 0.42134146341463413
+      }
+    ],
+    "major": [
+      {
+        "value": "unknown",
+        "resumes": 57,
+        "pairs": 820,
+        "mean_label": 0.42134146341463413
+      }
+    ],
+    "student_year": [
+      {
+        "value": "unknown",
+        "resumes": 57,
+        "pairs": 820,
+        "mean_label": 0.42134146341463413
+      }
+    ],
+    "career_stage": [
+      {
+        "value": "unknown",
+        "resumes": 57,
+        "pairs": 820,
+        "mean_label": 0.42134146341463413
+      }
+    ],
+    "degree_level": [
+      {
+        "value": "unknown",
+        "resumes": 57,
+        "pairs": 820,
+        "mean_label": 0.42134146341463413
+      }
+    ],
+    "source": [
+      {
+        "value": "unknown",
+        "resumes": 57,
+        "pairs": 820,
+        "mean_label": 0.42134146341463413
+      }
+    ]
+  },
+  "method": {
+    "bootstrap_unit": "normalized resume text",
+    "bootstrap_draws": 10000,
+    "seed": 20261015,
+    "pairwise_min_label_gap": 0.1,
+    "minimum_slice_independent_clusters": 5
+  },
+  "limitations": [
+    "Career category is not a verified academic major or student year.",
+    "Teacher-label agreement is not measured hiring success or human agreement.",
+    "Bootstrap intervals describe resume variation conditional on this job pool.",
+    "Normalized exact-text checks do not detect paraphrases or shared template fragments.",
+    "Family clusters use the supplied family identifiers; unknown families remain individual resumes."
+  ],
+  "rankable_resumes": 46,
+  "excluded_constant_label_resumes": 11,
+  "macro_resume_metrics": {
+    "spearman": {
+      "mean": 0.6322099561590292,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        0.5056585996197795,
+        0.7393356501354371
+      ]
+    },
+    "ndcg_at_10": {
+      "mean": 0.8600630321155439,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        0.794453624757498,
+        0.9182884261235317
+      ]
+    },
+    "top1_best_rate": {
+      "mean": 0.782608695652174,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        0.6521739130434783,
+        0.8913043478260869
+      ]
+    },
+    "pairwise_accuracy": {
+      "mean": 0.8512025143159145,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        0.776605192868272,
+        0.9147148748822929
+      ]
+    }
+  },
+  "per_resume": [
+    {
+      "resume_key": "01341cd11397bf92f3c8b7b40ca2f987a675f58fbb1b0c763311b5a834cd231f",
+      "pairs": 8,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.8660254037844387,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "01341cd11397bf92f3c8b7b40ca2f987a675f58fbb1b0c763311b5a834cd231f"
+    },
+    {
+      "resume_key": "01a7907a7967b7e9762c070ce030001e10b8550983db010bc733d27e434c79d8",
+      "pairs": 27,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.4752320709147858,
+      "ndcg_at_10": 0.571614567891588,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7589285714285714,
+      "_cluster": "01a7907a7967b7e9762c070ce030001e10b8550983db010bc733d27e434c79d8"
+    },
+    {
+      "resume_key": "026aac8abdd5175abd24611d1765705af40f35425c53937ac082f4baa3f3238c",
+      "pairs": 21,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.7538648181381392,
+      "ndcg_at_10": 0.8891461954291717,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8835616438356164,
+      "_cluster": "026aac8abdd5175abd24611d1765705af40f35425c53937ac082f4baa3f3238c"
+    },
+    {
+      "resume_key": "0362616f656b959b28662b6fc5393d476bb64ff5b9ac8df050f008a25995d3df",
+      "pairs": 45,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.6454987430401808,
+      "ndcg_at_10": 0.7949942078560712,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8211624441132638,
+      "_cluster": "0362616f656b959b28662b6fc5393d476bb64ff5b9ac8df050f008a25995d3df"
+    },
+    {
+      "resume_key": "08fca280dd55650ee819cfb7c46b770f453f967d3c42550bec5bd35498294637",
+      "pairs": 4,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.8944271909999159,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "08fca280dd55650ee819cfb7c46b770f453f967d3c42550bec5bd35498294637"
+    },
+    {
+      "resume_key": "0ac1f16e3a18758b845e81402fcd1e02f632a20fb9a17d779a82cfeacd2ebb2d",
+      "pairs": 9,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.7074749701108396,
+      "ndcg_at_10": 0.8285978379951137,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9333333333333333,
+      "_cluster": "0ac1f16e3a18758b845e81402fcd1e02f632a20fb9a17d779a82cfeacd2ebb2d"
+    },
+    {
+      "resume_key": "0c1e3fe4ddbac418e808136e78c9f2610d493459b6a926b3292d76500528447a",
+      "pairs": 6,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.6546536707079772,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "0c1e3fe4ddbac418e808136e78c9f2610d493459b6a926b3292d76500528447a"
+    },
+    {
+      "resume_key": "0f55d2eb7cca46bbf1423e1f87c2389c66aa4c32a6f72a3f69de2ae3bd5d3df6",
+      "pairs": 48,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.7490324102125083,
+      "ndcg_at_10": 0.901498671130558,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.873850197109067,
+      "_cluster": "0f55d2eb7cca46bbf1423e1f87c2389c66aa4c32a6f72a3f69de2ae3bd5d3df6"
+    },
+    {
+      "resume_key": "15a4c76ee946e481b1339f21ce5a048999206ee4dde8b1fedd9c8b364be44d58",
+      "pairs": 8,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.5085995176833685,
+      "ndcg_at_10": 0.9056630027321224,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.7894736842105263,
+      "_cluster": "15a4c76ee946e481b1339f21ce5a048999206ee4dde8b1fedd9c8b364be44d58"
+    },
+    {
+      "resume_key": "16979796c149b99e13f5088a3ba2e084ae8d17703183ad050445e598156f4765",
+      "pairs": 6,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.9258200997725515,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "16979796c149b99e13f5088a3ba2e084ae8d17703183ad050445e598156f4765"
+    },
+    {
+      "resume_key": "18c2223dabed7cc7b9bda47be31fbe77028c5c09ee60da1aa556bf2584314475",
+      "pairs": 12,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.7017797937091914,
+      "ndcg_at_10": 0.9566237740098195,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9142857142857143,
+      "_cluster": "18c2223dabed7cc7b9bda47be31fbe77028c5c09ee60da1aa556bf2584314475"
+    },
+    {
+      "resume_key": "212cb22f8679f420838dd5b9b3ab40dc3438d43a90ae579801face965b950888",
+      "pairs": 8,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.5039526306789697,
+      "ndcg_at_10": 0.6934264036172708,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8333333333333334,
+      "_cluster": "212cb22f8679f420838dd5b9b3ab40dc3438d43a90ae579801face965b950888"
+    },
+    {
+      "resume_key": "2313a3d8ef1360eb52f1506210d9dd183c96ae0cb5dff4b2fd5e60b2cade550b",
+      "pairs": 27,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.3578374445796428,
+      "ndcg_at_10": 0.6338420624693801,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.6830357142857143,
+      "_cluster": "2313a3d8ef1360eb52f1506210d9dd183c96ae0cb5dff4b2fd5e60b2cade550b"
+    },
+    {
+      "resume_key": "23350780802f46be038f10ab26cca22423f6e4d24933e52514a4a7df1966ef1e",
+      "pairs": 5,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.9486832980505137,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "23350780802f46be038f10ab26cca22423f6e4d24933e52514a4a7df1966ef1e"
+    },
+    {
+      "resume_key": "26cdd48f3da8b65f865ad5a39602a93aa9d20ddbefd7b860cc6ba0da49ff8200",
+      "pairs": 34,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": -0.23205408595420915,
+      "ndcg_at_10": 0.13414979720506984,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.3914209115281501,
+      "_cluster": "26cdd48f3da8b65f865ad5a39602a93aa9d20ddbefd7b860cc6ba0da49ff8200"
+    },
+    {
+      "resume_key": "2798e177b4f637a64eb39006f927c0b213d1b73900247f45f34a90c108c1634b",
+      "pairs": 10,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.9211323729436766,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "2798e177b4f637a64eb39006f927c0b213d1b73900247f45f34a90c108c1634b"
+    },
+    {
+      "resume_key": "2d01247a2af5b9177202993ab974122253aa48f7bd3a8bb9c829a6e8533b60ab",
+      "pairs": 20,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.7751361932415233,
+      "ndcg_at_10": 0.8685567191991223,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9159663865546218,
+      "_cluster": "2d01247a2af5b9177202993ab974122253aa48f7bd3a8bb9c829a6e8533b60ab"
+    },
+    {
+      "resume_key": "37d0296efdf49f93f805e314c2f8ceed36c5744f1e303549b59f081334c70b4e",
+      "pairs": 4,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": -0.2581988897471611,
+      "ndcg_at_10": 0.5,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.3333333333333333,
+      "_cluster": "37d0296efdf49f93f805e314c2f8ceed36c5744f1e303549b59f081334c70b4e"
+    },
+    {
+      "resume_key": "433d45d66d957bdb2d18f3db83052c5f5ba099b08e3f405b46f196ee568a593d",
+      "pairs": 2,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.9999999999999999,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "433d45d66d957bdb2d18f3db83052c5f5ba099b08e3f405b46f196ee568a593d"
+    },
+    {
+      "resume_key": "4e24f4f79ced74d37a315cd9407d93fc3986ef43e2f5ed03d4310ad2a29b3642",
+      "pairs": 52,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.6915941026028443,
+      "ndcg_at_10": 0.7813469298928076,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8438576349024111,
+      "_cluster": "4e24f4f79ced74d37a315cd9407d93fc3986ef43e2f5ed03d4310ad2a29b3642"
+    },
+    {
+      "resume_key": "563d7175fb78647e47a1c59e56237016b0d146d0b30a3c22fdb56f529640938d",
+      "pairs": 18,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.7784314552595969,
+      "ndcg_at_10": 0.9185794285304213,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9108910891089109,
+      "_cluster": "563d7175fb78647e47a1c59e56237016b0d146d0b30a3c22fdb56f529640938d"
+    },
+    {
+      "resume_key": "573f948a8faea4a95ae7feea1026103a364f1ced7dbc3ef7c673741c9d314d02",
+      "pairs": 27,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.8022541947120375,
+      "ndcg_at_10": 1.0000000000000002,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9516129032258065,
+      "_cluster": "573f948a8faea4a95ae7feea1026103a364f1ced7dbc3ef7c673741c9d314d02"
+    },
+    {
+      "resume_key": "69cf02bfa1e617fed6b8fbca9e27e355e5e85b977e78f583d3d700813bfb5198",
+      "pairs": 3,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.8660254037844387,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "69cf02bfa1e617fed6b8fbca9e27e355e5e85b977e78f583d3d700813bfb5198"
+    },
+    {
+      "resume_key": "807c382daf099b01cde98cc865ad765ed8ce8c53d1afeb6aec9ff7570beb6226",
+      "pairs": 6,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.8451542547285165,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "807c382daf099b01cde98cc865ad765ed8ce8c53d1afeb6aec9ff7570beb6226"
+    },
+    {
+      "resume_key": "8cec6a7b9e8062f5d43d7de34417abb1716f01933a2c480a3c8303a493995907",
+      "pairs": 30,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.375441897588643,
+      "ndcg_at_10": 0.5776836557828049,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.6925675675675675,
+      "_cluster": "8cec6a7b9e8062f5d43d7de34417abb1716f01933a2c480a3c8303a493995907"
+    },
+    {
+      "resume_key": "9b546744ba758b2ae66cd4d9b263f6c20efc24ed0783777e3d185105bb8498db",
+      "pairs": 33,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.8574929257125442,
+      "ndcg_at_10": 1.0000000000000002,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9393939393939394,
+      "_cluster": "9b546744ba758b2ae66cd4d9b263f6c20efc24ed0783777e3d185105bb8498db"
+    },
+    {
+      "resume_key": "9c472a43cd135d2eaab2bf5de662eef81252fc6c5962d34728ed7a0c28a615b1",
+      "pairs": 38,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.7274332284817209,
+      "ndcg_at_10": 0.9410815282664481,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.88470066518847,
+      "_cluster": "9c472a43cd135d2eaab2bf5de662eef81252fc6c5962d34728ed7a0c28a615b1"
+    },
+    {
+      "resume_key": "a403ed91e2169ccd0507ac458db39eeb8dcac8332f3c6399c141a51145839e16",
+      "pairs": 45,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.6102133453729085,
+      "ndcg_at_10": 0.6975883779621356,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.7853949329359166,
+      "_cluster": "a403ed91e2169ccd0507ac458db39eeb8dcac8332f3c6399c141a51145839e16"
+    },
+    {
+      "resume_key": "a49119d49ad87a54a1dfe0bce84de6d4a49d3611afd9c6292c4c5481b826f5cc",
+      "pairs": 20,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.7598394188096264,
+      "ndcg_at_10": 1.0000000000000002,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9223300970873787,
+      "_cluster": "a49119d49ad87a54a1dfe0bce84de6d4a49d3611afd9c6292c4c5481b826f5cc"
+    },
+    {
+      "resume_key": "a6f8f80caa9912acb216557d6c8cea1d0336f4b3aa77915374286c91e24e86f5",
+      "pairs": 4,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.7745966692414834,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "a6f8f80caa9912acb216557d6c8cea1d0336f4b3aa77915374286c91e24e86f5"
+    },
+    {
+      "resume_key": "bb5ec5cb690223813f63d1beb3cab7bc37ffa5396179a7905d1c093a37c9d7fd",
+      "pairs": 6,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": -0.6546536707079772,
+      "ndcg_at_10": 0.3562071871080222,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.0,
+      "_cluster": "bb5ec5cb690223813f63d1beb3cab7bc37ffa5396179a7905d1c093a37c9d7fd"
+    },
+    {
+      "resume_key": "bb8fc9b3d849fcb2ac3b5afbcdf3e6a9e329800d64a6ae87c71558cad6424fee",
+      "pairs": 28,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.9343713203916085,
+      "ndcg_at_10": 0.9983976527535531,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9961389961389961,
+      "_cluster": "bb8fc9b3d849fcb2ac3b5afbcdf3e6a9e329800d64a6ae87c71558cad6424fee"
+    },
+    {
+      "resume_key": "bcb326a35f21226b4c92f2455791874d0ea28c68cd62720e17affe6a57ef5f35",
+      "pairs": 13,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.8153742483272114,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "bcb326a35f21226b4c92f2455791874d0ea28c68cd62720e17affe6a57ef5f35"
+    },
+    {
+      "resume_key": "c61693b33e4b61dec89f3d1830588b53bab08f63f17d300a295a92b3c49c4b0b",
+      "pairs": 6,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.8783100656536799,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "c61693b33e4b61dec89f3d1830588b53bab08f63f17d300a295a92b3c49c4b0b"
+    },
+    {
+      "resume_key": "cb446bf7adaa14f6435aeb94310d25c5e2d359749286b7f89ba6cfad8411ef58",
+      "pairs": 29,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.14962889292246134,
+      "ndcg_at_10": 0.3052440952424634,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.571969696969697,
+      "_cluster": "cb446bf7adaa14f6435aeb94310d25c5e2d359749286b7f89ba6cfad8411ef58"
+    },
+    {
+      "resume_key": "cc99d4ee6ec428622df0965f158e653b4eb8cb867a8154523265b080adbe1d01",
+      "pairs": 15,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.698212002188447,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "cc99d4ee6ec428622df0965f158e653b4eb8cb867a8154523265b080adbe1d01"
+    },
+    {
+      "resume_key": "ccf3a4c06e400d866ddc9acd9e426fa743f875a2103329bd8fe82b2730172214",
+      "pairs": 10,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.5025189076296059,
+      "ndcg_at_10": 0.949828258178722,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.7586206896551724,
+      "_cluster": "ccf3a4c06e400d866ddc9acd9e426fa743f875a2103329bd8fe82b2730172214"
+    },
+    {
+      "resume_key": "cd30db6715b2f5b3724eb9e17485786ec5ce259a2ae2412fac154ff642090242",
+      "pairs": 7,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.9449111825230682,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "cd30db6715b2f5b3724eb9e17485786ec5ce259a2ae2412fac154ff642090242"
+    },
+    {
+      "resume_key": "dc34a088dd02912abb02ce704be0086e2baeb009250abdc67109b7044f8ebacd",
+      "pairs": 3,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": -0.8660254037844387,
+      "ndcg_at_10": 0.5,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.0,
+      "_cluster": "dc34a088dd02912abb02ce704be0086e2baeb009250abdc67109b7044f8ebacd"
+    },
+    {
+      "resume_key": "e369069a7347fc85b4a3da77a4e2084f5bac2316dc65162feea520a6b5a6a24a",
+      "pairs": 7,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.6123724356957946,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "e369069a7347fc85b4a3da77a4e2084f5bac2316dc65162feea520a6b5a6a24a"
+    },
+    {
+      "resume_key": "eba5c85af084215c6b4653574f17ff5f07425420b4e0f6edbd728826705f665a",
+      "pairs": 20,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.8075917847643597,
+      "ndcg_at_10": 0.9248515582276031,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9090909090909091,
+      "_cluster": "eba5c85af084215c6b4653574f17ff5f07425420b4e0f6edbd728826705f665a"
+    },
+    {
+      "resume_key": "f105d8614abcff066ae30075802ca94b44afcb918e3eb4165213faf1bb15ade6",
+      "pairs": 3,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.8660254037844387,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "f105d8614abcff066ae30075802ca94b44afcb918e3eb4165213faf1bb15ade6"
+    },
+    {
+      "resume_key": "f53772d3aed52b08d301217d39a96b163985ba508d717afa52740909b67185d5",
+      "pairs": 25,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.9121403400793106,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9948453608247423,
+      "_cluster": "f53772d3aed52b08d301217d39a96b163985ba508d717afa52740909b67185d5"
+    },
+    {
+      "resume_key": "f88fa08b9415ec48e284becd33720ac9ab11d9f4684b0a22834cd775821953ef",
+      "pairs": 5,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.9486832980505137,
+      "ndcg_at_10": 1.0,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "f88fa08b9415ec48e284becd33720ac9ab11d9f4684b0a22834cd775821953ef"
+    },
+    {
+      "resume_key": "f95eabfa67e35da244277a99b1deaf48fe13be2c0c8e936f4c8c5d7d2c34215c",
+      "pairs": 7,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.668153104781061,
+      "ndcg_at_10": 0.9570037466263405,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9090909090909091,
+      "_cluster": "f95eabfa67e35da244277a99b1deaf48fe13be2c0c8e936f4c8c5d7d2c34215c"
+    },
+    {
+      "resume_key": "fe97b7e58eeaf3cac517c58e1ce942481216a8437eb40810bbf7e66a170c15d2",
+      "pairs": 14,
+      "category": "unknown",
+      "major": "unknown",
+      "student_year": "unknown",
+      "career_stage": "unknown",
+      "degree_level": "unknown",
+      "source": "unknown",
+      "spearman": 0.8766695218549865,
+      "ndcg_at_10": 0.9769738192084209,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.953125,
+      "_cluster": "fe97b7e58eeaf3cac517c58e1ce942481216a8437eb40810bbf7e66a170c15d2"
+    }
+  ],
+  "slices": {
+    "category": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.6322099561590292,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.5056585996197795,
+              0.7393356501354371
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.8600630321155439,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.794453624757498,
+              0.9182884261235317
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.782608695652174,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.6521739130434783,
+              0.8913043478260869
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8512025143159145,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.776605192868272,
+              0.9147148748822929
+            ]
+          }
+        }
+      }
+    ],
+    "major": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.6322099561590292,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.5056585996197795,
+              0.7393356501354371
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.8600630321155439,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.794453624757498,
+              0.9182884261235317
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.782608695652174,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.6521739130434783,
+              0.8913043478260869
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8512025143159145,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.776605192868272,
+              0.9147148748822929
+            ]
+          }
+        }
+      }
+    ],
+    "student_year": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.6322099561590292,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.5056585996197795,
+              0.7393356501354371
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.8600630321155439,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.794453624757498,
+              0.9182884261235317
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.782608695652174,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.6521739130434783,
+              0.8913043478260869
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8512025143159145,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.776605192868272,
+              0.9147148748822929
+            ]
+          }
+        }
+      }
+    ],
+    "career_stage": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.6322099561590292,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.5056585996197795,
+              0.7393356501354371
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.8600630321155439,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.794453624757498,
+              0.9182884261235317
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.782608695652174,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.6521739130434783,
+              0.8913043478260869
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8512025143159145,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.776605192868272,
+              0.9147148748822929
+            ]
+          }
+        }
+      }
+    ],
+    "degree_level": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.6322099561590292,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.5056585996197795,
+              0.7393356501354371
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.8600630321155439,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.794453624757498,
+              0.9182884261235317
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.782608695652174,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.6521739130434783,
+              0.8913043478260869
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8512025143159145,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.776605192868272,
+              0.9147148748822929
+            ]
+          }
+        }
+      }
+    ],
+    "source": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.6322099561590292,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.5056585996197795,
+              0.7393356501354371
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.8600630321155439,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.794453624757498,
+              0.9182884261235317
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.782608695652174,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.6521739130434783,
+              0.8913043478260869
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8512025143159145,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              0.776605192868272,
+              0.9147148748822929
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "baseline_macro_resume_metrics": {
+    "spearman": {
+      "mean": 0.6138769298754463,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        0.5172752829690616,
+        0.7011220650919935
+      ]
+    },
+    "ndcg_at_10": {
+      "mean": 0.8421806386294146,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        0.7775208213688012,
+        0.8997577997365328
+      ]
+    },
+    "top1_best_rate": {
+      "mean": 0.6956521739130435,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        0.5652173913043478,
+        0.8260869565217391
+      ]
+    },
+    "pairwise_accuracy": {
+      "mean": 0.8418928104832406,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        0.7873220404458107,
+        0.8913953241463425
+      ]
+    }
+  },
+  "paired_improvement": {
+    "spearman": {
+      "mean": 0.01833302628358296,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        -0.056254842143904575,
+        0.09058259309193156
+      ]
+    },
+    "ndcg_at_10": {
+      "mean": 0.01788239348612965,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        -0.006287418755046586,
+        0.047123760640825185
+      ]
+    },
+    "top1_best_rate": {
+      "mean": 0.08695652173913043,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        -0.021739130434782608,
+        0.21739130434782608
+      ]
+    },
+    "pairwise_accuracy": {
+      "mean": 0.009309703832673783,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        -0.03763148936180512,
+        0.053403702140095655
+      ]
+    }
+  },
+  "paired_slice_improvement": {
+    "category": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.01833302628358296,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.056254842143904575,
+              0.09058259309193156
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.01788239348612965,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.006287418755046586,
+              0.047123760640825185
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.08695652173913043,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.021739130434782608,
+              0.21739130434782608
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.009309703832673783,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.03763148936180512,
+              0.053403702140095655
+            ]
+          }
+        }
+      }
+    ],
+    "major": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.01833302628358296,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.056254842143904575,
+              0.09058259309193156
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.01788239348612965,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.006287418755046586,
+              0.047123760640825185
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.08695652173913043,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.021739130434782608,
+              0.21739130434782608
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.009309703832673783,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.03763148936180512,
+              0.053403702140095655
+            ]
+          }
+        }
+      }
+    ],
+    "student_year": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.01833302628358296,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.056254842143904575,
+              0.09058259309193156
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.01788239348612965,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.006287418755046586,
+              0.047123760640825185
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.08695652173913043,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.021739130434782608,
+              0.21739130434782608
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.009309703832673783,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.03763148936180512,
+              0.053403702140095655
+            ]
+          }
+        }
+      }
+    ],
+    "career_stage": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.01833302628358296,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.056254842143904575,
+              0.09058259309193156
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.01788239348612965,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.006287418755046586,
+              0.047123760640825185
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.08695652173913043,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.021739130434782608,
+              0.21739130434782608
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.009309703832673783,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.03763148936180512,
+              0.053403702140095655
+            ]
+          }
+        }
+      }
+    ],
+    "degree_level": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.01833302628358296,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.056254842143904575,
+              0.09058259309193156
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.01788239348612965,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.006287418755046586,
+              0.047123760640825185
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.08695652173913043,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.021739130434782608,
+              0.21739130434782608
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.009309703832673783,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.03763148936180512,
+              0.053403702140095655
+            ]
+          }
+        }
+      }
+    ],
+    "source": [
+      {
+        "value": "unknown",
+        "rankable_resumes": 46,
+        "independent_clusters": 46,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.01833302628358296,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.056254842143904575,
+              0.09058259309193156
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.01788239348612965,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.006287418755046586,
+              0.047123760640825185
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.08695652173913043,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.021739130434782608,
+              0.21739130434782608
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.009309703832673783,
+            "resumes": 46,
+            "bootstrap_clusters": 46,
+            "ci95": [
+              -0.03763148936180512,
+              0.053403702140095655
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "input": "models\\major_agnostic\\predictions\\selected_js_test\\hf_test_mean_vector.csv",
+  "baseline": "models\\major_agnostic\\predictions\\baseline_js_test\\hf_test_mean_vector.csv",
+  "leakage": [
+    {
+      "training_file": "data\\hf_train.csv",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 248,
+      "overlapping_pairs": 0
+    },
+    {
+      "training_file": "data\\openai_train.csv",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "training_file": "data\\neuralframe_train.csv",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "training_file": "data\\diverse_train.csv",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    }
+  ],
+  "leakage_policy_failed": false
+}

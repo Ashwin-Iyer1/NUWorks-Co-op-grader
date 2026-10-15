@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Fine-tune MongoDB/mdbr-leaf-mt to grade resumes against job descriptions.
 
-Run prepare_data.py first.  The model is trained asymmetrically, matching how
-the extension uses it at inference time: resumes are encoded with the model's
-built-in "query" prompt, job descriptions as plain documents.
+Run prepare_data.py first. The model uses attention-mask mean pooling and bare
+resume/job text, matching the current BGE extension runtime. Legacy model
+pooling and query prompts are available only through explicit flags.
 
 Losses per dataset:
   - Continuous scores (neuralframe, hf)  -> CoSENTLoss: optimizes the *ranking*
@@ -29,7 +29,6 @@ Usage:
 import argparse
 from collections import defaultdict, deque
 import glob
-import math
 import os
 
 import torch
@@ -42,6 +41,7 @@ from sentence_transformers import (
 from sentence_transformers.losses import AnglELoss, CoSENTLoss, MatryoshkaLoss, OnlineContrastiveLoss
 from sentence_transformers.sampler import DefaultBatchSampler
 from sentence_transformers.training_args import BatchSamplers
+from evaluate_production import configure_pooling
 
 BASE_MODEL = "MongoDB/mdbr-leaf-mt"
 BINARY_DATASETS = {"recruitment"}
@@ -66,6 +66,10 @@ class ResumeGroupedBatchSampler(DefaultBatchSampler):
         for index, resume in enumerate(dataset["resume"]):
             groups[resume].append(index)
         self.groups = list(groups.values())
+        # ST6 supplies a seeded generator without forwarding the seed kwarg.
+        self._sampling_seed = self.generator.initial_seed() if self.generator is not None else self.seed
+        self._cached_epoch = None
+        self._cached_batches = None
 
     def _resume_units(self, generator):
         units = []
@@ -91,26 +95,33 @@ class ResumeGroupedBatchSampler(DefaultBatchSampler):
             units.extend(ordered[start:start + max_candidates] for start in range(0, len(ordered), max_candidates))
         return units
 
-    def __iter__(self):
+    def _batches_for_epoch(self):
+        if self._cached_epoch == self.epoch and self._cached_batches is not None:
+            return self._cached_batches
         generator = torch.Generator()
-        generator.manual_seed(self.seed + self.epoch)
+        generator.manual_seed(self._sampling_seed + self.epoch)
         units = self._resume_units(generator)
         order = torch.randperm(len(units), generator=generator).tolist()
-        batch = []
+        batches, batch = [], []
         for unit_index in order:
             unit = units[unit_index]
             if batch and len(batch) + len(unit) > self.batch_size:
                 if not self.drop_last or len(batch) == self.batch_size:
-                    yield batch
+                    batches.append(batch)
                 batch = []
             batch.extend(unit)
-        if batch and not self.drop_last:
-            yield batch
+        if batch and (not self.drop_last or len(batch) == self.batch_size):
+            batches.append(batch)
+        self._cached_epoch, self._cached_batches = self.epoch, batches
+        return batches
+
+    def __iter__(self):
+        yield from (list(batch) for batch in self._batches_for_epoch())
 
     def __len__(self):
-        # Resume units are at most 16 rows, so packing waste is small. Keeping
-        # this estimate near the ordinary batch count also keeps warmup sane.
-        return math.ceil(len(self.dataset) / self.batch_size)
+        # Multi-dataset proportional sampling schedules exactly this many
+        # batches. An approximate count silently drops later batches.
+        return len(self._batches_for_epoch())
 
 
 def embedding_dim(model):
@@ -124,6 +135,9 @@ def load_split(data_dir, name, split, max_samples=None):
     if not os.path.exists(path):
         return None
     ds = Dataset.from_csv(path)
+    # Metadata belongs in audits, not in the model's positional text inputs.
+    ds = ds.select_columns(["resume", "job", "score"])
+    ds = ds.map(lambda row: {"job": str(row["job"])[:1200]})
     if name in BINARY_DATASETS:
         ds = ds.rename_column("score", "label")
         ds = ds.map(lambda r: {"label": int(r["label"])})
@@ -162,6 +176,10 @@ def main():
                     help="keep the 384->1024 Dense projection head (dropped by default, "
                          "because the extension's Transformers.js runtime only runs the "
                          "transformer + mean pooling and never applies the Dense layer)")
+    ap.add_argument("--pooling", choices=("mean", "model"), default="mean",
+                    help="mean matches the browser; model reproduces legacy training")
+    ap.add_argument("--use-model-query-prompt", action="store_true",
+                    help="legacy prompted training; current browser uses bare resume chunks")
     args = ap.parse_args()
 
     names = args.datasets or sorted(
@@ -189,7 +207,11 @@ def main():
         # fine-tune the exact 384-dim embedding the extension will compute.
         del model[2]
         print(f"Dropped Dense projection head; embedding dim = {embedding_dim(model)}")
-    query_prompt = model.prompts.get("query", FALLBACK_QUERY_PROMPT)
+    configure_pooling(model, args.pooling)
+    query_prompt = model.prompts.get("query", FALLBACK_QUERY_PROMPT) if args.use_model_query_prompt else ""
+    model.prompts["query"] = query_prompt
+    model.prompts["document"] = ""
+    model.default_prompt_name = None
     print(f"Query prompt for resumes: {query_prompt!r}")
 
     requested_weights = {}

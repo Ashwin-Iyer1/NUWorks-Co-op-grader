@@ -1,0 +1,15 @@
+{
+  "audit_pairs": 64,
+  "teacher_score_mae_points": 7.328124999999999,
+  "teacher_score_max_difference_points": 24.000000000000004,
+  "teacher_spearman": 0.9500149597764592,
+  "teachers": [
+    "gpt-5.6-luna",
+    "gpt-5.6-terra"
+  ],
+  "note": "Teacher agreement is not human ground truth; audit labels are not substituted into training.",
+  "total_reported_tokens": 10070088,
+  "full_price_upper_bound_usd": 4.866024749999996,
+  "api_requests": 9280,
+  "failed_requests": 0
+}

@@ -1,0 +1,42 @@
+{
+  "model_release": "major-agnostic-bge-2026-10-15",
+  "selected_id": "b_epoch2",
+  "status": "local evaluated model; not published or deployed",
+  "calibration_status": "experimental: new-set error improves, legacy OpenAI test error regresses; not approved for general production grading",
+  "selection_sha256": "2ac64268d5c9f9f2b4d3e5116447e25da7b174986ca91454ee5b1880c00b4df4",
+  "validation_runtime_result_sha256": "df77ff305d6a7cb1528d53eafc3c17c2da9998e412b82c6f9b6939e33f015ec9",
+  "test_runtime_result_sha256": "9faea118fb1dabbee9eea67ffa08bed81e9393181baaba47f2d14d7484fc1772",
+  "runtime": {
+    "transformersjs": "4.2.0",
+    "node": "v24.12.0",
+    "backend": "onnxruntime-node CPU",
+    "threads": 4,
+    "tokenizer_max_length": 256,
+    "limitation": "Uses actual Transformers.js preprocessing/batching; browser WASM kernel parity is not asserted."
+  },
+  "runtime_source": {
+    "ref": "chrome-extension",
+    "commit": "bc657de2fcfd38949939e112ac6b3c75c2a7d499",
+    "embeddings_sha256": "80aad5aaec3f1acbc9da5c5c55a1356837eaaba7249cf9cada4af23dd304f658",
+    "worker_sha256": "89d6cfc4a79f7c7f5120ae69234c05bbd4b90c27d3c2889a13a077806d50e050",
+    "caller_sha256": "7d79fb1f35a97e4c2ed3960ed5fdc473e98362a44e4a25fc5d3eb71e2c65dd68",
+    "helper_source_sha256": "5e2c1a169a35bf08defa09257cca72f52216bd45a50a8f5a4c50cb435677db31"
+  },
+  "files": {
+    "1_Pooling/config.json": "bb80272f7adad76ce93073c25e18113ee66be1e91f60bcdd72aa41d05b28247e",
+    "calibration.json": "75d3af762cfaefe37dfab7303e248f8fa6b3c87290c938e6cac36364993726d6",
+    "config.json": "657111fd79935d8950ef174e9c11a9da4823ccbd40de3d7d935eaa3967b96672",
+    "config_sentence_transformers.json": "0bea2e31829088de37b65c4435d8a6d4ba0735aad581b7a592ff7da308a045e0",
+    "modules.json": "318d49f1092cad125a35af58d9795bcddce84bf7e7240bd8d95b9b6858f9476b",
+    "onnx/model.onnx": "1c94d2732639b2fb2fc3478d46dc0a2e9c7f0798a6d185cdc41a5cea057c5d74",
+    "onnx/model_qint8_avx2.onnx": "63a361e5cef37f169e77d8ba4a6130dc0b70cdde83ba68b3812ad689c5d77613",
+    "onnx/model_quantized.onnx": "63a361e5cef37f169e77d8ba4a6130dc0b70cdde83ba68b3812ad689c5d77613",
+    "README.md": "c2f3aad2e04102b6b41276256fadaa8a096212899a0cf80a2ff732b1ef936679",
+    "release_provenance.json": "d90dd400a334efa4553bdde8c7993d549d650f0e79e0ea8065d1d46655866a68",
+    "sentence_bert_config.json": "5fee3fcdc4a727fad422f0fed0c867b0921eefa9051de221521956ed42eb4c19",
+    "special_tokens_map.json": "5aa43c2f985a25296d5a5ce621c2f77376ca8091a47993c492fd5460b895b140",
+    "tokenizer.json": "3fc3f18ce1603449ed5c2e95d62dc54ce8652af6b6b61e27ff410bff02fbfd5e",
+    "tokenizer_config.json": "2afaa49be1b7252a6c791df115b531551dd73f71a0e55f0f98bce8f970a892fd",
+    "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+  }
+}

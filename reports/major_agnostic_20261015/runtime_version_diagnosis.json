@@ -1,0 +1,40 @@
+{
+  "model": "models/major_agnostic/selected_onnx",
+  "onnx_sha256": "63a361e5cef37f169e77d8ba4a6130dc0b70cdde83ba68b3812ad689c5d77613",
+  "conclusion": "The short-input mismatch is caused by the difference between Python ONNX Runtime 1.29.0 and Node ONNX Runtime 1.24.3. Matching Python to 1.24.3 removes the discrepancy without changing the model, tokenizer, or verification thresholds.",
+  "cross_version_check": {
+    "python_onnxruntime": "1.29.0",
+    "node_onnxruntime": "1.24.3",
+    "maximum_absolute_difference": 0.015803640708327293,
+    "minimum_vector_cosine": 0.9969696320441811,
+    "passed": false,
+    "report": "reports/major_agnostic_20261015/runtime_vector_check.json"
+  },
+  "matched_version_check": {
+    "python_onnxruntime": "1.24.3",
+    "node_onnxruntime": "1.24.3",
+    "maximum_absolute_difference": 8.940696716308594e-8,
+    "minimum_vector_cosine": 0.9999999999999979,
+    "passed": true,
+    "report": "reports/major_agnostic_20261015/runtime_vector_check_ort124.json",
+    "fixture": "reports/major_agnostic_20261015/runtime_diagnostic/selected_fixture_ort124.json"
+  },
+  "controlled_checks": {
+    "same_weight_sha256": true,
+    "input_ids_exactly_equal": true,
+    "attention_masks_exactly_equal": true,
+    "token_type_ids_exactly_equal": true,
+    "providers": "CPUExecutionProvider in both runtimes",
+    "batching": "one short text per inference call",
+    "pooling": "attention-mask mean followed by unit normalization",
+    "thread_check": "Direct ONNX comparison with one CPU thread reproduces the cross-version mismatch.",
+    "optimization_check": "Disabling graph optimization does not remove the cross-version discrepancy.",
+    "direct_runtime_report": "reports/major_agnostic_20261015/runtime_diagnostic/comparison.json"
+  },
+  "environment_changes": "No project dependency or model changes. Python 1.24.3 was loaded from an isolated wheel extracted under the operating-system temporary directory.",
+  "limitations": [
+    "The exact internal ONNX Runtime quantized kernel or optimization responsible was not isolated.",
+    "The matching-version result covers three untruncated single-text inputs, not long-text truncation, dynamic-quantization batch composition, or browser WASM.",
+    "Final ranking evidence comes from the actual Transformers.js validation/test evaluator using the shipped preprocessing and batch boundaries."
+  ]
+}

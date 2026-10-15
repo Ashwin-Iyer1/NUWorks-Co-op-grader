@@ -1,0 +1,30 @@
+{
+  "planned_pairs": 9216,
+  "labeled_pairs": 9216,
+  "splits": {
+    "train": {
+      "pairs": 4608,
+      "resumes": 576,
+      "families": 96,
+      "jobs": 96,
+      "majors": 24,
+      "mean_score": 0.5590299479166667
+    },
+    "val": {
+      "pairs": 2304,
+      "resumes": 144,
+      "families": 24,
+      "jobs": 24,
+      "majors": 24,
+      "mean_score": 0.4434852430555556
+    },
+    "test": {
+      "pairs": 2304,
+      "resumes": 144,
+      "families": 24,
+      "jobs": 24,
+      "majors": 24,
+      "mean_score": 0.4973958333333333
+    }
+  }
+}

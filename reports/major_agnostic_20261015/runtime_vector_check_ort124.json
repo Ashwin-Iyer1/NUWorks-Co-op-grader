@@ -1,0 +1,13 @@
+{
+  "model": "models/major_agnostic/selected_onnx",
+  "runtime": "@huggingface/transformers",
+  "dtype": "q8",
+  "scope": "single short input numerical parity; not batch or truncation equivalence",
+  "pooling": "mean",
+  "texts": 3,
+  "dimensions": 384,
+  "max_absolute_difference": 8.940696716308594e-8,
+  "minimum_vector_cosine": 0.9999999999999979,
+  "model_sha256": "63a361e5cef37f169e77d8ba4a6130dc0b70cdde83ba68b3812ad689c5d77613",
+  "passed": true
+}

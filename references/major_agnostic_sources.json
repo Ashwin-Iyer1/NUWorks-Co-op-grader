@@ -1,0 +1,69 @@
+{
+  "checked_on": "2026-10-15",
+  "purpose": "Coverage research only. No source resume body is copied into the fictional corpus.",
+  "public_access_is_not_a_redistribution_license": true,
+  "corpus_source": "Original fictional scenarios in prepare_diverse_resumes.py",
+  "sources": [
+    {
+      "id": "towson-career-examples",
+      "institution": "Towson University Career Center",
+      "url": "https://www.towson.edu/careercenter/internships-jobs/resumes/samples.html",
+      "access": "Public HTML index linking sample PDFs; index verified",
+      "coverage": ["business", "education", "arts", "health", "humanities", "social sciences", "natural sciences", "first year", "graduate", "transfer", "military experience"],
+      "rights_status": "Reference only. Index explicitly requests that examples not be copied verbatim; no open dataset license verified.",
+      "retrieved_resume_text": false
+    },
+    {
+      "id": "msoe-year-major-examples",
+      "institution": "Milwaukee School of Engineering Career Connections Center",
+      "url": "https://www.msoecareerconnections.com/resources/resume-examples/",
+      "access": "Public index; individual examples link to Google Drive and were not bulk downloaded",
+      "coverage": ["engineering", "computer science", "actuarial science", "finance", "marketing", "nursing", "user experience", "freshman", "sophomore", "junior", "senior", "veterans"],
+      "rights_status": "No open license verified. Reference index only; sample links may include real student material.",
+      "retrieved_resume_text": false
+    },
+    {
+      "id": "berkeley-stage-examples",
+      "institution": "University of California Berkeley Career Engagement",
+      "url": "https://www.career.berkeley.edu/prepare-for-success/resumes/sample-resumes/",
+      "access": "Public HTML index verified; embedded template contents not extracted",
+      "coverage": ["first year", "masters", "on-campus employment", "projects", "research", "technical", "transfer", "CV"],
+      "rights_status": "Student template copying is offered by the page; no training-dataset redistribution license verified.",
+      "retrieved_resume_text": false
+    },
+    {
+      "id": "ucr-early-chemistry",
+      "institution": "University of California Riverside College of Natural and Agricultural Sciences",
+      "url": "https://cnas.ucr.edu/document/sample-undergrad-chemistry-resume-1st-2nd-year",
+      "access": "Public HTML page with download link verified",
+      "coverage": ["chemistry", "first year", "second year"],
+      "rights_status": "Copyright notice present; no open license verified. Reference only.",
+      "retrieved_resume_text": false
+    },
+    {
+      "id": "uno-resume-resources",
+      "institution": "University of Nebraska at Omaha Career Services",
+      "url": "https://www.unomaha.edu/career-services/career-resources/resume-cover-letter-other-resources.php",
+      "access": "Public HTML index verified",
+      "coverage": ["career change", "first year", "graduate", "aviation", "business", "education", "science", "social work", "music", "theatre"],
+      "rights_status": "No open license verified. Reference only.",
+      "retrieved_resume_text": false
+    },
+    {
+      "id": "excelsior-career-change",
+      "institution": "Excelsior University Online Writing Lab",
+      "url": "https://owl.excelsior.edu/writing-for-your-career/resumes/career-change-resume/",
+      "access": "Public guidance page verified",
+      "coverage": ["career change", "transferable skills", "continuing education", "volunteer experience"],
+      "rights_status": "Reference only; did not extract or redistribute its sample resume.",
+      "retrieved_resume_text": false
+    }
+  ],
+  "selection_notes": [
+    "Excluded personal CV sites, Reddit applicant posts, and social-profile scraping.",
+    "No university sample is asserted to be licensed for ML training merely because it is publicly viewable.",
+    "The generated resumes have no names, contacts, school prestige signals, or protected demographic characteristics.",
+    "Majors and academic stages are not relevance labels: teacher grading must assess demonstrated, job-relevant evidence.",
+    "The online catalogs establish that broader academic and career-stage coverage is feasible; they do not establish model quality."
+  ]
+}

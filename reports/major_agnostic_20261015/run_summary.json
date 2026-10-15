@@ -1,0 +1,324 @@
+{
+  "date": "2026-10-15",
+  "branch": "finetune",
+  "starting_git_commit": "7e9951bc30b02083d3f50857acafe6505480904e",
+  "selected_id": "b_epoch2",
+  "model_release": "major-agnostic-bge-2026-10-15",
+  "status": "local evaluated model; not published or deployed",
+  "baseline_hf_repo": "turtlecap/mdbr-leaf-mt-resume-grader",
+  "baseline_hf_revision": "a77f5eb7d1c206088789eab5a270b9943a59304a",
+  "onnx_sha256": "63a361e5cef37f169e77d8ba4a6130dc0b70cdde83ba68b3812ad689c5d77613",
+  "calibration_sha256": "75d3af762cfaefe37dfab7303e248f8fa6b3c87290c938e6cac36364993726d6",
+  "test": {
+    "baseline": {
+      "diverse": {
+        "mean_vector": {
+          "n": 2304,
+          "spearman": 0.40358272191687755,
+          "pearson": 0.40760547242471246,
+          "mae_raw_cosine": 0.15175432623698193,
+          "rankable_resumes": 144,
+          "mean_resume_spearman": 0.4220740749218128,
+          "mean_ndcg_at_10": 0.8643722379885572,
+          "top1_best_rate": 0.3611111111111111
+        }
+      },
+      "openai": {
+        "mean_vector": {
+          "n": 1944,
+          "spearman": 0.7602741607470845,
+          "pearson": 0.7510932961552336,
+          "mae_raw_cosine": 0.27236474560237994,
+          "rankable_resumes": 2,
+          "mean_resume_spearman": 0.7611926301539536,
+          "mean_ndcg_at_10": 0.8356671816886667,
+          "top1_best_rate": 0.0
+        }
+      },
+      "hf": {
+        "mean_vector": {
+          "n": 820,
+          "spearman": 0.6288279358839447,
+          "pearson": 0.6050907304191281,
+          "mae_raw_cosine": 0.37903304349239736,
+          "rankable_resumes": 46,
+          "mean_resume_spearman": 0.6138769298754463,
+          "mean_ndcg_at_10": 0.8421806386294144,
+          "top1_best_rate": 0.6956521739130435
+        }
+      },
+      "neuralframe": {
+        "mean_vector": {
+          "n": 962,
+          "spearman": 0.6063318835208614,
+          "pearson": 0.5523443351416194,
+          "mae_raw_cosine": 0.13789037954799324,
+          "rankable_resumes": 0,
+          "mean_resume_spearman": null,
+          "mean_ndcg_at_10": null,
+          "top1_best_rate": null
+        }
+      }
+    },
+    "selected": {
+      "diverse": {
+        "mean_vector": {
+          "n": 2304,
+          "spearman": 0.8162902483452418,
+          "pearson": 0.8327409597961616,
+          "mae_raw_cosine": 0.10081635098308078,
+          "rankable_resumes": 144,
+          "mean_resume_spearman": 0.7681974368227725,
+          "mean_ndcg_at_10": 0.9407981209803127,
+          "top1_best_rate": 0.5
+        }
+      },
+      "openai": {
+        "mean_vector": {
+          "n": 1944,
+          "spearman": 0.8897868909881688,
+          "pearson": 0.8567133272331008,
+          "mae_raw_cosine": 0.239673978472883,
+          "rankable_resumes": 2,
+          "mean_resume_spearman": 0.8887096485872499,
+          "mean_ndcg_at_10": 0.8735874846144043,
+          "top1_best_rate": 0.0
+        }
+      },
+      "hf": {
+        "mean_vector": {
+          "n": 820,
+          "spearman": 0.6544589566563175,
+          "pearson": 0.6262090193910217,
+          "mae_raw_cosine": 0.35506807848661065,
+          "rankable_resumes": 46,
+          "mean_resume_spearman": 0.6322099561590292,
+          "mean_ndcg_at_10": 0.8600630321155439,
+          "top1_best_rate": 0.782608695652174
+        }
+      },
+      "neuralframe": {
+        "mean_vector": {
+          "n": 962,
+          "spearman": 0.6290151464315163,
+          "pearson": 0.5877470289826314,
+          "mae_raw_cosine": 0.13362942419498605,
+          "rankable_resumes": 0,
+          "mean_resume_spearman": null,
+          "mean_ndcg_at_10": null,
+          "top1_best_rate": null
+        }
+      }
+    }
+  },
+  "evaluation_split_boundaries": {
+    "diverse": "resume families and job scenarios held out",
+    "hf": "resumes held out; all 248 test jobs occur in hf_train",
+    "openai": "two resumes held out; jobs shared with training"
+  },
+  "diverse_paired_improvement": {
+    "spearman": {
+      "mean": 0.3461233619009596,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.2831737466955891,
+        0.41357364792977513
+      ]
+    },
+    "ndcg_at_10": {
+      "mean": 0.0764258829917553,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.05918306720543727,
+        0.0946898528361286
+      ]
+    },
+    "top1_best_rate": {
+      "mean": 0.1388888888888889,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.006944444444444444,
+        0.2708333333333333
+      ]
+    },
+    "pairwise_accuracy": {
+      "mean": 0.18426780314412797,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.15409430413605266,
+        0.2160661799130455
+      ]
+    }
+  },
+  "hf_paired_improvement": {
+    "spearman": {
+      "mean": 0.01833302628358296,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        -0.056254842143904575,
+        0.09058259309193156
+      ]
+    },
+    "ndcg_at_10": {
+      "mean": 0.01788239348612965,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        -0.006287418755046586,
+        0.047123760640825185
+      ]
+    },
+    "top1_best_rate": {
+      "mean": 0.08695652173913043,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        -0.021739130434782608,
+        0.21739130434782608
+      ]
+    },
+    "pairwise_accuracy": {
+      "mean": 0.009309703832673783,
+      "resumes": 46,
+      "bootstrap_clusters": 46,
+      "ci95": [
+        -0.03763148936180512,
+        0.053403702140095655
+      ]
+    }
+  },
+  "calibrated_grade_errors": {
+    "baseline": {
+      "diverse": {
+        "equal_resume_weighted_mae_points": 36.009982638888886,
+        "resumes": 144,
+        "pairs": 2304
+      },
+      "openai": {
+        "equal_resume_weighted_mae_points": 11.934156378600823,
+        "resumes": 2,
+        "pairs": 1944
+      }
+    },
+    "selected": {
+      "diverse": {
+        "equal_resume_weighted_mae_points": 9.879774305555555,
+        "resumes": 144,
+        "pairs": 2304
+      },
+      "openai": {
+        "equal_resume_weighted_mae_points": 19.297839506172842,
+        "resumes": 2,
+        "pairs": 1944
+      }
+    }
+  },
+  "calibration_status": "experimental: new-set error improves, legacy OpenAI test error regresses; not approved for general production grading",
+  "counterfactual": {
+    "baseline": {
+      "all": {
+        "comparisons": 20,
+        "independent_scenarios": 4,
+        "mean_absolute_cosine_change": 0.009967362880706787,
+        "maximum_absolute_cosine_change": 0.058147966861724854,
+        "mean_absolute_display_grade_change": 3.25,
+        "maximum_absolute_display_grade_change": 20
+      },
+      "major": {
+        "comparisons": 8,
+        "independent_scenarios": 4,
+        "mean_absolute_cosine_change": 0.014701850712299347,
+        "maximum_absolute_cosine_change": 0.058147966861724854,
+        "mean_absolute_display_grade_change": 5,
+        "maximum_absolute_display_grade_change": 20
+      },
+      "year": {
+        "comparisons": 8,
+        "independent_scenarios": 4,
+        "mean_absolute_cosine_change": 0.006631046533584595,
+        "maximum_absolute_cosine_change": 0.014379262924194336,
+        "mean_absolute_display_grade_change": 1.875,
+        "maximum_absolute_display_grade_change": 5
+      },
+      "major_and_year": {
+        "comparisons": 4,
+        "independent_scenarios": 4,
+        "mean_absolute_cosine_change": 0.007171019911766052,
+        "maximum_absolute_cosine_change": 0.010950863361358643,
+        "mean_absolute_display_grade_change": 2.5,
+        "maximum_absolute_display_grade_change": 3
+      }
+    },
+    "candidate": {
+      "all": {
+        "comparisons": 20,
+        "independent_scenarios": 4,
+        "mean_absolute_cosine_change": 0.008270084857940674,
+        "maximum_absolute_cosine_change": 0.02497851848602295
+      },
+      "major": {
+        "comparisons": 8,
+        "independent_scenarios": 4,
+        "mean_absolute_cosine_change": 0.010836824774742126,
+        "maximum_absolute_cosine_change": 0.02497851848602295
+      },
+      "year": {
+        "comparisons": 8,
+        "independent_scenarios": 4,
+        "mean_absolute_cosine_change": 0.003555499017238617,
+        "maximum_absolute_cosine_change": 0.010890364646911621
+      },
+      "major_and_year": {
+        "comparisons": 4,
+        "independent_scenarios": 4,
+        "mean_absolute_cosine_change": 0.012565776705741882,
+        "maximum_absolute_cosine_change": 0.019729256629943848
+      }
+    }
+  },
+  "api": {
+    "audit_pairs": 64,
+    "teacher_score_mae_points": 7.328124999999999,
+    "teacher_score_max_difference_points": 24.000000000000004,
+    "teacher_spearman": 0.9500149597764592,
+    "teachers": [
+      "gpt-5.6-luna",
+      "gpt-5.6-terra"
+    ],
+    "note": "Teacher agreement is not human ground truth; audit labels are not substituted into training.",
+    "total_reported_tokens": 10070088,
+    "full_price_upper_bound_usd": 4.866024749999996,
+    "api_requests": 9280,
+    "failed_requests": 0
+  },
+  "verification": {
+    "python_tests_passed": 87,
+    "javascript_tests_passed": 4,
+    "test_runtime_preprocessing_and_data_provenance_match": true,
+    "constant_prediction_rankable_groups": {
+      "diverse": {
+        "baseline": 0,
+        "selected": 0
+      },
+      "openai": {
+        "baseline": 0,
+        "selected": 0
+      },
+      "hf": {
+        "baseline": 0,
+        "selected": 0
+      },
+      "neuralframe": {
+        "baseline": 0,
+        "selected": 0
+      }
+    },
+    "short_vector_matching_ort_version_check_passed": true,
+    "browser_wasm_and_blended_ui_ranking_verified": false
+  }
+}

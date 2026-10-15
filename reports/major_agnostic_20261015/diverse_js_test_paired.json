@@ -1,0 +1,5264 @@
+{
+  "pairs": 2304,
+  "resumes": 144,
+  "jobs": 24,
+  "coverage": {
+    "major": [
+      {
+        "value": "Accounting",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.45875000000000005
+      },
+      {
+        "value": "Biology",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5286458333333334
+      },
+      {
+        "value": "Chemical Engineering",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5522916666666666
+      },
+      {
+        "value": "Chemistry",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5303125
+      },
+      {
+        "value": "Civil Engineering",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.48645833333333327
+      },
+      {
+        "value": "Computer Science",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5179166666666667
+      },
+      {
+        "value": "Education",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.4396875
+      },
+      {
+        "value": "Electrical Engineering",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5294791666666666
+      },
+      {
+        "value": "English",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5127083333333333
+      },
+      {
+        "value": "Environmental Science",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5072916666666666
+      },
+      {
+        "value": "Finance",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5169791666666667
+      },
+      {
+        "value": "Graphic Design",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.4123958333333333
+      },
+      {
+        "value": "History",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5123958333333333
+      },
+      {
+        "value": "Marketing",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.49750000000000005
+      },
+      {
+        "value": "Mathematics",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5210416666666667
+      },
+      {
+        "value": "Mechanical Engineering",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.46197916666666666
+      },
+      {
+        "value": "Music",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.45562499999999995
+      },
+      {
+        "value": "Nursing",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.4532291666666666
+      },
+      {
+        "value": "Physics",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5152083333333333
+      },
+      {
+        "value": "Political Science",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5177083333333333
+      },
+      {
+        "value": "Psychology",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5234375
+      },
+      {
+        "value": "Public Health",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5035416666666667
+      },
+      {
+        "value": "Sociology",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.47145833333333337
+      },
+      {
+        "value": "Supply Chain Management",
+        "resumes": 6,
+        "pairs": 96,
+        "mean_label": 0.5114583333333333
+      }
+    ],
+    "student_year": [
+      {
+        "value": "career_changer",
+        "resumes": 24,
+        "pairs": 384,
+        "mean_label": 0.49013020833333326
+      },
+      {
+        "value": "first_year",
+        "resumes": 24,
+        "pairs": 384,
+        "mean_label": 0.41747395833333334
+      },
+      {
+        "value": "junior",
+        "resumes": 24,
+        "pairs": 384,
+        "mean_label": 0.5326302083333333
+      },
+      {
+        "value": "masters",
+        "resumes": 24,
+        "pairs": 384,
+        "mean_label": 0.5559375
+      },
+      {
+        "value": "senior",
+        "resumes": 24,
+        "pairs": 384,
+        "mean_label": 0.5128906249999999
+      },
+      {
+        "value": "sophomore",
+        "resumes": 24,
+        "pairs": 384,
+        "mean_label": 0.4753125
+      }
+    ],
+    "career_stage": [
+      {
+        "value": "career_changer",
+        "resumes": 24,
+        "pairs": 384,
+        "mean_label": 0.49013020833333326
+      },
+      {
+        "value": "graduate",
+        "resumes": 24,
+        "pairs": 384,
+        "mean_label": 0.5559375
+      },
+      {
+        "value": "undergraduate",
+        "resumes": 96,
+        "pairs": 1536,
+        "mean_label": 0.4845768229166667
+      }
+    ],
+    "degree_level": [
+      {
+        "value": "bachelors",
+        "resumes": 96,
+        "pairs": 1536,
+        "mean_label": 0.4845768229166667
+      },
+      {
+        "value": "masters",
+        "resumes": 24,
+        "pairs": 384,
+        "mean_label": 0.5559375
+      },
+      {
+        "value": "postbaccalaureate",
+        "resumes": 24,
+        "pairs": 384,
+        "mean_label": 0.49013020833333326
+      }
+    ],
+    "source": [
+      {
+        "value": "independently_authored_fictional",
+        "resumes": 144,
+        "pairs": 2304,
+        "mean_label": 0.4973958333333333
+      }
+    ]
+  },
+  "method": {
+    "bootstrap_unit": "family_id",
+    "bootstrap_draws": 10000,
+    "seed": 20261015,
+    "pairwise_min_label_gap": 0.1,
+    "minimum_slice_independent_clusters": 5
+  },
+  "limitations": [
+    "Career category is not a verified academic major or student year.",
+    "Teacher-label agreement is not measured hiring success or human agreement.",
+    "Bootstrap intervals describe resume variation conditional on this job pool.",
+    "Normalized exact-text checks do not detect paraphrases or shared template fragments.",
+    "Family clusters use the supplied family identifiers; unknown families remain individual resumes."
+  ],
+  "rankable_resumes": 144,
+  "excluded_constant_label_resumes": 0,
+  "macro_resume_metrics": {
+    "spearman": {
+      "mean": 0.7681974368227726,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.7268402756620466,
+        0.8068103802266879
+      ]
+    },
+    "ndcg_at_10": {
+      "mean": 0.9407981209803125,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.928971080017816,
+        0.9510397332722648
+      ]
+    },
+    "top1_best_rate": {
+      "mean": 0.5,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.3958333333333333,
+        0.6111111111111112
+      ]
+    },
+    "pairwise_accuracy": {
+      "mean": 0.880470297144995,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.8602911807704845,
+        0.899287677797415
+      ]
+    }
+  },
+  "per_resume": [
+    {
+      "resume_key": "0074223a12bbdd213446635b3b074dd7cb80c181eb4e77f67898a92017a4de75",
+      "pairs": 16,
+      "major": "English",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-80ea67e28d55f589",
+      "spearman": 0.8305726535263853,
+      "ndcg_at_10": 0.9363394645511258,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9444444444444444,
+      "_cluster": "family:fictional-80ea67e28d55f589"
+    },
+    {
+      "resume_key": "0212187ea617da2f43c1230902fc4d7c044b56ce47036d53c5efcdfe939c62f5",
+      "pairs": 16,
+      "major": "Electrical Engineering",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-af671dc83f5f5db6",
+      "spearman": 0.9049395732561996,
+      "ndcg_at_10": 0.992893703266741,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9444444444444444,
+      "_cluster": "family:fictional-af671dc83f5f5db6"
+    },
+    {
+      "resume_key": "02bf42a9b17afc9ceb6bab7cd06812a2d06aa97fc7fa09ca5a8e3886f18b55a0",
+      "pairs": 16,
+      "major": "Electrical Engineering",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-af671dc83f5f5db6",
+      "spearman": 0.8232704068302528,
+      "ndcg_at_10": 0.9183364531877403,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9135802469135802,
+      "_cluster": "family:fictional-af671dc83f5f5db6"
+    },
+    {
+      "resume_key": "02efa42662ae3e404572848e60abb3704ace4280543334d725329c6ed0d0533d",
+      "pairs": 16,
+      "major": "Nursing",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-861af85e3355435c",
+      "spearman": 0.7516599061248563,
+      "ndcg_at_10": 0.9032880373389586,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8170731707317073,
+      "_cluster": "family:fictional-861af85e3355435c"
+    },
+    {
+      "resume_key": "031a30b997003fa1cdfd99a90828b48ecfdbb305ff2c7b0bd999c6b791e8eb0e",
+      "pairs": 16,
+      "major": "Electrical Engineering",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-af671dc83f5f5db6",
+      "spearman": 0.8596834775775494,
+      "ndcg_at_10": 0.9663687633746957,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9294117647058824,
+      "_cluster": "family:fictional-af671dc83f5f5db6"
+    },
+    {
+      "resume_key": "03b126ea2a45222241e548d16287522e0ebebf26ee763c15a1dad0734af93a17",
+      "pairs": 16,
+      "major": "Education",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2c1e8819d347e0d4",
+      "spearman": 0.7896732729399182,
+      "ndcg_at_10": 0.9768658374760532,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9080459770114943,
+      "_cluster": "family:fictional-2c1e8819d347e0d4"
+    },
+    {
+      "resume_key": "063e75b909beacaec2895f73106854aa95e9db7ce7f69bacc35179d35622aa8f",
+      "pairs": 16,
+      "major": "Mechanical Engineering",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-5e211dc2292fe879",
+      "spearman": 0.4207522841716315,
+      "ndcg_at_10": 0.8767592533824553,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7294117647058823,
+      "_cluster": "family:fictional-5e211dc2292fe879"
+    },
+    {
+      "resume_key": "08c5677b2e42440ca34cb0e46b34d3d42f8da9f6c25b11746efad3b34555a9b6",
+      "pairs": 16,
+      "major": "Education",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2c1e8819d347e0d4",
+      "spearman": 0.8609618180272807,
+      "ndcg_at_10": 0.9904411193801881,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.972972972972973,
+      "_cluster": "family:fictional-2c1e8819d347e0d4"
+    },
+    {
+      "resume_key": "08db05fca65bf15e2a2b1a6c39e88078d4f0612a89bb0d87fe60ab3a1b008ee2",
+      "pairs": 16,
+      "major": "Political Science",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-b32b4d622b307d61",
+      "spearman": 0.8188521398884089,
+      "ndcg_at_10": 0.970990479696852,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9052631578947369,
+      "_cluster": "family:fictional-b32b4d622b307d61"
+    },
+    {
+      "resume_key": "0a0df41980c94e184a37f6b449233bff6007f56e71c210d80a309393bccca0d9",
+      "pairs": 16,
+      "major": "Public Health",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2840435c5243ea2e",
+      "spearman": 0.8329656412529433,
+      "ndcg_at_10": 0.9591685794459861,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.945054945054945,
+      "_cluster": "family:fictional-2840435c5243ea2e"
+    },
+    {
+      "resume_key": "0cabe089d58da5caa0ec45089ff111c00acef56e5b7188eed788d06e0221d6fe",
+      "pairs": 16,
+      "major": "Physics",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-245054243dc3d434",
+      "spearman": 0.6562948618317961,
+      "ndcg_at_10": 0.9469993678527452,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.84,
+      "_cluster": "family:fictional-245054243dc3d434"
+    },
+    {
+      "resume_key": "1017e3234e184322b8bff7a318a3550b99244023b87ce842d84a3031f2ace4df",
+      "pairs": 16,
+      "major": "Music",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-1f9aa52cc7b50ccb",
+      "spearman": 0.841504568343263,
+      "ndcg_at_10": 0.9620868321500278,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9230769230769231,
+      "_cluster": "family:fictional-1f9aa52cc7b50ccb"
+    },
+    {
+      "resume_key": "105e7f6945e001f456f6414d945fa16b83845567b806f2582dfd8fbb6fbe9f49",
+      "pairs": 16,
+      "major": "Graphic Design",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-cdb82a8a08a45eee",
+      "spearman": 0.8135613101586678,
+      "ndcg_at_10": 0.8725905461917128,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9012345679012346,
+      "_cluster": "family:fictional-cdb82a8a08a45eee"
+    },
+    {
+      "resume_key": "136cf0c5110dcdeab56fe470effb0bd0d571c6cb9a06d35102cfafc9064d2907",
+      "pairs": 16,
+      "major": "Physics",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-245054243dc3d434",
+      "spearman": 0.29160561816169955,
+      "ndcg_at_10": 0.8444232730352338,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.6823529411764706,
+      "_cluster": "family:fictional-245054243dc3d434"
+    },
+    {
+      "resume_key": "1410ab2b1fae9dd2826aefe3938f5cabe9c66e6b474f46d5f0a5096fd3132c8e",
+      "pairs": 16,
+      "major": "History",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-6875f1119861d29a",
+      "spearman": 0.8982339965539395,
+      "ndcg_at_10": 0.981433889509772,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9222222222222223,
+      "_cluster": "family:fictional-6875f1119861d29a"
+    },
+    {
+      "resume_key": "14796645cc15a36cf90ddda3028ce455115bea25e3c58ebee9430eda240e6bcb",
+      "pairs": 16,
+      "major": "English",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-80ea67e28d55f589",
+      "spearman": 0.8372267884316534,
+      "ndcg_at_10": 0.9676989405430845,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9058823529411765,
+      "_cluster": "family:fictional-80ea67e28d55f589"
+    },
+    {
+      "resume_key": "1567a481bf873d1211adc541a56d256ba3938d6cb5b492c6b6482ec58c779173",
+      "pairs": 16,
+      "major": "Physics",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-245054243dc3d434",
+      "spearman": 0.46406287075916103,
+      "ndcg_at_10": 0.8842386543468845,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.735632183908046,
+      "_cluster": "family:fictional-245054243dc3d434"
+    },
+    {
+      "resume_key": "157e4b7de321a33f134793b234357312e4b038831d7a2001ed4ec4762a1cef11",
+      "pairs": 16,
+      "major": "Computer Science",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-45d505dea7865dd0",
+      "spearman": 0.7329667287343197,
+      "ndcg_at_10": 0.934453157324788,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8518518518518519,
+      "_cluster": "family:fictional-45d505dea7865dd0"
+    },
+    {
+      "resume_key": "1954d54c4bfe63ea35f1b51508b0392392d7b3c8d8d6d741ec4f9fd680663dd9",
+      "pairs": 16,
+      "major": "Environmental Science",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-4e8146a9597fccfb",
+      "spearman": 0.6878275611028074,
+      "ndcg_at_10": 0.9257967028458619,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.782051282051282,
+      "_cluster": "family:fictional-4e8146a9597fccfb"
+    },
+    {
+      "resume_key": "1a51f1061263bd0bdbaac44941f1b6eaace4757c8d5205df3848576fecc50845",
+      "pairs": 16,
+      "major": "Mechanical Engineering",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-5e211dc2292fe879",
+      "spearman": 0.5735822902622832,
+      "ndcg_at_10": 0.8854741090677555,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.7532467532467533,
+      "_cluster": "family:fictional-5e211dc2292fe879"
+    },
+    {
+      "resume_key": "1bdd0c11c69cb1b09cd7bae222e2a9bd3749375d63f0480d3e0311cd60736af8",
+      "pairs": 16,
+      "major": "Public Health",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2840435c5243ea2e",
+      "spearman": 0.9237806759543039,
+      "ndcg_at_10": 0.9790317760637518,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9506172839506173,
+      "_cluster": "family:fictional-2840435c5243ea2e"
+    },
+    {
+      "resume_key": "1c2066a7800cd254a78e97aa6d059bb2fd0a1426329c994b9c7323b4dcd99aef",
+      "pairs": 16,
+      "major": "Supply Chain Management",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-53914f53ca07cf47",
+      "spearman": 0.8652089223811013,
+      "ndcg_at_10": 0.9862363746159302,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.926829268292683,
+      "_cluster": "family:fictional-53914f53ca07cf47"
+    },
+    {
+      "resume_key": "1e7ca154ef520f5544f527d8d04ff50a1fadb866757014d026a23a951bb5d305",
+      "pairs": 16,
+      "major": "Accounting",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-886d0b05cb581354",
+      "spearman": 0.8900429599677958,
+      "ndcg_at_10": 0.9641754144346062,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9270833333333334,
+      "_cluster": "family:fictional-886d0b05cb581354"
+    },
+    {
+      "resume_key": "1ef7ee9bfc7ca2c388de8fc67d0594ceb717b70fb97c3385b3e03a7d9113e124",
+      "pairs": 16,
+      "major": "Civil Engineering",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-ef988eb74042a4ce",
+      "spearman": 0.8245926867092104,
+      "ndcg_at_10": 0.9696727649530626,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9080459770114943,
+      "_cluster": "family:fictional-ef988eb74042a4ce"
+    },
+    {
+      "resume_key": "20a4cf3579ebc346263736a5affe49d21eb25ccd951b58b946a36f2883434d06",
+      "pairs": 16,
+      "major": "Nursing",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-861af85e3355435c",
+      "spearman": 0.774339652201672,
+      "ndcg_at_10": 0.9007312033960478,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8555555555555555,
+      "_cluster": "family:fictional-861af85e3355435c"
+    },
+    {
+      "resume_key": "20ac2915f0806e971cd643d7e2d7dc5bfc16472956c530d7376c1dd380be5151",
+      "pairs": 16,
+      "major": "Music",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-1f9aa52cc7b50ccb",
+      "spearman": 0.8638707268824694,
+      "ndcg_at_10": 0.9517213246707921,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9438202247191011,
+      "_cluster": "family:fictional-1f9aa52cc7b50ccb"
+    },
+    {
+      "resume_key": "20e7ea5a8cdc51e9b471afd028fd4a6314bb99f9245b6471f50d2481eb90e343",
+      "pairs": 16,
+      "major": "Marketing",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2f4cc7e7a67b887d",
+      "spearman": 0.8510361510864093,
+      "ndcg_at_10": 0.9756008599678906,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8817204301075269,
+      "_cluster": "family:fictional-2f4cc7e7a67b887d"
+    },
+    {
+      "resume_key": "21050ad8590651b28cd86090b1625e4c62e21bf7fdebaa9370311613f261d416",
+      "pairs": 16,
+      "major": "Political Science",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-b32b4d622b307d61",
+      "spearman": 0.9474673599531321,
+      "ndcg_at_10": 0.9825736654925749,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9555555555555556,
+      "_cluster": "family:fictional-b32b4d622b307d61"
+    },
+    {
+      "resume_key": "21bc450b9add0e3f842d2af9179e43d2ccacdfd275ef36d37af4234469c8ef55",
+      "pairs": 16,
+      "major": "Electrical Engineering",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-af671dc83f5f5db6",
+      "spearman": 0.8186710157095033,
+      "ndcg_at_10": 0.9506719451559562,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8947368421052632,
+      "_cluster": "family:fictional-af671dc83f5f5db6"
+    },
+    {
+      "resume_key": "221036935e580c1a4cefeb13f1b62fdb724147e173cb20f5ab6572471881190d",
+      "pairs": 16,
+      "major": "Chemistry",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-379401eaa07b75f4",
+      "spearman": 0.6558601141677668,
+      "ndcg_at_10": 0.8805583663627827,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8333333333333334,
+      "_cluster": "family:fictional-379401eaa07b75f4"
+    },
+    {
+      "resume_key": "22285d3cdfad45cc5668b187590da352af43ffcde1554f27d05319fa3c3a9a15",
+      "pairs": 16,
+      "major": "Graphic Design",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-cdb82a8a08a45eee",
+      "spearman": 0.7923425382373454,
+      "ndcg_at_10": 0.8726477693080349,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8478260869565217,
+      "_cluster": "family:fictional-cdb82a8a08a45eee"
+    },
+    {
+      "resume_key": "2331649583f19c78ccd74770a16f659ee1df15da10d2f1608f2fa3557a3878e4",
+      "pairs": 16,
+      "major": "Environmental Science",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-4e8146a9597fccfb",
+      "spearman": 0.7848975698389781,
+      "ndcg_at_10": 0.9670480033047048,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8645833333333334,
+      "_cluster": "family:fictional-4e8146a9597fccfb"
+    },
+    {
+      "resume_key": "2569ecfb7a0d77c8f83184ea0ed50ad0e689372bce25df7f51edf925ea0fc1d0",
+      "pairs": 16,
+      "major": "Political Science",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-b32b4d622b307d61",
+      "spearman": 0.8790426012819775,
+      "ndcg_at_10": 0.9669373740268393,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9764705882352941,
+      "_cluster": "family:fictional-b32b4d622b307d61"
+    },
+    {
+      "resume_key": "2a29a91b50e724144a0dcfbe2c86cc3695d83e1823181adfa4867f4a980dba25",
+      "pairs": 16,
+      "major": "Nursing",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-861af85e3355435c",
+      "spearman": 0.6731135569477926,
+      "ndcg_at_10": 0.9193130721412703,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8591549295774648,
+      "_cluster": "family:fictional-861af85e3355435c"
+    },
+    {
+      "resume_key": "2ab163d506b971b1d21af1cb34d47a876a699eee69b625dad40a0c136f184d80",
+      "pairs": 16,
+      "major": "Graphic Design",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-cdb82a8a08a45eee",
+      "spearman": 0.7158720324782438,
+      "ndcg_at_10": 0.8452942386567108,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8690476190476191,
+      "_cluster": "family:fictional-cdb82a8a08a45eee"
+    },
+    {
+      "resume_key": "2bfbcb89a4d1e2f0eb8370047c88a403ce67113c1aedae08d69640c4d0384721",
+      "pairs": 16,
+      "major": "Physics",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-245054243dc3d434",
+      "spearman": 0.8197206045545748,
+      "ndcg_at_10": 0.9701480021463659,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9230769230769231,
+      "_cluster": "family:fictional-245054243dc3d434"
+    },
+    {
+      "resume_key": "323d48b9d89976e26946a4a69c897af75bd64e27d5d65f612e64ef980b06b988",
+      "pairs": 16,
+      "major": "Public Health",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2840435c5243ea2e",
+      "spearman": 0.8617647058823529,
+      "ndcg_at_10": 0.9444538411621626,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9222222222222223,
+      "_cluster": "family:fictional-2840435c5243ea2e"
+    },
+    {
+      "resume_key": "32bc1124c49e85a2656c42a600968dfdbcc2f92105758e4bba51e5088784d7d6",
+      "pairs": 16,
+      "major": "Graphic Design",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-cdb82a8a08a45eee",
+      "spearman": 0.6380074764286588,
+      "ndcg_at_10": 0.849205950015014,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8117647058823529,
+      "_cluster": "family:fictional-cdb82a8a08a45eee"
+    },
+    {
+      "resume_key": "330cc5e007a79bc09a5520a03dc290da96c7a0e2583c5916bc167ad2944419fc",
+      "pairs": 16,
+      "major": "Mechanical Engineering",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-5e211dc2292fe879",
+      "spearman": 0.5178246727293068,
+      "ndcg_at_10": 0.8998764982880716,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7333333333333333,
+      "_cluster": "family:fictional-5e211dc2292fe879"
+    },
+    {
+      "resume_key": "33bd0c31f5a3e7437d827705b93d7a39f73b0a94fc0f4a42b8e2460c75df637e",
+      "pairs": 16,
+      "major": "Marketing",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2f4cc7e7a67b887d",
+      "spearman": 0.8824951812629711,
+      "ndcg_at_10": 0.9532322069141762,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9157894736842105,
+      "_cluster": "family:fictional-2f4cc7e7a67b887d"
+    },
+    {
+      "resume_key": "340d78c0d2c0dafbe66122ed8029be5ad77bd28ae8c24138e4437feeb3af257c",
+      "pairs": 16,
+      "major": "Mathematics",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-c16e4f3813c1e5eb",
+      "spearman": 0.6647147661396261,
+      "ndcg_at_10": 0.9374355445434311,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.7840909090909091,
+      "_cluster": "family:fictional-c16e4f3813c1e5eb"
+    },
+    {
+      "resume_key": "348fbfbab7b070bc1bfa9a1cef70fdb8656abbf051dfbf8638c8e22ed437403a",
+      "pairs": 16,
+      "major": "History",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-6875f1119861d29a",
+      "spearman": 0.7992021036629786,
+      "ndcg_at_10": 0.9507681707069663,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9024390243902439,
+      "_cluster": "family:fictional-6875f1119861d29a"
+    },
+    {
+      "resume_key": "3a01b7dded75f6377ea460c65bd4fbd071d8e39e5623fdae65361373fc83d705",
+      "pairs": 16,
+      "major": "English",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-80ea67e28d55f589",
+      "spearman": 0.7851789419039308,
+      "ndcg_at_10": 0.941567184104381,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9222222222222223,
+      "_cluster": "family:fictional-80ea67e28d55f589"
+    },
+    {
+      "resume_key": "3afbc9dbf3a11bf3e9d83474d798828312d592005196dc1b1ec9a562f695657c",
+      "pairs": 16,
+      "major": "Political Science",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-b32b4d622b307d61",
+      "spearman": 0.896849489584013,
+      "ndcg_at_10": 0.9911750619062718,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9175257731958762,
+      "_cluster": "family:fictional-b32b4d622b307d61"
+    },
+    {
+      "resume_key": "3b8a8d1f8c71022cbeebccefdccc8a3794cbe056ef2a411451a59dca539caec5",
+      "pairs": 16,
+      "major": "English",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-80ea67e28d55f589",
+      "spearman": 0.8902429903655706,
+      "ndcg_at_10": 0.9955233095189164,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9146341463414634,
+      "_cluster": "family:fictional-80ea67e28d55f589"
+    },
+    {
+      "resume_key": "3f7de1299c46e6fe960309b917ca4ac3b8670d298badcf26ddd9d7bc8e6f28dc",
+      "pairs": 16,
+      "major": "Music",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-1f9aa52cc7b50ccb",
+      "spearman": 0.8811769381490515,
+      "ndcg_at_10": 0.9871326077969397,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "family:fictional-1f9aa52cc7b50ccb"
+    },
+    {
+      "resume_key": "46d70877dd19b026dcf156d90beebedc080fffdc7f3ed3874ab0f8571c8448a8",
+      "pairs": 16,
+      "major": "Nursing",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-861af85e3355435c",
+      "spearman": 0.8163186921780597,
+      "ndcg_at_10": 0.9377246573497369,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8924731182795699,
+      "_cluster": "family:fictional-861af85e3355435c"
+    },
+    {
+      "resume_key": "479635eec1b3cf3738facb4d240112c2d4cc7f7251cf00bb87676375784bab00",
+      "pairs": 16,
+      "major": "Environmental Science",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-4e8146a9597fccfb",
+      "spearman": 0.8693786126385268,
+      "ndcg_at_10": 0.9765212682368722,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9,
+      "_cluster": "family:fictional-4e8146a9597fccfb"
+    },
+    {
+      "resume_key": "4984171f35ae9c7ee01fc11e8b6c39a6c7afc2d901211f1f9535c25f5641a524",
+      "pairs": 16,
+      "major": "Accounting",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-886d0b05cb581354",
+      "spearman": 0.8221458187430551,
+      "ndcg_at_10": 0.958914513941263,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8913043478260869,
+      "_cluster": "family:fictional-886d0b05cb581354"
+    },
+    {
+      "resume_key": "49fd5e57ffe8e3cbece9c82a651b64ae96c8032445a16cac9b1abd89f29e68d6",
+      "pairs": 16,
+      "major": "Mathematics",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-c16e4f3813c1e5eb",
+      "spearman": 0.6203901384580254,
+      "ndcg_at_10": 0.916277509926868,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.7956989247311828,
+      "_cluster": "family:fictional-c16e4f3813c1e5eb"
+    },
+    {
+      "resume_key": "4c556b0728fc7756660b1c292a2b767b3696c7aa7b37da79a79751c26f4cdf00",
+      "pairs": 16,
+      "major": "Physics",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-245054243dc3d434",
+      "spearman": 0.6316678630543794,
+      "ndcg_at_10": 0.9329999935273471,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.782608695652174,
+      "_cluster": "family:fictional-245054243dc3d434"
+    },
+    {
+      "resume_key": "4faf1d638f2929e87dd8f56ce79a5f1f914e95accb6801266c28f4cce27558fe",
+      "pairs": 16,
+      "major": "Biology",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-f2fd0c7efcb64e16",
+      "spearman": 0.6587952422673317,
+      "ndcg_at_10": 0.9057358733558243,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8452380952380952,
+      "_cluster": "family:fictional-f2fd0c7efcb64e16"
+    },
+    {
+      "resume_key": "5209f1b24ec620516f4fe1608f54e4fada4096b6a3381d6391350e20d92085e5",
+      "pairs": 16,
+      "major": "Chemical Engineering",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-8569855494e8147b",
+      "spearman": 0.48185441851989574,
+      "ndcg_at_10": 0.9270626618030826,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.704225352112676,
+      "_cluster": "family:fictional-8569855494e8147b"
+    },
+    {
+      "resume_key": "525629a00b9c935b4ffe30a3b3e6649c94aa5e8bd9bd72cfffd78b503ed48e38",
+      "pairs": 16,
+      "major": "Finance",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-10c410d7e9998781",
+      "spearman": 0.8398581164538569,
+      "ndcg_at_10": 0.974281060006721,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9195402298850575,
+      "_cluster": "family:fictional-10c410d7e9998781"
+    },
+    {
+      "resume_key": "52d9905279c7d08dbaab5c16b58474ba977f166b7c541d2cbba56b432ed770da",
+      "pairs": 16,
+      "major": "Chemistry",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-379401eaa07b75f4",
+      "spearman": 0.6142676633522437,
+      "ndcg_at_10": 0.9243883819930734,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7948717948717948,
+      "_cluster": "family:fictional-379401eaa07b75f4"
+    },
+    {
+      "resume_key": "558b94b88e5098737dd585f4c2abe70bb1853ac86cef3ce6188e1cc84b2e5a3e",
+      "pairs": 16,
+      "major": "Mathematics",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-c16e4f3813c1e5eb",
+      "spearman": 0.7543038753454944,
+      "ndcg_at_10": 0.9575465083422395,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8505747126436781,
+      "_cluster": "family:fictional-c16e4f3813c1e5eb"
+    },
+    {
+      "resume_key": "57671b651a7bd3865167148a945f948782a70a04cb9ca9cc2bc97cfc32454760",
+      "pairs": 16,
+      "major": "Biology",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-f2fd0c7efcb64e16",
+      "spearman": 0.5777936296723108,
+      "ndcg_at_10": 0.9496607558060254,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8481012658227848,
+      "_cluster": "family:fictional-f2fd0c7efcb64e16"
+    },
+    {
+      "resume_key": "5ad9bd90e4e988ebfbf7b488373e7b9099e6e5df112b314c11efb2c95f648a7d",
+      "pairs": 16,
+      "major": "Chemistry",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-379401eaa07b75f4",
+      "spearman": 0.8586830621988473,
+      "ndcg_at_10": 0.9699997056778813,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9404761904761905,
+      "_cluster": "family:fictional-379401eaa07b75f4"
+    },
+    {
+      "resume_key": "5addcf7014e510bc29c9fbb9d6d08157394e661e76e3680861114a71053ec4d4",
+      "pairs": 16,
+      "major": "Music",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-1f9aa52cc7b50ccb",
+      "spearman": 0.8300312329097074,
+      "ndcg_at_10": 0.957416288084193,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9080459770114943,
+      "_cluster": "family:fictional-1f9aa52cc7b50ccb"
+    },
+    {
+      "resume_key": "5d0aa30e0bc7aeee7d3fc44b8f0af74d6dba5a01d4996397612995e779456244",
+      "pairs": 16,
+      "major": "Marketing",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2f4cc7e7a67b887d",
+      "spearman": 0.8834846698453362,
+      "ndcg_at_10": 0.9648731613390379,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9090909090909091,
+      "_cluster": "family:fictional-2f4cc7e7a67b887d"
+    },
+    {
+      "resume_key": "674e90f909aa208026dfdca54235ae0ba4fe1343e4e9cd9d7cc40e06e29b9aca",
+      "pairs": 16,
+      "major": "Finance",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-10c410d7e9998781",
+      "spearman": 0.7274273645361657,
+      "ndcg_at_10": 0.9171199165040088,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.891566265060241,
+      "_cluster": "family:fictional-10c410d7e9998781"
+    },
+    {
+      "resume_key": "67f2290957897d7c3c874ff1bac547c35f131551a0d292b012e835c7e71a801c",
+      "pairs": 16,
+      "major": "Nursing",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-861af85e3355435c",
+      "spearman": 0.5657367214986279,
+      "ndcg_at_10": 0.90828577295277,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7560975609756098,
+      "_cluster": "family:fictional-861af85e3355435c"
+    },
+    {
+      "resume_key": "682bf611ce88448c9ce3a20bf530907e5a8cc95f66a06ef5aba8708427336faf",
+      "pairs": 16,
+      "major": "Psychology",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-36298f4778589d9f",
+      "spearman": 0.7172320002259985,
+      "ndcg_at_10": 0.9496403924255659,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8352941176470589,
+      "_cluster": "family:fictional-36298f4778589d9f"
+    },
+    {
+      "resume_key": "69003541a7d358ab934083f434b4a4da47765039bbc9ea5e29e5262006e6aa4e",
+      "pairs": 16,
+      "major": "Biology",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-f2fd0c7efcb64e16",
+      "spearman": 0.8173825697758181,
+      "ndcg_at_10": 0.9665359045604717,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9240506329113924,
+      "_cluster": "family:fictional-f2fd0c7efcb64e16"
+    },
+    {
+      "resume_key": "69f19dfd5ed1b3aa7a28d54a604d698a633f529580a7f0fadf24bfdda9d6f11e",
+      "pairs": 16,
+      "major": "Accounting",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-886d0b05cb581354",
+      "spearman": 0.9143368945369469,
+      "ndcg_at_10": 0.9728565276231503,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9333333333333333,
+      "_cluster": "family:fictional-886d0b05cb581354"
+    },
+    {
+      "resume_key": "6b18282d8731e1c962fb7712df4fdf35f90e66acebc7c28f52db9cd90ac5f59c",
+      "pairs": 16,
+      "major": "Civil Engineering",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-ef988eb74042a4ce",
+      "spearman": 0.7784419118270937,
+      "ndcg_at_10": 0.9590469067928433,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9135802469135802,
+      "_cluster": "family:fictional-ef988eb74042a4ce"
+    },
+    {
+      "resume_key": "6b182f1c92a73b1c20cf139ecfda486b41f554da84f175e24028a2da99f9482f",
+      "pairs": 16,
+      "major": "English",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-80ea67e28d55f589",
+      "spearman": 0.9283198891677484,
+      "ndcg_at_10": 0.9781311598512339,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 1.0,
+      "_cluster": "family:fictional-80ea67e28d55f589"
+    },
+    {
+      "resume_key": "6d252dfe85f913794049d470c65b72016c74247a6107645565d83f9fb9a4f401",
+      "pairs": 16,
+      "major": "Civil Engineering",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-ef988eb74042a4ce",
+      "spearman": 0.7997150637575667,
+      "ndcg_at_10": 0.8950346895540459,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7804878048780488,
+      "_cluster": "family:fictional-ef988eb74042a4ce"
+    },
+    {
+      "resume_key": "6d5a785328f2f55fb5a0f4dce17fc31bac50aea52f645dec04f6711106fb558c",
+      "pairs": 16,
+      "major": "Civil Engineering",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-ef988eb74042a4ce",
+      "spearman": 0.9379708045734433,
+      "ndcg_at_10": 0.9828624534751687,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9886363636363636,
+      "_cluster": "family:fictional-ef988eb74042a4ce"
+    },
+    {
+      "resume_key": "6efe227efe68ebb4cb982a8c3427362d54ff9d650e92cf347a32b4c8ff135bba",
+      "pairs": 16,
+      "major": "Public Health",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2840435c5243ea2e",
+      "spearman": 0.8879094678579172,
+      "ndcg_at_10": 0.9761158555596051,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9222222222222223,
+      "_cluster": "family:fictional-2840435c5243ea2e"
+    },
+    {
+      "resume_key": "70698286b11bdcebd7f34f7965e4d86ede3f6a7779260368c539e646ac438c8a",
+      "pairs": 16,
+      "major": "Computer Science",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-45d505dea7865dd0",
+      "spearman": 0.9050803735383299,
+      "ndcg_at_10": 0.968319865816854,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9578947368421052,
+      "_cluster": "family:fictional-45d505dea7865dd0"
+    },
+    {
+      "resume_key": "7185256478df20717db8ca6fcd891a6a405bbdff30282165aa3b72a78f3a5ac3",
+      "pairs": 16,
+      "major": "Psychology",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-36298f4778589d9f",
+      "spearman": 0.8197458721021444,
+      "ndcg_at_10": 0.9841231215975019,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8823529411764706,
+      "_cluster": "family:fictional-36298f4778589d9f"
+    },
+    {
+      "resume_key": "771d6d1b575fc1c4cb60d36f6ac9be1b62560e1c82c7de098b46a78c2b32265f",
+      "pairs": 16,
+      "major": "Environmental Science",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-4e8146a9597fccfb",
+      "spearman": 0.5948325317454022,
+      "ndcg_at_10": 0.882729162048803,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8285714285714286,
+      "_cluster": "family:fictional-4e8146a9597fccfb"
+    },
+    {
+      "resume_key": "7b2a8cdc65ab6c49c35db96309adf1dafbc92dcd8c9696315767c79cc84a8be3",
+      "pairs": 16,
+      "major": "Chemical Engineering",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-8569855494e8147b",
+      "spearman": 0.5430465046331027,
+      "ndcg_at_10": 0.8478386645985809,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7191011235955056,
+      "_cluster": "family:fictional-8569855494e8147b"
+    },
+    {
+      "resume_key": "7cf17b5a112d290e4e3daccf6d769cd51a8cc4d16a4551e010a13fbf71054d13",
+      "pairs": 16,
+      "major": "Graphic Design",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-cdb82a8a08a45eee",
+      "spearman": 0.834195111503272,
+      "ndcg_at_10": 0.8265001527684882,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.935064935064935,
+      "_cluster": "family:fictional-cdb82a8a08a45eee"
+    },
+    {
+      "resume_key": "7d2bce2d148e12c5eed29e3420cc6376328340dc8c8c3cadff45637716c54c4f",
+      "pairs": 16,
+      "major": "Mechanical Engineering",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-5e211dc2292fe879",
+      "spearman": 0.5703860190354864,
+      "ndcg_at_10": 0.9535709771475352,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9047619047619048,
+      "_cluster": "family:fictional-5e211dc2292fe879"
+    },
+    {
+      "resume_key": "7d368a65f4df7732161a69678e8cf2ae4653593f496501d3c670652b05b98abc",
+      "pairs": 16,
+      "major": "Biology",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-f2fd0c7efcb64e16",
+      "spearman": 0.816056074501773,
+      "ndcg_at_10": 0.924675143768926,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9042553191489362,
+      "_cluster": "family:fictional-f2fd0c7efcb64e16"
+    },
+    {
+      "resume_key": "7eb9cf3491d4e6d3c8c410a15e92359e7c6f1bd2aac303298af6b1ec9b17053a",
+      "pairs": 16,
+      "major": "Psychology",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-36298f4778589d9f",
+      "spearman": 0.8238782108309699,
+      "ndcg_at_10": 0.9269110288979826,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9021739130434783,
+      "_cluster": "family:fictional-36298f4778589d9f"
+    },
+    {
+      "resume_key": "7f4c240d64e622a3c86ed5b21a1f991f1bbf4ee6123518842f701228e2001b99",
+      "pairs": 16,
+      "major": "Electrical Engineering",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-af671dc83f5f5db6",
+      "spearman": 0.8289121610235042,
+      "ndcg_at_10": 0.9726356439521221,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8953488372093024,
+      "_cluster": "family:fictional-af671dc83f5f5db6"
+    },
+    {
+      "resume_key": "7f99e43085ed6323e12fd102fa1b401ef0cbd9faf9e858f35503afc3d0fa12b4",
+      "pairs": 16,
+      "major": "Marketing",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2f4cc7e7a67b887d",
+      "spearman": 0.7522553268589071,
+      "ndcg_at_10": 0.9510607258856402,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8791208791208791,
+      "_cluster": "family:fictional-2f4cc7e7a67b887d"
+    },
+    {
+      "resume_key": "816fbbf2c28895e585bc2b3b8351935951fca2721efed88123ad39e2c602b4c0",
+      "pairs": 16,
+      "major": "Education",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2c1e8819d347e0d4",
+      "spearman": 0.9261538495551949,
+      "ndcg_at_10": 0.9591853514096825,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.95,
+      "_cluster": "family:fictional-2c1e8819d347e0d4"
+    },
+    {
+      "resume_key": "83f590f7dd290a6c142e3707d24bfa476e8ceb483b79c52ac182ff78d7031b2e",
+      "pairs": 16,
+      "major": "Chemical Engineering",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-8569855494e8147b",
+      "spearman": 0.7737675504226462,
+      "ndcg_at_10": 0.9672957952626985,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8809523809523809,
+      "_cluster": "family:fictional-8569855494e8147b"
+    },
+    {
+      "resume_key": "85515fd01e6f01b3e0def87e893756ff5301e19ad93920aba4cdd773054019d9",
+      "pairs": 16,
+      "major": "Chemical Engineering",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-8569855494e8147b",
+      "spearman": 0.39616199091872073,
+      "ndcg_at_10": 0.8539035581155403,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.6410256410256411,
+      "_cluster": "family:fictional-8569855494e8147b"
+    },
+    {
+      "resume_key": "874e8e795ba501cecce4dd2ff9e6dc8d60dd6eb213261aab44a974b92a9e396c",
+      "pairs": 16,
+      "major": "Music",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-1f9aa52cc7b50ccb",
+      "spearman": 0.8733440988378173,
+      "ndcg_at_10": 0.9734910319662516,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9333333333333333,
+      "_cluster": "family:fictional-1f9aa52cc7b50ccb"
+    },
+    {
+      "resume_key": "888a03a70a82834e066ba02aa9796ab4ecb1431735458dd15f2631d49c38eec4",
+      "pairs": 16,
+      "major": "Political Science",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-b32b4d622b307d61",
+      "spearman": 0.8762337272161794,
+      "ndcg_at_10": 0.9813076381854688,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9111111111111111,
+      "_cluster": "family:fictional-b32b4d622b307d61"
+    },
+    {
+      "resume_key": "888f983234e916759cfd1a6c42da6dfac6f6577939466eaf785dca16ed5e1683",
+      "pairs": 16,
+      "major": "Supply Chain Management",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-53914f53ca07cf47",
+      "spearman": 0.5398105225589525,
+      "ndcg_at_10": 0.9082059103486624,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8488372093023255,
+      "_cluster": "family:fictional-53914f53ca07cf47"
+    },
+    {
+      "resume_key": "8a19f46398b59886afa53be16670b3c7b7b6ab1cf53231c1e5dd87b72c9c74a2",
+      "pairs": 16,
+      "major": "Supply Chain Management",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-53914f53ca07cf47",
+      "spearman": 0.8077064478400262,
+      "ndcg_at_10": 0.9102048655830547,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8536585365853658,
+      "_cluster": "family:fictional-53914f53ca07cf47"
+    },
+    {
+      "resume_key": "8b5dcb01130bc849796e4a0eb760c62a8a3e4c660b5e0504a9e6e68d63d47b66",
+      "pairs": 16,
+      "major": "Supply Chain Management",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-53914f53ca07cf47",
+      "spearman": 0.5533284947458241,
+      "ndcg_at_10": 0.9326637913514727,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8289473684210527,
+      "_cluster": "family:fictional-53914f53ca07cf47"
+    },
+    {
+      "resume_key": "8c9f641c374d21898aaf1397bb6af272890ca10099b9f8a6ba983ffa9dcd34be",
+      "pairs": 16,
+      "major": "Mechanical Engineering",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-5e211dc2292fe879",
+      "spearman": 0.5310743860340099,
+      "ndcg_at_10": 0.8502869760711442,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7590361445783133,
+      "_cluster": "family:fictional-5e211dc2292fe879"
+    },
+    {
+      "resume_key": "8da03a5d72fe852bd8525232b3d17a9d699bd2b78ddf19976ce661691f567256",
+      "pairs": 16,
+      "major": "Marketing",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2f4cc7e7a67b887d",
+      "spearman": 0.8112129689731802,
+      "ndcg_at_10": 0.9518999409085871,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9032258064516129,
+      "_cluster": "family:fictional-2f4cc7e7a67b887d"
+    },
+    {
+      "resume_key": "8ec24f3c47b9aa58730c3dd4be37061fa6a73a2eef197c8348def4bfdce21d24",
+      "pairs": 16,
+      "major": "Sociology",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-d7e7c1767500c259",
+      "spearman": 0.8905481347979776,
+      "ndcg_at_10": 0.9634267948085194,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9642857142857143,
+      "_cluster": "family:fictional-d7e7c1767500c259"
+    },
+    {
+      "resume_key": "93c8e568f8d2e6a828699aef6f244dd8fb855f5530fd8bb6f79c05060b0a9455",
+      "pairs": 16,
+      "major": "Computer Science",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-45d505dea7865dd0",
+      "spearman": 0.6395926903626786,
+      "ndcg_at_10": 0.9174890605684451,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8461538461538461,
+      "_cluster": "family:fictional-45d505dea7865dd0"
+    },
+    {
+      "resume_key": "943524364b85a6a3832b8948fc0181883e485d3fd42b6eabe54c214d319a9526",
+      "pairs": 16,
+      "major": "Marketing",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2f4cc7e7a67b887d",
+      "spearman": 0.9462071759454073,
+      "ndcg_at_10": 0.9742301508031596,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9494949494949495,
+      "_cluster": "family:fictional-2f4cc7e7a67b887d"
+    },
+    {
+      "resume_key": "95eb763f4bc8aa46ab4a10d54b7a9dde2ef92ff1e19467800ab1ec5e24d7e241",
+      "pairs": 16,
+      "major": "Political Science",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-b32b4d622b307d61",
+      "spearman": 0.9224070236316483,
+      "ndcg_at_10": 0.9819517384418942,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.978021978021978,
+      "_cluster": "family:fictional-b32b4d622b307d61"
+    },
+    {
+      "resume_key": "982f5d6f211e7b0968107f73977c58c86d656d64a0bc393943d4e13de10151a7",
+      "pairs": 16,
+      "major": "Mechanical Engineering",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-5e211dc2292fe879",
+      "spearman": 0.5858090720597993,
+      "ndcg_at_10": 0.9176048129334997,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7681159420289855,
+      "_cluster": "family:fictional-5e211dc2292fe879"
+    },
+    {
+      "resume_key": "99995da269c209e37d9614c27cdc8ebc8598a4bfa1e9b67f4f50008813369d35",
+      "pairs": 16,
+      "major": "Music",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-1f9aa52cc7b50ccb",
+      "spearman": 0.7955773721768522,
+      "ndcg_at_10": 0.8840212630376484,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8791208791208791,
+      "_cluster": "family:fictional-1f9aa52cc7b50ccb"
+    },
+    {
+      "resume_key": "9acbd49c2738cf7461971afec2c5900baf9ed5484b734b44093e7c848a7d178d",
+      "pairs": 16,
+      "major": "Education",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2c1e8819d347e0d4",
+      "spearman": 0.8750598157757281,
+      "ndcg_at_10": 0.9712576580909662,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9431818181818182,
+      "_cluster": "family:fictional-2c1e8819d347e0d4"
+    },
+    {
+      "resume_key": "a04f584b55c6b80b0987b598540db60d9fec5cc698c3997c37e70391acbb4d4f",
+      "pairs": 16,
+      "major": "Chemistry",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-379401eaa07b75f4",
+      "spearman": 0.6036941469764983,
+      "ndcg_at_10": 0.9238821502750844,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8333333333333334,
+      "_cluster": "family:fictional-379401eaa07b75f4"
+    },
+    {
+      "resume_key": "a1a5e9c1948bb88c4e71f8a8a0463c8bb2691aa6bb865cb73b4ad5e05a4fee6f",
+      "pairs": 16,
+      "major": "Computer Science",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-45d505dea7865dd0",
+      "spearman": 0.8455397716623442,
+      "ndcg_at_10": 0.9431835462673533,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9176470588235294,
+      "_cluster": "family:fictional-45d505dea7865dd0"
+    },
+    {
+      "resume_key": "a3530d2040a65362104fe8768b8b0424d4e11f2276ae3e3f01492daae4ba3071",
+      "pairs": 16,
+      "major": "Mathematics",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-c16e4f3813c1e5eb",
+      "spearman": 0.6179967890904773,
+      "ndcg_at_10": 0.9268153876774797,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.7777777777777778,
+      "_cluster": "family:fictional-c16e4f3813c1e5eb"
+    },
+    {
+      "resume_key": "a5b1c6c9d913d22abe9bf034b10371a706b6216dedf5c48414f7f4eecc8d21ec",
+      "pairs": 16,
+      "major": "Biology",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-f2fd0c7efcb64e16",
+      "spearman": 0.6701699816276936,
+      "ndcg_at_10": 0.9276770536450292,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8222222222222222,
+      "_cluster": "family:fictional-f2fd0c7efcb64e16"
+    },
+    {
+      "resume_key": "a5d50b9cea16b9880c04d4a4eada5c795ba7fdb2796efc5d7024520fe7ee7db8",
+      "pairs": 16,
+      "major": "Computer Science",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-45d505dea7865dd0",
+      "spearman": 0.8082631036314596,
+      "ndcg_at_10": 0.9402757112278577,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8876404494382022,
+      "_cluster": "family:fictional-45d505dea7865dd0"
+    },
+    {
+      "resume_key": "a628e4565fd11000369ba1eec9136c11ba5b31d88cca24ec02473fa551daf387",
+      "pairs": 16,
+      "major": "Supply Chain Management",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-53914f53ca07cf47",
+      "spearman": 0.7540947628287339,
+      "ndcg_at_10": 0.9579268659012073,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9146341463414634,
+      "_cluster": "family:fictional-53914f53ca07cf47"
+    },
+    {
+      "resume_key": "a664557ccb2bdaa17a418252e6503dca02b393155a735bbb20f07de9fdf05658",
+      "pairs": 16,
+      "major": "Chemistry",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-379401eaa07b75f4",
+      "spearman": 0.7843503893362178,
+      "ndcg_at_10": 0.9228938017620345,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.896551724137931,
+      "_cluster": "family:fictional-379401eaa07b75f4"
+    },
+    {
+      "resume_key": "a6da1fce0b424e852aa546794b31e05798dd68d0a807cf83f5bb2abc03340fb6",
+      "pairs": 16,
+      "major": "History",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-6875f1119861d29a",
+      "spearman": 0.8492565899489942,
+      "ndcg_at_10": 0.9742288019301869,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9166666666666666,
+      "_cluster": "family:fictional-6875f1119861d29a"
+    },
+    {
+      "resume_key": "a855f33a888374cbb75b431f8544eabec94c3e9c13d58a266ff1657960bcaf71",
+      "pairs": 16,
+      "major": "Finance",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-10c410d7e9998781",
+      "spearman": 0.6657004120474866,
+      "ndcg_at_10": 0.9142324166227919,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8314606741573034,
+      "_cluster": "family:fictional-10c410d7e9998781"
+    },
+    {
+      "resume_key": "ae965d057cbbbad96c7f31a2facaa84c995cb5ef2708fd82ed075b8de9e3489d",
+      "pairs": 16,
+      "major": "History",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-6875f1119861d29a",
+      "spearman": 0.7784419118270937,
+      "ndcg_at_10": 0.9059228825964701,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8478260869565217,
+      "_cluster": "family:fictional-6875f1119861d29a"
+    },
+    {
+      "resume_key": "b075cbd110705c0a3207ab27155283c2acfcb174c8e0bd435d9358b1ab8687ec",
+      "pairs": 16,
+      "major": "Civil Engineering",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-ef988eb74042a4ce",
+      "spearman": 0.7441003491152979,
+      "ndcg_at_10": 0.9317458133257075,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8850574712643678,
+      "_cluster": "family:fictional-ef988eb74042a4ce"
+    },
+    {
+      "resume_key": "b0a45d2edd63898fad7eb2b59a180e91390f664ee21cc9741addab53b1a13a80",
+      "pairs": 16,
+      "major": "Environmental Science",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-4e8146a9597fccfb",
+      "spearman": 0.7725334343179697,
+      "ndcg_at_10": 0.9585444912451833,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9069767441860465,
+      "_cluster": "family:fictional-4e8146a9597fccfb"
+    },
+    {
+      "resume_key": "b12c0f161b48ed857ab2d4b75f2e8f83ffe43baf5bebe9c1aa586882f11dc28a",
+      "pairs": 16,
+      "major": "Chemical Engineering",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-8569855494e8147b",
+      "spearman": 0.8529436129807009,
+      "ndcg_at_10": 0.9712596227156445,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9390243902439024,
+      "_cluster": "family:fictional-8569855494e8147b"
+    },
+    {
+      "resume_key": "b16a2c2688c90847729a8a109ed163d2dcc5c8560fc8d857e5148b1e7313073c",
+      "pairs": 16,
+      "major": "Supply Chain Management",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-53914f53ca07cf47",
+      "spearman": 0.6726110458236644,
+      "ndcg_at_10": 0.8759048154380737,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8148148148148148,
+      "_cluster": "family:fictional-53914f53ca07cf47"
+    },
+    {
+      "resume_key": "b71ee46a7f7059a4be69a94a3a5d46d8ee4e95c28ae00396ee868bfb005d7983",
+      "pairs": 16,
+      "major": "Physics",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-245054243dc3d434",
+      "spearman": 0.49519808267804727,
+      "ndcg_at_10": 0.8767842188932242,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7976190476190477,
+      "_cluster": "family:fictional-245054243dc3d434"
+    },
+    {
+      "resume_key": "b76589360e08e37e08e47b481dd74f81b9efc51af099b4f6a84bc0f4974f1f04",
+      "pairs": 16,
+      "major": "Public Health",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2840435c5243ea2e",
+      "spearman": 0.9366725916709138,
+      "ndcg_at_10": 0.9563006023903053,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9680851063829787,
+      "_cluster": "family:fictional-2840435c5243ea2e"
+    },
+    {
+      "resume_key": "b97a99102f8b3a96316cffc215600e7fd263f50d7437feeddcd3c3b9b51e35ba",
+      "pairs": 16,
+      "major": "Finance",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-10c410d7e9998781",
+      "spearman": 0.4541499624301979,
+      "ndcg_at_10": 0.8667888040803805,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7228915662650602,
+      "_cluster": "family:fictional-10c410d7e9998781"
+    },
+    {
+      "resume_key": "bc61a52b075c46dec5155d8694186ce7f1e8ea5643ba2f6becc3b0241b9b0c4c",
+      "pairs": 16,
+      "major": "Sociology",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-d7e7c1767500c259",
+      "spearman": 0.8742756605740942,
+      "ndcg_at_10": 0.9866978706497582,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9459459459459459,
+      "_cluster": "family:fictional-d7e7c1767500c259"
+    },
+    {
+      "resume_key": "bf9f84afadfd7dcdc824c7ffe9a369279ca141df7ee1b95a2a4a93ddc0871413",
+      "pairs": 16,
+      "major": "Environmental Science",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-4e8146a9597fccfb",
+      "spearman": 0.8106650795170959,
+      "ndcg_at_10": 0.9334661597075237,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.898876404494382,
+      "_cluster": "family:fictional-4e8146a9597fccfb"
+    },
+    {
+      "resume_key": "bfd7f45966e6131bd1dff3e74474ccb6b961d184db38032f1bf29f12d16973a9",
+      "pairs": 16,
+      "major": "Accounting",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-886d0b05cb581354",
+      "spearman": 0.7681020761861266,
+      "ndcg_at_10": 0.9518167916180663,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8539325842696629,
+      "_cluster": "family:fictional-886d0b05cb581354"
+    },
+    {
+      "resume_key": "c0a03a0508df2e473eebb42f7859c52e9f702014102ff98144f14db4e6946ca5",
+      "pairs": 16,
+      "major": "Sociology",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-d7e7c1767500c259",
+      "spearman": 0.8706694501907705,
+      "ndcg_at_10": 0.9737886141355233,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9021739130434783,
+      "_cluster": "family:fictional-d7e7c1767500c259"
+    },
+    {
+      "resume_key": "c20e41b2244bb6a5e77489b389ae15656e21ae08828582c07d402fbd9d7b62e0",
+      "pairs": 16,
+      "major": "Chemistry",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-379401eaa07b75f4",
+      "spearman": 0.8818402682367646,
+      "ndcg_at_10": 0.9398140499994317,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9247311827956989,
+      "_cluster": "family:fictional-379401eaa07b75f4"
+    },
+    {
+      "resume_key": "c2eb609271a3561d2e2a3ead8ebab43734092449c30cc695f8dd1c033ca68151",
+      "pairs": 16,
+      "major": "Education",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2c1e8819d347e0d4",
+      "spearman": 0.823012430340063,
+      "ndcg_at_10": 0.9580933010080858,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9213483146067416,
+      "_cluster": "family:fictional-2c1e8819d347e0d4"
+    },
+    {
+      "resume_key": "c51e7be9f02622f4b13fdb214b5c190d52f8a57434c2460554642dc439ede0c9",
+      "pairs": 16,
+      "major": "Finance",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-10c410d7e9998781",
+      "spearman": 0.7747693725983863,
+      "ndcg_at_10": 0.9465444814955909,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.851063829787234,
+      "_cluster": "family:fictional-10c410d7e9998781"
+    },
+    {
+      "resume_key": "c5dcd4127cbf51f0b6a2d1b87dcff5b8d2912f69b7495cb684059bf33fee8748",
+      "pairs": 16,
+      "major": "Public Health",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2840435c5243ea2e",
+      "spearman": 0.91876825266879,
+      "ndcg_at_10": 0.9589158555357832,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.90625,
+      "_cluster": "family:fictional-2840435c5243ea2e"
+    },
+    {
+      "resume_key": "c6dccb808ede530588aee6f22f2365cc23100f1b7ad4dd49293c77e9026d5d7f",
+      "pairs": 16,
+      "major": "Psychology",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-36298f4778589d9f",
+      "spearman": 0.57229478630363,
+      "ndcg_at_10": 0.9285385328271728,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8,
+      "_cluster": "family:fictional-36298f4778589d9f"
+    },
+    {
+      "resume_key": "c97ae669bfb4b9e8146944e1f1651cc10c4ecba816f7570baa5ac15bb4fe1710",
+      "pairs": 16,
+      "major": "Graphic Design",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-cdb82a8a08a45eee",
+      "spearman": 0.7234923472094146,
+      "ndcg_at_10": 0.8609079356192976,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8961038961038961,
+      "_cluster": "family:fictional-cdb82a8a08a45eee"
+    },
+    {
+      "resume_key": "c9db69d32aefa75db3e2e70a8e199309d679c474542c7166f926973cdaa6d78f",
+      "pairs": 16,
+      "major": "Psychology",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-36298f4778589d9f",
+      "spearman": 0.6789714122474064,
+      "ndcg_at_10": 0.9567557790737293,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8243243243243243,
+      "_cluster": "family:fictional-36298f4778589d9f"
+    },
+    {
+      "resume_key": "d3098aee1be8122fda66613f79f8cdeac9e86e0ed91bd142e95ccf3cd4e6d3cd",
+      "pairs": 16,
+      "major": "Electrical Engineering",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-af671dc83f5f5db6",
+      "spearman": 0.7149257786040102,
+      "ndcg_at_10": 0.9063431321879868,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8588235294117647,
+      "_cluster": "family:fictional-af671dc83f5f5db6"
+    },
+    {
+      "resume_key": "d4f1a9db09f56e3e35909de6b034e4c030feb23c84ad483df0063b0621c0869f",
+      "pairs": 16,
+      "major": "History",
+      "student_year": "sophomore",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-6875f1119861d29a",
+      "spearman": 0.6899383175333171,
+      "ndcg_at_10": 0.9334177310703359,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8292682926829268,
+      "_cluster": "family:fictional-6875f1119861d29a"
+    },
+    {
+      "resume_key": "d52998797c2fefae360c6ec105c3da033761725d67d6fb1a32f31389dde7965a",
+      "pairs": 16,
+      "major": "Chemical Engineering",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-8569855494e8147b",
+      "spearman": 0.6084208418813609,
+      "ndcg_at_10": 0.9209510002931673,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.7777777777777778,
+      "_cluster": "family:fictional-8569855494e8147b"
+    },
+    {
+      "resume_key": "d65514f788051c85d32dafbb709bd0dd9184d564fe37ef3d3688529dc6c36817",
+      "pairs": 16,
+      "major": "Computer Science",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-45d505dea7865dd0",
+      "spearman": 0.8748168544850987,
+      "ndcg_at_10": 0.9513955079294218,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9130434782608695,
+      "_cluster": "family:fictional-45d505dea7865dd0"
+    },
+    {
+      "resume_key": "d8100dd1dcde3a27d6084cd2c917bd67ce67f64329de242888b126c1e53b60fe",
+      "pairs": 16,
+      "major": "Sociology",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-d7e7c1767500c259",
+      "spearman": 0.9254675553893994,
+      "ndcg_at_10": 0.9957861164419114,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9885057471264368,
+      "_cluster": "family:fictional-d7e7c1767500c259"
+    },
+    {
+      "resume_key": "ddbe02217618268e88018823cc1ff0f07e43e3f51afcf68495915603cf2f907b",
+      "pairs": 16,
+      "major": "Finance",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-10c410d7e9998781",
+      "spearman": 0.6720893166628608,
+      "ndcg_at_10": 0.9362946397806546,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.8522727272727273,
+      "_cluster": "family:fictional-10c410d7e9998781"
+    },
+    {
+      "resume_key": "de3aa1a49e8b56096f378fe2bbbf07ef7bd54b79bafdab373c46bb68f3ee18f3",
+      "pairs": 16,
+      "major": "Sociology",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-d7e7c1767500c259",
+      "spearman": 0.8153698962591189,
+      "ndcg_at_10": 0.9515418220883125,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9012345679012346,
+      "_cluster": "family:fictional-d7e7c1767500c259"
+    },
+    {
+      "resume_key": "e58c87c6e7701bd1b93c145765e026d01584be7285d85021b265e98e97f8ea54",
+      "pairs": 16,
+      "major": "History",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-6875f1119861d29a",
+      "spearman": 0.9292075826420065,
+      "ndcg_at_10": 0.9829928271041771,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9666666666666667,
+      "_cluster": "family:fictional-6875f1119861d29a"
+    },
+    {
+      "resume_key": "e7416dbd4ae70bff6091bddf9e95b23c521c7d00d05f3d2f814bbc61c16b0306",
+      "pairs": 16,
+      "major": "Accounting",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-886d0b05cb581354",
+      "spearman": 0.9326631824538646,
+      "ndcg_at_10": 0.988164377972427,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9578947368421052,
+      "_cluster": "family:fictional-886d0b05cb581354"
+    },
+    {
+      "resume_key": "e86e573f53f7201974b81cc5acae23ae9b4cf7baa3dbdab9bd40e42151578d6b",
+      "pairs": 16,
+      "major": "Accounting",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-886d0b05cb581354",
+      "spearman": 0.9594717625240813,
+      "ndcg_at_10": 0.9870885092915852,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.96,
+      "_cluster": "family:fictional-886d0b05cb581354"
+    },
+    {
+      "resume_key": "e9c8ecf02527d87395b04aeb230293d6d92b06487bb13538c922f40cdb243659",
+      "pairs": 16,
+      "major": "Nursing",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-861af85e3355435c",
+      "spearman": 0.7075401817176051,
+      "ndcg_at_10": 0.9336264408383161,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9113924050632911,
+      "_cluster": "family:fictional-861af85e3355435c"
+    },
+    {
+      "resume_key": "eb8ad90c3f847876dee7408046f71f81940d3fa58db939a94ba63f2503449629",
+      "pairs": 16,
+      "major": "Education",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-2c1e8819d347e0d4",
+      "spearman": 0.8489335410351319,
+      "ndcg_at_10": 0.9651876477464907,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9186046511627907,
+      "_cluster": "family:fictional-2c1e8819d347e0d4"
+    },
+    {
+      "resume_key": "ef53370c06fead4f3387d9e58fe0093adeb543ea24accc9f4c92e541887f1035",
+      "pairs": 16,
+      "major": "Psychology",
+      "student_year": "junior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-36298f4778589d9f",
+      "spearman": 0.8021022782131185,
+      "ndcg_at_10": 0.9263020306199456,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8974358974358975,
+      "_cluster": "family:fictional-36298f4778589d9f"
+    },
+    {
+      "resume_key": "f03efb73bf56b9f1f24d0d50c241feb4ad511172b834830461506097dd90fae9",
+      "pairs": 16,
+      "major": "Sociology",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-d7e7c1767500c259",
+      "spearman": 0.9105812925594475,
+      "ndcg_at_10": 0.9682157550931277,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9473684210526315,
+      "_cluster": "family:fictional-d7e7c1767500c259"
+    },
+    {
+      "resume_key": "f440c85fac7923e0c05363d81ac7bd93e9d8113f3a893751725ef2049eb92e57",
+      "pairs": 16,
+      "major": "English",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-80ea67e28d55f589",
+      "spearman": 0.9255733746008034,
+      "ndcg_at_10": 0.9731208930875606,
+      "top1_best_rate": 0.0,
+      "pairwise_accuracy": 0.9387755102040817,
+      "_cluster": "family:fictional-80ea67e28d55f589"
+    },
+    {
+      "resume_key": "f634134713cc8e5ec0ea6288fac2d90801e6735aaa969febc11879a86cd8c843",
+      "pairs": 16,
+      "major": "Biology",
+      "student_year": "first_year",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-f2fd0c7efcb64e16",
+      "spearman": 0.8636719705669916,
+      "ndcg_at_10": 0.9738411626828053,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9404761904761905,
+      "_cluster": "family:fictional-f2fd0c7efcb64e16"
+    },
+    {
+      "resume_key": "f6e50af7db24b580b277d35c0bf760d85a47c893bface827a8a1e96a50a86816",
+      "pairs": 16,
+      "major": "Mathematics",
+      "student_year": "masters",
+      "career_stage": "graduate",
+      "degree_level": "masters",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-c16e4f3813c1e5eb",
+      "spearman": 0.8227554931455241,
+      "ndcg_at_10": 0.9728308260166023,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.9425287356321839,
+      "_cluster": "family:fictional-c16e4f3813c1e5eb"
+    },
+    {
+      "resume_key": "fc4858379c1a98148b9d9c0ea25f5ffcaadfe7df75b73230cc07c02d71e4d29d",
+      "pairs": 16,
+      "major": "Civil Engineering",
+      "student_year": "senior",
+      "career_stage": "undergraduate",
+      "degree_level": "bachelors",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-ef988eb74042a4ce",
+      "spearman": 0.7332999437713729,
+      "ndcg_at_10": 0.9476872158880008,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8970588235294118,
+      "_cluster": "family:fictional-ef988eb74042a4ce"
+    },
+    {
+      "resume_key": "ffd36187cd63e44968a22ab77feb329f6572cc20d0c067c1931ce377e860c752",
+      "pairs": 16,
+      "major": "Mathematics",
+      "student_year": "career_changer",
+      "career_stage": "career_changer",
+      "degree_level": "postbaccalaureate",
+      "source": "independently_authored_fictional",
+      "family_id": "fictional-c16e4f3813c1e5eb",
+      "spearman": 0.7276802309521117,
+      "ndcg_at_10": 0.9652329906877273,
+      "top1_best_rate": 1.0,
+      "pairwise_accuracy": 0.8602150537634409,
+      "_cluster": "family:fictional-c16e4f3813c1e5eb"
+    }
+  ],
+  "slices": {
+    "major": [
+      {
+        "value": "Accounting",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8811271157353117,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9705026891468496,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.8333333333333334,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.9205913892674203,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Biology",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7339782447353197,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9413543156365135,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8807239543032703,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Chemical Engineering",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.6093658198927377,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9147185504647858,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.7770177776179806,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Chemistry",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7331159407113897,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9269227426783813,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.16666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.870549593158047,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Civil Engineering",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8030201266256641,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9476749739981382,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8954777812055444,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Computer Science",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8010432537357052,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9425194748557867,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.6666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8957052368950674,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Education",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8539657879455529,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9701718191852443,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 1.0,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.935692288989303,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Electrical Engineering",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8250670688335031,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9512082735208737,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.9060576107983729,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "English",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8661857729993487,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9653968252760503,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.937659779358898,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Environmental Science",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7533557981934633,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9406842978981582,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8635098654394122,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Finance",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.688999090788159,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9258768864150246,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.844799215404604,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Graphic Design",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.752911802669267,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.8545244320932097,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.0,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8768403018260932,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "History",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8240467503613883,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.954794050486318,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.6666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8975148265975413,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Marketing",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8544485789953685,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9618161743030819,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 1.0,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.906407074658348,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Mathematics",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7013068821885432,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9460231278657248,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 1.0,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8351476856065289,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Mechanical Engineering",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.5332381207154195,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.8972621044817437,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.7746509737758621,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Music",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8475841562165268,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9526448912843088,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.6666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.9312328895436218,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Nursing",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7147847851114356,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9171615306695166,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.0,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8486244566971998,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Physics",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.559758316839943,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9092655849669667,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.7935482985721102,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Political Science",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8901420569258932,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9791559929583168,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.9406580273357587,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Psychology",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7357040933205446,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.945378480906983,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.6666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8569301989378717,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Public Health",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8936435558812036,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9623310850262657,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.9357419633054977,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Sociology",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.8811519982951347,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9732428288695254,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.941585718225907,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Supply Chain Management",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.6987933660297171,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.9285237705397336,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8646202239596176,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      }
+    ],
+    "student_year": [
+      {
+        "value": "career_changer",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7524992517278992,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.6905624167725436,
+              0.8117871509036639
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9316767148181239,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.9137420894050109,
+              0.9495214532399969
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.4166666666666667,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.20833333333333334,
+              0.625
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8652503077936201,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.8351925404256402,
+              0.8943824498324623
+            ]
+          }
+        }
+      },
+      {
+        "value": "first_year",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7858693180436047,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.7383386937479189,
+              0.8255845593912401
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9401930408999789,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.9254039780788013,
+              0.9537361510945422
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.5416666666666666,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.3333333333333333,
+              0.75
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8786849554437112,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.850046141637622,
+              0.9027008589288263
+            ]
+          }
+        }
+      },
+      {
+        "value": "junior",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7630265720484194,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.7059468823246415,
+              0.8165187921404271
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9481134546948446,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.9344916353797674,
+              0.9603855407824351
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.2916666666666667,
+              0.7083333333333334
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8882237531810664,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.8594744501510314,
+              0.9148185589989661
+            ]
+          }
+        }
+      },
+      {
+        "value": "masters",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7864098454830292,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.7170250482288939,
+              0.8433486647417981
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9417411466784514,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.925012802067197,
+              0.9567419981834053
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.16666666666666666,
+              0.5416666666666666
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8922183876027937,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.8602464381279533,
+              0.9198014585633375
+            ]
+          }
+        }
+      },
+      {
+        "value": "senior",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7382434870336584,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.6902146583682368,
+              0.784557546462888
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9389711407602723,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.9232546053179209,
+              0.9528616103668555
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.5833333333333334,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.375,
+              0.7916666666666666
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8690270470622362,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.8443140855102066,
+              0.8925042156481955
+            ]
+          }
+        }
+      },
+      {
+        "value": "sophomore",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7831361466000244,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.7401700795146318,
+              0.8231339626625864
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9440932280302041,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.9288700245188748,
+              0.9572325718575283
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.625,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.4166666666666667,
+              0.7916666666666666
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8894173317865416,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.8630267733972081,
+              0.9138395187470723
+            ]
+          }
+        }
+      }
+    ],
+    "career_stage": [
+      {
+        "value": "career_changer",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7524992517278992,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.6905624167725436,
+              0.8117871509036639
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9316767148181239,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.9137420894050109,
+              0.9495214532399969
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.4166666666666667,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.20833333333333334,
+              0.625
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8652503077936201,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.8351925404256402,
+              0.8943824498324623
+            ]
+          }
+        }
+      },
+      {
+        "value": "graduate",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7864098454830292,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.7170250482288939,
+              0.8433486647417981
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9417411466784514,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.925012802067197,
+              0.9567419981834053
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.16666666666666666,
+              0.5416666666666666
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8922183876027937,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.8602464381279533,
+              0.9198014585633375
+            ]
+          }
+        }
+      },
+      {
+        "value": "undergraduate",
+        "rankable_resumes": 96,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7675688809314268,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.7294793316812016,
+              0.8035024565363833
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9428427160963251,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.931265098641771,
+              0.9523995869600059
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.5625,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.4479166666666667,
+              0.6875
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.881338271868389,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.861838963472339,
+              0.8997453085507588
+            ]
+          }
+        }
+      }
+    ],
+    "degree_level": [
+      {
+        "value": "bachelors",
+        "rankable_resumes": 96,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7675688809314268,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.7294793316812016,
+              0.8035024565363833
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9428427160963251,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.931265098641771,
+              0.9523995869600059
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.5625,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.4479166666666667,
+              0.6875
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.881338271868389,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.861838963472339,
+              0.8997453085507588
+            ]
+          }
+        }
+      },
+      {
+        "value": "masters",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7864098454830292,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.7170250482288939,
+              0.8433486647417981
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9417411466784514,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.925012802067197,
+              0.9567419981834053
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.16666666666666666,
+              0.5416666666666666
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8922183876027937,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.8602464381279533,
+              0.9198014585633375
+            ]
+          }
+        }
+      },
+      {
+        "value": "postbaccalaureate",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7524992517278992,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.6905624167725436,
+              0.8117871509036639
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9316767148181239,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.9137420894050109,
+              0.9495214532399969
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.4166666666666667,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.20833333333333334,
+              0.625
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.8652503077936201,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.8351925404256402,
+              0.8943824498324623
+            ]
+          }
+        }
+      }
+    ],
+    "source": [
+      {
+        "value": "independently_authored_fictional",
+        "rankable_resumes": 144,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.7681974368227726,
+            "resumes": 144,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.7268402756620466,
+              0.8068103802266879
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.9407981209803125,
+            "resumes": 144,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.928971080017816,
+              0.9510397332722648
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 144,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.3958333333333333,
+              0.6111111111111112
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.880470297144995,
+            "resumes": 144,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.8602911807704845,
+              0.899287677797415
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "baseline_macro_resume_metrics": {
+    "spearman": {
+      "mean": 0.4220740749218128,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.3337686921274809,
+        0.5090892955020946
+      ]
+    },
+    "ndcg_at_10": {
+      "mean": 0.8643722379885573,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.8435141036759326,
+        0.8847533044178879
+      ]
+    },
+    "top1_best_rate": {
+      "mean": 0.3611111111111111,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.25,
+        0.4791666666666667
+      ]
+    },
+    "pairwise_accuracy": {
+      "mean": 0.696202494000867,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.6537020689868007,
+        0.7375107139688202
+      ]
+    }
+  },
+  "paired_improvement": {
+    "spearman": {
+      "mean": 0.3461233619009596,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.2831737466955891,
+        0.41357364792977513
+      ]
+    },
+    "ndcg_at_10": {
+      "mean": 0.0764258829917553,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.05918306720543727,
+        0.0946898528361286
+      ]
+    },
+    "top1_best_rate": {
+      "mean": 0.1388888888888889,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.006944444444444444,
+        0.2708333333333333
+      ]
+    },
+    "pairwise_accuracy": {
+      "mean": 0.18426780314412797,
+      "resumes": 144,
+      "bootstrap_clusters": 24,
+      "ci95": [
+        0.15409430413605266,
+        0.2160661799130455
+      ]
+    }
+  },
+  "paired_slice_improvement": {
+    "major": [
+      {
+        "value": "Accounting",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.24262668635033915,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.04661190668490772,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": -0.16666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.12747253861734617,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Biology",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.4031204906378338,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.08706101144398291,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.22208435398578139,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Chemical Engineering",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.36586897397028634,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.0744324501724342,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.16666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.17905025686281595,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Chemistry",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.22864176947122794,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.030745396851619162,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": -0.16666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.1321326368601118,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Civil Engineering",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.45317752492598945,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.11072674295394014,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.16666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.22548754589843387,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Computer Science",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.4389654184231882,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.08492616691199249,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.6666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.24149332197125548,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Education",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.2869136734769728,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.06608338239367895,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.14946546829182009,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Electrical Engineering",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.689038895741878,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.15060816636533753,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.0,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.34730017715413836,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "English",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.17601815851957472,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.027820275825445162,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.0,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.12138178807065876,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Environmental Science",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.636044648548915,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.1657480705651604,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.3209531479333217,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Finance",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.37273093499008736,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.08763267000162163,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.0,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.19089791508116702,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Graphic Design",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.2437094655872221,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": -0.02081160249201434,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": -0.6666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.12895850820687424,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "History",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.18610753845122527,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.035825303962376175,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": -0.16666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.09047212263012898,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Marketing",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.2781336114232372,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.09061142664299791,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.6666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.1405463005208336,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Mathematics",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.21466861421812242,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.050167766569133375,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.16666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.09956011730205273,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Mechanical Engineering",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.5045987142188942,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.10250279154657489,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.16666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.2545362065542018,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Music",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.31067376289445464,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.06967672883215086,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.0,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.20332565056046006,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Nursing",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.5550008731402452,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.12111350428647655,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": -0.16666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.27467130328973277,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Physics",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.25205393390966657,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.10078400954529466,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.16011848902094958,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Political Science",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.12043378862028103,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.04722757895346785,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.0,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.0751749549011047,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Psychology",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.6539469231959604,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.16845040123913532,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.6666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.3359637672297519,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Public Health",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.17747797397309986,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.033706965918945765,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": -0.16666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.1268302059008324,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Sociology",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.13873021049011394,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.04260168838186449,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": 0.5,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.08649213677686285,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      },
+      {
+        "value": "Supply Chain Management",
+        "rankable_resumes": 6,
+        "independent_clusters": 1,
+        "insufficient_sample": true,
+        "metrics": {
+          "spearman": {
+            "mean": 0.3782781004442158,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "ndcg_at_10": {
+            "mean": 0.059968388245603445,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "top1_best_rate": {
+            "mean": -0.16666666666666666,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          },
+          "pairwise_accuracy": {
+            "mean": 0.18805836183843502,
+            "resumes": 6,
+            "bootstrap_clusters": 1,
+            "ci95": null
+          }
+        }
+      }
+    ],
+    "student_year": [
+      {
+        "value": "career_changer",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.2855733786235192,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.21320043478773334,
+              0.3683769702284283
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.06456047741772862,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.04646586032358076,
+              0.08322635054777919
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.0,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              -0.125,
+              0.125
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.1524502837274894,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.11676592050244838,
+              0.19298216632777357
+            ]
+          }
+        }
+      },
+      {
+        "value": "first_year",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.3890050391391436,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.3280817817150189,
+              0.45180057946933067
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.10677564759424331,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.08630422831687067,
+              0.1282396776599701
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.3333333333333333,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.08333333333333333,
+              0.5833333333333334
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.18802045660341082,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.1571225635807291,
+              0.22069829083438536
+            ]
+          }
+        }
+      },
+      {
+        "value": "junior",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.2765300190661478,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.19650187285890927,
+              0.3588982689770405
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.05539836358246952,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.029208443811208868,
+              0.0827180182671196
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.16666666666666666,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              -0.041666666666666664,
+              0.375
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.1494785142942118,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.10942497326360605,
+              0.18976087486474522
+            ]
+          }
+        }
+      },
+      {
+        "value": "masters",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.3770805319029739,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.2954802119094027,
+              0.46146317827874056
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.08064952911223325,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.05742016023794264,
+              0.10433703710831548
+            ]
+          },
+          "top1_best_rate": {
+            "mean": -0.041666666666666664,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              -0.25,
+              0.16666666666666666
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.2063585045120753,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.1685154161524003,
+              0.24540453710187152
+            ]
+          }
+        }
+      },
+      {
+        "value": "senior",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.43195013261811094,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.31544145165689236,
+              0.5583926464839575
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.08263822727360544,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.05742847582797632,
+              0.10970016299774557
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.125,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              -0.125,
+              0.375
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.21902810085693133,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.16121956397703052,
+              0.28072792833244953
+            ]
+          }
+        }
+      },
+      {
+        "value": "sophomore",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.31660107005586235,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.23637891824650686,
+              0.4086221542744306
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.06853305297025167,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.044302263364492146,
+              0.09524203560719499
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.25,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.041666666666666664,
+              0.4583333333333333
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.19027095887064913,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.14762915261554374,
+              0.23687000802507965
+            ]
+          }
+        }
+      }
+    ],
+    "career_stage": [
+      {
+        "value": "career_changer",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.2855733786235192,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.21320043478773334,
+              0.3683769702284283
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.06456047741772862,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.04646586032358076,
+              0.08322635054777919
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.0,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              -0.125,
+              0.125
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.1524502837274894,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.11676592050244838,
+              0.19298216632777357
+            ]
+          }
+        }
+      },
+      {
+        "value": "graduate",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.3770805319029739,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.2954802119094027,
+              0.46146317827874056
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.08064952911223325,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.05742016023794264,
+              0.10433703710831548
+            ]
+          },
+          "top1_best_rate": {
+            "mean": -0.041666666666666664,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              -0.25,
+              0.16666666666666666
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.2063585045120753,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.1685154161524003,
+              0.24540453710187152
+            ]
+          }
+        }
+      },
+      {
+        "value": "undergraduate",
+        "rankable_resumes": 96,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.3535215652198162,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.2839080240233077,
+              0.43116561523188546
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.07833632285514248,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.05968169428150617,
+              0.09899138999693513
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.21875,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.052083333333333336,
+              0.3854166666666667
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.1866995076563008,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.1522882304096409,
+              0.22432030519745516
+            ]
+          }
+        }
+      }
+    ],
+    "degree_level": [
+      {
+        "value": "bachelors",
+        "rankable_resumes": 96,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.3535215652198162,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.2839080240233077,
+              0.43116561523188546
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.07833632285514248,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.05968169428150617,
+              0.09899138999693513
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.21875,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.052083333333333336,
+              0.3854166666666667
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.1866995076563008,
+            "resumes": 96,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.1522882304096409,
+              0.22432030519745516
+            ]
+          }
+        }
+      },
+      {
+        "value": "masters",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.3770805319029739,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.2954802119094027,
+              0.46146317827874056
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.08064952911223325,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.05742016023794264,
+              0.10433703710831548
+            ]
+          },
+          "top1_best_rate": {
+            "mean": -0.041666666666666664,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              -0.25,
+              0.16666666666666666
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.2063585045120753,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.1685154161524003,
+              0.24540453710187152
+            ]
+          }
+        }
+      },
+      {
+        "value": "postbaccalaureate",
+        "rankable_resumes": 24,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.2855733786235192,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.21320043478773334,
+              0.3683769702284283
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.06456047741772862,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.04646586032358076,
+              0.08322635054777919
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.0,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              -0.125,
+              0.125
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.1524502837274894,
+            "resumes": 24,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.11676592050244838,
+              0.19298216632777357
+            ]
+          }
+        }
+      }
+    ],
+    "source": [
+      {
+        "value": "independently_authored_fictional",
+        "rankable_resumes": 144,
+        "independent_clusters": 24,
+        "insufficient_sample": false,
+        "metrics": {
+          "spearman": {
+            "mean": 0.3461233619009596,
+            "resumes": 144,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.2831737466955891,
+              0.41357364792977513
+            ]
+          },
+          "ndcg_at_10": {
+            "mean": 0.0764258829917553,
+            "resumes": 144,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.05918306720543727,
+              0.0946898528361286
+            ]
+          },
+          "top1_best_rate": {
+            "mean": 0.1388888888888889,
+            "resumes": 144,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.006944444444444444,
+              0.2708333333333333
+            ]
+          },
+          "pairwise_accuracy": {
+            "mean": 0.18426780314412797,
+            "resumes": 144,
+            "bootstrap_clusters": 24,
+            "ci95": [
+              0.15409430413605266,
+              0.2160661799130455
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "input": "models\\major_agnostic\\predictions\\selected_js_test\\diverse_test_mean_vector.csv",
+  "baseline": "models\\major_agnostic\\predictions\\baseline_js_test\\diverse_test_mean_vector.csv",
+  "leakage": [
+    {
+      "training_file": "data\\diverse_train.csv",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "training_file": "data\\openai_train.csv",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "training_file": "data\\hf_train.csv",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "training_file": "data\\neuralframe_train.csv",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    }
+  ],
+  "leakage_policy_failed": false
+}

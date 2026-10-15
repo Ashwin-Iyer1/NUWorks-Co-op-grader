@@ -1,0 +1,13 @@
+{
+  "name": "nuworks-resume-model-evaluation",
+  "private": true,
+  "type": "module",
+  "description": "Pinned Transformers.js runtime for resume model verification",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test:runtime": "node --test test_evaluate_transformersjs.mjs"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "4.2.0"
+  }
+}

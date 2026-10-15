@@ -1,0 +1,646 @@
+{
+  "version": "independent-major-year-stress-v1",
+  "kind": "counterfactual_invariance_stress_test_not_accuracy",
+  "suite_sha256": "e7c49975098f45013891b66fa6f46523bee57369f76204823ec34810913b797b",
+  "independent_scenarios": 4,
+  "documents": 24,
+  "candidate_selection_frozen": true,
+  "inference": {
+    "pooling": "attention_mask_mean",
+    "aggregation": "normalized_mean_of_chunk_vectors",
+    "max_seq_length": 256,
+    "query_prompt": "",
+    "job_char_cap": 1200,
+    "resume_chunk_chars": 1100
+  },
+  "limitations": [
+    "Four authored scenarios are a small stress suite, not representative applicants or accuracy labels.",
+    "Variants within a scenario are correlated; no independent-sample confidence intervals are claimed.",
+    "Lower sensitivity is desirable only when skill evidence and job eligibility truly remain fixed.",
+    "No claim about protected traits, actual people, or population fairness follows from these cases.",
+    "Display grades, if present, use each model's supplied calibration; raw cosine is the common comparison."
+  ],
+  "models": {
+    "baseline": {
+      "model_path": "C:\\Users\\Ashwin Iyer\\Documents\\Github\\NUWorks-Co-op-grader\\models\\production_baseline",
+      "maximum_untruncated_input_tokens": 116,
+      "model_file_sha256": {
+        "1_Pooling/config.json": "2fd836f1c934037a0d8cedac00f37b1277e3c3f80bb45ef8a15699e001734ebf",
+        "calibration.json": "b0451c8896012305ba7e306f6e8cba3e2e4b16d1eb658990adb35a07db664f88",
+        "config.json": "657111fd79935d8950ef174e9c11a9da4823ccbd40de3d7d935eaa3967b96672",
+        "config_sentence_transformers.json": "0bea2e31829088de37b65c4435d8a6d4ba0735aad581b7a592ff7da308a045e0",
+        "model.safetensors": "fcc33fdac148256cce8479a21270daf800bdeb38862454dcd6d28453c70d7444",
+        "modules.json": "318d49f1092cad125a35af58d9795bcddce84bf7e7240bd8d95b9b6858f9476b",
+        "sentence_bert_config.json": "5fee3fcdc4a727fad422f0fed0c867b0921eefa9051de221521956ed42eb4c19",
+        "special_tokens_map.json": "5aa43c2f985a25296d5a5ce621c2f77376ca8091a47993c492fd5460b895b140",
+        "tokenizer.json": "3fc3f18ce1603449ed5c2e95d62dc54ce8652af6b6b61e27ff410bff02fbfd5e",
+        "tokenizer_config.json": "2afaa49be1b7252a6c791df115b531551dd73f71a0e55f0f98bce8f970a892fd",
+        "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+      },
+      "calibration_path": "C:\\Users\\Ashwin Iyer\\Documents\\Github\\NUWorks-Co-op-grader\\models\\production_baseline\\calibration.json",
+      "calibration_sha256": "b0451c8896012305ba7e306f6e8cba3e2e4b16d1eb658990adb35a07db664f88",
+      "calibration": {
+        "schema_version": 1,
+        "model_release": "expanded-openai-bge-replay-2026-08-27",
+        "method": "quantile_piecewise_linear",
+        "cosine_knots": [
+          0.3639161587,
+          0.4276538295,
+          0.4782150984,
+          0.5056520581,
+          0.5533524156,
+          0.596550107,
+          0.6492618918,
+          0.6960515141,
+          0.7169344574,
+          0.7617661941,
+          0.8005968928
+        ],
+        "score_knots": [
+          0.02,
+          0.03,
+          0.05,
+          0.08,
+          0.12,
+          0.3,
+          0.43,
+          0.62,
+          0.68,
+          0.82,
+          0.88
+        ]
+      },
+      "summary": {
+        "all": {
+          "comparisons": 20,
+          "independent_scenarios": 4,
+          "mean_absolute_cosine_change": 0.009967362880706787,
+          "maximum_absolute_cosine_change": 0.058147966861724854,
+          "mean_absolute_display_grade_change": 3.25,
+          "maximum_absolute_display_grade_change": 20
+        },
+        "major": {
+          "comparisons": 8,
+          "independent_scenarios": 4,
+          "mean_absolute_cosine_change": 0.014701850712299347,
+          "maximum_absolute_cosine_change": 0.058147966861724854,
+          "mean_absolute_display_grade_change": 5,
+          "maximum_absolute_display_grade_change": 20
+        },
+        "year": {
+          "comparisons": 8,
+          "independent_scenarios": 4,
+          "mean_absolute_cosine_change": 0.006631046533584595,
+          "maximum_absolute_cosine_change": 0.014379262924194336,
+          "mean_absolute_display_grade_change": 1.875,
+          "maximum_absolute_display_grade_change": 5
+        },
+        "major_and_year": {
+          "comparisons": 4,
+          "independent_scenarios": 4,
+          "mean_absolute_cosine_change": 0.007171019911766052,
+          "maximum_absolute_cosine_change": 0.010950863361358643,
+          "mean_absolute_display_grade_change": 2.5,
+          "maximum_absolute_display_grade_change": 3
+        }
+      },
+      "comparisons": [
+        {
+          "case_id": "web_quality",
+          "field": "Software quality assurance",
+          "variant": "major_other_1",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.7146186828613281,
+          "variant_cosine": 0.715052604675293,
+          "cosine_change": 0.00043392181396484375,
+          "absolute_cosine_change": 0.00043392181396484375,
+          "baseline_display_grade": 67,
+          "variant_display_grade": 67,
+          "display_grade_change": 0,
+          "absolute_display_grade_change": 0
+        },
+        {
+          "case_id": "web_quality",
+          "field": "Software quality assurance",
+          "variant": "major_other_2",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.7146186828613281,
+          "variant_cosine": 0.7169774770736694,
+          "cosine_change": 0.0023587942123413086,
+          "absolute_cosine_change": 0.0023587942123413086,
+          "baseline_display_grade": 67,
+          "variant_display_grade": 68,
+          "display_grade_change": 1,
+          "absolute_display_grade_change": 1
+        },
+        {
+          "case_id": "web_quality",
+          "field": "Software quality assurance",
+          "variant": "year_first",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.7146186828613281,
+          "variant_cosine": 0.717844545841217,
+          "cosine_change": 0.003225862979888916,
+          "absolute_cosine_change": 0.003225862979888916,
+          "baseline_display_grade": 67,
+          "variant_display_grade": 68,
+          "display_grade_change": 1,
+          "absolute_display_grade_change": 1
+        },
+        {
+          "case_id": "web_quality",
+          "field": "Software quality assurance",
+          "variant": "year_fourth",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.7146186828613281,
+          "variant_cosine": 0.7054567337036133,
+          "cosine_change": -0.009161949157714844,
+          "absolute_cosine_change": 0.009161949157714844,
+          "baseline_display_grade": 67,
+          "variant_display_grade": 65,
+          "display_grade_change": -2,
+          "absolute_display_grade_change": 2
+        },
+        {
+          "case_id": "web_quality",
+          "field": "Software quality assurance",
+          "variant": "major_and_year",
+          "changed_attributes": "major_and_year",
+          "baseline_cosine": 0.7146186828613281,
+          "variant_cosine": 0.721842885017395,
+          "cosine_change": 0.0072242021560668945,
+          "absolute_cosine_change": 0.0072242021560668945,
+          "baseline_display_grade": 67,
+          "variant_display_grade": 70,
+          "display_grade_change": 3,
+          "absolute_display_grade_change": 3
+        },
+        {
+          "case_id": "public_exhibits",
+          "field": "Arts and public communication",
+          "variant": "major_other_1",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.7117669582366943,
+          "variant_cosine": 0.7004361748695374,
+          "cosine_change": -0.011330783367156982,
+          "absolute_cosine_change": 0.011330783367156982,
+          "baseline_display_grade": 67,
+          "variant_display_grade": 63,
+          "display_grade_change": -4,
+          "absolute_display_grade_change": 4
+        },
+        {
+          "case_id": "public_exhibits",
+          "field": "Arts and public communication",
+          "variant": "major_other_2",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.7117669582366943,
+          "variant_cosine": 0.6935727596282959,
+          "cosine_change": -0.018194198608398438,
+          "absolute_cosine_change": 0.018194198608398438,
+          "baseline_display_grade": 67,
+          "variant_display_grade": 61,
+          "display_grade_change": -6,
+          "absolute_display_grade_change": 6
+        },
+        {
+          "case_id": "public_exhibits",
+          "field": "Arts and public communication",
+          "variant": "year_first",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.7117669582366943,
+          "variant_cosine": 0.7173092365264893,
+          "cosine_change": 0.005542278289794922,
+          "absolute_cosine_change": 0.005542278289794922,
+          "baseline_display_grade": 67,
+          "variant_display_grade": 68,
+          "display_grade_change": 1,
+          "absolute_display_grade_change": 1
+        },
+        {
+          "case_id": "public_exhibits",
+          "field": "Arts and public communication",
+          "variant": "year_fourth",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.7117669582366943,
+          "variant_cosine": 0.7162806391716003,
+          "cosine_change": 0.004513680934906006,
+          "absolute_cosine_change": 0.004513680934906006,
+          "baseline_display_grade": 67,
+          "variant_display_grade": 68,
+          "display_grade_change": 1,
+          "absolute_display_grade_change": 1
+        },
+        {
+          "case_id": "public_exhibits",
+          "field": "Arts and public communication",
+          "variant": "major_and_year",
+          "changed_attributes": "major_and_year",
+          "baseline_cosine": 0.7117669582366943,
+          "variant_cosine": 0.7069648504257202,
+          "cosine_change": -0.004802107810974121,
+          "absolute_cosine_change": 0.004802107810974121,
+          "baseline_display_grade": 67,
+          "variant_display_grade": 65,
+          "display_grade_change": -2,
+          "absolute_display_grade_change": 2
+        },
+        {
+          "case_id": "assay_records",
+          "field": "Laboratory data operations",
+          "variant": "major_other_1",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.6956436038017273,
+          "variant_cosine": 0.6956056952476501,
+          "cosine_change": -3.790855407714844e-05,
+          "absolute_cosine_change": 3.790855407714844e-05,
+          "baseline_display_grade": 62,
+          "variant_display_grade": 62,
+          "display_grade_change": 0,
+          "absolute_display_grade_change": 0
+        },
+        {
+          "case_id": "assay_records",
+          "field": "Laboratory data operations",
+          "variant": "major_other_2",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.6956436038017273,
+          "variant_cosine": 0.6913994550704956,
+          "cosine_change": -0.0042441487312316895,
+          "absolute_cosine_change": 0.0042441487312316895,
+          "baseline_display_grade": 62,
+          "variant_display_grade": 60,
+          "display_grade_change": -2,
+          "absolute_display_grade_change": 2
+        },
+        {
+          "case_id": "assay_records",
+          "field": "Laboratory data operations",
+          "variant": "year_first",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.6956436038017273,
+          "variant_cosine": 0.7059310674667358,
+          "cosine_change": 0.010287463665008545,
+          "absolute_cosine_change": 0.010287463665008545,
+          "baseline_display_grade": 62,
+          "variant_display_grade": 65,
+          "display_grade_change": 3,
+          "absolute_display_grade_change": 3
+        },
+        {
+          "case_id": "assay_records",
+          "field": "Laboratory data operations",
+          "variant": "year_fourth",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.6956436038017273,
+          "variant_cosine": 0.7004802823066711,
+          "cosine_change": 0.004836678504943848,
+          "absolute_cosine_change": 0.004836678504943848,
+          "baseline_display_grade": 62,
+          "variant_display_grade": 63,
+          "display_grade_change": 1,
+          "absolute_display_grade_change": 1
+        },
+        {
+          "case_id": "assay_records",
+          "field": "Laboratory data operations",
+          "variant": "major_and_year",
+          "changed_attributes": "major_and_year",
+          "baseline_cosine": 0.6956436038017273,
+          "variant_cosine": 0.7065944671630859,
+          "cosine_change": 0.010950863361358643,
+          "absolute_cosine_change": 0.010950863361358643,
+          "baseline_display_grade": 62,
+          "variant_display_grade": 65,
+          "display_grade_change": 3,
+          "absolute_display_grade_change": 3
+        },
+        {
+          "case_id": "supplier_records",
+          "field": "Finance operations",
+          "variant": "major_other_1",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.730352520942688,
+          "variant_cosine": 0.7074854373931885,
+          "cosine_change": -0.02286708354949951,
+          "absolute_cosine_change": 0.02286708354949951,
+          "baseline_display_grade": 72,
+          "variant_display_grade": 65,
+          "display_grade_change": -7,
+          "absolute_display_grade_change": 7
+        },
+        {
+          "case_id": "supplier_records",
+          "field": "Finance operations",
+          "variant": "major_other_2",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.730352520942688,
+          "variant_cosine": 0.6722045540809631,
+          "cosine_change": -0.058147966861724854,
+          "absolute_cosine_change": 0.058147966861724854,
+          "baseline_display_grade": 72,
+          "variant_display_grade": 52,
+          "display_grade_change": -20,
+          "absolute_display_grade_change": 20
+        },
+        {
+          "case_id": "supplier_records",
+          "field": "Finance operations",
+          "variant": "year_first",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.730352520942688,
+          "variant_cosine": 0.7447317838668823,
+          "cosine_change": 0.014379262924194336,
+          "absolute_cosine_change": 0.014379262924194336,
+          "baseline_display_grade": 72,
+          "variant_display_grade": 77,
+          "display_grade_change": 5,
+          "absolute_display_grade_change": 5
+        },
+        {
+          "case_id": "supplier_records",
+          "field": "Finance operations",
+          "variant": "year_fourth",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.730352520942688,
+          "variant_cosine": 0.7314537167549133,
+          "cosine_change": 0.0011011958122253418,
+          "absolute_cosine_change": 0.0011011958122253418,
+          "baseline_display_grade": 72,
+          "variant_display_grade": 73,
+          "display_grade_change": 1,
+          "absolute_display_grade_change": 1
+        },
+        {
+          "case_id": "supplier_records",
+          "field": "Finance operations",
+          "variant": "major_and_year",
+          "changed_attributes": "major_and_year",
+          "baseline_cosine": 0.730352520942688,
+          "variant_cosine": 0.7246456146240234,
+          "cosine_change": -0.005706906318664551,
+          "absolute_cosine_change": 0.005706906318664551,
+          "baseline_display_grade": 72,
+          "variant_display_grade": 70,
+          "display_grade_change": -2,
+          "absolute_display_grade_change": 2
+        }
+      ]
+    },
+    "candidate": {
+      "model_path": "C:\\Users\\Ashwin Iyer\\Documents\\Github\\NUWorks-Co-op-grader\\models\\major_agnostic\\experiments\\b\\checkpoints\\checkpoint-1326",
+      "maximum_untruncated_input_tokens": 116,
+      "model_file_sha256": {
+        "1_Pooling/config.json": "bb80272f7adad76ce93073c25e18113ee66be1e91f60bcdd72aa41d05b28247e",
+        "config.json": "657111fd79935d8950ef174e9c11a9da4823ccbd40de3d7d935eaa3967b96672",
+        "config_sentence_transformers.json": "0bea2e31829088de37b65c4435d8a6d4ba0735aad581b7a592ff7da308a045e0",
+        "model.safetensors": "18a7d4c4b5dd344deac05e3180e7ee7f8ba3962eee7df09aefa0e670d2cde8b7",
+        "modules.json": "318d49f1092cad125a35af58d9795bcddce84bf7e7240bd8d95b9b6858f9476b",
+        "sentence_bert_config.json": "5fee3fcdc4a727fad422f0fed0c867b0921eefa9051de221521956ed42eb4c19",
+        "special_tokens_map.json": "5aa43c2f985a25296d5a5ce621c2f77376ca8091a47993c492fd5460b895b140",
+        "tokenizer.json": "3fc3f18ce1603449ed5c2e95d62dc54ce8652af6b6b61e27ff410bff02fbfd5e",
+        "tokenizer_config.json": "2afaa49be1b7252a6c791df115b531551dd73f71a0e55f0f98bce8f970a892fd",
+        "trainer_state.json": "63e3b1e5734769f8b7dc44782004985494687db207a05164d553fe4cad37f7ed",
+        "training_args.bin": "2de48aa8a8ad6006fc5a30133e021bd00624cccdcb9353e6d89061096562e12d",
+        "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+      },
+      "calibration_path": null,
+      "calibration_sha256": null,
+      "calibration": null,
+      "summary": {
+        "all": {
+          "comparisons": 20,
+          "independent_scenarios": 4,
+          "mean_absolute_cosine_change": 0.008270084857940674,
+          "maximum_absolute_cosine_change": 0.02497851848602295
+        },
+        "major": {
+          "comparisons": 8,
+          "independent_scenarios": 4,
+          "mean_absolute_cosine_change": 0.010836824774742126,
+          "maximum_absolute_cosine_change": 0.02497851848602295
+        },
+        "year": {
+          "comparisons": 8,
+          "independent_scenarios": 4,
+          "mean_absolute_cosine_change": 0.003555499017238617,
+          "maximum_absolute_cosine_change": 0.010890364646911621
+        },
+        "major_and_year": {
+          "comparisons": 4,
+          "independent_scenarios": 4,
+          "mean_absolute_cosine_change": 0.012565776705741882,
+          "maximum_absolute_cosine_change": 0.019729256629943848
+        }
+      },
+      "comparisons": [
+        {
+          "case_id": "web_quality",
+          "field": "Software quality assurance",
+          "variant": "major_other_1",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.8260911703109741,
+          "variant_cosine": 0.8162906169891357,
+          "cosine_change": -0.009800553321838379,
+          "absolute_cosine_change": 0.009800553321838379
+        },
+        {
+          "case_id": "web_quality",
+          "field": "Software quality assurance",
+          "variant": "major_other_2",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.8260911703109741,
+          "variant_cosine": 0.8270976543426514,
+          "cosine_change": 0.001006484031677246,
+          "absolute_cosine_change": 0.001006484031677246
+        },
+        {
+          "case_id": "web_quality",
+          "field": "Software quality assurance",
+          "variant": "year_first",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.8260911703109741,
+          "variant_cosine": 0.8152008056640625,
+          "cosine_change": -0.010890364646911621,
+          "absolute_cosine_change": 0.010890364646911621
+        },
+        {
+          "case_id": "web_quality",
+          "field": "Software quality assurance",
+          "variant": "year_fourth",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.8260911703109741,
+          "variant_cosine": 0.8182899951934814,
+          "cosine_change": -0.007801175117492676,
+          "absolute_cosine_change": 0.007801175117492676
+        },
+        {
+          "case_id": "web_quality",
+          "field": "Software quality assurance",
+          "variant": "major_and_year",
+          "changed_attributes": "major_and_year",
+          "baseline_cosine": 0.8260911703109741,
+          "variant_cosine": 0.8102099895477295,
+          "cosine_change": -0.01588118076324463,
+          "absolute_cosine_change": 0.01588118076324463
+        },
+        {
+          "case_id": "public_exhibits",
+          "field": "Arts and public communication",
+          "variant": "major_other_1",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.8008753061294556,
+          "variant_cosine": 0.7850263118743896,
+          "cosine_change": -0.015848994255065918,
+          "absolute_cosine_change": 0.015848994255065918
+        },
+        {
+          "case_id": "public_exhibits",
+          "field": "Arts and public communication",
+          "variant": "major_other_2",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.8008753061294556,
+          "variant_cosine": 0.7845163941383362,
+          "cosine_change": -0.016358911991119385,
+          "absolute_cosine_change": 0.016358911991119385
+        },
+        {
+          "case_id": "public_exhibits",
+          "field": "Arts and public communication",
+          "variant": "year_first",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.8008753061294556,
+          "variant_cosine": 0.7957910895347595,
+          "cosine_change": -0.005084216594696045,
+          "absolute_cosine_change": 0.005084216594696045
+        },
+        {
+          "case_id": "public_exhibits",
+          "field": "Arts and public communication",
+          "variant": "year_fourth",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.8008753061294556,
+          "variant_cosine": 0.803005576133728,
+          "cosine_change": 0.002130270004272461,
+          "absolute_cosine_change": 0.002130270004272461
+        },
+        {
+          "case_id": "public_exhibits",
+          "field": "Arts and public communication",
+          "variant": "major_and_year",
+          "changed_attributes": "major_and_year",
+          "baseline_cosine": 0.8008753061294556,
+          "variant_cosine": 0.7811460494995117,
+          "cosine_change": -0.019729256629943848,
+          "absolute_cosine_change": 0.019729256629943848
+        },
+        {
+          "case_id": "assay_records",
+          "field": "Laboratory data operations",
+          "variant": "major_other_1",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.8458107709884644,
+          "variant_cosine": 0.8458515405654907,
+          "cosine_change": 4.076957702636719e-05,
+          "absolute_cosine_change": 4.076957702636719e-05
+        },
+        {
+          "case_id": "assay_records",
+          "field": "Laboratory data operations",
+          "variant": "major_other_2",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.8458107709884644,
+          "variant_cosine": 0.843805730342865,
+          "cosine_change": -0.0020050406455993652,
+          "absolute_cosine_change": 0.0020050406455993652
+        },
+        {
+          "case_id": "assay_records",
+          "field": "Laboratory data operations",
+          "variant": "year_first",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.8458107709884644,
+          "variant_cosine": 0.8449255228042603,
+          "cosine_change": -0.0008852481842041016,
+          "absolute_cosine_change": 0.0008852481842041016
+        },
+        {
+          "case_id": "assay_records",
+          "field": "Laboratory data operations",
+          "variant": "year_fourth",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.8458107709884644,
+          "variant_cosine": 0.8452669978141785,
+          "cosine_change": -0.0005437731742858887,
+          "absolute_cosine_change": 0.0005437731742858887
+        },
+        {
+          "case_id": "assay_records",
+          "field": "Laboratory data operations",
+          "variant": "major_and_year",
+          "changed_attributes": "major_and_year",
+          "baseline_cosine": 0.8458107709884644,
+          "variant_cosine": 0.8459296226501465,
+          "cosine_change": 0.0001188516616821289,
+          "absolute_cosine_change": 0.0001188516616821289
+        },
+        {
+          "case_id": "supplier_records",
+          "field": "Finance operations",
+          "variant": "major_other_1",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.8088822960853577,
+          "variant_cosine": 0.7922269701957703,
+          "cosine_change": -0.016655325889587402,
+          "absolute_cosine_change": 0.016655325889587402
+        },
+        {
+          "case_id": "supplier_records",
+          "field": "Finance operations",
+          "variant": "major_other_2",
+          "changed_attributes": "major",
+          "baseline_cosine": 0.8088822960853577,
+          "variant_cosine": 0.7839037775993347,
+          "cosine_change": -0.02497851848602295,
+          "absolute_cosine_change": 0.02497851848602295
+        },
+        {
+          "case_id": "supplier_records",
+          "field": "Finance operations",
+          "variant": "year_first",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.8088822960853577,
+          "variant_cosine": 0.8091740608215332,
+          "cosine_change": 0.0002917647361755371,
+          "absolute_cosine_change": 0.0002917647361755371
+        },
+        {
+          "case_id": "supplier_records",
+          "field": "Finance operations",
+          "variant": "year_fourth",
+          "changed_attributes": "year",
+          "baseline_cosine": 0.8088822960853577,
+          "variant_cosine": 0.8096994757652283,
+          "cosine_change": 0.0008171796798706055,
+          "absolute_cosine_change": 0.0008171796798706055
+        },
+        {
+          "case_id": "supplier_records",
+          "field": "Finance operations",
+          "variant": "major_and_year",
+          "changed_attributes": "major_and_year",
+          "baseline_cosine": 0.8088822960853577,
+          "variant_cosine": 0.7943484783172607,
+          "cosine_change": -0.014533817768096924,
+          "absolute_cosine_change": 0.014533817768096924
+        }
+      ]
+    }
+  },
+  "candidate_minus_baseline_mean_absolute_cosine_change": {
+    "all": -0.0016972780227661136,
+    "major": -0.0038650259375572205,
+    "year": -0.003075547516345978,
+    "major_and_year": 0.00539475679397583
+  }
+}

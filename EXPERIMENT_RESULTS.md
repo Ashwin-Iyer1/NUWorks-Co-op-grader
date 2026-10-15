@@ -1,5 +1,12 @@
 # Resume Grader Accuracy Experiments
 
+> Current results: [October 15 major-agnostic experiment](reports/major_agnostic_20261015/RESULTS.md).
+> It adds 9,216 teacher-labeled pairs, corrects the pooling/prompt mismatch, and
+> evaluates the selected quantized model through actual Transformers.js.
+> The historical tables below used an earlier Python inference path and are not
+> directly comparable to the corrected JavaScript measurements. The new numeric
+> grade calibration remains experimental because of a legacy-test regression.
+
 Run on 2026-08-27 with grouped-by-resume train/validation/test splits. Model selection used only the validation split; the test split was evaluated once after choices were frozen.
 
 The production-parity path chunks resumes at about 1,100 characters, prompts each resume chunk, caps jobs at 1,200 characters, truncates at 256 tokens, normalizes embeddings, and averages normalized resume chunk embeddings. The primary dataset is `hf`; NeuralFrame is retained as a secondary out-of-domain check.

@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Evaluate resume/job embeddings with the extension's production preprocessing.
 
-Unlike evaluate.py, this reproduces the shipped path: resumes are split into
-approximately 1,100-character chunks, every chunk receives the query prompt,
-jobs are capped at 1,200 characters, and all inputs are truncated to 256
-tokens. It reports global pair correlation plus per-resume ranking metrics.
+Unlike evaluate.py, this reproduces the shipped BGE path: resumes are split
+into approximately 1,100-character chunks without a query prompt, jobs are
+capped at 1,200 characters, and all inputs are truncated to 256 tokens.
+Pooling is forced to attention-mask mean, as in Transformers.js, even when
+the saved SentenceTransformer config specifies CLS pooling. Historical model
+pooling/prompt behavior is available explicitly for comparisons.
 """
 
 import argparse
@@ -17,8 +19,35 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 from sentence_transformers import SentenceTransformer
+try:
+    from sentence_transformers.sentence_transformer.modules import Pooling
+except ImportError:  # sentence-transformers < 6
+    from sentence_transformers.models import Pooling
 
 FALLBACK_QUERY_PROMPT = "Represent this sentence for searching relevant passages: "
+
+
+def configure_pooling(model, pooling="mean"):
+    """Mutate and return model, aligning its pooling with the extension runtime.
+
+    The positional dimension argument and pooling_mode string work in both
+    sentence-transformers 3.x and 6.x. This helper does not remove a Dense head;
+    callers choose whether such post-pooling modules belong to their runtime.
+    """
+    if pooling == "model":
+        return model
+    if pooling != "mean":
+        raise ValueError("pooling must be 'mean' or 'model'")
+    if len(model) < 2 or not isinstance(model[1], Pooling):
+        raise ValueError("Runtime mean pooling requires a transformer followed by Pooling")
+    current = model[1]
+    dimension = getattr(current, "embedding_dimension", None)
+    if dimension is None:
+        dimension = getattr(current, "word_embedding_dimension", None)
+    if dimension is None:
+        dimension = model[0].get_word_embedding_dimension()
+    model[1] = Pooling(dimension, pooling_mode="mean", include_prompt=True)
+    return model
 
 
 def chunk_text(text, target=1100):
@@ -86,8 +115,10 @@ def ranking_metrics(frame, scores):
     }
 
 
-def score_dataset(model, frame, batch_size, char_cap, chunk_chars):
-    prompt = model.prompts.get("query", FALLBACK_QUERY_PROMPT)
+def score_dataset(model, frame, batch_size, char_cap, chunk_chars, query_prompt=""):
+    # An explicit empty prompt suppresses any model.default_prompt_name. The
+    # chrome-extension branch's BGE worker encodes bare resumes and jobs.
+    prompt = query_prompt
     resumes = frame["resume"].drop_duplicates().tolist()
     chunks_by_resume, flat_chunks = {}, []
     for resume in resumes:
@@ -97,13 +128,17 @@ def score_dataset(model, frame, batch_size, char_cap, chunk_chars):
 
     chunk_embeddings = model.encode(
         flat_chunks,
+        prompt="",
         normalize_embeddings=True,
         batch_size=batch_size,
         show_progress_bar=False,
     )
     jobs = frame["job"].astype(str).str.slice(0, char_cap).tolist()
+    unique_jobs = list(dict.fromkeys(jobs))
+    job_indexes = {job: index for index, job in enumerate(unique_jobs)}
     job_embeddings = model.encode(
-        jobs,
+        unique_jobs,
+        prompt="",
         normalize_embeddings=True,
         batch_size=batch_size,
         show_progress_bar=False,
@@ -117,9 +152,10 @@ def score_dataset(model, frame, batch_size, char_cap, chunk_chars):
     scores = {"mean_vector": [], "max_chunk": [], "top2_chunks": []}
     for row_index, resume in enumerate(frame["resume"]):
         start, count = chunks_by_resume[resume]
-        similarities = chunk_embeddings[start : start + count] @ job_embeddings[row_index]
+        job_embedding = job_embeddings[job_indexes[jobs[row_index]]]
+        similarities = chunk_embeddings[start : start + count] @ job_embedding
         ordered = np.sort(similarities)[::-1]
-        scores["mean_vector"].append(float(mean_vectors[resume] @ job_embeddings[row_index]))
+        scores["mean_vector"].append(float(mean_vectors[resume] @ job_embedding))
         scores["max_chunk"].append(float(ordered[0]))
         scores["top2_chunks"].append(float(ordered[:2].mean()))
     return {key: np.asarray(value) for key, value in scores.items()}
@@ -128,21 +164,30 @@ def score_dataset(model, frame, batch_size, char_cap, chunk_chars):
 def evaluate_model(
     model_path, data_dir, split, batch_size, char_cap, chunk_chars,
     predictions_dir=None, backend=None, model_file=None, dataset_names=None,
+    pooling="mean", query_prompt="", use_model_query_prompt=False,
 ):
     model_kwargs = {"file_name": model_file} if model_file else None
     model = SentenceTransformer(model_path, backend=backend or "torch", model_kwargs=model_kwargs)
     model.max_seq_length = 256
-    if len(model) > 2:
-        del model[2]
+    while len(model) > 2:
+        del model[-1]
+    configure_pooling(model, pooling)
+    if use_model_query_prompt:
+        query_prompt = model.prompts.get("query", FALLBACK_QUERY_PROMPT)
 
-    output = {"model": model_path, "split": split, "datasets": {}}
+    output = {
+        "model": model_path, "split": split, "datasets": {},
+        "inference": {"pooling": pooling, "query_prompt": query_prompt,
+                      "max_seq_length": 256, "job_char_cap": char_cap,
+                      "resume_chunk_chars": chunk_chars},
+    }
     for name in dataset_names or ("hf", "neuralframe"):
         path = os.path.join(data_dir, f"{name}_{split}.csv")
         if not os.path.exists(path):
             continue
         frame = pd.read_csv(path).reset_index(drop=True)
         labels = frame["score"].to_numpy(dtype=float)
-        score_sets = score_dataset(model, frame, batch_size, char_cap, chunk_chars)
+        score_sets = score_dataset(model, frame, batch_size, char_cap, chunk_chars, query_prompt)
         output["datasets"][name] = {}
         for aggregation, scores in score_sets.items():
             metrics = {
@@ -161,7 +206,8 @@ def evaluate_model(
             )
             if predictions_dir:
                 os.makedirs(predictions_dir, exist_ok=True)
-                prediction_frame = frame[["resume", "job", "score"]].copy()
+                # Keep major/year/source metadata for evaluate_diversity.py.
+                prediction_frame = frame.copy()
                 prediction_frame["prediction"] = scores
                 prediction_frame.to_csv(
                     os.path.join(predictions_dir, f"{name}_{split}_{aggregation}.csv"),
@@ -182,6 +228,12 @@ def main():
     parser.add_argument("--json-out")
     parser.add_argument("--backend", choices=("torch", "onnx"), default="torch")
     parser.add_argument("--model-file", help="backend file, e.g. onnx/model_quantized.onnx")
+    parser.add_argument("--pooling", choices=("mean", "model"), default="mean",
+                        help="mean matches Transformers.js; model reproduces historical ST pooling")
+    parser.add_argument("--query-prompt", default="",
+                        help="runtime query prefix; default empty matches the shipped BGE worker")
+    parser.add_argument("--use-model-query-prompt", action="store_true",
+                        help="reproduce historical evaluator's model query prompt (including blank)")
     parser.add_argument(
         "--datasets",
         nargs="+",
@@ -200,6 +252,9 @@ def main():
         args.backend,
         args.model_file,
         args.datasets,
+        args.pooling,
+        args.query_prompt,
+        args.use_model_query_prompt,
     )
     rendered = json.dumps(results, indent=2)
     if args.json_out:

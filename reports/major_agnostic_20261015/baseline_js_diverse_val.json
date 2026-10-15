@@ -1,0 +1,85 @@
+{
+  "model": "models\\production_baseline",
+  "split": "val",
+  "datasets": {
+    "diverse": {
+      "mean_vector": {
+        "n": 2304,
+        "spearman": 0.465259342165774,
+        "pearson": 0.4834311765831863,
+        "mae_raw_cosine": 0.1488447272618042,
+        "rankable_resumes": 144,
+        "mean_resume_spearman": 0.5526545713895828,
+        "mean_ndcg_at_10": 0.8921804436847329,
+        "top1_best_rate": 0.4027777777777778
+      }
+    }
+  },
+  "inference": {
+    "pooling": "mean",
+    "query_prompt": "",
+    "resume_chunk_chars": 1100,
+    "job_char_cap": 1200,
+    "job_batch_size": 16,
+    "resume_batching": "all chunks of one resume per pipeline call",
+    "job_batch_order": "input row order within dataset and resume",
+    "cache_policy": "identical ordered complete job batches only"
+  },
+  "runtime": {
+    "transformersjs": "4.2.0",
+    "node": "v24.12.0",
+    "backend": "onnxruntime-node CPU",
+    "threads": 4,
+    "tokenizer_max_length": 256,
+    "limitation": "Uses actual Transformers.js preprocessing/batching; browser WASM kernel parity is not asserted."
+  },
+  "runtime_source": {
+    "ref": "chrome-extension",
+    "commit": "bc657de2fcfd38949939e112ac6b3c75c2a7d499",
+    "embeddings_sha256": "80aad5aaec3f1acbc9da5c5c55a1356837eaaba7249cf9cada4af23dd304f658",
+    "worker_sha256": "89d6cfc4a79f7c7f5120ae69234c05bbd4b90c27d3c2889a13a077806d50e050",
+    "caller_sha256": "7d79fb1f35a97e4c2ed3960ed5fdc473e98362a44e4a25fc5d3eb71e2c65dd68",
+    "helper_source_sha256": "5e2c1a169a35bf08defa09257cca72f52216bd45a50a8f5a4c50cb435677db31"
+  },
+  "input_sha256": "36b5a77b6eb4c7ce7141cda83d3a16cea97f113408c5529d4abcd7e732226928",
+  "model_file_sha256": {
+    "config.json": "657111fd79935d8950ef174e9c11a9da4823ccbd40de3d7d935eaa3967b96672",
+    "tokenizer_config.json": "2afaa49be1b7252a6c791df115b531551dd73f71a0e55f0f98bce8f970a892fd",
+    "tokenizer.json": "3fc3f18ce1603449ed5c2e95d62dc54ce8652af6b6b61e27ff410bff02fbfd5e",
+    "special_tokens_map.json": "5aa43c2f985a25296d5a5ce621c2f77376ca8091a47993c492fd5460b895b140",
+    "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3",
+    "onnx/model_quantized.onnx": "c45f88d3769e44822e713502dcaf79c07fa514ef6f6895855072f7c7fae08611"
+  },
+  "counts": {
+    "pairs": 2304,
+    "resumes": 144,
+    "resume_pipeline_calls": 144,
+    "job_pipeline_calls": 144,
+    "encoded_resume_chunks": 148,
+    "encoded_jobs": 2304
+  },
+  "elapsed_seconds": 15.249474099999999,
+  "data_sha256": {
+    "data\\diverse_val.csv": "cc9f490cffca903ed6037ff46f8ac8d662f40e8e68c078a2f3817bd3768d1593"
+  },
+  "runtime_scores": "models\\major_agnostic\\results\\baseline_js_diverse_val_runtime\\scores.json",
+  "command": [
+    "node",
+    "C:\\Users\\Ashwin Iyer\\Documents\\Github\\NUWorks-Co-op-grader\\evaluate_transformersjs.mjs",
+    "--model",
+    "C:\\Users\\Ashwin Iyer\\Documents\\Github\\NUWorks-Co-op-grader\\models\\production_baseline",
+    "--input",
+    "C:\\Users\\Ashwin Iyer\\Documents\\Github\\NUWorks-Co-op-grader\\models\\major_agnostic\\results\\baseline_js_diverse_val_runtime\\input.json",
+    "--output",
+    "C:\\Users\\Ashwin Iyer\\Documents\\Github\\NUWorks-Co-op-grader\\models\\major_agnostic\\results\\baseline_js_diverse_val_runtime\\scores.json",
+    "--runtime-ref",
+    "chrome-extension",
+    "--threads",
+    "4",
+    "--job-batch-size",
+    "16",
+    "--char-cap",
+    "1200"
+  ],
+  "label_envelopes_removed": 2304
+}

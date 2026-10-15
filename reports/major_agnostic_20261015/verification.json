@@ -1,0 +1,21 @@
+{
+  "frozen_checkpoint_unchanged": true,
+  "release_file_hashes_verified": 15,
+  "credential_pattern_scan_clean": true,
+  "sensitive_and_generated_paths_ignored": [
+    ".env",
+    "data/diverse_train.csv",
+    "openai_labels/major_agnostic/pairs.jsonl",
+    "models/major_agnostic/selected_onnx/onnx/model_quantized.onnx"
+  ],
+  "git_diff_check_passed": true,
+  "real_calibration_schema_validation": {
+    "knots": 110,
+    "method": "quantile_piecewise_linear"
+  },
+  "python_test_count": 87,
+  "javascript_test_count": 4,
+  "branch": "finetune",
+  "remote_divergence": "0\t0",
+  "local_changes_uncommitted": true
+}
