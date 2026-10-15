@@ -319,7 +319,7 @@
 
         <div class="ai-benchmark" aria-labelledby="benchmark-title">
           <div class="ai-benchmark-copy">
-            <span class="benchmark-kicker">Research candidate · October 15, 2026</span>
+            <span class="benchmark-kicker">Model release · October 15, 2026</span>
             <h3 id="benchmark-title">Broader coverage, stronger test rankings</h3>
             <p>
               Development and evaluation used 864 original fictional resumes
@@ -328,8 +328,9 @@
               scored the resume–job matches.
             </p>
             <p class="benchmark-status">
-              <strong>Evaluation only.</strong> This candidate is not yet
-              included in the installed extension.
+              <strong>Updated model.</strong> The release is available on
+              <a href="https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader" target="_blank" rel="noopener noreferrer">Hugging Face</a>.
+              Existing users can update their downloaded model in Semantic AI.
             </p>
           </div>
           <div class="benchmark-results">
@@ -347,24 +348,42 @@
             </div>
           </div>
           <p class="benchmark-note">
-            <strong>Held-out test:</strong> 2,304 pairs from 144 resume documents,
-            24 independent scenario families and 24 unseen job scenarios.
-            The 9,216 labeled pairs were split into 4,608 training / 2,304
-            validation / 2,304 test pairs, keeping resume families and job
-            scenarios separate. The 95% paired
-            family-bootstrap interval for the Spearman gain is +0.2832 to
-            +0.4136, conditional on this job pool. These are q8 semantic-only
-            results in Transformers.js on Node CPU; browser execution and the
-            extension’s final blended score were not tested.
+            <strong>Held-out benchmark:</strong> 2,304 pairs from 144 fictional
+            resume documents, 24 scenario families and 24 unseen job scenarios.
+            Training, validation and test sets kept resume families and job
+            scenarios separate. The 95% family-bootstrap interval for the
+            ranking gain is +0.2832 to +0.4136, conditional on this job pool.
           </p>
           <p class="benchmark-note">
-            <strong>Limits of the evidence:</strong> stronger agreement
-            with synthetic teacher labels, not hiring outcomes or proof of
-            improvement for every major. There is only one held-out family per
-            major. Numeric grade calibration remains experimental: it reduced
-            error on the new set but increased error from 11.93 to 19.30 points
-            on the two legacy test resumes.
-            <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/blob/700f29baa3d680378da7fa9fd2d018143e944acc/reports/major_agnostic_20261015/RESULTS.md" target="_blank" rel="noopener noreferrer">Read the full evaluation</a>
+            <strong>Real-resume check:</strong> across 960 pairs from 24 resumes
+            and 40 jobs, ranking correlation improved from 0.6812 to 0.7978
+            under the updated grading rubric. The 95% interval for the gain
+            was +0.0937 to +0.1428. The original rubric also showed a ranking
+            gain, from 0.6838 to 0.7907.
+          </p>
+          <p class="benchmark-note">
+            <strong>Numeric grades remain mixed.</strong> Mean error on this
+            real-resume check rose from 13.06 to 13.36 points under the updated
+            rubric and from 12.50 to 13.92 under the original rubric.
+            On earlier tests, it fell from 36.01 to 17.69 on the fictional
+            benchmark and from 11.93 to 11.16 on two legacy resumes.
+            Each resume contributes equally to these averages.
+          </p>
+          <p class="benchmark-note">
+            <strong>Combined score check:</strong> with the default keyword
+            and AI weighting, mean grade error fell from 15.38 to 14.01 points
+            on the updated real-resume rubric in a Node simulation.
+            Ranking results were uncertain: the top-10 metric declined
+            slightly, and both ranking-change intervals included zero.
+          </p>
+          <p class="benchmark-note">
+            <strong>Limits of the evidence:</strong> these scores measure
+            agreement with AI grading rubrics, not hiring outcomes or proof
+            of improvement for every major. The fictional benchmark has only
+            one held-out scenario family per major. The current semantic
+            grade scale tops out at 70; this is separate from the extension’s
+            combined keyword and AI score. Browser execution remains unverified.
+            <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/blob/c6c80c83fcf793af874e3673c374e29f030353c4/reports/major_agnostic_20261015/MAIN_RELEASE.md" target="_blank" rel="noopener noreferrer">Read the full evaluation</a>
             · <a href="model-evaluation-2026-10-15.json">Download the aggregate results</a>
           </p>
         </div>

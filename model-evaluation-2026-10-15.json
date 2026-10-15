@@ -1,9 +1,8 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "evaluation_date": "2026-10-15",
-  "candidate_version": "major-agnostic-bge-2026-10-15",
-  "status": "experimental_candidate_not_released_in_extension",
-  "report_url": "https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/blob/700f29baa3d680378da7fa9fd2d018143e944acc/reports/major_agnostic_20261015/RESULTS.md",
+  "status": "released_on_huggingface_main",
+  "report_url": "https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/blob/c6c80c83fcf793af874e3673c374e29f030353c4/reports/major_agnostic_20261015/MAIN_RELEASE.md",
   "dataset": {
     "version": "major_agnostic_20261015",
     "provenance": "Original fictional resumes and job scenarios; synthetic OpenAI teacher labels. University catalogs informed coverage, without copying resume bodies.",
@@ -47,19 +46,20 @@
     "execution_provider": "CPU",
     "quantization": "q8",
     "pooling": "mean",
-    "scoring": "semantic_only_with_extension_chunking_and_per_resume_batching",
+    "scoring": "semantic benchmark plus fixed default semantic/keyword blend simulation",
     "browser_wasm_tested": false,
-    "final_semantic_lexical_blend_tested": false
+    "final_semantic_lexical_blend_tested": true,
+    "blend_test_scope": "fixed default weighting in Node simulation, not browser WASM or live extension UI"
   },
   "held_out_test_metrics": {
     "mean_per_resume_spearman": {
       "baseline": 0.4221,
-      "candidate": 0.7682,
-      "gain": 0.3461
+      "gain": 0.3461,
+      "released": 0.7682
     },
     "mean_per_resume_ndcg_at_10": {
       "baseline": 0.8644,
-      "candidate": 0.9408
+      "released": 0.9408
     },
     "spearman_gain_95_percent_interval": {
       "lower": 0.2832,
@@ -70,26 +70,179 @@
     }
   },
   "displayed_grade_calibration": {
-    "status": "experimental_not_activated_in_extension",
+    "status": "released_on_huggingface_main",
     "fit_split": "validation_only",
-    "metric": "mean_absolute_error_in_0_to_100_points_lower_is_better",
+    "weighting": "equal weight per source, then equal weight per resume within source",
+    "source_weights": {
+      "fictional_diverse": 0.5,
+      "legacy_openai": 0.5
+    },
+    "fit": "nonnegative_weighted_affine_over_observed_validation_interval",
+    "sha256": "3424ce9d3f94df53f5f12d962859408d07543fd2c6d8d38a9fb410cf7a65da6e",
+    "metric": "equal_resume_mean_absolute_error_in_0_to_100_points_lower_is_better",
+    "maximum_displayed_semantic_grade": 70,
+    "upper_cosine_endpoint": 0.8022639657486932,
+    "higher_cosines_are_clamped": true,
     "new_diverse_test": {
-      "baseline_shipped_curve": 36.01,
-      "candidate_curve": 9.88,
+      "baseline_shipped_curve": 36.00998263888888,
+      "released_curve": 17.689236111111107,
       "resume_documents": 144
     },
     "legacy_openai_test": {
-      "baseline_shipped_curve": 11.93,
-      "candidate_curve": 19.3,
+      "baseline_shipped_curve": 11.93415637860082,
+      "released_curve": 11.162551440329212,
       "resume_documents": 2
-    }
+    },
+    "known_test_scope": "These tests were previously inspected; they are not fresh independent confirmation."
   },
   "limitations": [
-    "The new benchmark measures agreement with synthetic teacher judgments, not human hiring decisions.",
-    "Each validation/test major has only one held-out family; stage variants are not independent applicants.",
-    "Results do not establish improvement for every major or population fairness.",
-    "Candidate grade calibration improves the new test set but regresses on the two legacy test resumes.",
-    "Browser WASM execution and the extension's final blended ordering remain unverified."
+    "Scores measure agreement with AI teacher judgments, not hiring outcomes.",
+    "Each fictional validation/test major has only one held-out scenario family; stage variants are correlated.",
+    "Broader major coverage does not establish improvement for every major, academic year, or population fairness.",
+    "The legacy known test contains only two real resumes and is not fresh confirmation.",
+    "On the 24-real-resume check, semantic ranking improved but numeric semantic grade error rose under both reported grading rubrics.",
+    "The released semantic grade scale clamps at 70 above cosine 0.8022639657486932; this is not the combined keyword/AI score.",
+    "Browser WASM execution remains unverified.",
+    "The default-blend simulation excludes eligibility flags, profile-skill enrichment and live job filtering; its ranking-change intervals include zero."
   ],
-  "evaluation_source_commit": "700f29baa3d680378da7fa9fd2d018143e944acc"
+  "evaluation_source_commit": "c6c80c83fcf793af874e3673c374e29f030353c4",
+  "model_release": "major-agnostic-bge-2026-10-15-r2",
+  "model_url": "https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader",
+  "huggingface_revision": "d67ad62deee2dfefa2f9d365b42abbbedfb88ef4",
+  "real_resume_holdout": {
+    "resume_documents": 24,
+    "job_descriptions": 40,
+    "pairs": 960,
+    "labels": "Both updated and original AI grading rubrics are reported for the same resume/job pairs.",
+    "model_or_calibration_tuning_performed_on_this_check": false,
+    "weighting": "equal weight per resume; equal weight per job within resume",
+    "bootstrap": {
+      "unit": "whole resume",
+      "draws": 10000,
+      "scope": "conditional on the fixed 40-job pool"
+    },
+    "rubrics": {
+      "updated": {
+        "mean_per_resume_spearman": {
+          "baseline": 0.6812431159268265,
+          "released": 0.7977855575978806
+        },
+        "mean_per_resume_ndcg_at_10": {
+          "baseline": 0.8369711490726038,
+          "released": 0.8844541644945444
+        },
+        "equal_resume_grade_mae_points": {
+          "baseline": 13.060416666666669,
+          "released": 13.360416666666666
+        },
+        "paired_spearman_gain": {
+          "mean": 0.11654244167105428,
+          "resumes": 24,
+          "bootstrap_clusters": 24,
+          "ci95": [
+            0.09370438070124636,
+            0.14280365748453822
+          ]
+        },
+        "paired_grade_error_reduction_baseline_minus_released": {
+          "mean": -0.3000000000000001,
+          "resumes": 24,
+          "bootstrap_clusters": 24,
+          "ci95": [
+            -1.3385416666666667,
+            0.8125260416666663
+          ]
+        }
+      },
+      "original": {
+        "mean_per_resume_spearman": {
+          "baseline": 0.683805008732817,
+          "released": 0.7906557545934989
+        },
+        "mean_per_resume_ndcg_at_10": {
+          "baseline": 0.828485093263064,
+          "released": 0.8747206644525924
+        },
+        "equal_resume_grade_mae_points": {
+          "baseline": 12.504166666666668,
+          "released": 13.916666666666666
+        },
+        "paired_spearman_gain": {
+          "mean": 0.10685074586068193,
+          "resumes": 24,
+          "bootstrap_clusters": 24,
+          "ci95": [
+            0.08722038437497508,
+            0.1273675311577287
+          ]
+        },
+        "paired_grade_error_reduction_baseline_minus_released": {
+          "mean": -1.4124999999999994,
+          "resumes": 24,
+          "bootstrap_clusters": 24,
+          "ci95": [
+            -2.538541666666666,
+            -0.20726562499999962
+          ]
+        }
+      }
+    },
+    "conclusion": "Raw semantic rankings improved under both rubrics. Numeric semantic grade error did not improve under either rubric."
+  },
+  "default_blend_simulation": {
+    "environment": "Node CPU simulation using exact extension scoring helpers",
+    "semantic_weight": 0.35,
+    "keyword_weight": 0.65,
+    "pairs": 960,
+    "resume_documents": 24,
+    "job_descriptions": 40,
+    "rubric": "updated",
+    "labels_sha256": "5135403262447620848efcd08c59ef314ee16700e035a3e5aedaa9a2d2192569",
+    "equal_resume_grade_mae_points": {
+      "baseline": 15.374999999999998,
+      "released": 14.012499999999998
+    },
+    "mean_per_resume_spearman": {
+      "baseline": 0.580494079395163,
+      "released": 0.6035143324646494
+    },
+    "mean_per_resume_ndcg_at_10": {
+      "baseline": 0.7591914699473682,
+      "released": 0.75103390148465
+    },
+    "paired_released_minus_baseline": {
+      "spearman": {
+        "mean": 0.02302025306948635,
+        "ci95": [
+          -0.0005604340145801833,
+          0.05056472630276247
+        ],
+        "clusters": 24
+      },
+      "ndcg_at_10": {
+        "mean": -0.00815756846271839,
+        "ci95": [
+          -0.027431164453601973,
+          0.012817390618010266
+        ],
+        "clusters": 24
+      },
+      "mae_points": {
+        "mean": -1.3624999999999996,
+        "ci95": [
+          -2.036484375,
+          -0.7655989583333328
+        ],
+        "clusters": 24
+      }
+    },
+    "limitations": [
+      "Simulated Node scoring, not browser WASM execution or a live extension UI test.",
+      "No NUWorks eligibility flags, school-year/graduate-date filters, profile-skill enrichment, or job filtering were available; all supplied pairs were scored.",
+      "Resume documents and shared job pool are the evaluation sample. Pair counts are not independent applicant counts.",
+      "Teacher labels measure judged resume-job fit, not hiring outcomes or population fairness. No weights, curves or model parameters were fitted here."
+    ],
+    "conclusion": "Default blended grade error decreased in this simulation. The NDCG point estimate decreased, and ranking-change intervals include zero."
+  },
+  "model_revision_url": "https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader/tree/d67ad62deee2dfefa2f9d365b42abbbedfb88ef4"
 }
