@@ -4,6 +4,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
@@ -23,6 +24,63 @@ def fixture():
 
 
 class CalibrationTests(unittest.TestCase):
+    def test_source_resume_weights_balance_sources_and_unequal_resume_job_counts(self):
+        rows = [{"resume": f"Synthetic {resume}", "_source": "synthetic"}
+                for resume in range(6) for _ in range(resume + 1)]
+        rows += [{"resume": "Legacy", "_source": "legacy"}] * 972
+        frame = attach_groups(pd.DataFrame(rows))
+        weights = resume_weights(frame, "source_resume")
+        self.assertAlmostEqual(weights[:21].sum(), .5)
+        self.assertAlmostEqual(weights[21:].sum(), .5)
+        for resume in range(6):
+            self.assertAlmostEqual(weights[frame["resume"].eq(f"Synthetic {resume}")].sum(), 1 / 12)
+        # The default remains backwards compatible: every global resume has 1/7.
+        old_weights = resume_weights(frame)
+        self.assertAlmostEqual(old_weights[:21].sum(), 6 / 7)
+        self.assertAlmostEqual(old_weights[21:].sum(), 1 / 7)
+
+    def test_source_resume_cv_rebalances_each_training_fold_and_reports_source_errors(self):
+        frame = fixture()
+        frame["_source"] = np.where(frame["family_id"].eq("family-4"), "legacy", "synthetic")
+        observed = []
+        original_weights = resume_weights
+        def capture_weights(part, weighting="resume"):
+            weights = original_weights(part, weighting)
+            observed.append((part.copy(), weights.copy()))
+            return weights
+        with patch("calibrate_model.resume_weights", side_effect=capture_weights):
+            selected, errors, groups = cross_validate(frame, "source_resume")
+        self.assertEqual(groups, 5)
+        self.assertEqual(len(observed), 6)  # full evaluation weights plus five training folds
+        for index, (part, weights) in enumerate(observed):
+            for source in part["_source"].unique():
+                self.assertAlmostEqual(weights[part["_source"].eq(source)].sum(), 1 / part["_source"].nunique())
+            if index:
+                self.assertEqual(part["_cv_group"].nunique(), 4)
+        for method in errors.values():
+            self.assertEqual(len(method["per_source"]), 2)
+            self.assertAlmostEqual(method["weighted_mae"], np.mean([row["weighted_mae"] for row in method["per_source"]]))
+        output = calibrate(frame, model_release="balanced-validation", weighting="source_resume")
+        self.assertEqual(output["metadata"]["sample_weighting"]["method"], "source_resume")
+        for source in output["metadata"]["sample_weighting"]["source_coverage"]:
+            self.assertAlmostEqual(source["total_weight"], .5)
+        self.assertEqual(len(output["metadata"]["in_sample"]["per_source"]), 2)
+
+    def test_source_resume_weighting_requires_sources_and_rejects_nonvalidation_cv(self):
+        frame = fixture()
+        with self.assertRaisesRegex(ValueError, "source metadata"):
+            resume_weights(frame, "source_resume")
+        frame["_source"] = "synthetic"
+        frame.loc[0, "_source"] = None
+        with self.assertRaisesRegex(ValueError, "source metadata"):
+            resume_weights(frame, "source_resume")
+        frame["_source"] = "synthetic"
+        frame["split"] = "test"
+        with self.assertRaisesRegex(ValueError, "validation split"):
+            cross_validate(frame, "source_resume")
+        with self.assertRaisesRegex(ValueError, "validation split"):
+            calibrate(frame, model_release="invalid", weighting="source_resume")
+
     def test_unequal_job_counts_have_equal_total_resume_weight(self):
         frame = pd.DataFrame({"resume": ["A"] * 972 + ["B"] * 16})
         frame = attach_groups(frame)

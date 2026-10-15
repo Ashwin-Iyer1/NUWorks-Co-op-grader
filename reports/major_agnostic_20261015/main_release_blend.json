@@ -1,0 +1,574 @@
+{
+  "schema_version": 1,
+  "evaluation": "fixed_default_extension_blend_node_simulation",
+  "model_release": "major-agnostic-bge-2026-10-15-r2",
+  "pairs": 960,
+  "resumes": 24,
+  "unique_jobs": 40,
+  "semantic_weight": 0.35,
+  "keyword_weight": 0.65,
+  "fitting_performed": false,
+  "metrics": {
+    "lexical": {
+      "global_spearman": 0.4264327619064244,
+      "mae_points": 19.220833333333335,
+      "rankable_resumes": 24,
+      "mean_resume_spearman": 0.4174181441514732,
+      "mean_ndcg_at_10": 0.6825077569261183,
+      "mean_resume_mae_points": 19.220833333333335
+    },
+    "baseline": {
+      "global_spearman": 0.5835062403475674,
+      "mae_points": 15.375,
+      "rankable_resumes": 24,
+      "mean_resume_spearman": 0.580494079395163,
+      "mean_ndcg_at_10": 0.7591914699473682,
+      "mean_resume_mae_points": 15.374999999999998
+    },
+    "candidate": {
+      "global_spearman": 0.5954317665659274,
+      "mae_points": 14.0125,
+      "rankable_resumes": 24,
+      "mean_resume_spearman": 0.6035143324646494,
+      "mean_ndcg_at_10": 0.75103390148465,
+      "mean_resume_mae_points": 14.012499999999998
+    }
+  },
+  "paired_candidate_minus_baseline": {
+    "spearman": {
+      "mean": 0.02302025306948635,
+      "ci95": [
+        -0.0005604340145801833,
+        0.05056472630276247
+      ],
+      "clusters": 24
+    },
+    "ndcg_at_10": {
+      "mean": -0.00815756846271839,
+      "ci95": [
+        -0.027431164453601973,
+        0.012817390618010266
+      ],
+      "clusters": 24
+    },
+    "mae_points": {
+      "mean": -1.3624999999999996,
+      "ci95": [
+        -2.036484375,
+        -0.7655989583333328
+      ],
+      "clusters": 24
+    }
+  },
+  "bootstrap": {
+    "method": "paired_resample_whole_resumes",
+    "draws": 10000,
+    "seed": 20261015,
+    "scope": "conditional_on_reused_job_pool"
+  },
+  "per_resume": [
+    {
+      "resume_index": 1,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.4924774601168021,
+        "ndcg_at_10": 0.6725731474933437,
+        "mae_points": 19.175
+      },
+      "baseline": {
+        "spearman": 0.7118506865145005,
+        "ndcg_at_10": 0.7651373573898691,
+        "mae_points": 15.75
+      },
+      "candidate": {
+        "spearman": 0.6675984860559819,
+        "ndcg_at_10": 0.698676157960102,
+        "mae_points": 14.85
+      }
+    },
+    {
+      "resume_index": 2,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.15524416653329354,
+        "ndcg_at_10": 0.631524698751067,
+        "mae_points": 17.25
+      },
+      "baseline": {
+        "spearman": 0.33055662504878125,
+        "ndcg_at_10": 0.7724023486727167,
+        "mae_points": 14.625
+      },
+      "candidate": {
+        "spearman": 0.36155247168121446,
+        "ndcg_at_10": 0.7611371353942198,
+        "mae_points": 14.05
+      }
+    },
+    {
+      "resume_index": 3,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.5714492290903389,
+        "ndcg_at_10": 0.7936064680106206,
+        "mae_points": 15.275
+      },
+      "baseline": {
+        "spearman": 0.6414866455965293,
+        "ndcg_at_10": 0.7716928674841712,
+        "mae_points": 12.35
+      },
+      "candidate": {
+        "spearman": 0.6792460862668894,
+        "ndcg_at_10": 0.8209280116344788,
+        "mae_points": 10.525
+      }
+    },
+    {
+      "resume_index": 4,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.39334858234133535,
+        "ndcg_at_10": 0.6604018704083452,
+        "mae_points": 19.4
+      },
+      "baseline": {
+        "spearman": 0.5579626999888294,
+        "ndcg_at_10": 0.667972851435977,
+        "mae_points": 16.775
+      },
+      "candidate": {
+        "spearman": 0.5927694174139362,
+        "ndcg_at_10": 0.6630138611810755,
+        "mae_points": 14.7
+      }
+    },
+    {
+      "resume_index": 5,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.420203961316935,
+        "ndcg_at_10": 0.6641562755062486,
+        "mae_points": 18.425
+      },
+      "baseline": {
+        "spearman": 0.5347290621786297,
+        "ndcg_at_10": 0.6871466791234501,
+        "mae_points": 15.9
+      },
+      "candidate": {
+        "spearman": 0.5550331259603918,
+        "ndcg_at_10": 0.6677241999622763,
+        "mae_points": 12.825
+      }
+    },
+    {
+      "resume_index": 6,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.2459452064113328,
+        "ndcg_at_10": 0.5867534996575221,
+        "mae_points": 20.125
+      },
+      "baseline": {
+        "spearman": 0.47527238059583315,
+        "ndcg_at_10": 0.6420147917260607,
+        "mae_points": 15.85
+      },
+      "candidate": {
+        "spearman": 0.46468910639139627,
+        "ndcg_at_10": 0.6311117587907071,
+        "mae_points": 15.4
+      }
+    },
+    {
+      "resume_index": 7,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.4120823551664592,
+        "ndcg_at_10": 0.5851908336962472,
+        "mae_points": 22.525
+      },
+      "baseline": {
+        "spearman": 0.6731992879082727,
+        "ndcg_at_10": 0.8192428283692261,
+        "mae_points": 19.25
+      },
+      "candidate": {
+        "spearman": 0.7486094221885403,
+        "ndcg_at_10": 0.7827813687529129,
+        "mae_points": 14.8
+      }
+    },
+    {
+      "resume_index": 8,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.26236912503977716,
+        "ndcg_at_10": 0.5300882502555911,
+        "mae_points": 15.675
+      },
+      "baseline": {
+        "spearman": 0.4664663550252929,
+        "ndcg_at_10": 0.5917795000145833,
+        "mae_points": 13.425
+      },
+      "candidate": {
+        "spearman": 0.5690267862910189,
+        "ndcg_at_10": 0.635751631093501,
+        "mae_points": 12
+      }
+    },
+    {
+      "resume_index": 9,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.5064109854503671,
+        "ndcg_at_10": 0.6575847813108499,
+        "mae_points": 26.875
+      },
+      "baseline": {
+        "spearman": 0.7270888348537025,
+        "ndcg_at_10": 0.8260719352757203,
+        "mae_points": 20.575
+      },
+      "candidate": {
+        "spearman": 0.6840941206769566,
+        "ndcg_at_10": 0.7418147844059424,
+        "mae_points": 19.85
+      }
+    },
+    {
+      "resume_index": 10,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.3303427451134724,
+        "ndcg_at_10": 0.6642706964140317,
+        "mae_points": 16.475
+      },
+      "baseline": {
+        "spearman": 0.479721165716159,
+        "ndcg_at_10": 0.7854264714083892,
+        "mae_points": 11.625
+      },
+      "candidate": {
+        "spearman": 0.4724851446335001,
+        "ndcg_at_10": 0.7537426439809324,
+        "mae_points": 12.2
+      }
+    },
+    {
+      "resume_index": 11,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.5616748421806962,
+        "ndcg_at_10": 0.8532008489160324,
+        "mae_points": 21.375
+      },
+      "baseline": {
+        "spearman": 0.6824653233228591,
+        "ndcg_at_10": 0.8900632558937773,
+        "mae_points": 16.625
+      },
+      "candidate": {
+        "spearman": 0.6970733907867481,
+        "ndcg_at_10": 0.8629673723905197,
+        "mae_points": 14.625
+      }
+    },
+    {
+      "resume_index": 12,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.2721755901951408,
+        "ndcg_at_10": 0.7956504300978938,
+        "mae_points": 17.475
+      },
+      "baseline": {
+        "spearman": 0.5278732972582332,
+        "ndcg_at_10": 0.8262604999482537,
+        "mae_points": 16.15
+      },
+      "candidate": {
+        "spearman": 0.7491849711389926,
+        "ndcg_at_10": 0.9595191465295674,
+        "mae_points": 10.575
+      }
+    },
+    {
+      "resume_index": 13,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.507958715980634,
+        "ndcg_at_10": 0.8514552883530274,
+        "mae_points": 16
+      },
+      "baseline": {
+        "spearman": 0.6140791221698532,
+        "ndcg_at_10": 0.922804081276112,
+        "mae_points": 11.7
+      },
+      "candidate": {
+        "spearman": 0.6487518556539563,
+        "ndcg_at_10": 0.8843062485519378,
+        "mae_points": 12.075
+      }
+    },
+    {
+      "resume_index": 14,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.3946014857154133,
+        "ndcg_at_10": 0.7134327484388665,
+        "mae_points": 22.2
+      },
+      "baseline": {
+        "spearman": 0.6509362886783636,
+        "ndcg_at_10": 0.7609458234776151,
+        "mae_points": 16.775
+      },
+      "candidate": {
+        "spearman": 0.6124757122152767,
+        "ndcg_at_10": 0.7285118681914179,
+        "mae_points": 16.5
+      }
+    },
+    {
+      "resume_index": 15,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.5877371003766931,
+        "ndcg_at_10": 0.7125669431207068,
+        "mae_points": 17.475
+      },
+      "baseline": {
+        "spearman": 0.6903042108819893,
+        "ndcg_at_10": 0.8467041483929229,
+        "mae_points": 13.975
+      },
+      "candidate": {
+        "spearman": 0.7019844361485461,
+        "ndcg_at_10": 0.8249321687184243,
+        "mae_points": 12.625
+      }
+    },
+    {
+      "resume_index": 16,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.49267707547164324,
+        "ndcg_at_10": 0.7140184669631007,
+        "mae_points": 17.55
+      },
+      "baseline": {
+        "spearman": 0.622764934158285,
+        "ndcg_at_10": 0.7985014956210998,
+        "mae_points": 13.775
+      },
+      "candidate": {
+        "spearman": 0.6620516647303232,
+        "ndcg_at_10": 0.7854432273219047,
+        "mae_points": 13.05
+      }
+    },
+    {
+      "resume_index": 17,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.33113584637714827,
+        "ndcg_at_10": 0.6094553571370557,
+        "mae_points": 21.125
+      },
+      "baseline": {
+        "spearman": 0.4981663876162705,
+        "ndcg_at_10": 0.7598292911062802,
+        "mae_points": 16.15
+      },
+      "candidate": {
+        "spearman": 0.47286286991912535,
+        "ndcg_at_10": 0.6940132520375444,
+        "mae_points": 17.3
+      }
+    },
+    {
+      "resume_index": 18,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.5446638132731452,
+        "ndcg_at_10": 0.803785238303399,
+        "mae_points": 20.1
+      },
+      "baseline": {
+        "spearman": 0.6785502242914173,
+        "ndcg_at_10": 0.8058932815473785,
+        "mae_points": 15.925
+      },
+      "candidate": {
+        "spearman": 0.6442922748425831,
+        "ndcg_at_10": 0.8363004867887663,
+        "mae_points": 14.85
+      }
+    },
+    {
+      "resume_index": 19,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.6754501787954827,
+        "ndcg_at_10": 0.8900933698383326,
+        "mae_points": 15.625
+      },
+      "baseline": {
+        "spearman": 0.7641096449204768,
+        "ndcg_at_10": 0.8835679648771657,
+        "mae_points": 11.35
+      },
+      "candidate": {
+        "spearman": 0.7670506538281613,
+        "ndcg_at_10": 0.8842432245266669,
+        "mae_points": 10.125
+      }
+    },
+    {
+      "resume_index": 20,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.4700434962181084,
+        "ndcg_at_10": 0.6965518007538701,
+        "mae_points": 20.4
+      },
+      "baseline": {
+        "spearman": 0.6004822122370276,
+        "ndcg_at_10": 0.7605005348924494,
+        "mae_points": 17.325
+      },
+      "candidate": {
+        "spearman": 0.5724325938553618,
+        "ndcg_at_10": 0.704699440157202,
+        "mae_points": 16.725
+      }
+    },
+    {
+      "resume_index": 21,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.5221202392763925,
+        "ndcg_at_10": 0.5400435648707707,
+        "mae_points": 21.775
+      },
+      "baseline": {
+        "spearman": 0.7342149440921055,
+        "ndcg_at_10": 0.6672308414521714,
+        "mae_points": 16.75
+      },
+      "candidate": {
+        "spearman": 0.7331827157852504,
+        "ndcg_at_10": 0.739886259075111,
+        "mae_points": 16.125
+      }
+    },
+    {
+      "resume_index": 22,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.45519177140841693,
+        "ndcg_at_10": 0.8017091153139244,
+        "mae_points": 18.075
+      },
+      "baseline": {
+        "spearman": 0.4835830336075967,
+        "ndcg_at_10": 0.8716170468952552,
+        "mae_points": 13.825
+      },
+      "candidate": {
+        "spearman": 0.6489959939663676,
+        "ndcg_at_10": 0.8513338854310395,
+        "mae_points": 10.525
+      }
+    },
+    {
+      "resume_index": 23,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.20041785039116716,
+        "ndcg_at_10": 0.5868184190486418,
+        "mae_points": 18.3
+      },
+      "baseline": {
+        "spearman": 0.32961074863080414,
+        "ndcg_at_10": 0.624283331256562,
+        "mae_points": 15.65
+      },
+      "candidate": {
+        "spearman": 0.3617362683352735,
+        "ndcg_at_10": 0.6920192149849635,
+        "mae_points": 12.325
+      }
+    },
+    {
+      "resume_index": 24,
+      "pairs": 40,
+      "lexical": {
+        "spearman": 0.2123136373951599,
+        "ndcg_at_10": 0.36525405356734636,
+        "mae_points": 22.625
+      },
+      "baseline": {
+        "spearman": 0.4563837901921016,
+        "ndcg_at_10": 0.4735060511996296,
+        "mae_points": 16.9
+      },
+      "candidate": {
+        "spearman": 0.41716441038579427,
+        "ndcg_at_10": 0.41995628777038135,
+        "mae_points": 17.675
+      }
+    }
+  ],
+  "runtime_source": {
+    "ref": "bc657de2fcfd38949939e112ac6b3c75c2a7d499",
+    "commit": "bc657de2fcfd38949939e112ac6b3c75c2a7d499",
+    "matcher_sha256": "cb1cb511e3a83d39e703ddccc025fe219f8d4dce76a660e8d3e245e767f496d1",
+    "embeddings_sha256": "80aad5aaec3f1acbc9da5c5c55a1356837eaaba7249cf9cada4af23dd304f658",
+    "caller_sha256": "7d79fb1f35a97e4c2ed3960ed5fdc473e98362a44e4a25fc5d3eb71e2c65dd68",
+    "calibration_validator_sha256": "f64435f171d81802d6fbfe0a23c5affdeb71195cd8bb20e311f3a40aed79b7fd"
+  },
+  "input_sha256": {
+    "labels": "5135403262447620848efcd08c59ef314ee16700e035a3e5aedaa9a2d2192569",
+    "baseline": "78f19812bb1c386f0c670ff3804fb4ed708792d6b12bb5010ecb19875ddd73da",
+    "candidate": "cf60401344c59b8ba1c28bb88462ace5d64d9d100a3fae2355a75d64b110c058",
+    "baseline-calibration": "b0451c8896012305ba7e306f6e8cba3e2e4b16d1eb658990adb35a07db664f88",
+    "candidate-calibration": "3424ce9d3f94df53f5f12d962859408d07543fd2c6d8d38a9fb410cf7a65da6e"
+  },
+  "script_sha256": "c886b15d4cd3e63cfd1a44daaa680e73e21af35afa8a956a06f432939811afb5",
+  "command": [
+    "node",
+    "evaluate_extension_blend.mjs",
+    "--labels",
+    "openai_labels/main_release_real_holdout/train.csv",
+    "--baseline",
+    "models/major_agnostic/predictions/baseline_js_unseen_test/unseen_bias_test_mean_vector.csv",
+    "--candidate",
+    "models/major_agnostic/predictions/selected_js_unseen_test/unseen_bias_test_mean_vector.csv",
+    "--baseline-calibration",
+    "models/production_baseline/calibration.json",
+    "--candidate-calibration",
+    "models/major_agnostic/main_release/calibration.json",
+    "--runtime-ref",
+    "bc657de2fcfd38949939e112ac6b3c75c2a7d499",
+    "--output",
+    "reports/major_agnostic_20261015/main_release_blend.json"
+  ],
+  "method": [
+    "The labels CSV is authoritative; score columns in saved prediction files are ignored. Pairs join by IDs with exact resume/job text verification.",
+    "Exact extension JobMatcher.calculateScore receives full resume text and full title + newline + job description, with labeling wrappers removed. The lexical input is not clipped.",
+    "Semantic cosines come from saved Transformers.js Node predictions: mean-pooled resume chunks and htmlToText(title + newline + description) clipped to 1200 characters then tokenized to 256 tokens.",
+    "Exact cosineToScore rounds each calibrated semantic score to an integer 0-100. Exact applySemanticWeight then rounds 65% lexical + 35% semantic.",
+    "Spearman uses average tie ranks; constant predictions receive zero correlation. NDCG@10 uses 2^normalized_label-1 gain and expected DCG across ties, including cutoff ties."
+  ],
+  "limitations": [
+    "Simulated Node scoring, not browser WASM execution or a live extension UI test.",
+    "No NUWorks eligibility flags, school-year/graduate-date filters, profile-skill enrichment, or job filtering were available; all supplied pairs were scored.",
+    "Resume documents and shared job pool are the evaluation sample. Pair counts are not independent applicant counts.",
+    "Teacher labels measure judged resume-job fit, not hiring outcomes or population fairness. No weights, curves or model parameters were fitted here."
+  ]
+}

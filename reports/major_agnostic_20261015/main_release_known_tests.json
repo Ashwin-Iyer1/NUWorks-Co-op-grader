@@ -1,0 +1,174 @@
+{
+  "kind": "already_known_test_recheck_after_validation_only_calibration",
+  "calibration_modified": false,
+  "model_weights_modified": false,
+  "not_fresh_holdout_evidence": true,
+  "calibration_sha256": {
+    "baseline": "b0451c8896012305ba7e306f6e8cba3e2e4b16d1eb658990adb35a07db664f88",
+    "selected_r2": "3424ce9d3f94df53f5f12d962859408d07543fd2c6d8d38a9fb410cf7a65da6e"
+  },
+  "runtime_helper": {
+    "git_ref": "chrome-extension",
+    "commit": "bc657de2fcfd38949939e112ac6b3c75c2a7d499",
+    "path": "src/embeddings.js",
+    "function": "cosineToScore"
+  },
+  "methodology": {
+    "grade_mae": "equal total weight per normalized resume; absolute error in 0-100 display points",
+    "rankings": "equal-resume macro metrics, tie-aware NDCG@10 and expected top1 among tied displayed grades",
+    "pairwise_minimum_label_gap": 0.1,
+    "scope": "semantic grades only; no lexical blending simulated"
+  },
+  "datasets": {
+    "diverse": {
+      "pairs": 2304,
+      "resumes": 144,
+      "models": {
+        "baseline": {
+          "prediction_source": "models\\major_agnostic\\predictions\\baseline_js_test\\diverse_test_mean_vector.csv",
+          "prediction_sha256": "d3932bafb25d0cc5d002750862620bb6dea988de543ebac3ecf20ea20f7e64ec",
+          "equal_resume_grade_mae_points": 36.00998263888888,
+          "equal_resume_grade_rmse_points": 40.29929801049751,
+          "raw_cosine_rankings": {
+            "rankable_resumes": 144,
+            "spearman": 0.4220740749218128,
+            "ndcg_at_10": 0.8643722379885573,
+            "top1_best_rate": 0.3611111111111111,
+            "pairwise_accuracy": 0.696202494000867
+          },
+          "display_grade_rankings": {
+            "rankable_resumes": 144,
+            "spearman": 0.42587834142260533,
+            "ndcg_at_10": 0.8650837684768091,
+            "top1_best_rate": 0.3541666666666667,
+            "pairwise_accuracy": 0.6969605333864645
+          },
+          "minimum_observed_cosine": 0.3060153040621565,
+          "maximum_observed_cosine": 0.7338990891378712,
+          "minimum_display_grade": 2,
+          "maximum_display_grade": 73,
+          "above_upper_calibration_knot_pairs": 0,
+          "above_upper_calibration_knot_equal_resume_fraction": 0.0
+        },
+        "selected_r2": {
+          "prediction_source": "models\\major_agnostic\\predictions\\selected_js_test\\diverse_test_mean_vector.csv",
+          "prediction_sha256": "19133d3bd2fb4a96df3e17d7177afda580cd6a449c265b85ec0d59b4a8b37d2e",
+          "equal_resume_grade_mae_points": 17.689236111111107,
+          "equal_resume_grade_rmse_points": 20.61020091955545,
+          "raw_cosine_rankings": {
+            "rankable_resumes": 144,
+            "spearman": 0.7681974368227726,
+            "ndcg_at_10": 0.9407981209803125,
+            "top1_best_rate": 0.5,
+            "pairwise_accuracy": 0.880470297144995
+          },
+          "display_grade_rankings": {
+            "rankable_resumes": 144,
+            "spearman": 0.7700764693083594,
+            "ndcg_at_10": 0.9409943118846932,
+            "top1_best_rate": 0.5104166666666666,
+            "pairwise_accuracy": 0.8803848981459076
+          },
+          "minimum_observed_cosine": 0.0875752860117319,
+          "maximum_observed_cosine": 0.7615154496901547,
+          "minimum_display_grade": 0,
+          "maximum_display_grade": 65,
+          "above_upper_calibration_knot_pairs": 0,
+          "above_upper_calibration_knot_equal_resume_fraction": 0.0
+        }
+      },
+      "selected_minus_baseline_grade_mae_points": -18.32074652777777
+    },
+    "openai": {
+      "pairs": 1944,
+      "resumes": 2,
+      "models": {
+        "baseline": {
+          "prediction_source": "models\\major_agnostic\\predictions\\baseline_js_test\\openai_test_mean_vector.csv",
+          "prediction_sha256": "4a37d9d18f941eec56dccc85f2dd705c59136270537f66ca8474ce8ee5bb9d8a",
+          "equal_resume_grade_mae_points": 11.93415637860082,
+          "equal_resume_grade_rmse_points": 16.0913991800594,
+          "raw_cosine_rankings": {
+            "rankable_resumes": 2,
+            "spearman": 0.7611926301539536,
+            "ndcg_at_10": 0.8356671816886665,
+            "top1_best_rate": 0.0,
+            "pairwise_accuracy": 0.8593420386691369
+          },
+          "display_grade_rankings": {
+            "rankable_resumes": 2,
+            "spearman": 0.7611704624235434,
+            "ndcg_at_10": 0.8421605403545724,
+            "top1_best_rate": 0.16666666666666666,
+            "pairwise_accuracy": 0.8589493977353372
+          },
+          "minimum_observed_cosine": 0.3532991883458208,
+          "maximum_observed_cosine": 0.7636608245376564,
+          "minimum_display_grade": 2,
+          "maximum_display_grade": 82,
+          "above_upper_calibration_knot_pairs": 0,
+          "above_upper_calibration_knot_equal_resume_fraction": 0.0
+        },
+        "selected_r2": {
+          "prediction_source": "models\\major_agnostic\\predictions\\selected_js_test\\openai_test_mean_vector.csv",
+          "prediction_sha256": "82faeb2621d1f58cc2a1df33b2577298e8f542771ac9e790bea1601d2515434b",
+          "equal_resume_grade_mae_points": 11.162551440329212,
+          "equal_resume_grade_rmse_points": 13.105734930397592,
+          "raw_cosine_rankings": {
+            "rankable_resumes": 2,
+            "spearman": 0.8887096485872498,
+            "ndcg_at_10": 0.873587484614404,
+            "top1_best_rate": 0.0,
+            "pairwise_accuracy": 0.9348890533808035
+          },
+          "display_grade_rankings": {
+            "rankable_resumes": 2,
+            "spearman": 0.8886506403871111,
+            "ndcg_at_10": 0.8664082782485076,
+            "top1_best_rate": 0.0,
+            "pairwise_accuracy": 0.9345820336840766
+          },
+          "minimum_observed_cosine": 0.2005033267733884,
+          "maximum_observed_cosine": 0.7832324087606379,
+          "minimum_display_grade": 0,
+          "maximum_display_grade": 68,
+          "above_upper_calibration_knot_pairs": 0,
+          "above_upper_calibration_knot_equal_resume_fraction": 0.0
+        }
+      },
+      "selected_minus_baseline_grade_mae_points": -0.7716049382716079
+    }
+  },
+  "limitations": [
+    "These diverse/openai test sets were already inspected before r2 and are not fresh confirmation.",
+    "Legacy openai test has very few independent resumes; pair count does not establish broad generalization.",
+    "The curve remains frozen; no test result changed fit, knots, model selection, or weights.",
+    "Source-balanced calibration encodes a declared 50/50 source mixture rather than deployment prevalence."
+  ],
+  "r2_upper_endpoint": {
+    "maximum_validation_cosine_knot": 0.8022639657486932,
+    "endpoint_normalized_score": 0.7033154226801739,
+    "actual_extension_grades_at_cosines": {
+      "0.8022639657486932": 70,
+      "0.9": 70,
+      "1.0": 70
+    },
+    "behavior": "Interpolation clamps above the observed validation maximum; highest possible displayed semantic grade is 70.",
+    "fitter_intent": "Existing nonnegative affine export uses validation extrema and in-range zero/one crossings, then runtime interpolation clamps endpoints. It does not extrapolate the fitted line outside the validation interval.",
+    "changed": false
+  },
+  "verification": {
+    "python": {
+      "command": ".venv/Scripts/python.exe -m unittest discover -p 'test_*.py' -v",
+      "tests": 90,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "javascript": {
+      "command": "npm run test:runtime",
+      "tests": 4,
+      "failed": 0,
+      "exit_code": 0
+    }
+  }
+}

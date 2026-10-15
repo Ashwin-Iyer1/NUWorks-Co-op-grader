@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "model_release": "major-agnostic-bge-2026-10-15-r2",
+  "method": "quantile_piecewise_linear",
+  "cosine_knots": [
+    0.1776963988029566,
+    0.23981984925483318,
+    0.8022639657486932
+  ],
+  "score_knots": [
+    0.0,
+    0.0,
+    0.7033154226801739
+  ],
+  "metadata": {
+    "data_split": "val",
+    "selected_fit": "nonnegative_weighted_affine",
+    "schema_note": "Runtime-compatible piecewise interpolation; knots fitted by selected weighted calibration, not marginal quantile matching.",
+    "input_sha256": [
+      {
+        "path": "models\\major_agnostic\\predictions\\selected_js_val\\diverse_val_mean_vector.csv",
+        "sha256": "4239b382387fb9c0c8d16a763a53689ec3978baca545b1fd532981153b8fdb1f",
+        "pairs": 2304,
+        "split_metadata_source": "csv"
+      },
+      {
+        "path": "models\\major_agnostic\\predictions\\selected_js_val\\openai_val_mean_vector.csv",
+        "sha256": "e41a144d73af665c14cef1d71f484cdde043b6a6fc401d7134da382d3fcb3735",
+        "pairs": 1944,
+        "split_metadata_source": "declared_split_argument"
+      }
+    ],
+    "pairs": 4248,
+    "resumes": 146,
+    "cross_validation": {
+      "method": "leave-one-family-or-resume-out",
+      "groups": 26,
+      "criterion": "lowest source_resume-weighted MAE; prefer affine within 0.000001",
+      "candidates": {
+        "nonnegative_weighted_affine": {
+          "weighted_mae": 0.15090158367076387,
+          "weighted_rmse": 0.17989513227424286,
+          "per_source": [
+            {
+              "source": "models\\major_agnostic\\predictions\\selected_js_val\\diverse_val_mean_vector.csv",
+              "pairs": 2304,
+              "resumes": 144,
+              "weighted_mae": 0.13239199132660845,
+              "weighted_rmse": 0.16006482110733863
+            },
+            {
+              "source": "models\\major_agnostic\\predictions\\selected_js_val\\openai_val_mean_vector.csv",
+              "pairs": 1944,
+              "resumes": 2,
+              "weighted_mae": 0.16941117601491926,
+              "weighted_rmse": 0.19774673265520812
+            }
+          ]
+        },
+        "weighted_isotonic": {
+          "weighted_mae": 0.1518035650452789,
+          "weighted_rmse": 0.1816871319772961,
+          "per_source": [
+            {
+              "source": "models\\major_agnostic\\predictions\\selected_js_val\\diverse_val_mean_vector.csv",
+              "pairs": 2304,
+              "resumes": 144,
+              "weighted_mae": 0.13254186894188355,
+              "weighted_rmse": 0.16080875959384974
+            },
+            {
+              "source": "models\\major_agnostic\\predictions\\selected_js_val\\openai_val_mean_vector.csv",
+              "pairs": 1944,
+              "resumes": 2,
+              "weighted_mae": 0.17106526114867424,
+              "weighted_rmse": 0.20040202266982804
+            }
+          ]
+        }
+      }
+    },
+    "sample_weighting": {
+      "method": "source_resume",
+      "source_coverage": [
+        {
+          "path": "models\\major_agnostic\\predictions\\selected_js_val\\diverse_val_mean_vector.csv",
+          "pairs": 2304,
+          "resumes": 144,
+          "total_weight": 0.5000000000000001
+        },
+        {
+          "path": "models\\major_agnostic\\predictions\\selected_js_val\\openai_val_mean_vector.csv",
+          "pairs": 1944,
+          "resumes": 2,
+          "total_weight": 0.5000000000000002
+        }
+      ],
+      "unit": "source then normalized resume text",
+      "total_per_source": 0.5,
+      "per_pair": "1 / (number of sources * resumes in source * pairs for that resume in source)"
+    },
+    "in_sample": {
+      "weighted_mae_uncalibrated_cosine": 0.19936551688653242,
+      "weighted_mae_calibrated": 0.14294644474888205,
+      "per_source": [
+        {
+          "source": "models\\major_agnostic\\predictions\\selected_js_val\\diverse_val_mean_vector.csv",
+          "weighted_mae_uncalibrated_cosine": 0.10137729966666506,
+          "weighted_mae_calibrated": 0.13214747299800664,
+          "weighted_rmse_calibrated": 0.15978187484837383
+        },
+        {
+          "source": "models\\major_agnostic\\predictions\\selected_js_val\\openai_val_mean_vector.csv",
+          "weighted_mae_uncalibrated_cosine": 0.29735373410639976,
+          "weighted_mae_calibrated": 0.1537454164997575,
+          "weighted_rmse_calibrated": 0.1771759853588918
+        }
+      ]
+    },
+    "raw_cosine_predictions_unchanged": true,
+    "limitations": [
+      "Calibration transforms semantic grades without modifying the model's raw cosine predictions.",
+      "The current extension sorts a blend of rounded semantic grades and lexical scores; recalibration can change UI ordering.",
+      "Cross-validation selected the calibration family; its selected error is not an independent test estimate.",
+      "The final curve uses all supplied validation labels; in-sample errors are not generalization evidence.",
+      "Family clusters come from supplied metadata; missing family IDs use individual resumes.",
+      "Teacher scores are supervised match judgments, not hiring outcomes or calibrated probabilities.",
+      "Monotone interpolation preserves cosine order before blending but can create tied grades; the lexical blend can reorder jobs."
+    ]
+  }
+}

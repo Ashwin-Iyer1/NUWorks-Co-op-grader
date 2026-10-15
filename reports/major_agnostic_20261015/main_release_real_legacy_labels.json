@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "pairs": 960,
+  "resumes": 24,
+  "jobs": 40,
+  "method": {
+    "fit_or_tuning_performed": false,
+    "bootstrap_unit": "normalized resume text",
+    "bootstrap_draws": 10000,
+    "seed": 20261015,
+    "weighting": "equal weight per resume; equal weight per job within each resume",
+    "display_score": "100 * clipped piecewise interpolation, then JavaScript Math.round",
+    "replacement_labels": false,
+    "positive_paired_improvement_is_better": true
+  },
+  "limitations": [
+    "Teacher labels measure rubric agreement, not human judgments or hiring outcomes.",
+    "Intervals resample whole resumes conditional on this fixed job pool.",
+    "Raw cosine rankings and semantic grades do not include the extension's lexical blend.",
+    "Node CPU inference does not establish browser WASM kernel parity.",
+    "Changing label rubrics requires reporting both versions, not selecting the more favorable one."
+  ],
+  "baseline": {
+    "model_release": "expanded-openai-bge-replay-2026-08-27",
+    "global_raw_spearman": 0.6935578673572019,
+    "rankable_resumes": 24,
+    "constant_label_resumes": 0,
+    "macro_raw_ranking": {
+      "spearman": {
+        "mean": 0.683805008732817,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.6338072821204707,
+          0.7294876617750787
+        ]
+      },
+      "ndcg_at_10": {
+        "mean": 0.828485093263064,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.7946245225562965,
+          0.8589709026732015
+        ]
+      },
+      "top1_best_rate": {
+        "mean": 0.2916666666666667,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.125,
+          0.5
+        ]
+      },
+      "pairwise_accuracy": {
+        "mean": 0.8204996662822984,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.7995428494866583,
+          0.8397322601009752
+        ]
+      }
+    },
+    "equal_resume_grading": {
+      "display_mae_points": {
+        "mean": 12.504166666666668,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          11.770833333333334,
+          13.338567708333333
+        ]
+      },
+      "continuous_mae_points": {
+        "mean": 12.516841486954073,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          11.789523020696665,
+          13.348489942537192
+        ]
+      },
+      "display_signed_error_points": {
+        "mean": -7.681250000000001,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          -9.41265625,
+          -5.8874739583333335
+        ]
+      }
+    }
+  },
+  "candidate": {
+    "model_release": "major-agnostic-bge-2026-10-15-r2",
+    "global_raw_spearman": 0.7928918094515971,
+    "rankable_resumes": 24,
+    "constant_label_resumes": 0,
+    "macro_raw_ranking": {
+      "spearman": {
+        "mean": 0.7906557545934989,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.7535610190763925,
+          0.8246483858673038
+        ]
+      },
+      "ndcg_at_10": {
+        "mean": 0.8747206644525924,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.849142637292591,
+          0.8990571859109467
+        ]
+      },
+      "top1_best_rate": {
+        "mean": 0.2916666666666667,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.125,
+          0.5
+        ]
+      },
+      "pairwise_accuracy": {
+        "mean": 0.8819146825033992,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.8656245220304517,
+          0.8972935718541957
+        ]
+      }
+    },
+    "equal_resume_grading": {
+      "display_mae_points": {
+        "mean": 13.916666666666666,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          13.382265624999999,
+          14.457291666666665
+        ]
+      },
+      "continuous_mae_points": {
+        "mean": 13.911287861749813,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          13.375563003594639,
+          14.45421103383869
+        ]
+      },
+      "display_signed_error_points": {
+        "mean": 7.756250000000001,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          6.252083333333334,
+          9.185416666666667
+        ]
+      }
+    }
+  },
+  "paired_improvement": {
+    "raw_ranking_candidate_minus_baseline": {
+      "spearman": {
+        "mean": 0.10685074586068193,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.08722038437497508,
+          0.1273675311577287
+        ]
+      },
+      "ndcg_at_10": {
+        "mean": 0.04623557118952853,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.028688216267935888,
+          0.06566098615452713
+        ]
+      },
+      "top1_best_rate": {
+        "mean": 0.0,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          -0.16666666666666666,
+          0.16666666666666666
+        ]
+      },
+      "pairwise_accuracy": {
+        "mean": 0.06141501622110079,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.050208021485076935,
+          0.0739300391841139
+        ]
+      }
+    },
+    "grading_error_reduction_baseline_minus_candidate": {
+      "display_mae_points": {
+        "mean": -1.4124999999999994,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          -2.538541666666666,
+          -0.20726562499999962
+        ]
+      },
+      "continuous_mae_points": {
+        "mean": -1.3944463747957407,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          -2.519392850046672,
+          -0.19027811528710878
+        ]
+      }
+    }
+  },
+  "label_description": "Legacy August Luna rubric; same archive and reused jobs; evaluated in previous experiments",
+  "inputs": {
+    "baseline_predictions": {
+      "path": "models\\major_agnostic\\predictions\\baseline_js_unseen_test\\unseen_bias_test_mean_vector.csv",
+      "sha256": "78f19812bb1c386f0c670ff3804fb4ed708792d6b12bb5010ecb19875ddd73da"
+    },
+    "candidate_predictions": {
+      "path": "models\\major_agnostic\\predictions\\selected_js_unseen_test\\unseen_bias_test_mean_vector.csv",
+      "sha256": "cf60401344c59b8ba1c28bb88462ace5d64d9d100a3fae2355a75d64b110c058"
+    },
+    "baseline_calibration": {
+      "path": "models\\production_baseline\\calibration.json",
+      "sha256": "b0451c8896012305ba7e306f6e8cba3e2e4b16d1eb658990adb35a07db664f88"
+    },
+    "candidate_calibration": {
+      "path": "models\\major_agnostic\\main_release\\calibration.json",
+      "sha256": "3424ce9d3f94df53f5f12d962859408d07543fd2c6d8d38a9fb410cf7a65da6e"
+    }
+  }
+}

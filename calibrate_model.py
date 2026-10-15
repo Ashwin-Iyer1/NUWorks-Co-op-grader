@@ -6,7 +6,10 @@ Example (run only after freezing model selection):
     --predictions diverse_val_mean_vector.csv --predictions openai_val_mean_vector.csv \
     --output calibration.json
 
-Every resume has equal total weight regardless of its number of jobs. Select
+By default every resume has equal total weight regardless of its number of jobs.
+--weighting source_resume gives each supplied source equal total weight, then
+each resume within that source equal weight. Choose this policy before fitting.
+Select
 weighted isotonic or nonnegative affine calibration by leave-family-out CV;
 missing family IDs fall back to whole-resume groups. Export both as monotone
 piecewise-linear knots compatible with the extension's schema. Raw cosine
@@ -43,10 +46,18 @@ def write_json(path, value):
     temporary.replace(path)
 
 
-def resume_weights(frame):
-    """Weights sum to one, with exactly 1/N total weight per distinct resume."""
-    counts = frame.groupby("_resume_key")["_resume_key"].transform("size").to_numpy(dtype=float)
-    return 1.0 / (counts * frame["_resume_key"].nunique())
+def resume_weights(frame, weighting="resume"):
+    """Normalize either resumes globally or sources then resumes within each."""
+    if weighting not in ("resume", "source_resume"):
+        raise ValueError(f"Unknown sample weighting: {weighting}")
+    if weighting == "resume":
+        counts = frame.groupby("_resume_key")["_resume_key"].transform("size").to_numpy(dtype=float)
+        return 1.0 / (counts * frame["_resume_key"].nunique())
+    if "_source" not in frame or frame["_source"].isna().any() or frame["_source"].astype(str).str.strip().eq("").any():
+        raise ValueError("source_resume weighting requires nonempty source metadata for every row")
+    counts = frame.groupby(["_source", "_resume_key"])["_resume_key"].transform("size").to_numpy(dtype=float)
+    resumes_per_source = frame.groupby("_source")["_resume_key"].transform("nunique").to_numpy(dtype=float)
+    return 1.0 / (frame["_source"].nunique() * resumes_per_source * counts)
 
 
 def attach_groups(frame):
@@ -162,31 +173,44 @@ def fit_curve(predictions, labels, weights, method):
     return Curve(knots, np.clip(slope * knots + intercept, 0, 1))
 
 
-def cross_validate(frame):
+def cross_validate(frame, weighting="resume"):
+    if "split" in frame and not frame["split"].astype(str).eq("val").all():
+        raise ValueError("Calibration CV accepts validation split metadata only")
     groups = sorted(frame["_cv_group"].unique())
     if len(groups) < 3:
         raise ValueError("At least three independent resume/family groups are required for calibration CV")
     y, x = frame["score"].to_numpy(dtype=float), frame["prediction"].to_numpy(dtype=float)
-    full_weights = resume_weights(frame)
+    full_weights = resume_weights(frame, weighting)
     out_of_fold = {method: np.full(len(frame), np.nan) for method in FIT_METHODS}
     fold_groups = frame["_cv_group"].to_numpy()
     for group in groups:
         held_out = fold_groups == group
         training = ~held_out
-        weights = resume_weights(frame.loc[training])
+        weights = resume_weights(frame.loc[training], weighting)
         for method in FIT_METHODS:
             fit = fit_curve(x[training], y[training], weights, method)
             out_of_fold[method][held_out] = fit.predict(x[held_out])
     report = {method: {"weighted_mae": float(np.average(np.abs(predictions - y), weights=full_weights)),
                        "weighted_rmse": float(np.sqrt(np.average((predictions - y) ** 2, weights=full_weights)))}
               for method, predictions in out_of_fold.items()}
+    if "_source" in frame:
+        for method, predictions in out_of_fold.items():
+            report[method]["per_source"] = []
+            for source in sorted(frame["_source"].unique()):
+                indexes = frame["_source"].eq(source).to_numpy()
+                report[method]["per_source"].append({
+                    "source": source, "pairs": int(indexes.sum()),
+                    "resumes": int(frame.loc[indexes, "_resume_key"].nunique()),
+                    "weighted_mae": float(np.average(np.abs(predictions[indexes] - y[indexes]), weights=full_weights[indexes])),
+                    "weighted_rmse": float(np.sqrt(np.average((predictions[indexes] - y[indexes]) ** 2, weights=full_weights[indexes]))),
+                })
     # Prefer the simpler curve when CV MAE is numerically tied.
     affine, isotonic = FIT_METHODS
     selected = affine if report[affine]["weighted_mae"] <= report[isotonic]["weighted_mae"] + 1e-6 else isotonic
     return selected, report, len(groups)
 
 
-def calibrate(frame, *, model_release, sources=None):
+def calibrate(frame, *, model_release, sources=None, weighting="resume"):
     if not str(model_release).strip():
         raise ValueError("model_release must be a nonempty release identifier")
     if "split" in frame and not frame["split"].astype(str).eq("val").all():
@@ -194,20 +218,36 @@ def calibrate(frame, *, model_release, sources=None):
     if "_cv_group" not in frame or "_resume_key" not in frame:
         frame = attach_groups(frame)
     frame = frame.reset_index(drop=True)
-    selected, cv, groups = cross_validate(frame)
+    selected, cv, groups = cross_validate(frame, weighting)
     x, y = frame["prediction"].to_numpy(dtype=float), frame["score"].to_numpy(dtype=float)
-    weights = resume_weights(frame)
+    weights = resume_weights(frame, weighting)
     curve = fit_curve(x, y, weights, selected)
     if len(curve.cosine_knots) < 2 or not np.all(np.diff(curve.cosine_knots) > 0):
         raise ValueError("Calibration must have at least two strictly increasing cosine knots")
     if not np.all(np.diff(curve.score_knots) >= -1e-12):
         raise ValueError("Calibration score knots must not decrease")
-    source_coverage = []
+    source_coverage, source_errors = [], []
+    fitted_predictions = curve.predict(x)
     if "_source" in frame:
         for source, indexes in frame.groupby("_source").groups.items():
             source_coverage.append({"path": source, "pairs": len(indexes),
                                     "resumes": frame.loc[indexes, "_resume_key"].nunique(),
                                     "total_weight": float(weights[list(indexes)].sum())})
+            source_indexes = list(indexes)
+            source_errors.append({
+                "source": source,
+                "weighted_mae_uncalibrated_cosine": float(np.average(np.abs(np.clip(x[source_indexes], 0, 1) - y[source_indexes]), weights=weights[source_indexes])),
+                "weighted_mae_calibrated": float(np.average(np.abs(fitted_predictions[source_indexes] - y[source_indexes]), weights=weights[source_indexes])),
+                "weighted_rmse_calibrated": float(np.sqrt(np.average((fitted_predictions[source_indexes] - y[source_indexes]) ** 2, weights=weights[source_indexes]))),
+            })
+    sample_weighting = {"method": weighting, "source_coverage": source_coverage}
+    if weighting == "source_resume":
+        sample_weighting.update(unit="source then normalized resume text",
+                                total_per_source=1 / frame["_source"].nunique(),
+                                per_pair="1 / (number of sources * resumes in source * pairs for that resume in source)")
+    else:
+        sample_weighting.update(unit="normalized resume text", total_per_resume=1 / frame["_resume_key"].nunique(),
+                                per_pair="1 / (number of resumes * pairs for that resume)")
     return {
         "schema_version": 1, "model_release": str(model_release).strip(),
         "method": "quantile_piecewise_linear",
@@ -217,14 +257,13 @@ def calibrate(frame, *, model_release, sources=None):
             "schema_note": "Runtime-compatible piecewise interpolation; knots fitted by selected weighted calibration, not marginal quantile matching.",
             "input_sha256": sources or [], "pairs": len(frame), "resumes": frame["_resume_key"].nunique(),
             "cross_validation": {"method": "leave-one-family-or-resume-out", "groups": groups,
-                                 "criterion": "lowest equal-resume-weighted MAE; prefer affine within 0.000001",
+                                 "criterion": f"lowest {weighting}-weighted MAE; prefer affine within 0.000001",
                                  "candidates": cv},
-            "sample_weighting": {"unit": "normalized resume text", "total_per_resume": 1 / frame["_resume_key"].nunique(),
-                                 "per_pair": "1 / (number of resumes * pairs for that resume)",
-                                 "source_coverage": source_coverage},
+            "sample_weighting": sample_weighting,
             "in_sample": {
                 "weighted_mae_uncalibrated_cosine": float(np.average(np.abs(np.clip(x, 0, 1) - y), weights=weights)),
-                "weighted_mae_calibrated": float(np.average(np.abs(curve.predict(x) - y), weights=weights)),
+                "weighted_mae_calibrated": float(np.average(np.abs(fitted_predictions - y), weights=weights)),
+                "per_source": source_errors,
             },
             "raw_cosine_predictions_unchanged": True,
             "limitations": [
@@ -246,9 +285,11 @@ def main():
     parser.add_argument("--split", choices=("val",), required=True)
     parser.add_argument("--model-release", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--weighting", choices=("resume", "source_resume"), default="resume",
+                        help="resume: equal resumes globally; source_resume: equal sources then equal resumes within each")
     args = parser.parse_args()
     frame, sources = load_predictions(args.predictions, args.split)
-    calibration = calibrate(frame, model_release=args.model_release, sources=sources)
+    calibration = calibrate(frame, model_release=args.model_release, sources=sources, weighting=args.weighting)
     write_json(args.output, calibration)
     metadata = calibration["metadata"]
     selected = metadata["selected_fit"]

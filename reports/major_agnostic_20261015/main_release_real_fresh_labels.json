@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "pairs": 960,
+  "resumes": 24,
+  "jobs": 40,
+  "method": {
+    "fit_or_tuning_performed": false,
+    "bootstrap_unit": "normalized resume text",
+    "bootstrap_draws": 10000,
+    "seed": 20261015,
+    "weighting": "equal weight per resume; equal weight per job within each resume",
+    "display_score": "100 * clipped piecewise interpolation, then JavaScript Math.round",
+    "replacement_labels": true,
+    "positive_paired_improvement_is_better": true
+  },
+  "limitations": [
+    "Teacher labels measure rubric agreement, not human judgments or hiring outcomes.",
+    "Intervals resample whole resumes conditional on this fixed job pool.",
+    "Raw cosine rankings and semantic grades do not include the extension's lexical blend.",
+    "Node CPU inference does not establish browser WASM kernel parity.",
+    "Changing label rubrics requires reporting both versions, not selecting the more favorable one."
+  ],
+  "baseline": {
+    "model_release": "expanded-openai-bge-replay-2026-08-27",
+    "global_raw_spearman": 0.6820960839895838,
+    "rankable_resumes": 24,
+    "constant_label_resumes": 0,
+    "macro_raw_ranking": {
+      "spearman": {
+        "mean": 0.6812431159268265,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.6337297471143517,
+          0.7230626822138128
+        ]
+      },
+      "ndcg_at_10": {
+        "mean": 0.8369711490726038,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.8048496537803981,
+          0.8651678321342741
+        ]
+      },
+      "top1_best_rate": {
+        "mean": 0.3333333333333333,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.16666666666666666,
+          0.5416666666666666
+        ]
+      },
+      "pairwise_accuracy": {
+        "mean": 0.8120793013551916,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.7897213017077896,
+          0.8330906459049001
+        ]
+      }
+    },
+    "equal_resume_grading": {
+      "display_mae_points": {
+        "mean": 13.060416666666669,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          12.454166666666666,
+          13.736484374999998
+        ]
+      },
+      "continuous_mae_points": {
+        "mean": 13.070358874075742,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          12.47015833810941,
+          13.742068556371574
+        ]
+      },
+      "display_signed_error_points": {
+        "mean": -8.552083333333334,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          -10.201041666666667,
+          -6.925
+        ]
+      }
+    }
+  },
+  "candidate": {
+    "model_release": "major-agnostic-bge-2026-10-15-r2",
+    "global_raw_spearman": 0.7971464124217575,
+    "rankable_resumes": 24,
+    "constant_label_resumes": 0,
+    "macro_raw_ranking": {
+      "spearman": {
+        "mean": 0.7977855575978806,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.768641620187624,
+          0.8249489014774676
+        ]
+      },
+      "ndcg_at_10": {
+        "mean": 0.8844541644945444,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.8590460283299904,
+          0.9087159445720698
+        ]
+      },
+      "top1_best_rate": {
+        "mean": 0.25,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.08333333333333333,
+          0.4166666666666667
+        ]
+      },
+      "pairwise_accuracy": {
+        "mean": 0.8820538469002518,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.8666586330653631,
+          0.8970373520917461
+        ]
+      }
+    },
+    "equal_resume_grading": {
+      "display_mae_points": {
+        "mean": 13.360416666666666,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          12.646848958333333,
+          14.041692708333333
+        ]
+      },
+      "continuous_mae_points": {
+        "mean": 13.349664386008778,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          12.6368320889526,
+          14.032911843518068
+        ]
+      },
+      "display_signed_error_points": {
+        "mean": 6.885416666666667,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          5.68328125,
+          8.051041666666668
+        ]
+      }
+    }
+  },
+  "paired_improvement": {
+    "raw_ranking_candidate_minus_baseline": {
+      "spearman": {
+        "mean": 0.11654244167105428,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.09370438070124636,
+          0.14280365748453822
+        ]
+      },
+      "ndcg_at_10": {
+        "mean": 0.04748301542194042,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.029609443556213373,
+          0.06578393847965701
+        ]
+      },
+      "top1_best_rate": {
+        "mean": -0.08333333333333333,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          -0.2916666666666667,
+          0.125
+        ]
+      },
+      "pairwise_accuracy": {
+        "mean": 0.06997454554506051,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          0.05694027186230043,
+          0.08360554266925951
+        ]
+      }
+    },
+    "grading_error_reduction_baseline_minus_candidate": {
+      "display_mae_points": {
+        "mean": -0.3000000000000001,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          -1.3385416666666667,
+          0.8125260416666663
+        ]
+      },
+      "continuous_mae_points": {
+        "mean": -0.27930551193303615,
+        "resumes": 24,
+        "bootstrap_clusters": 24,
+        "ci95": [
+          -1.3134657969896948,
+          0.8284250254146696
+        ]
+      }
+    }
+  },
+  "label_description": "Fresh current major-agnostic rubric Luna labels; same frozen960pairs; model and r2 calibration frozen before regrading",
+  "inputs": {
+    "baseline_predictions": {
+      "path": "models\\major_agnostic\\predictions\\baseline_js_unseen_test\\unseen_bias_test_mean_vector.csv",
+      "sha256": "78f19812bb1c386f0c670ff3804fb4ed708792d6b12bb5010ecb19875ddd73da"
+    },
+    "candidate_predictions": {
+      "path": "models\\major_agnostic\\predictions\\selected_js_unseen_test\\unseen_bias_test_mean_vector.csv",
+      "sha256": "cf60401344c59b8ba1c28bb88462ace5d64d9d100a3fae2355a75d64b110c058"
+    },
+    "baseline_calibration": {
+      "path": "models\\production_baseline\\calibration.json",
+      "sha256": "b0451c8896012305ba7e306f6e8cba3e2e4b16d1eb658990adb35a07db664f88"
+    },
+    "candidate_calibration": {
+      "path": "models\\major_agnostic\\main_release\\calibration.json",
+      "sha256": "3424ce9d3f94df53f5f12d962859408d07543fd2c6d8d38a9fb410cf7a65da6e"
+    },
+    "labels": {
+      "path": "openai_labels\\main_release_real_holdout\\train.csv",
+      "sha256": "5135403262447620848efcd08c59ef314ee16700e035a3e5aedaa9a2d2192569"
+    }
+  }
+}

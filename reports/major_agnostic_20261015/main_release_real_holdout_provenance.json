@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "kind": "unseen_resume_holdout_provenance_and_label_audit",
+  "counts": {
+    "pairs": 960,
+    "resumes": 24,
+    "jobs": 40,
+    "occupational_categories": 24,
+    "resumes_per_category": 1,
+    "jobs_per_resume": 40
+  },
+  "sampling": {
+    "seed": 20260827,
+    "method": "stratified random: one unused resume per category; random jobs",
+    "source_resumes": 2481,
+    "source_jobs": 972,
+    "excluded_prior_openai_resumes": 11,
+    "reproduced_exact_ordered_resume_ids": true,
+    "reproduced_exact_ordered_job_ids": true
+  },
+  "identity_method": "SHA256 of casefolded text after collapsing whitespace; exact identity only, not near-duplicate detection",
+  "overlap_against_current_data": [
+    {
+      "dataset": "diverse",
+      "split": "train",
+      "file_sha256": "8cfc9fcb77359baf20a8972373ebc302d1b3b1ca4356cab35bae1abe2bc8344d",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "dataset": "diverse",
+      "split": "val",
+      "file_sha256": "cc9f490cffca903ed6037ff46f8ac8d662f40e8e68c078a2f3817bd3768d1593",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "dataset": "diverse",
+      "split": "test",
+      "file_sha256": "777f79f25129c8f81b4b7f544ac03ea208740ca604a2402a7bb1cb16653693a2",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "dataset": "openai",
+      "split": "train",
+      "file_sha256": "7c2f59a481b1f23d647e598d4829f8bd85507b218d8713a84e52593e5131819a",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 40,
+      "overlapping_pairs": 0
+    },
+    {
+      "dataset": "openai",
+      "split": "val",
+      "file_sha256": "c837a40c95a32e331b47ab18797aea68b0af687c9ad986205aed92b4fba9c896",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 40,
+      "overlapping_pairs": 0
+    },
+    {
+      "dataset": "openai",
+      "split": "test",
+      "file_sha256": "8937b3194d7ff60f58fc3fd67d0dc877c298fb930dcf22d6371b998ace3c581d",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 40,
+      "overlapping_pairs": 0
+    },
+    {
+      "dataset": "hf",
+      "split": "train",
+      "file_sha256": "30363cef7d8c538173e6dd8423ac3700c5ad22f9c25859363f4a187b7a3dab80",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "dataset": "hf",
+      "split": "val",
+      "file_sha256": "8dea7b9eb88268e914217ff7d7c7e1a18dbba3617a3e656c4412240a99d30e17",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "dataset": "hf",
+      "split": "test",
+      "file_sha256": "574a50673db3ef60648d768edd3819628725b3ccdd88525619f31676bcbdc434",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "dataset": "neuralframe",
+      "split": "train",
+      "file_sha256": "67b6858ee873bbb541543d6c35363c582878a52353f084251cc0baa35b87f369",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "dataset": "neuralframe",
+      "split": "val",
+      "file_sha256": "7887efe27f778a0417b8aa54fa1bc2976440793aea9be3cd92960b5c11eb4113",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    },
+    {
+      "dataset": "neuralframe",
+      "split": "test",
+      "file_sha256": "adf5061836047526c136dc16b85999bae7d65955c773b69d02c65db87c26a130",
+      "overlapping_resumes": 0,
+      "overlapping_jobs": 0,
+      "overlapping_pairs": 0
+    }
+  ],
+  "legacy_labels": {
+    "model": "gpt-5.6-luna",
+    "successful_pairs": 960,
+    "dataset_sha256": "5143269b5c6b13a84175027ba44d9858f4b9285e2b0c064ac4972fd8776624dd",
+    "equals_original_label_export": true,
+    "rubric_source_git_commit": "7e9951b",
+    "rubric_fingerprint_available": false,
+    "notes": "Same 0-100 score bands/schema as current labels; old rubric allowed different-domain poor fit and did not include explicit major/year neutrality or project-equivalence instructions."
+  },
+  "fresh_labels": {
+    "model": "gpt-5.6-luna",
+    "labeling_fingerprint": "d9e53f13e685d7540f75107cb0810c49ce4fc23bdd2579028072229c3d1d45f1",
+    "successful_pairs": 960,
+    "failed_requests": 0,
+    "reported_tokens": 2608998,
+    "conservative_cost_counted_usd": 0.879822,
+    "max_cost_usd": 3.0,
+    "free_credits_assumed": false,
+    "dataset_sha256": "5135403262447620848efcd08c59ef314ee16700e035a3e5aedaa9a2d2192569",
+    "summary_sha256": "6055aa26c430f07ac397f2466211f1142044ca4a96cda8133dbdfb047ff8347a",
+    "records_sha256": "c30231055f1090ce7af2ece3940a382a6056c10b0befccb8b11851b2fa00ddac",
+    "exact_pair_identity_validated": true,
+    "new_training_rubric_fingerprint_matches": true,
+    "notes": "Full960-pair regrade; final summary records only resumed40-request tail, so totals here sum all successful records.",
+    "training_labeling_fingerprint": "d9e53f13e685d7540f75107cb0810c49ce4fc23bdd2579028072229c3d1d45f1"
+  },
+  "frozen_calibrations": {
+    "baseline": {
+      "path": "models\\production_baseline\\calibration.json",
+      "sha256": "b0451c8896012305ba7e306f6e8cba3e2e4b16d1eb658990adb35a07db664f88"
+    },
+    "candidate": {
+      "path": "models\\major_agnostic\\main_release\\calibration.json",
+      "sha256": "3424ce9d3f94df53f5f12d962859408d07543fd2c6d8d38a9fb410cf7a65da6e"
+    }
+  },
+  "runtime": {
+    "ref": "bc657de2fcfd38949939e112ac6b3c75c2a7d499",
+    "backend": {
+      "transformersjs": "4.2.0",
+      "node": "v24.12.0",
+      "backend": "onnxruntime-node CPU",
+      "threads": 4,
+      "tokenizer_max_length": 256,
+      "limitation": "Uses actual Transformers.js preprocessing/batching; browser WASM kernel parity is not asserted."
+    },
+    "same_data_hashes": true,
+    "same_runtime_source": true,
+    "same_inference_settings": true,
+    "model_q8_sha256": {
+      "baseline": "c45f88d3769e44822e713502dcaf79c07fa514ef6f6895855072f7c7fae08611",
+      "selected": "63a361e5cef37f169e77d8ba4a6130dc0b70cdde83ba68b3812ad689c5d77613"
+    },
+    "counts": {
+      "pairs": 960,
+      "resumes": 24,
+      "resume_pipeline_calls": 24,
+      "job_pipeline_calls": 3,
+      "encoded_resume_chunks": 154,
+      "encoded_jobs": 40
+    }
+  },
+  "reproducibility": {
+    "comparison_script": "compare_calibrated_predictions.py",
+    "comparison_script_sha256": "dd72261d739b4eb4689cfa63be78b7aeb3b41aac3337e7e6858d066eeba1185e",
+    "sampling_script_sha256": "844e130e6026ce321f2daf7c1b1bcec65b76f0b9ff5da2096dfefd5af948f115",
+    "comparison_tests": 6,
+    "bootstrap_draws": 10000,
+    "seed": 20261015,
+    "no_calibration_fit_or_tuning": true
+  },
+  "limitations": [
+    "Resumes are held out by normalized identity, but from the same archive as legacy training resumes.",
+    "All40 jobs were reused in the legacy OpenAI training/validation/test pool.",
+    "The original holdout had been examined in earlier August experiments; these are fresh predictions for the frozen October candidate.",
+    "One occupational-category resume does not establish academic-major or student-year fairness.",
+    "Fresh labels are teacher judgments, not independently adjudicated human judgments.",
+    "Ranking gains do not establish better absolute grades: fresh-label MAE difference is inconclusive and legacy-label MAE worsens.",
+    "The model and r2 calibration were frozen before this additional evaluation; no holdout-based retuning was performed."
+  ],
+  "current_train_val_match_frozen_experiment_hashes": true
+}

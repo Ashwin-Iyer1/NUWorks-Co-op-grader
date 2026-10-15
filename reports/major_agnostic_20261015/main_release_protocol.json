@@ -1,0 +1,31 @@
+{
+  "release": "major-agnostic-bge-2026-10-15-r2",
+  "frozen_before_fresh_label_requests": true,
+  "baseline_revision": "a77f5eb7d1c206088789eab5a270b9943a59304a",
+  "weights_sha256": "18a7d4c4b5dd344deac05e3180e7ee7f8ba3962eee7df09aefa0e670d2cde8b7",
+  "calibration_sha256": "3424ce9d3f94df53f5f12d962859408d07543fd2c6d8d38a9fb410cf7a65da6e",
+  "calibration_rule": "Validation only: 50% each synthetic and legacy source, equal resumes within source; leave-family/resume-out CV chooses affine or isotonic.",
+  "model_and_calibration_frozen": true,
+  "holdout": {
+    "pairs": 960,
+    "resumes": 24,
+    "occupational_categories": 24,
+    "jobs": 40,
+    "original_dataset_sha256": "5143269b5c6b13a84175027ba44d9858f4b9285e2b0c064ac4972fd8776624dd",
+    "sources_manifest_sha256": "d6254744740b23b951dcc022881585407e7e57ec97ca6463765c3f0bf4f5c55c",
+    "normalized_resume_overlap_all_12_train_val_test_sets": 0,
+    "job_overlap": "All 40 jobs recur in legacy OpenAI train/val/test.",
+    "prior_use": "Old-rubric benchmark reported for August models; newly evaluated for this candidate.",
+    "new_labels": "Current major-neutral rubric; all pairs kept out of training and calibration."
+  },
+  "metrics": [
+    "equal-resume mean display-grade MAE using published interpolation and integer rounding",
+    "macro per-resume Spearman rank correlation",
+    "paired 10000-replicate resume bootstrap confidence intervals"
+  ],
+  "additional_api_cap_usd": 3.0,
+  "previous_conservative_api_cost_usd": 4.86602475,
+  "combined_maximum_usd": 7.86602475,
+  "free_credits_assumed": 0,
+  "labeling_fingerprint": "d9e53f13e685d7540f75107cb0810c49ce4fc23bdd2579028072229c3d1d45f1"
+}

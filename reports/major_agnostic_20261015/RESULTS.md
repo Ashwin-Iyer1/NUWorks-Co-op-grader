@@ -1,5 +1,7 @@
 # Major-agnostic resume model experiment — 2026-10-15
 
+**Historical r1 experiment report.** The [r2 main-release report](MAIN_RELEASE.md) supersedes this page's candidate calibration and deployment status, adds 960 freshly graded real-resume pairs, and evaluates the default UI blend. Original metrics below are retained for provenance.
+
 The selected model improves held-out semantic ranking across all four evaluated datasets. It is saved locally as `models/major_agnostic/selected_model` (PyTorch) and `models/major_agnostic/selected_onnx` (Transformers.js). The 34 MB quantized model is the tested release artifact. At the end of the evaluation run, the model was local and had not been deployed. The code and evaluation evidence are now being published on `finetune`; publishing this report does not activate the candidate model in the extension.
 
 The candidate grade calibration has a material tradeoff: it improves the new diverse set but worsens the two legacy OpenAI test resumes. It is experimental and is not a general production grading recommendation. Better ranking is the strongest supported result.
