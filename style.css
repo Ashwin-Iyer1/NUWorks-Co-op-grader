@@ -912,6 +912,11 @@ footer .container {
 .ai-benchmark-copy p {
   font-size: 0.94rem;
 }
+.ai-benchmark-copy .benchmark-status {
+  margin-top: 12px;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
+}
 .benchmark-results {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

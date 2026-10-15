@@ -299,7 +299,7 @@
     <section id="semantic-ai" class="section ai-section">
       <div class="container">
         <div class="section-header centered">
-          <span class="ai-eyebrow">Expanded BGE model · Tested on 24 unseen resumes · Opt-in</span>
+          <span class="ai-eyebrow">On-device matching · Opt-in</span>
           <h2>Semantic AI trained for resume-to-job fit</h2>
           <p>
             Turn on Semantic AI and a compact model fine-tuned on labeled
@@ -319,36 +319,53 @@
 
         <div class="ai-benchmark" aria-labelledby="benchmark-title">
           <div class="ai-benchmark-copy">
-            <span class="benchmark-kicker">Fresh unseen-resume evaluation · 960 pairs</span>
-            <h3 id="benchmark-title">The gain holds on resumes it never saw</h3>
+            <span class="benchmark-kicker">Research candidate · October 15, 2026</span>
+            <h3 id="benchmark-title">Broader coverage, stronger test rankings</h3>
             <p>
-              We froze 24 previously unused resumes across 24 career categories,
-              paired each with 40 randomly selected NUWorks jobs, and labeled
-              the resulting matches only after training was complete. The new
-              int8 model improved every individual resume over the previous
-              model.
+              Development and evaluation used 864 original fictional resumes
+              spanning 24 majors and six career stages, including 264 profiles
+              with skills outside their named major. OpenAI teacher models
+              scored the resume–job matches.
+            </p>
+            <p class="benchmark-status">
+              <strong>Evaluation only.</strong> This candidate is not yet
+              included in the installed extension.
             </p>
           </div>
           <div class="benchmark-results">
             <div class="benchmark-result">
-              <span class="benchmark-dataset">Spearman correlation</span>
-              <strong>0.768</strong>
-              <span>from 0.567 with the previous model</span>
-              <b>36% higher rank correlation</b>
+              <span class="benchmark-dataset">Mean per-resume Spearman</span>
+              <strong>0.7682</strong>
+              <span>published baseline: 0.4221</span>
+              <b>+0.3461 rank correlation</b>
             </div>
             <div class="benchmark-result">
               <span class="benchmark-dataset">NDCG@10</span>
-              <strong>0.868</strong>
-              <span>from 0.774 with the previous model</span>
-              <b>24 of 24 resumes improved</b>
+              <strong>0.9408</strong>
+              <span>published baseline: 0.8644</span>
+              <b>Better top-10 ranking agreement</b>
             </div>
           </div>
           <p class="benchmark-note">
-            Int8 ONNX, semantic-only ranking. Median per-resume Spearman was
-            0.796, and 23 of 24 resumes scored at least 0.50. These resumes were
-            excluded from every training, validation, and prior test split; the
-            jobs came from the existing NUWorks pool. Metrics measure ranking
-            quality, not hiring success.
+            <strong>Held-out test:</strong> 2,304 pairs from 144 resume documents,
+            24 independent scenario families and 24 unseen job scenarios.
+            The 9,216 labeled pairs were split into 4,608 training / 2,304
+            validation / 2,304 test pairs, keeping resume families and job
+            scenarios separate. The 95% paired
+            family-bootstrap interval for the Spearman gain is +0.2832 to
+            +0.4136, conditional on this job pool. These are q8 semantic-only
+            results in Transformers.js on Node CPU; browser execution and the
+            extension’s final blended score were not tested.
+          </p>
+          <p class="benchmark-note">
+            <strong>Limits of the evidence:</strong> stronger agreement
+            with synthetic teacher labels, not hiring outcomes or proof of
+            improvement for every major. There is only one held-out family per
+            major. Numeric grade calibration remains experimental: it reduced
+            error on the new set but increased error from 11.93 to 19.30 points
+            on the two legacy test resumes.
+            <a href="https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/blob/700f29baa3d680378da7fa9fd2d018143e944acc/reports/major_agnostic_20261015/RESULTS.md" target="_blank" rel="noopener noreferrer">Read the full evaluation</a>
+            · <a href="model-evaluation-2026-10-15.json">Download the aggregate results</a>
           </p>
         </div>
 
@@ -368,11 +385,9 @@
             <h3>Semantic layer</h3>
             <p>
               <a href="https://huggingface.co/turtlecap/mdbr-leaf-mt-resume-grader" target="_blank" rel="noopener noreferrer"><code>mdbr-leaf-mt-resume-grader</code></a>
-              is now a 33.36M-parameter
+              is the released 33.36M-parameter
               <a href="https://huggingface.co/BAAI/bge-small-en-v1.5" target="_blank" rel="noopener noreferrer">BGE-small</a>
-              fine-tune adapted on 6,804 NUWorks resume–job labels, then replayed
-              against a 26,677-example weighted external schedule to preserve
-              broader matching quality. It embeds your resume and each posting,
+              fine-tune used by the extension. It embeds your resume and each posting,
               then measures how close they sit in meaning. “Built REST services
               in Flask” counts toward “backend web development”.
             </p>

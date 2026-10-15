@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "evaluation_date": "2026-10-15",
+  "candidate_version": "major-agnostic-bge-2026-10-15",
+  "status": "experimental_candidate_not_released_in_extension",
+  "report_url": "https://github.com/Ashwin-Iyer1/NUWorks-Co-op-grader/blob/700f29baa3d680378da7fa9fd2d018143e944acc/reports/major_agnostic_20261015/RESULTS.md",
+  "dataset": {
+    "version": "major_agnostic_20261015",
+    "provenance": "Original fictional resumes and job scenarios; synthetic OpenAI teacher labels. University catalogs informed coverage, without copying resume bodies.",
+    "resume_documents": 864,
+    "majors": 24,
+    "career_stages": [
+      "first_year",
+      "sophomore",
+      "junior",
+      "senior",
+      "masters",
+      "career_changer"
+    ],
+    "resume_scenario_families": 144,
+    "cross_major_resume_documents": 264,
+    "job_scenarios": 144,
+    "labeled_pairs": 9216,
+    "split_unit": "resume_scenario_family_and_job_scenario",
+    "train": {
+      "pairs": 4608,
+      "resume_documents": 576,
+      "resume_scenario_families": 96,
+      "job_scenarios": 96
+    },
+    "validation": {
+      "pairs": 2304,
+      "resume_documents": 144,
+      "resume_scenario_families": 24,
+      "job_scenarios": 24
+    },
+    "test": {
+      "pairs": 2304,
+      "resume_documents": 144,
+      "resume_scenario_families": 24,
+      "job_scenarios": 24
+    }
+  },
+  "runtime": {
+    "transformers_js": "4.2.0",
+    "onnx_runtime_node": "1.24.3",
+    "execution_provider": "CPU",
+    "quantization": "q8",
+    "pooling": "mean",
+    "scoring": "semantic_only_with_extension_chunking_and_per_resume_batching",
+    "browser_wasm_tested": false,
+    "final_semantic_lexical_blend_tested": false
+  },
+  "held_out_test_metrics": {
+    "mean_per_resume_spearman": {
+      "baseline": 0.4221,
+      "candidate": 0.7682,
+      "gain": 0.3461
+    },
+    "mean_per_resume_ndcg_at_10": {
+      "baseline": 0.8644,
+      "candidate": 0.9408
+    },
+    "spearman_gain_95_percent_interval": {
+      "lower": 0.2832,
+      "upper": 0.4136,
+      "method": "paired_resume_family_bootstrap",
+      "draws": 10000,
+      "scope": "conditional_on_sampled_job_pool"
+    }
+  },
+  "displayed_grade_calibration": {
+    "status": "experimental_not_activated_in_extension",
+    "fit_split": "validation_only",
+    "metric": "mean_absolute_error_in_0_to_100_points_lower_is_better",
+    "new_diverse_test": {
+      "baseline_shipped_curve": 36.01,
+      "candidate_curve": 9.88,
+      "resume_documents": 144
+    },
+    "legacy_openai_test": {
+      "baseline_shipped_curve": 11.93,
+      "candidate_curve": 19.3,
+      "resume_documents": 2
+    }
+  },
+  "limitations": [
+    "The new benchmark measures agreement with synthetic teacher judgments, not human hiring decisions.",
+    "Each validation/test major has only one held-out family; stage variants are not independent applicants.",
+    "Results do not establish improvement for every major or population fairness.",
+    "Candidate grade calibration improves the new test set but regresses on the two legacy test resumes.",
+    "Browser WASM execution and the extension's final blended ordering remain unverified."
+  ],
+  "evaluation_source_commit": "700f29baa3d680378da7fa9fd2d018143e944acc"
+}
